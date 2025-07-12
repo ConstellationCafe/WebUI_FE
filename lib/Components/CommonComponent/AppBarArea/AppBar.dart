@@ -18,7 +18,8 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
         children: [
           ClipOval(
             child: Image.asset(
-              "assets/main_icon.jpg",
+              fit: BoxFit.cover,
+              "assets/Icons/main_icon.jpg",
               width: 45,
               height: 45,
             ),

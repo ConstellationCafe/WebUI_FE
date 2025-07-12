@@ -1,0 +1,2 @@
+- Icons
+  - swords: https://www.flaticon.com/free-icon/swords_861891?term=sword&page=1&position=6&origin=search&related_id=861891

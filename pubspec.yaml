@@ -34,9 +34,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  go_router: ^15.2.0
   image_picker: ^1.1.2
   flutter_riverpod: ^2.6.1
+  go_router: ^16.0.0
+
   # need url_launcher:
 
 dev_dependencies:
@@ -63,8 +64,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/main_icon.jpg
-
+   - assets/Icons/main_icon.jpg
+   - assets/Icons/web/swords.png
 fonts:
   - family: Noto Sans KR
     fonts:

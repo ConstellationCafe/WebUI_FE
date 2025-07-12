@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Container01 extends ConsumerWidget {
-  Container01({required this.icon, required this.text});
+  Container01({required this.iconImage, required this.text});
 
-  final Icon icon;
+  final Image iconImage;
   final String text;
 
   @override
@@ -12,12 +12,19 @@ class Container01 extends ConsumerWidget {
     return Container(
       width: 150,
       height: 90,
-      decoration:
-          BoxDecoration(border: Border.all(width: 1, color: Colors.black38), borderRadius: BorderRadius.circular(15)),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [icon, Text(text)],
+          children: [
+            Container(
+              width: 45,
+              height: 45,
+              child: ClipOval(
+                child: iconImage,
+              ),
+            ),
+            Text(text)
+          ],
         ),
       ),
     );

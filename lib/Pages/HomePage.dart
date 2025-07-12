@@ -1,10 +1,11 @@
-import 'package:constellation_cafe/Components/AppBar/AppBar.dart';
-import 'package:constellation_cafe/Components/Category/Category.dart';
 import 'package:constellation_cafe/Constant/ConstPadding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../Components/CommonComponent/AppBarArea/AppBar.dart';
 import '../Components/CustomIcon/CustomIcon01.dart';
+import '../Components/HomePageComponent/MainCategoryArea/MainCategory/MainCategory.dart';
+import '../Components/HomePageComponent/MainCategoryArea/MainSearchBar/MainSearchBar.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -22,9 +23,20 @@ class HomePage extends ConsumerWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [MainAppBar(), CustomIcon01()],
+              children: [
+                MainAppBar(),
+                CustomIcon01(),
+              ],
             ),
-            MainCategory(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: MainCategory(),
+                ),
+                MainSearchBar(),
+              ],
+            )
           ],
         ),
       ),
