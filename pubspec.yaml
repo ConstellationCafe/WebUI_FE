@@ -64,8 +64,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/Icons/main_icon.jpg
-   - assets/Icons/web/swords.png
+   - assets/icons/main_icon.jpg
+   - assets/icons/web/swords.png
+   - assets/images/sample_profile.jpeg
+
+
 fonts:
   - family: Noto Sans KR
     fonts:

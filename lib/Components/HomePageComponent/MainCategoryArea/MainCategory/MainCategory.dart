@@ -21,9 +21,9 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // 친선전
-          Container01(iconImage: Image.asset("assets/Icons/web/swords.png"), text: "친선전"),
-          Container01(iconImage: Image.asset("assets/Icons/web/swords.png"), text: "친선전2"),
-          Container01(iconImage: Image.asset("assets/Icons/web/swords.png"), text: "친선전3"),
+          Container01(iconImage: Image.asset("assets/icons/web/swords.png"), text: "친선전"),
+          Container01(iconImage: Image.asset("assets/icons/web/swords.png"), text: "친선전2"),
+          Container01(iconImage: Image.asset("assets/icons/web/swords.png"), text: "친선전3"),
         ],
       ),
     );
