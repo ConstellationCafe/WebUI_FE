@@ -18,12 +18,8 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       body: Container(
         width: 1000,
-        padding: EdgeInsetsGeometry.fromLTRB(
-            ConstPadding.bigPadding,
-            ConstPadding.bigPadding,
-            ConstPadding.bigPadding,
-            0
-        ),
+        padding:
+            EdgeInsetsGeometry.fromLTRB(ConstPadding.bigPadding, ConstPadding.bigPadding, ConstPadding.bigPadding, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
