@@ -10,6 +10,7 @@ class FriendlyMatch extends ConsumerWidget {
       child: Row(
         children: [
 
+
         ],
       ),
     );

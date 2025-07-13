@@ -1,0 +1,17 @@
+import 'BoType.dart';
+
+enum FriendlyMatchS1BoType implements FriendlyMatchBoType {
+  bo1("bo1"),
+  bo3("bo3"),
+  bo5("bo5"),
+  bo7("bo7"),
+  bo9("bo9");
+
+
+  final String _name;
+
+  const FriendlyMatchS1BoType(this._name);
+
+  @override
+  String get name => _name;
+}
