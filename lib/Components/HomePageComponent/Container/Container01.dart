@@ -8,23 +8,35 @@ class Container01 extends ConsumerWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext build, WidgetRef ref) {
     return Container(
       width: 150,
       height: 90,
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 45,
-              height: 45,
-              child: ClipOval(
-                child: iconImage,
+        child: Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(100),
               ),
+              color: Theme.of(build).colorScheme.onSecondary),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(height: 8),
+                SizedBox(
+                  width: 35,
+                  height: 35,
+                  child: iconImage,
+                ),
+                Text(
+                  text,
+                  style: TextStyle(fontSize: 14, color: Theme.of(build).colorScheme.tertiary),
+                )
+              ],
             ),
-            Text(text)
-          ],
+          ),
         ),
       ),
     );

@@ -19,10 +19,10 @@ class CustomTheme {
       onSecondaryContainer: Color(0xFFffffff),
 
       // Tertiary colors
-      tertiary: Color(0xFF1A1A1E),
-      onTertiary: Color(0xFFffffff),
-      tertiaryContainer: Color(0xFF1A1A1E),
-      onTertiaryContainer: Color(0xFFffffff),
+      tertiary: Color(0xFFFF6F00),
+      onTertiary: Color(0xFFFFFFFF),
+      tertiaryContainer: Color(0xFFFFA040),
+      onTertiaryContainer: Color(0xFF1A1A1E),
 
       // Error colors
       error: Color(0xFF000D27),
