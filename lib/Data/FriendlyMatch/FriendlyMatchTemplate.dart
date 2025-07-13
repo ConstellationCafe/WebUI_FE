@@ -1,4 +1,5 @@
 import 'package:constellation_cafe/Data/FriendlyMatch/Type/Bo/BoType.dart';
+import 'package:constellation_cafe/Data/FriendlyMatch/Type/Mode/ModeTypeS1.dart';
 import 'package:constellation_cafe/Data/FriendlyMatch/Type/Version/VersionType.dart';
 
 import 'Type/Mode/ModeType.dart';
@@ -15,8 +16,11 @@ class FriendlyMatchTemplate {
 
   Map<String, dynamic> toJson (FriendlyMatchTemplate template) {
     return {
-      "version": version.toString(),
-      "mode": mode.
+      "version": version.name,
+      "mode": mode.name,
+      "bo": bo.name,
+      "room": room,
+      "message": message,
     };
   }
 }

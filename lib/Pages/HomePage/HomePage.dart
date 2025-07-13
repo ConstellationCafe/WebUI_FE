@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../Components/CommonComponent/AppBarArea/AppBar.dart';
-import '../../Components/FunctionalComponents/ProfileComponent/ProfileIcon/ProfileIcon.dart';
+import '../../Components/FunctionalComponents/Profile/ProfileIcon/ProfileIcon.dart';
 import '../../Components/HomePageComponent/MainCategoryArea/MainCategory/MainCategory.dart';
 import '../../Components/HomePageComponent/MainCategoryArea/MainSearchBar/MainSearchBar.dart';
 import 'package:go_router/go_router.dart';
