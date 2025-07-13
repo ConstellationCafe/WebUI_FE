@@ -1,12 +1,12 @@
 import 'package:constellation_cafe/Constant/ConstPadding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../Components/CommonComponent/AppBarArea/AppBar.dart';
 import '../../Components/FunctionalComponents/Profile/ProfileIcon/ProfileIcon.dart';
 import '../../Components/HomePageComponent/MainCategoryArea/MainCategory/MainCategory.dart';
 import '../../Components/HomePageComponent/MainCategoryArea/MainSearchBar/MainSearchBar.dart';
-import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerWidget {
   final Widget? child;
@@ -14,7 +14,7 @@ class HomePage extends ConsumerWidget {
   const HomePage({super.key, this.child});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext build, WidgetRef ref) {
     return Scaffold(
       body: Container(
         width: 1000,
@@ -31,7 +31,7 @@ class HomePage extends ConsumerWidget {
                 ProfileIcon(
                   onTap: () {
                     // Profile 아이콘 클릭 시 ProfilePage로 이동
-                    context.go('/profile');
+                    build.go('/profile');
                   },
                 ),
               ],

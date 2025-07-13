@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/Components/FunctionalComponents/FriendlyMatch/Post/PostFreindlyMatch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,12 +8,13 @@ class FriendlyMatch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      child: Row(
+      child: Column(
         children: [
-
-
+          // TextFormField
+          PostFriendlyMatch(),
+          // Remained List
         ],
-      ),
+      )
     );
   }
 }

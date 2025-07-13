@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/Components/FunctionalComponents/FriendlyMatch/FriendlyMatch.dart';
 import 'package:go_router/go_router.dart';
 
 import '../Pages/HomePage/Contents/Contents.dart';
@@ -6,19 +7,24 @@ import '../Pages/ProfilePage/ProfilePage.dart';
 
 GoRouter routes = GoRouter(
   routes: [
-    // Shell Route를 사용해서 HomePage 레이아웃을 유지
     ShellRoute(
-      builder: (context, state, child) {
+      builder: (build, state, child) {
         return HomePage(child: child);
       },
       routes: [
         GoRoute(
           path: "/",
-          builder: (context, state) => HomeContent(), // 홈 페이지 메인 컨텐츠
-        ),
-        GoRoute(
-          path: "/profile",
-          builder: (context, state) => ProfilePage(),
+          builder: (build, state) => HomeContent(),
+          routes: [
+            GoRoute(
+              path: "/profile",
+              builder: (build, state) => ProfilePage(),
+            ),
+            GoRoute(
+              path: "friendly_match",
+              builder: (build, state) => FriendlyMatch(),
+            ),
+          ],
         ),
       ],
     ),

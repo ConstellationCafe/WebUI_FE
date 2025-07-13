@@ -1,8 +1,8 @@
-enum FriendlyMatchVersionType {
+enum GameVersionType {
   S1,
   S2;
 
-  FriendlyMatchVersionType stringToType(String value) {
+  GameVersionType stringToType(String value) {
     switch (value) {
       case "S1":
         return S1;
@@ -13,11 +13,11 @@ enum FriendlyMatchVersionType {
     }
   }
 
-  String typeToString(FriendlyMatchVersionType version) {
+  String typeToString(GameVersionType version) {
     switch (version) {
-      case FriendlyMatchVersionType.S1:
+      case GameVersionType.S1:
         return "S1";
-      case FriendlyMatchVersionType.S2:
+      case GameVersionType.S2:
         return "S2";
     }
   }
