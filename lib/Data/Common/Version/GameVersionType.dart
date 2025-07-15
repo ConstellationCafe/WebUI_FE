@@ -2,7 +2,7 @@ enum GameVersionType {
   S1,
   S2;
 
-  GameVersionType stringToType(String value) {
+  static GameVersionType stringToType(String value) {
     switch (value) {
       case "S1":
         return S1;
@@ -13,7 +13,7 @@ enum GameVersionType {
     }
   }
 
-  String typeToString(GameVersionType version) {
+  static String typeToString(GameVersionType version) {
     switch (version) {
       case GameVersionType.S1:
         return "S1";

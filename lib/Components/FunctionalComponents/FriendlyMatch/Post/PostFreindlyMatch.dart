@@ -1,5 +1,13 @@
+import 'package:constellation_cafe/Data/FriendlyMatch/Type/Bo/BoType.dart';
+import 'package:constellation_cafe/Data/FriendlyMatch/Type/Bo/BoTypeS1.dart';
+import 'package:constellation_cafe/Data/FriendlyMatch/Type/Mode/ModeType.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../Data/Common/Version/GameVersionType.dart';
+import '../../../../Data/FriendlyMatch/Type/Bo/BoTypeS2.dart';
+import '../../../../Data/FriendlyMatch/Type/Mode/ModeTypeS1.dart';
+import '../../../../Data/FriendlyMatch/Type/Mode/ModeTypeS2.dart';
 
 class PostFriendlyMatch extends ConsumerStatefulWidget {
   const PostFriendlyMatch({super.key});
@@ -13,15 +21,14 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
   final TextEditingController _roomController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
 
-  String _selectedVersion = 'S1';
-  String _selectedMode = 'rotation';
-  String _selectedBo = 'bo1';
+  // S1
+  GameVersionType _selectedVersion = GameVersionType.values.first;
 
-  final List<String> _versions = ['S1', 'S2'];
-  final List<String> _s1Modes = ['rotation', 'unlimited', 'twopick', 'timeslep rotation'];
-  final List<String> _s2Modes = ['rotation', 'unlimited', 'timeslep rotation'];
-  final List<String> _s1BoOptions = ['bo1', 'bo3' 'bo3 1ban' 'bo5', 'bo5 2ban'];
-  final List<String> _s2BoOptions = ['bo1', 'bo3', 'bo5', '2덱 bo1'];
+  // S1.rotation
+  FriendlyMatchModeType _selectedMode = FriendlyMatchS1ModeType.values.first;
+
+  // S1.bo1
+  FriendlyMatchBoType _selectedBo = FriendlyMatchS1BoType.values.first;
 
   @override
   void dispose() {
@@ -30,22 +37,48 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
     super.dispose();
   }
 
-  List<String> get _currentModeOptions {
-    return _selectedVersion == 'S1' ? _s1Modes : _s2Modes;
+  GameVersionType currentVersionType(String? value) {
+    switch (value) {
+      case "S1":
+        return GameVersionType.S1;
+      case "S2":
+        return GameVersionType.S2;
+      default:
+        return GameVersionType.S1;
+    }
   }
 
-  List<String> get _currentBoOptions {
-    return _selectedVersion == 'S1' ? _s1BoOptions : _s2BoOptions;
-  }
-
-  void _onVersionChanged(String? value) {
+  void _onVersionChanged(GameVersionType? value) {
     if (value != null) {
       setState(() {
         _selectedVersion = value;
         // 버전 변경 시 모드와 bo를 첫 번째 옵션으로 리셋
-        _selectedMode = _currentModeOptions.first;
-        _selectedBo = _currentBoOptions.first;
+        if (value == GameVersionType.S1) {
+          _selectedMode = FriendlyMatchS1ModeType.values.first;
+          _selectedBo = FriendlyMatchS1BoType.values.first;
+        } else if (value == GameVersionType.S2) {
+          _selectedMode = FriendlyMatchS2ModeType.values.first;
+          _selectedBo = FriendlyMatchS2BoType.values.first;
+        }
       });
+    }
+  }
+
+  // 현재 선택된 버전에 따라 모드 리스트 반환
+  List<FriendlyMatchModeType> get _getCurrentModeList {
+    if (_selectedVersion == GameVersionType.S1) {
+      return FriendlyMatchS1ModeType.values;
+    } else {
+      return FriendlyMatchS2ModeType.values;
+    }
+  }
+
+  // 현재 선택된 버전에 따라 BO 리스트 반환
+  List<FriendlyMatchBoType> get _getCurrentBoList {
+    if (_selectedVersion == GameVersionType.S1) {
+      return FriendlyMatchS1BoType.values;
+    } else {
+      return FriendlyMatchS2BoType.values;
     }
   }
 
@@ -70,13 +103,13 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Version 드롭다운
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<GameVersionType>(
               value: _selectedVersion,
-              items: _versions
+              items: GameVersionType.values
                   .map((version) => DropdownMenuItem(
                         value: version,
                         child: Text(
-                          version,
+                          GameVersionType.typeToString(version),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ))
@@ -103,13 +136,15 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
             const SizedBox(height: 12),
 
             // Mode 드롭다운
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<FriendlyMatchModeType>(
               value: _selectedMode,
-              items: _currentModeOptions
+              items: _getCurrentModeList
                   .map((mode) => DropdownMenuItem(
                         value: mode,
                         child: Text(
-                          mode,
+                          _selectedVersion == GameVersionType.S1
+                              ? FriendlyMatchS1ModeType.typeToString(mode as FriendlyMatchS1ModeType)
+                              : FriendlyMatchS2ModeType.typeToString(mode as FriendlyMatchS2ModeType),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ))
@@ -140,13 +175,15 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
             const SizedBox(height: 12),
 
             // BO 드롭다운
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<FriendlyMatchBoType>(
               value: _selectedBo,
-              items: _currentBoOptions
+              items: _getCurrentBoList
                   .map((bo) => DropdownMenuItem(
                         value: bo,
                         child: Text(
-                          bo,
+                          _selectedVersion == GameVersionType.S1
+                              ? FriendlyMatchS1BoType.typeToString(bo as FriendlyMatchS1BoType)
+                              : FriendlyMatchS2BoType.typeToString(bo as FriendlyMatchS2BoType),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ))

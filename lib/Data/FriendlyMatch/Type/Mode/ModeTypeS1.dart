@@ -10,18 +10,31 @@ enum FriendlyMatchS1ModeType implements FriendlyMatchModeType {
 
   const FriendlyMatchS1ModeType(this._name);
 
-  FriendlyMatchS1ModeType stringToType(String value) {
+  static FriendlyMatchS1ModeType stringToType(String value) {
     switch (value) {
-      case "rotation":
+      case "로테이션":
         return FriendlyMatchS1ModeType.rotation;
-      case "unlimited":
+      case "언리미티드":
         return FriendlyMatchS1ModeType.unlimited;
-      case "two_pick":
+      case "투픽":
         return FriendlyMatchS1ModeType.two_pick;
-      case "timeslip_rotation":
+      case "타임슬립 로테이션":
         return FriendlyMatchS1ModeType.timeslip_rotation;
       default:
         return FriendlyMatchS1ModeType.rotation;
+    }
+  }
+
+  static String typeToString(FriendlyMatchS1ModeType value) {
+    switch (value) {
+      case FriendlyMatchS1ModeType.rotation:
+        return "로테이션";
+      case FriendlyMatchS1ModeType.unlimited:
+        return "언리미티드";
+      case FriendlyMatchS1ModeType.two_pick:
+        return "투픽";
+      case FriendlyMatchS1ModeType.timeslip_rotation:
+        return "타임슬립 로테이션";
     }
   }
 
