@@ -1,13 +1,13 @@
-import 'package:constellation_cafe/Data/FriendlyMatch/Type/Bo/BoType.dart';
-import 'package:constellation_cafe/Data/FriendlyMatch/Type/Bo/BoTypeS1.dart';
-import 'package:constellation_cafe/Data/FriendlyMatch/Type/Mode/ModeType.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../Data/Common/Version/GameVersionType.dart';
-import '../../../../Data/FriendlyMatch/Type/Bo/BoTypeS2.dart';
-import '../../../../Data/FriendlyMatch/Type/Mode/ModeTypeS1.dart';
-import '../../../../Data/FriendlyMatch/Type/Mode/ModeTypeS2.dart';
+import '../../../../Data/FriendlyMatch/Bo/S1/BoTypeS1.dart';
+import '../../../../Data/FriendlyMatch/Bo/S2/BoTypeS2.dart';
+import '../../../../Data/FriendlyMatch/Bo/Type/BoType.dart';
+import '../../../../Data/FriendlyMatch/Mode/S1/ModeTypeS1.dart';
+import '../../../../Data/FriendlyMatch/Mode/S2/ModeTypeS2.dart';
+import '../../../../Data/FriendlyMatch/Mode/Type/ModeType.dart';
 
 class PostFriendlyMatch extends ConsumerStatefulWidget {
   const PostFriendlyMatch({super.key});
