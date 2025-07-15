@@ -1,4 +1,4 @@
-import 'BoType.dart';
+import '../Type/BoType.dart';
 
 enum FriendlyMatchS2BoType implements FriendlyMatchBoType {
   bo1("bo1"),

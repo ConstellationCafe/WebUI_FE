@@ -1,4 +1,4 @@
-import 'ModeType.dart';
+import '../Type/ModeType.dart';
 
 enum FriendlyMatchS1ModeType implements FriendlyMatchModeType {
   rotation("로테이션"),

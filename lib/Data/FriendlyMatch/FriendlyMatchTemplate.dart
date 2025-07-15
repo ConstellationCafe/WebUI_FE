@@ -1,7 +1,6 @@
-import 'package:constellation_cafe/Data/FriendlyMatch/Type/Bo/BoType.dart';
-
 import '../Common/Version/GameVersionType.dart';
-import 'Type/Mode/ModeType.dart';
+import 'Bo/Type/BoType.dart';
+import 'Mode/Type/ModeType.dart';
 
 class FriendlyMatchTemplate {
   FriendlyMatchTemplate(
