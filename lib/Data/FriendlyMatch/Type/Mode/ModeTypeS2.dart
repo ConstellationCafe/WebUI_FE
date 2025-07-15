@@ -4,9 +4,10 @@ enum FriendlyMatchS2ModeType implements FriendlyMatchModeType {
   rotation("로테이션"),
   unlimited("언리미티드");
 
-  final String _name;
+  @override
+  final String name;
 
-  const FriendlyMatchS2ModeType(this._name);
+  const FriendlyMatchS2ModeType(this.name);
 
   FriendlyMatchS2ModeType stringToType(String value) {
     switch (value) {
@@ -27,7 +28,4 @@ enum FriendlyMatchS2ModeType implements FriendlyMatchModeType {
         return "언리미티드";
     }
   }
-
-  @override
-  String get name => _name;
 }

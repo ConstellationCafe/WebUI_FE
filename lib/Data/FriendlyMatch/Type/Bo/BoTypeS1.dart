@@ -7,9 +7,10 @@ enum FriendlyMatchS1BoType implements FriendlyMatchBoType {
   bo7("bo3 1ban"),
   bo9("bo5 2ban");
 
-  final String _name;
+  @override
+  final String name;
 
-  const FriendlyMatchS1BoType(this._name);
+  const FriendlyMatchS1BoType(this.name);
 
   static String typeToString(FriendlyMatchS1BoType value) {
     switch (value) {
@@ -25,7 +26,4 @@ enum FriendlyMatchS1BoType implements FriendlyMatchBoType {
         return "bo5 2ban";
     }
   }
-
-  @override
-  String get name => _name;
 }

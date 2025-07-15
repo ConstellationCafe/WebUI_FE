@@ -6,9 +6,11 @@ enum FriendlyMatchS1ModeType implements FriendlyMatchModeType {
   two_pick("투픽"),
   timeslip_rotation("타임슬립 로테이션");
 
-  final String _name;
+  @override
+  final String name;
 
-  const FriendlyMatchS1ModeType(this._name);
+  const FriendlyMatchS1ModeType(this.name);
+
 
   static FriendlyMatchS1ModeType stringToType(String value) {
     switch (value) {
@@ -37,7 +39,4 @@ enum FriendlyMatchS1ModeType implements FriendlyMatchModeType {
         return "타임슬립 로테이션";
     }
   }
-
-  @override
-  String get name => _name;
 }
