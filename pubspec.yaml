@@ -38,6 +38,7 @@ dependencies:
   flutter_riverpod: ^2.6.1
   go_router: ^16.0.0
 
+  intl: ^0.18.1
   # need url_launcher:
 
 dev_dependencies:
