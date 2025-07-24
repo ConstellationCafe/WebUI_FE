@@ -4,7 +4,7 @@ import 'dart:async';
 
 
 class SocketInformation {
-  static const String src = 'DiscordBot';  // WebUI DiscordBot
+  static const String src = 'WebUI';
   // 유효한 소켓 요청인지 서버측에서 확인, 주입 필수
   static final int authId = int.parse(Platform.environment['AUTH_ID']!);
   // 해당 소켓 요청의 처리 우선순위
