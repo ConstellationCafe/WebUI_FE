@@ -1,4 +1,5 @@
 import '../Common/Version/GameVersionType.dart';
+import '../Request/JsonBody/JsonBody.dart';
 import 'Bo/Type/BoType.dart';
 import 'Mode/Type/ModeType.dart';
 
@@ -12,13 +13,20 @@ class FriendlyMatchTemplate {
   final String room;
   final String message;
 
-  Map<String, dynamic> toJson(FriendlyMatchTemplate template) {
-    return {
-      "version": version.name,
-      "mode": mode.name,
-      "bo": bo.name,
-      "room": room,
-      "message": message,
-    };
+  static JsonBody toJson(FriendlyMatchTemplate data) {
+    final JsonBody jsonBody = JsonBody(
+      dst: "DiscordBot",
+      sub: "test_match",
+      targetFunc: "check_match_form",
+      args: [
+        GameVersionType.typeToString(data.version),
+        data.mode.toString(),
+        data.bo.toString(),
+        data.room,
+        data.message
+      ],
+    );
+
+    return jsonBody;
   }
 }

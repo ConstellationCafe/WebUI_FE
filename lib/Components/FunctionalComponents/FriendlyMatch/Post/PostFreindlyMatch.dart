@@ -1,3 +1,6 @@
+import 'package:constellation_cafe/Api/Socket/Client.dart';
+import 'package:constellation_cafe/Api/Socket/Model/SocketModel.dart';
+import 'package:constellation_cafe/Data/FriendlyMatch/FriendlyMatchTemplate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -82,14 +85,13 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "version": _selectedVersion,
-      "mode": _selectedMode,
-      "bo": _selectedBo,
-      "room": _roomController.text,
-      "message": _messageController.text,
-    };
+  FriendlyMatchTemplate toTemplate() {
+    return FriendlyMatchTemplate(
+        version: _selectedVersion,
+        mode: _selectedMode,
+        bo: _selectedBo,
+        room: _roomController.text,
+        message: _messageController.text);
   }
 
   @override
@@ -268,11 +270,12 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
 
             // 제출 버튼 (선택사항)
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState?.validate() ?? false) {
-                  final json = toJson();
-                  print('Form Data: $json');
-                  // 여기서 실제 제출 로직을 구현하세요
+                  final template = FriendlyMatchTemplate.toJson(toTemplate());
+                  final model = SocketModel(
+                      dst: template.dst, sub: template.sub, targetFunc: template.targetFunc, args: template.args);
+                  await SocketClient().send(model);
                 }
               },
               style: ElevatedButton.styleFrom(
