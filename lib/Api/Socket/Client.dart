@@ -13,9 +13,14 @@ class SocketInformation {
   static final timeout = Duration(seconds: int.parse(Platform.environment['TIMEOUT'] ?? '20'));
   static final int byteSize = int.parse(Platform.environment['BYTE_SIZE'] ?? '4096');
   // 소켓 수신자(Router) 주소 정보
-  static final InternetAddress routerAddress = InternetAddress(
-      Platform.environment['ROUTER_ADDR'] ?? '192.168.0.14');
+  static final Future<InternetAddress> routerAddress = getRouterAddress();
   static final int routerPort = int.parse(Platform.environment['ROUTER_PORT']!);
+
+  static Future<InternetAddress> getRouterAddress() async {
+    final host = Platform.environment['ROUTER_ADDR'] ?? 'msiwol.iptime.org';
+    final addresses = await InternetAddress.lookup(host);
+    return addresses.first;
+  }
 }
 
 class SocketClient extends SocketInformation {
@@ -62,7 +67,7 @@ class SocketClient extends SocketInformation {
     final encodedMsg = utf8.encode(json.encode(msg));
 
     // UDP 소켓 전송 & 결과 수신
-    socket.send(encodedMsg, SocketInformation.routerAddress, SocketInformation.routerPort);
+    socket.send(encodedMsg, await SocketInformation.routerAddress, SocketInformation.routerPort);
     socket.listen((RawSocketEvent event) {
       if (event == RawSocketEvent.read) {
         final receivedSocket = socket.receive();
