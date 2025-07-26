@@ -20,8 +20,9 @@ enum FriendlyMatchS2ModeType implements FriendlyMatchModeType {
     }
   }
 
-  static String typeToString(FriendlyMatchS2ModeType value) {
-    switch (value) {
+  @override
+  String typeToString() {
+    switch (this) {
       case FriendlyMatchS2ModeType.rotation:
         return "로테이션";
       case FriendlyMatchS2ModeType.unlimited:

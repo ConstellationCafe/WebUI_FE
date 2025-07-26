@@ -1,6 +1,11 @@
 /// Request json body type
 class JsonBody {
-  JsonBody({required this.dst, required this.sub, required this.targetFunc, required this.args});
+  JsonBody({
+    required this.dst,
+    required this.sub,
+    required this.targetFunc,
+    required this.args,
+  });
 
   final String dst;
   final String sub;

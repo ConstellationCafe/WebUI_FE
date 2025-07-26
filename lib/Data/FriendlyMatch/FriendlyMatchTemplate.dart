@@ -1,29 +1,31 @@
 import '../Common/Version/GameVersionType.dart';
 import '../Request/JsonBody/JsonBody.dart';
-import 'Bo/Type/BoType.dart';
-import 'Mode/Type/ModeType.dart';
 
 class FriendlyMatchTemplate {
   FriendlyMatchTemplate(
-      {required this.version, required this.mode, required this.bo, required this.room, required this.message});
+      {required this.version,
+      required this.mode,
+      required this.platform,
+      required this.room_number,
+      required this.message});
 
-  final GameVersionType version;
-  final FriendlyMatchModeType mode;
-  final FriendlyMatchBoType bo;
-  final String room;
+  final String version;
+  final String mode;
+  final String platform;
+  final String room_number;
   final String message;
 
   static JsonBody toJson(FriendlyMatchTemplate data) {
     final JsonBody jsonBody = JsonBody(
-      dst: "DiscordBot",
-      sub: "test_match",
+      dst: "ShadowverseAPI",
+      sub: "friendlyMatch",
       targetFunc: "check_match_form",
       args: [
-        GameVersionType.typeToString(data.version),
-        data.mode.toString(),
-        data.bo.toString(),
-        data.room,
-        data.message
+        data.version, // version
+        data.mode, // mode
+        data.platform, // platform
+        data.room_number, // room_number
+        data.message // message
       ],
     );
 

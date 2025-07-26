@@ -20,8 +20,7 @@ class FriendlyMatchApiClient {
           'Content-Type': 'application/json',
         },
         body: json.encode(model.toJson()),
-      )
-          .timeout(
+      ).timeout(
         Duration(seconds: 10), // 10초 타임아웃
         onTimeout: () {
           throw Exception('요청 시간이 초과되었습니다.');

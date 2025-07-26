@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../Data/Common/Version/GameVersionType.dart';
-import '../../../../Data/FriendlyMatch/Bo/S1/BoTypeS1.dart';
-import '../../../../Data/FriendlyMatch/Bo/S2/BoTypeS2.dart';
-import '../../../../Data/FriendlyMatch/Bo/Type/BoType.dart';
 import '../../../../Data/FriendlyMatch/Mode/S1/ModeTypeS1.dart';
 import '../../../../Data/FriendlyMatch/Mode/S2/ModeTypeS2.dart';
 import '../../../../Data/FriendlyMatch/Mode/Type/ModeType.dart';
+import '../../../../Data/FriendlyMatch/Platform/S1/PlatformTypeS1.dart';
+import '../../../../Data/FriendlyMatch/Platform/S2/PlatformTypeS2.dart';
+import '../../../../Data/FriendlyMatch/Platform/Type/PlatformType.dart';
 
 class PostFriendlyMatch extends ConsumerStatefulWidget {
   const PostFriendlyMatch({super.key});
@@ -31,7 +31,7 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
   FriendlyMatchModeType _selectedMode = FriendlyMatchS1ModeType.values.first;
 
   // S1.bo1
-  FriendlyMatchBoType _selectedBo = FriendlyMatchS1BoType.values.first;
+  FriendlyMatchPlatformType _selectedPlatform = FriendlyMatchS1PlatformType.values.first;
 
   @override
   void dispose() {
@@ -58,10 +58,10 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
         // 버전 변경 시 모드와 bo를 첫 번째 옵션으로 리셋
         if (value == GameVersionType.S1) {
           _selectedMode = FriendlyMatchS1ModeType.values.first;
-          _selectedBo = FriendlyMatchS1BoType.values.first;
+          _selectedPlatform = FriendlyMatchS1PlatformType.values.first;
         } else if (value == GameVersionType.S2) {
           _selectedMode = FriendlyMatchS2ModeType.values.first;
-          _selectedBo = FriendlyMatchS2BoType.values.first;
+          _selectedPlatform = FriendlyMatchS2PlatformType.values.first;
         }
       });
     }
@@ -77,20 +77,20 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
   }
 
   // 현재 선택된 버전에 따라 BO 리스트 반환
-  List<FriendlyMatchBoType> get _getCurrentBoList {
+  List<FriendlyMatchPlatformType> get _getCurrentPlatformList {
     if (_selectedVersion == GameVersionType.S1) {
-      return FriendlyMatchS1BoType.values;
+      return FriendlyMatchS1PlatformType.values;
     } else {
-      return FriendlyMatchS2BoType.values;
+      return FriendlyMatchS2PlatformType.values;
     }
   }
 
   FriendlyMatchTemplate toTemplate() {
     return FriendlyMatchTemplate(
-        version: _selectedVersion,
-        mode: _selectedMode,
-        bo: _selectedBo,
-        room: _roomController.text,
+        version: _selectedVersion.typeToString(),
+        mode: _selectedMode.typeToString(),
+        platform: _selectedPlatform.typeToString(),
+        room_number: _roomController.text,
         message: _messageController.text);
   }
 
@@ -111,7 +111,7 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
                   .map((version) => DropdownMenuItem(
                         value: version,
                         child: Text(
-                          GameVersionType.typeToString(version),
+                          _selectedVersion.typeToString(),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ))
@@ -145,8 +145,8 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
                         value: mode,
                         child: Text(
                           _selectedVersion == GameVersionType.S1
-                              ? FriendlyMatchS1ModeType.typeToString(mode as FriendlyMatchS1ModeType)
-                              : FriendlyMatchS2ModeType.typeToString(mode as FriendlyMatchS2ModeType),
+                              ? _selectedVersion.typeToString()
+                              : _selectedVersion.typeToString(),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ))
@@ -176,23 +176,23 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
             ),
             const SizedBox(height: 12),
 
-            // BO 드롭다운
-            DropdownButtonFormField<FriendlyMatchBoType>(
-              value: _selectedBo,
-              items: _getCurrentBoList
-                  .map((bo) => DropdownMenuItem(
-                        value: bo,
+            // Platform 드롭다운
+            DropdownButtonFormField<FriendlyMatchPlatformType>(
+              value: _selectedPlatform,
+              items: _getCurrentPlatformList
+                  .map((platform) => DropdownMenuItem(
+                        value: platform,
                         child: Text(
                           _selectedVersion == GameVersionType.S1
-                              ? FriendlyMatchS1BoType.typeToString(bo as FriendlyMatchS1BoType)
-                              : FriendlyMatchS2BoType.typeToString(bo as FriendlyMatchS2BoType),
+                              ? _selectedVersion.typeToString()
+                              : _selectedVersion.typeToString(),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ))
                   .toList(),
               onChanged: (value) {
                 if (value != null) {
-                  setState(() => _selectedBo = value);
+                  setState(() => _selectedPlatform = value);
                 }
               },
               dropdownColor: const Color(0xFF2A2A2A),
@@ -274,7 +274,14 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
                 if (_formKey.currentState?.validate() ?? false) {
                   final template = FriendlyMatchTemplate.toJson(toTemplate());
                   final model = SocketModel(
-                      dst: template.dst, sub: template.sub, targetFunc: template.targetFunc, args: template.args);
+                    subject: "friendly_match",
+                      from_discord: false,
+                      dst: template.dst,
+                      sub: template.sub,
+                      targetFunc: template.targetFunc,
+                      room_name: "섀버 별자리 Cafe",
+                      args: template.args,
+                      sender: '리틀 스노우');
                   final result = await FriendlyMatchApiClient.send(model);
                   print("frontend: $result");
                 }
