@@ -1,5 +1,5 @@
-import 'package:constellation_cafe/Api/Socket/Client.dart';
-import 'package:constellation_cafe/Api/Socket/Model/SocketModel.dart';
+import 'package:constellation_cafe/Api/Socket/FriendlyMatch/Client.dart';
+import 'package:constellation_cafe/Api/Socket/Model/Model.dart';
 import 'package:constellation_cafe/Data/FriendlyMatch/FriendlyMatchTemplate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -275,7 +275,8 @@ class _PostFriendlyMatchState extends ConsumerState<PostFriendlyMatch> {
                   final template = FriendlyMatchTemplate.toJson(toTemplate());
                   final model = SocketModel(
                       dst: template.dst, sub: template.sub, targetFunc: template.targetFunc, args: template.args);
-                  await SocketClient().send(model);
+                  final result = await FriendlyMatchApiClient.send(model);
+                  print("frontend: $result");
                 }
               },
               style: ElevatedButton.styleFrom(
