@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../Routes/LoginCheckProvider.dart';
 import '../../../../core/di/RepositoryProvider.dart';
-import '../../../../core/widgets/DBEditor/DBEditor.dart';
+import '../../../../core/widgets/dBEditor/DBEditor.dart';
 
 class MusicList extends ConsumerWidget {
   const MusicList({super.key});
