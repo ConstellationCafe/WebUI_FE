@@ -1,0 +1,54 @@
+import 'package:constellation_cafe/core/constants/ConstSize.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../Container/MenuContainer.dart';
+
+class UserCategory extends ConsumerWidget {
+  const UserCategory({super.key});
+
+  @override
+  Widget build(BuildContext build, WidgetRef ref) {
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+              textAlign: TextAlign.left,
+              "사용자 메뉴"
+          ),
+          SizedBox(height: ConstSize.tinyWidth),
+          MenuContainer(
+            iconImage: Image.asset("assets/icons/category/user/friendly_match.png"),
+            menuName: "친선전",
+            callbackUrl: "/friendly_match",
+          ),
+          SizedBox(height: ConstSize.tinyWidth),
+          MenuContainer(
+            iconImage: Image.asset("assets/icons/category/user/learning.png"),
+            menuName: "가르치기",
+            callbackUrl: "/learning",
+          ),
+          SizedBox(height: ConstSize.tinyWidth),
+          MenuContainer(
+            iconImage: Image.asset("assets/icons/category/user/recommend_menu.png"),
+            menuName: "메뉴추천",
+            callbackUrl: "/menu",
+          ),
+          SizedBox(height: ConstSize.tinyWidth),
+          MenuContainer(
+            iconImage: Image.asset("assets/icons/category/user/recommend_music.png"),
+            menuName: "노래추천",
+            callbackUrl: "/music",
+          ),
+          SizedBox(height: ConstSize.tinyWidth),
+          MenuContainer(
+            iconImage: Image.asset("assets/icons/category/user/recommend_content.png"),
+            menuName: "놀이추천",
+            callbackUrl: "/content",
+          ),
+          SizedBox(height: ConstSize.tinyWidth),
+        ]
+    );
+  }
+}
