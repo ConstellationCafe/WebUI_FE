@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../Routes/LoginCheckProvider.dart';
 import '../../../../core/di/RepositoryProvider.dart';
-import '../../../../core/widgets/dBEditor/DBEditor.dart';
+import '../../../../core/widgets/dbEditor/DBEditor.dart';
 
 class MenuList extends ConsumerWidget {
   const MenuList({super.key});

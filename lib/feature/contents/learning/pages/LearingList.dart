@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../Routes/LoginCheckProvider.dart';
 import '../../../../core/di/RepositoryProvider.dart';
-import '../../../../core/widgets/dBEditor/DBEditor.dart';
+import '../../../../core/widgets/dbEditor/DBEditor.dart';
 
 class LearningList extends ConsumerWidget {
   const LearningList({super.key});
