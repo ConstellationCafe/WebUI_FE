@@ -1,7 +1,7 @@
 # ---- build stage ----
 FROM debian:bookworm-slim AS build
 
-ARG FLUTTER_VERSION=3.19.6
+ARG FLUTTER_VERSION=3.41.2
 ENV FLUTTER_HOME=/opt/flutter
 ENV PATH="${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin:${PATH}"
 
