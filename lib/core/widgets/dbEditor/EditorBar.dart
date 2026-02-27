@@ -1,9 +1,9 @@
 
 import 'package:constellation_cafe/data/model/dbEditor/DBController.dart';
-import 'EditTool/AddButton.dart';
-import 'EditTool/SaveButton.dart';
-import 'EditTool/DeleteButton.dart';
-import 'EditTool/EditButton.dart';
+import 'editTool/AddButton.dart';
+import 'editTool/SaveButton.dart';
+import 'editTool/DeleteButton.dart';
+import 'editTool/EditButton.dart';
 import 'package:flutter/material.dart';
 
 
