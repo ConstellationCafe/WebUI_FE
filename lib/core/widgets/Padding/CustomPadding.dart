@@ -1,5 +1,7 @@
-import 'package:constellation_cafe/Constant/ConstPadding.dart';
+
 import 'package:flutter/material.dart';
+
+import '../../constants/ConstPadding.dart';
 
 class CustomPadding {
   CustomPadding({required this.child});
