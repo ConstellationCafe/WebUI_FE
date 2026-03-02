@@ -54,7 +54,7 @@ class _ViewFriendlyMatchState extends ConsumerState<ViewFriendlyMatch> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image.asset(
-                      "assets/Icons/main_icon.jpg",
+                      "assets/icons/main_icon.jpg",
                       width: 40,
                       height: 40,
                       fit: BoxFit.cover,
