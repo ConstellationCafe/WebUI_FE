@@ -16,6 +16,14 @@ class LearningEntity extends Entity {
     'lnValue': lnValue
   };
 
+  factory LearningEntity.init(List<Map<String, dynamic>> metadata) {
+    return LearningEntity(
+      metadata: metadata,
+      lnKey: '',
+      lnValue: '',
+    );
+  }
+
   factory LearningEntity.fromJson(
       List<Map<String, dynamic>> metadata,
       Map<String, dynamic> json) {

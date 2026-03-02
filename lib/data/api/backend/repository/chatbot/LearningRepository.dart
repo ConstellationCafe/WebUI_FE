@@ -33,10 +33,13 @@ class LearningRepository implements RepositoryInterface {
             return m;
           }).toList();
       final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
-      return entities
-          .map((e) => LearningEntity.fromJson(metadata, e))
-          .toList();
-
+      if (entities.isNotEmpty) {
+        return entities
+            .map((e) => LearningEntity.fromJson(metadata, e))
+            .toList();
+      } else {
+        return [LearningEntity.init(metadata)];
+      }
     } else {
       final err = res['error'];
       final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
