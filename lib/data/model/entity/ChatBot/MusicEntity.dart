@@ -13,6 +13,13 @@ class MusicEntity extends Entity {
     'videoId': videoId
   };
 
+  factory MusicEntity.init(List<Map<String, dynamic>> metadata) {
+    return MusicEntity(
+      metadata: metadata,
+      videoId: '',
+    );
+  }
+
   factory MusicEntity.fromJson(
       List<Map<String, dynamic>> metadata,
       Map<String, dynamic> json) {

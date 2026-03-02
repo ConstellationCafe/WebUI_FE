@@ -31,9 +31,13 @@ class MenuRepository implements RepositoryInterface {
             return m;
           }).toList();
       final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
-      return entities
-          .map((e) => MenuEntity.fromJson(metadata, e))
-          .toList();
+      if (entities.isNotEmpty) {
+        return entities
+            .map((e) => MenuEntity.fromJson(metadata, e))
+            .toList();
+      } else {
+        return [MenuEntity.init(metadata)];
+      }
 
     } else {
       final err = res['error'];

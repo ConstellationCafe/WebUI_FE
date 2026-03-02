@@ -13,6 +13,13 @@ class ContentEntity extends Entity {
     'cnValue': cnValue
   };
 
+  factory ContentEntity.init(List<Map<String, dynamic>> metadata) {
+    return ContentEntity(
+      metadata: metadata,
+      cnValue: '',
+    );
+  }
+
   factory ContentEntity.fromJson(
       List<Map<String, dynamic>> metadata,
       Map<String, dynamic> json) {

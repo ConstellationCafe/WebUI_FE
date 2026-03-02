@@ -31,9 +31,13 @@ class ContentRepository implements RepositoryInterface {
             return m;
           }).toList();
       final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
-      return entities
-          .map((e) => ContentEntity.fromJson(metadata, e))
-          .toList();
+      if (entities.isNotEmpty) {
+        return entities
+            .map((e) => ContentEntity.fromJson(metadata, e))
+            .toList();
+      } else {
+        return [ContentEntity.init(metadata)];
+      }
 
     } else {
       final err = res['error'];

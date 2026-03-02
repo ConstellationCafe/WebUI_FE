@@ -13,6 +13,13 @@ class MenuEntity extends Entity {
     'mnValue': mnValue
   };
 
+  factory MenuEntity.init(List<Map<String, dynamic>> metadata) {
+    return MenuEntity(
+      metadata: metadata,
+      mnValue: '',
+    );
+  }
+
   factory MenuEntity.fromJson(
       List<Map<String, dynamic>> metadata,
       Map<String, dynamic> json) {
