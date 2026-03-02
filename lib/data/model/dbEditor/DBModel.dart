@@ -10,9 +10,10 @@ class DBModel {
 
   DBModel(List<Entity> entities) {
     // 실제로는 entities가 비어있지 않다는 것이 보장됨
-    if (entities.isEmpty) {
-      throw ArgumentError('entities must not be empty');
-    }
+    // if (entities.isEmpty) {
+    //   print("entities must not be empty");
+    //   throw ArgumentError('entities must not be empty');
+    // }
     // columns 초기화
     final metadata = entities[0].metadata;
     final metaByName = <String, Map<String, dynamic>>{
