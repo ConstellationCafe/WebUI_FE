@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 
 class OAuthService implements AuthServiceInterface {
-  static const base = "https://constellationcafe.p-e.kr/auth";
+  static const base = String.fromEnvironment('BACKEND_URI'); // "https://constellationcafe.p-e.kr";
   final DiscordLogin discordLogin = DiscordLogin();
   final Dio dio;
 
@@ -27,7 +27,7 @@ class OAuthService implements AuthServiceInterface {
   @override
   Future<void> logout() async {
     await http.post(
-      Uri.parse("$base/logout"),
+      Uri.parse("$base/auth/logout"),
       headers: {"Accept": "application/json"},
     );
   }
@@ -35,7 +35,7 @@ class OAuthService implements AuthServiceInterface {
   @override
   Future<ApiResponse> me() async {
     // refresh가 필요한 요청이라 dio 객체 사용
-    final res = await dio.get("$base/me");
+    final res = await dio.get("$base/auth/me");
     return ApiResponse.fromDioResponse(res);
   }
 
@@ -43,7 +43,7 @@ class OAuthService implements AuthServiceInterface {
   @override
   Future<ApiResponse> check() async {
     final http.Response res = await http.get(
-      Uri.parse("$base/check"),
+      Uri.parse("$base/auth/check"),
       headers: {"Accept": "application/json"},
     );
     return ApiResponse.fromHttpResponse(res);
@@ -54,7 +54,7 @@ class OAuthService implements AuthServiceInterface {
   Future<bool> refresh() async {
     try {
       final res = await http.post(
-          Uri.parse('$base/refresh'),
+          Uri.parse('$base/auth/refresh'),
           headers: {"Accept": "application/json"}
       );
       return res.statusCode == 200;

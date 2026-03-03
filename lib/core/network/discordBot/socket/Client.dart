@@ -4,7 +4,7 @@ import 'package:constellation_cafe/core/network/discordBot/socket/Interface.dart
 import 'package:constellation_cafe/data/model/request/SocketModel.dart';
 
 class SocketClient extends SocketInterface {
-  static const String routerUrl = 'https://constellationcafe.p-e.kr/route/';
+  static const String routerUrl = String.fromEnvironment('ROUTE_URI'); // https://constellationcafe.p-e.kr/route/
   static const int _timeout = 10;
 
   @override

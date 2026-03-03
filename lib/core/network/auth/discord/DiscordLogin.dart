@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DiscordLogin {
-  static const clientId = "977062370327298079";
+  static const clientId = String.fromEnvironment('CLIENT_ID');  // 977062370327298079
 
-  static const redirectUri = "https://constellationcafe.p-e.kr/auth/discord_login";
+  static const redirectUri = String.fromEnvironment('REDIRECT_URI');  // https://constellationcafe.p-e.kr/auth/discord_login
 
   static const scope = "identify";
 
