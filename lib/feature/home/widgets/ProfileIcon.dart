@@ -10,7 +10,9 @@ class ProfileIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final globalState = ref.read(globalStateProvider);
+    final avatarUrl = ref.watch(
+      globalStateProvider.select((s) => s.avatarUrl),
+    );
 
     return Container(
       width: 40,
@@ -21,7 +23,7 @@ class ProfileIcon extends ConsumerWidget {
       ),
       child: ClipOval(
         child: Image.network(
-          globalState.avatarUrl,
+          avatarUrl,
           width: 40,
           height: 40,
           fit: BoxFit.cover,
