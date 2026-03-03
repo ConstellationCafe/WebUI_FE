@@ -5,6 +5,12 @@ ARG FLUTTER_VERSION=3.41.2
 ENV FLUTTER_HOME=/opt/flutter
 ENV PATH="${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin:${PATH}"
 
+# 빌드 시 주입받을 변수 선언 (외부에서 --build-arg로 전달받음)
+ARG CLIENT_ID
+ARG REDIRECT_URI
+ARG ROUTE_URI
+ARG BACKEND_URI
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl git unzip xz-utils zip \
  && rm -rf /var/lib/apt/lists/*
@@ -23,8 +29,12 @@ RUN flutter config --enable-web \
 # Copy the rest
 COPY . .
 
-# Build Flutter Web (entrypoint: lib/main.dart)
-RUN flutter build web --release --target lib/main.dart
+# --dart-define을 통해 Flutter 앱 내부로 변수 주입
+RUN flutter build web --release --target lib/main.dart \
+    --dart-define=CLIENT_ID=${CLIENT_ID} \
+    --dart-define=REDIRECT_URI=${REDIRECT_URI} \
+    --dart-define=REDIRECT_URI=${ROUTE_URI} \
+    --dart-define=REDIRECT_URI=${BACKEND_URI}
 
 # ---- runtime stage ----
 FROM nginx:1.25-alpine AS runtime
