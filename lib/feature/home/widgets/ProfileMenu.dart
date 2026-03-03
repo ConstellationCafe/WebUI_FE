@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../Routes/LoginCheckProvider.dart';
+import '../../../routes/LoginCheckProvider.dart';
 import 'ProfileIcon.dart';
 
 class ProfileMenu extends ConsumerWidget {
@@ -13,15 +13,20 @@ class ProfileMenu extends ConsumerWidget {
   const ProfileMenu({super.key, this.onTap});
 
   Future<void> performLogout(BuildContext context, WidgetRef ref) async {
+    ref.read(loginCheckProvider.notifier).forceLogout();
+
     final loginApi = ref.read(loginApiProvider);
     await loginApi.logout();
+
     ref.read(globalStateProvider.notifier).clear();
-    ref.invalidate(loginCheckProvider);
+
     if (!context.mounted) return;
     context.go('/login');
   }
 
+
   Future<void> route(BuildContext context, WidgetRef ref, selected) async {
+    if (selected == null) return;
     switch(selected) {
       case 'profile':
         context.go('/profile');
