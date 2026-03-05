@@ -1,63 +1,99 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/ConstPadding.dart';
+import '../../../core/constants/ScreenWidth/ScreenWidth.dart';
 import '../../../core/widgets/MenuBarArea/MainMenuBar.dart';
 import '../../../core/widgets/appbar/MainAppBar.dart';
 import '../widgets/ProfileMenu.dart';
-
 
 class HomePage extends ConsumerWidget {
   final Widget? child;
 
   const HomePage({super.key, this.child});
 
+  bool _isDesktop(String deviceType) => deviceType != "mobileWidth";
+
   @override
-  Widget build(BuildContext build, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final deviceType = ScreenWidth.widthChecker(MediaQuery.sizeOf(context).width);
+    final isDesktop = _isDesktop(deviceType);
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsetsGeometry.fromLTRB(
-              ConstPadding.bigPadding, ConstPadding.bigPadding, ConstPadding.bigPadding, 0
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 상단
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MainAppBar(),
-                  ProfileMenu()
-                ],
-              ),
-              SizedBox(height: 5),
-              // 경계
-              Divider(
-                thickness: 1,
-                color: Colors.grey,
-              ),
-              // 내용물
-              Row(
-                  children: [
-                    MainMenuBar(),
-                    SizedBox(width: 10),
-                    // 중첩 라우트 컨텐츠 표시
-                    if (child != null) ...[
-                      Expanded(
-                        child: Center(
-                          child: child!,
-                        ),
-                      ),
-                    ]
-                  ]
-                )
-              ],
-            ),
+      drawer: isDesktop
+          ? null
+          : SizedBox(
+        width: 180,
+        child: Drawer(
+          child: Padding(
+            padding: ConstPadding.bigPaddingAll,
+            child: MainMenuBar(),
           ),
         ),
-      );
+      ),
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(
+          ConstPadding.bigPadding,
+          ConstPadding.bigPadding,
+          ConstPadding.bigPadding,
+          0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 상단(고정)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Builder(
+                  builder: (scaffoldContext) => MainAppBar(
+                    showMenuButton: !isDesktop,
+                    onMenuPressed: () => Scaffold.of(scaffoldContext).openDrawer(),
+                  ),
+                ),
+                ProfileMenu(),
+              ],
+            ),
+            const SizedBox(height: ConstPadding.tinyPadding),
+            const Divider(thickness: 1, color: Colors.grey),
+            const SizedBox(height: ConstPadding.tinyPadding),
+
+            // 아래(남은 영역)
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (isDesktop) ...[
+                    MainMenuBar(),
+                    const SizedBox(width: 10),
+                  ],
+
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        // "화면보다 작으면 가운데 / 크면 위 + 스크롤"을 확실히 만들려면
+                        // 스크롤 child를 최소높이=viewport로 만들고,
+                        // 그 안에서 Alignment.center로 정렬해야 합니다.
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight,
+                            ),
+                            child: Align(
+                              alignment: Alignment.center, // <-- 여기 중요
+                              child: child ?? const SizedBox.shrink(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

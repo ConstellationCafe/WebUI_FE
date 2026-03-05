@@ -29,7 +29,13 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () => context.go(widget.callbackUrl),
+        onTap: () {
+          // Drawer가 열려있으면 닫기
+          if (Scaffold.of(context).isDrawerOpen) {
+            Navigator.of(context).pop();
+          }
+          context.go(widget.callbackUrl);
+        },
         borderRadius: BorderRadius.circular(6),
 
         hoverColor: Colors.grey.withOpacity(0.15),
