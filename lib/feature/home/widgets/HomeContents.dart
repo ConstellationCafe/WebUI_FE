@@ -17,13 +17,9 @@ class HomeContent extends ConsumerWidget {
         if (!isLoggedIn) return const SizedBox.shrink();
 
         ref.read(globalStateProvider.notifier).initialize();
-        return const Column(
-          children: [
-            Text(
-              "홈페이지 메인 컨텐츠",
-              style: TextStyle(fontSize: 24),
-            ),
-          ],
+        return Text(
+          "홈페이지 메인 컨텐츠",
+          style: TextStyle(fontSize: 24),
         );
       },
     );
