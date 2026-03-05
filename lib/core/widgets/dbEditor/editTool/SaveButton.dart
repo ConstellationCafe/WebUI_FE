@@ -51,18 +51,20 @@ class _SaveButtonState extends State<SaveButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 30,
-        child: ElevatedButton(
-          onPressed: _isLoading ? null : _onPressed,
-          child: _isLoading
-              ? const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: ButtonLoading(),
-                )
-              : const Text("저장"),
-        )
+    return ElevatedButton(
+      onPressed: _isLoading ? null : _onPressed,
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(0, 30),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: _isLoading
+          ? const SizedBox(
+            width: 18,
+            height: 18,
+            child: ButtonLoading(),
+          )
+          : const Text("저장"),
     );
   }
 }

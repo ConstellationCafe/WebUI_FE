@@ -9,14 +9,14 @@ class AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 30,
-      child: ElevatedButton(
-        onPressed: () {
-          controller.addRow();
-        },
-        child: const Text("추가"),
-      )
+    return ElevatedButton(
+      onPressed: controller.addRow,
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(0, 30), // 높이 30 보장
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: const Text("추가"),
     );
   }
 }
