@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/constants/ConstPadding.dart';
 import 'package:constellation_cafe/core/constants/ScreenWidth/ScreenWidth.dart';
 import '../../../../core/constants/ConstSize.dart';
 import '../../../../core/widgets/loading/PageLoading.dart';
