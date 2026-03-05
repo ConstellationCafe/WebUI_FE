@@ -33,8 +33,8 @@ COPY . .
 RUN flutter build web --release --target lib/main.dart \
     --dart-define=CLIENT_ID=${CLIENT_ID} \
     --dart-define=REDIRECT_URI=${REDIRECT_URI} \
-    --dart-define=REDIRECT_URI=${ROUTE_URI} \
-    --dart-define=REDIRECT_URI=${BACKEND_URI}
+    --dart-define=ROUTE_URI=${ROUTE_URI} \
+    --dart-define=BACKEND_URI=${BACKEND_URI}
 
 # ---- runtime stage ----
 FROM nginx:1.25-alpine AS runtime
