@@ -1,4 +1,5 @@
 // flutter
+import 'package:constellation_cafe/feature/auth/link/pages/LinkKeyPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,8 +17,7 @@ import 'package:constellation_cafe/feature/contents/menu/pages/MenuList.dart';
 import 'package:constellation_cafe/feature/contents/music/pages/MusicList.dart';
 import 'package:constellation_cafe/feature/contents/content/pages/ContentList.dart';
 // loginCheck
-import '../core/state/Provider/GlobalStateProvider.dart';
-import './LoginCheckProvider.dart';
+import 'package:constellation_cafe/routes/LoginCheckProvider.dart';
 
 Page<void> noAnim(GoRouterState state, Widget child) {
   return NoTransitionPage<void>(
@@ -51,6 +51,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: "/profile",
             pageBuilder: (context, state) =>
                 noAnim(state, Profile()),
+          ),
+          GoRoute(
+            path: "/link",
+            pageBuilder: (context, state) =>
+                noAnim(state, LinkKeyPage()),
           ),
           GoRoute(
             path: "/friendly_match",

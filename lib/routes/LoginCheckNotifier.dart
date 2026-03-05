@@ -4,7 +4,7 @@ import 'package:constellation_cafe/core/di/ApiProvider.dart';
 import 'package:constellation_cafe/data/model/response/backend/ApiResponse.dart';
 
 class LoginCheckNotifier extends AsyncNotifier<bool> {
-  bool _forcedLogout = false; // 추가: 강제 로그아웃 상태
+  bool _forcedLogout = false;
 
   bool parseIsLogin(ApiResponse api) {
     final resp = api.response as Map<String, dynamic>?;
@@ -23,7 +23,7 @@ class LoginCheckNotifier extends AsyncNotifier<bool> {
 
   @override
   Future<bool> build() async {
-    // ★ 로그아웃 누른 뒤에는 어떤 재빌드가 와도 무조건 false
+    // 로그아웃 버튼 누른 직후에는, 어떤 재빌드/재체크가 와도 무조건 로그아웃 유지
     if (_forcedLogout) return false;
 
     final jwt = ref.read(jwtApiProvider);
@@ -31,6 +31,7 @@ class LoginCheckNotifier extends AsyncNotifier<bool> {
     try {
       final res = await jwt.check();
 
+      // 정상 응답
       if (res.success == true) {
         final isLogin = parseIsLogin(res);
         if (isLogin) return true;
@@ -45,6 +46,7 @@ class LoginCheckNotifier extends AsyncNotifier<bool> {
         return res2.success == true && parseIsLogin(res2);
       }
 
+      // 401/403이면 refresh 시도
       if (isUnauthorized(res)) {
         final refreshRes = await jwt.refresh();
         if (refreshRes != true) return false;
@@ -59,9 +61,23 @@ class LoginCheckNotifier extends AsyncNotifier<bool> {
     }
   }
 
+  /// 로그아웃 버튼 누르는 순간 즉시 false로 내려서 redirect 레이스 차단
   void forceLogout() {
-    _forcedLogout = true;            // ★ 추가
+    _forcedLogout = true;
     state = const AsyncData(false);
+  }
+
+  /// (선택) 로그인 성공 직후 바로 true로 올리고 싶을 때
+  void forceLogin() {
+    _forcedLogout = false;
+    state = const AsyncData(true);
+  }
+
+  /// (선택) 서버에 다시 확인하고 싶을 때
+  Future<void> refresh() async {
+    if (_forcedLogout) return;
+    state = const AsyncLoading();
+    state = AsyncData(await build());
   }
 }
 
