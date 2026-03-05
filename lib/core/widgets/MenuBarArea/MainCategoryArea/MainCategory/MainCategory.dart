@@ -17,9 +17,7 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
   @override
   Widget build(BuildContext build) {
     final globalState = ref.read(globalStateProvider);
-    return Container(
-      height: 800,
-      child: Column(
+    return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           UserCategory(),
@@ -27,7 +25,6 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
             AdminCategory()
           ]
         ]
-      ),
     );
   }
 }
