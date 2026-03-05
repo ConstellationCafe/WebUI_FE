@@ -7,9 +7,9 @@ class PageLoading extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-      child: CircularProgressIndicator(
-        color: Theme.of(context).colorScheme.secondary,
+    return const SizedBox.expand(
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
