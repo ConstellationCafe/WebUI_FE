@@ -9,12 +9,14 @@ class EditButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 30,
-        child: ElevatedButton(
-          onPressed: () => controller.toggleEditMode(),
-          child: const Text("수정"),
-        )
+    return ElevatedButton(
+      onPressed: () => controller.toggleEditMode(),
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(0, 30),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: const Text("수정"),
     );
   }
 }
