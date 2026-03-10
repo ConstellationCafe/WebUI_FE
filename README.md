@@ -170,7 +170,3 @@ docker run -p 1104:1104 constellation-cafe-webui
 ### 카테고리 설계
 - 통합 검색 지원 (Category + Search Bar + Tags)
 - 사용자/관리자 영역 분리된 카테고리 구조
-
----
-
-*Constellation Cafe는 커뮤니티 중심의 다기능 웹 플랫폼입니다. 지속적인 개선과 기능 추가를 통해 사용자 경험을 향상시키고 있습니다.*
