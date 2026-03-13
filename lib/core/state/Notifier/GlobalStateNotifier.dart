@@ -33,7 +33,7 @@ class GlobalStateNotifier extends StateNotifier<GlobalState> {
   }
 
   void clear() {
-    GlobalState.initial();
+    state = GlobalState.initial();
   }
 
   /// JSON으로부터 상태 세팅
