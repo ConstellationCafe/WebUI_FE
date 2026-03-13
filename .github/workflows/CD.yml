@@ -1,0 +1,44 @@
+name: WebUI_FE_CD
+
+on:
+  push:
+    branches: ["elaina"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: "Checkout Github Repository"
+        uses: actions/checkout@v2
+
+      - name: "Login and Copy project via SSH on Remote Server"
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_ADDR }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PWD }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "./*"
+          target: "/home/elaina/dockers/WebUI_FE/service"
+
+      - name: "Deploy docker via SSH on Remote Server"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_ADDR }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PWD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            set -e
+            
+            # Docker로 서비스 빌드 및 실행
+            cd ~/dockers/WebUI_FE/service
+            docker build -t docker:WebUI_FE_service \
+              --build-arg CLIENT_ID='${{ secrets.CLIENT_ID }}' \
+              --build-arg REDIRECT_URI='${{ secrets.REDIRECT_URI }}' \
+              --build-arg ROUTE_URI='${{ secrets.ROUTE_URI }}' \
+              --build-arg BACKEND_URI='${{ secrets.BACKEND_URI }}' \
+              .
+            docker stop WebUI_FE_service || true
+            docker rm WebUI_FE_service || true
+            docker run -d --name WebUI_FE_service -p 1104:1104 docker:WebUI_FE_service
