@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'Routes/RouteProvider.dart';
+import 'routes/RouteProvider.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'core/constants/Theme/ThemeData.dart';
 import 'core/state/Provider/GlobalStateProvider.dart';
+import 'core/keys/AppKeys.dart';
 
 void main() {
   setUrlStrategy(PathUrlStrategy());
@@ -26,9 +27,11 @@ class MyApp extends ConsumerWidget {
     ref.watch(globalStateProvider);
 
     return MaterialApp.router(
+      title: '섀버 별자리 Cafe',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: CustomTheme.themeData,
+      scaffoldMessengerKey: AppKeys.scaffoldMessengerKey,
     );
   }
 }

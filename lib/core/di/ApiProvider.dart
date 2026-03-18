@@ -14,6 +14,7 @@ import 'package:constellation_cafe/data/api/auth/Login.dart';
 // Network
 final _oauthProvider = Provider<AuthServiceInterface>((ref) {
   final dio = ref.watch(dioProvider);
+  // ErrorInterceptor는 DioProvider에서 이미 추가됨
   return OAuthService(dio: dio);
 });
 final _apiTranslatorProvider = Provider((ref) => APITranslator());

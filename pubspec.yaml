@@ -51,6 +51,7 @@ dev_dependencies:
   test: ^1.21.0
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -78,6 +79,23 @@ flutter:
       - assets/icons/category/user/recommend_music.png
       - assets/icons/category/user/recommend_content.png
       - assets/icons/category/admin/point.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  web:
+    generate: true
+    image_path: "assets/icons/main_icon.jpg"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/icons/main_icon.jpg"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/main_icon.jpg"
+  image_path: "assets/icons/main_icon.jpg"
 
 
 fonts:

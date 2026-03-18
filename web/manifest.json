@@ -1,34 +1,34 @@
 {
-    "name": "constellation_cafe",
-    "short_name": "constellation_cafe",
+    "name": "섀버 별자리 Cafe",
+    "short_name": "별자리 Cafe",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "섀버 별자리 카페 웹 애플리케이션",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "icons/Icon-192.png",
+            "src": "assets/icons/main_icon.jpg",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/jpeg"
         },
         {
-            "src": "icons/Icon-512.png",
+            "src": "assets/icons/main_icon.jpg", 
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/jpeg"
         },
         {
-            "src": "icons/Icon-maskable-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
+            "src": "assets/icons/main_icon.jpg",
+            "sizes": "192x192", 
+            "type": "image/jpeg",
             "purpose": "maskable"
         },
         {
-            "src": "icons/Icon-maskable-512.png",
+            "src": "assets/icons/main_icon.jpg",
             "sizes": "512x512",
-            "type": "image/png",
+            "type": "image/jpeg",
             "purpose": "maskable"
         }
     ]

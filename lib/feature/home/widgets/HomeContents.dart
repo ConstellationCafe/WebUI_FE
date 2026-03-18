@@ -2,7 +2,7 @@ import 'package:constellation_cafe/core/state/Provider/GlobalStateProvider.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../Routes/LoginCheckProvider.dart';
+import '../../../routes/LoginCheckProvider.dart';
 
 class HomeContent extends ConsumerWidget {
   const HomeContent({super.key});

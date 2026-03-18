@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:constellation_cafe/core/constants/ScreenWidth/ScreenWidth.dart';
 import '../../../../core/constants/ConstSize.dart';
 import '../../../../core/widgets/loading/PageLoading.dart';
+import '../../../../routes/LoginCheckProvider.dart';
 import '../state/Provider/StateProvider.dart';
 import '../widgets/InputMembershipData.dart';
 import '../widgets/ViewMembershipCard.dart';
@@ -22,35 +23,45 @@ class _ProfileState extends ConsumerState<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(membershipProvider);
-    if (state.isLoading) {
-      return PageLoading();
-    }
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        String deviceType = ScreenWidth.widthChecker(constraints.maxWidth);
-        switch (deviceType) {
-          case "mobileWidth":
-          case "tabletWidth":
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ViewMembershipCard(width: childWidgetWidth),
-                SizedBox(height: ConstSize.bigHeight),
-                InputMembershipData(width: childWidgetWidth)
-              ],
-            );
-          default:
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ViewMembershipCard(width: childWidgetWidth),
-                SizedBox(width: ConstSize.bigWidth),
-                InputMembershipData(width: childWidgetWidth)
-              ],
-            );
-        }  // switch
+    final login = ref.watch(loginCheckProvider);
+    
+    return login.when(
+      loading: () => PageLoading(),
+      error: (_, __) => PageLoading(),
+      data: (isLoggedIn) {
+        if (!isLoggedIn) return const SizedBox.shrink();
+        
+        final state = ref.watch(membershipProvider);
+        if (state.isLoading) {
+          return PageLoading();
+        }
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            String deviceType = ScreenWidth.widthChecker(constraints.maxWidth);
+            switch (deviceType) {
+              case "mobileWidth":
+              case "tabletWidth":
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ViewMembershipCard(width: childWidgetWidth),
+                    SizedBox(height: ConstSize.bigHeight),
+                    InputMembershipData(width: childWidgetWidth)
+                  ],
+                );
+              default:
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ViewMembershipCard(width: childWidgetWidth),
+                    SizedBox(width: ConstSize.bigWidth),
+                    InputMembershipData(width: childWidgetWidth)
+                  ],
+                );
+            }  // switch
+          },
+        );
       },
     );
   }
