@@ -78,7 +78,7 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
               );
             },
           ),
-          const SizedBox(height: ConstSize.mediumHeight),
+          const SizedBox(height: ConstSize.mediumSpacing),
           TextFormField(
             controller: _uid2Controller,
             decoration: InputDecoration(
@@ -90,12 +90,12 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
               );
             },
           ),
-          const SizedBox(height: ConstSize.mediumHeight),
+          const SizedBox(height: ConstSize.mediumSpacing),
           TextFormField(
             controller: _guildController,
             decoration: InputDecoration(
               labelText: 'Guild',
-              contentPadding: ConstPadding.bigPaddingAll,
+              contentPadding: ConstPadding.mediumPaddingAll,
             ),
             onChanged: (value) {
               notifier.update(
@@ -103,19 +103,24 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
               );
             },
           ),
-          const SizedBox(height: ConstSize.mediumHeight),
+          const SizedBox(height: ConstSize.mediumSpacing),
           ElevatedButton(
             onPressed: _isLoading ? null : _onPressed,
             child: _isLoading
-                ? const SizedBox(
+                ? SizedBox(
               width: 18,
               height: 18,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             )
-                : const Text("저장"),
+                : Text(
+                  "저장",
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+                ),
           )
         ],
       ),

@@ -23,6 +23,7 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
   @override
   Widget build(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
+    final theme = Theme.of(context);
 
     final bool isSelected = location == widget.callbackUrl;
 
@@ -36,22 +37,22 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
           }
           context.go(widget.callbackUrl);
         },
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
 
-        hoverColor: Colors.grey.withOpacity(0.15),
+        hoverColor: theme.colorScheme.onSurface.withOpacity(0.08),
         highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
+        splashColor: theme.colorScheme.onSurface.withOpacity(0.12),
 
         child: Container(
           width: 180,
-          height: 40,
+          height: 48, // 8의 배수로 변경
           decoration: BoxDecoration(
             color: isSelected
-                ? Colors.grey.withOpacity(0.15)
+                ? theme.colorScheme.primaryContainer
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: ConstSize.mediumSpacing),
           child: Row(
             children: [
               SizedBox(
@@ -59,12 +60,13 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
                 height: 20,
                 child: widget.iconImage,
               ),
-              const SizedBox(width: ConstSize.smallWidth),
+              SizedBox(width: ConstSize.smallSpacing),
               Text(
                 widget.menuName,
-                style: TextStyle(
-                  fontSize: ConstSize.bigTextSize,
-                  color: Theme.of(context).colorScheme.tertiary,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: isSelected 
+                    ? theme.colorScheme.onPrimaryContainer
+                    : theme.colorScheme.onSurface,
                 ),
               ),
             ],
