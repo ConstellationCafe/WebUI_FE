@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../Routes/LoginCheckProvider.dart';
+import '../../../../routes/LoginCheckProvider.dart';
 import '../../../../core/di/RepositoryProvider.dart';
 import '../../../../core/widgets/dbEditor/DBEditor.dart';
 

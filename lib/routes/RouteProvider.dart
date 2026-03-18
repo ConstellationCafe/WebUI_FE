@@ -1,5 +1,4 @@
 // flutter
-import 'package:constellation_cafe/feature/auth/link/pages/LinkKeyPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -31,10 +30,6 @@ final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     routes: [
       GoRoute(
-        path: "/gate",
-        pageBuilder: (context, state) => noAnim(state, const SizedBox.shrink()),
-      ),
-      GoRoute(
         path: "/login",
         pageBuilder: (context, state) => noAnim(state, LoginPage()),
       ),
@@ -51,11 +46,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: "/profile",
             pageBuilder: (context, state) =>
                 noAnim(state, Profile()),
-          ),
-          GoRoute(
-            path: "/link",
-            pageBuilder: (context, state) =>
-                noAnim(state, LinkKeyPage()),
           ),
           GoRoute(
             path: "/friendly_match",
@@ -89,15 +79,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       /** return null 은 아무것도 하지 않는다는 의미 */
       final loc = state.matchedLocation;
       final isLogin = loc == "/login";
-      final isGate = loc == "/gate";
 
-      // 로딩 상태면 /gate 로 이동
-      if (loginCheck.isLoading) return isGate ? null : "/gate";
+      // 로딩 상태면 현재 페이지 유지
+      if (loginCheck.isLoading) return null;
       // 로딩 완료 후
       final isLoggedIn = loginCheck.value ?? false;
       if (!isLoggedIn) return isLogin ? null : "/login";
-      // 로그인 된 상태에서 현재 경로가 /login 이거나 /gate면 /으로 강제 이동
-      if (isLogin || isGate) return "/";
+      // 로그인 된 상태에서 현재 경로가 /login 면 /으로 강제 이동
+      if (isLogin) return "/";
       return null;
     },
   );
