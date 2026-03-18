@@ -30,16 +30,12 @@ class ConstPadding {
   static const double bigPadding = largePadding;
   
   @Deprecated('Use largePaddingAll instead')
-  static const EdgeInsetsGeometry bigPaddingAll = EdgeInsetsGeometry.all(largePadding);
+  static const EdgeInsetsGeometry bigPaddingAll = largePaddingAll;
   @Deprecated('Use mediumPaddingAll instead')  
-  static const EdgeInsetsGeometry middlePaddingAll = EdgeInsetsGeometry.all(mediumPadding);
+  static const EdgeInsetsGeometry middlePaddingAll = mediumPaddingAll;
   
   @Deprecated('Use largePaddingHorizontal instead')
-  static const EdgeInsetsGeometry bigPaddingHorizontal = EdgeInsetsGeometry.symmetric(horizontal: largePadding);
+  static const EdgeInsetsGeometry bigPaddingHorizontal = largePaddingHorizontal;
   @Deprecated('Use mediumPaddingHorizontal instead')
-  static const EdgeInsetsGeometry middlePaddingHorizontal = EdgeInsetsGeometry.symmetric(horizontal: mediumPadding);
-  @Deprecated('Use smallPaddingHorizontal instead')
-  static const EdgeInsetsGeometry smallPaddingHorizontal = EdgeInsetsGeometry.symmetric(horizontal: smallPadding);
-  @Deprecated('Use tinyPaddingHorizontal instead')
-  static const EdgeInsetsGeometry tinyPaddingHorizontal = EdgeInsetsGeometry.symmetric(horizontal: tinyPadding);
+  static const EdgeInsetsGeometry middlePaddingHorizontal = mediumPaddingHorizontal;
 }

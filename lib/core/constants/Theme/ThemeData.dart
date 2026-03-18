@@ -172,7 +172,7 @@ class CustomTheme {
     ),
 
     // Card 테마
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: primaryColor,
       shadowColor: Colors.black26,
       elevation: 4,
@@ -195,11 +195,4 @@ class CustomTheme {
       ),
     ),
   );
-
-  // 헬퍼 메서드들 추가
-  static Color get primaryColor => CustomTheme.primaryColor;
-  static Color get secondaryColor => CustomTheme.secondaryColor;
-  static Color get tertiaryColor => CustomTheme.tertiaryColor;
-  static Color get surfaceColor => CustomTheme.surfaceColor;
-  static Color get errorColor => CustomTheme.errorColor;
 }

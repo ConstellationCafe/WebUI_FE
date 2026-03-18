@@ -13,6 +13,9 @@ class ConstSize {
   static const double tinySpacing = 4.0;      // 0.5 * 8
 
   // Legacy support (기존 네이밍 유지)
+  @Deprecated('Use largeTextSize instead')
+  static const double bigTextSize = largeTextSize;
+  
   @Deprecated('Use largeSpacing instead')
   static const double bigWidth = largeSpacing;
   @Deprecated('Use mediumSpacing instead')
