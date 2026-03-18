@@ -14,40 +14,41 @@ class UserCategory extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-              textAlign: TextAlign.left,
-              "사용자 메뉴"
+            "사용자 메뉴",
+            textAlign: TextAlign.left,
+            style: Theme.of(build).textTheme.titleMedium,
           ),
-          SizedBox(height: ConstSize.tinyWidth),
+          SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
             iconImage: Image.asset("assets/icons/category/user/friendly_match.png"),
             menuName: "친선전",
             callbackUrl: "/friendly_match",
           ),
-          SizedBox(height: ConstSize.tinyWidth),
+          SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
             iconImage: Image.asset("assets/icons/category/user/learning.png"),
             menuName: "가르치기",
             callbackUrl: "/learning",
           ),
-          SizedBox(height: ConstSize.tinyWidth),
+          SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
             iconImage: Image.asset("assets/icons/category/user/recommend_menu.png"),
             menuName: "메뉴추천",
             callbackUrl: "/menu",
           ),
-          SizedBox(height: ConstSize.tinyWidth),
+          SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
             iconImage: Image.asset("assets/icons/category/user/recommend_music.png"),
             menuName: "노래추천",
             callbackUrl: "/music",
           ),
-          SizedBox(height: ConstSize.tinyWidth),
+          SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
             iconImage: Image.asset("assets/icons/category/user/recommend_content.png"),
             menuName: "놀이추천",
             callbackUrl: "/content",
           ),
-          SizedBox(height: ConstSize.tinyWidth),
+          SizedBox(height: ConstSize.smallSpacing),
         ]
     );
   }

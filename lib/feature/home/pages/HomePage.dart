@@ -5,6 +5,7 @@ import '../../../core/constants/ConstPadding.dart';
 import '../../../core/constants/ScreenWidth/ScreenWidth.dart';
 import '../../../core/widgets/MenuBarArea/MainMenuBar.dart';
 import '../../../core/widgets/appbar/MainAppBar.dart';
+import '../../../routes/LoginCheckProvider.dart';
 import '../widgets/ProfileMenu.dart';
 
 class HomePage extends ConsumerWidget {
