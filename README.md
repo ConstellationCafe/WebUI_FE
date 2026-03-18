@@ -1,8 +1,8 @@
 # 🌟 빗자루 WebUI 프로젝트
-**빗자루**는 섀버 별자리 Cafe에서 개발 및 운영하는 채팅 봇으로, 섀도우버스 관련 편의 기능부터 채팅방 운영에 필요한 도구들을 제공합니다.
+[**빗자루**](https://github.com/ConstellationCafe/DiscordBot)는 섀버 별자리 Cafe에서 개발 및 운영하는 채팅 봇으로, 섀도우버스 관련 편의 기능부터 채팅방 운영에 필요한 도구들을 제공합니다.
 
 ## 📋 프로젝트 개요
-기존 명령어 기반의 봇 조작 및 기능 구현 한계를 극복하기 위해, WebUI 환경을 제공하는 것입니다.
+기존 명령어 기반의 봇 조작 및 기능 구현 한계를 극복하기 위해, WebUI 환경을 제공
 
 ## 🎨 디자인 시스템
 
@@ -19,8 +19,7 @@
 ### 반응형 디자인
 - **데스크톱**: 기본 (1350px 이하)
 - **모바일**: 기본 (450px 이하)
-- **와이드스크린**: 미지원
-- **태블릿**: 미지원 (900px 이하)
+- **태블릿**: 기본 (900px 이하)
 
 ## 🏗️ 아키텍처
 
@@ -83,50 +82,6 @@ lib/
 - **데이터베이스 에디터**: 실시간 DB 편집 도구
 - **반응형 메뉴바**: 사용자 권한별 메뉴 표시
 
-## 🚀 실행 방법
-
-### 환경 요구사항
-- **Flutter SDK**: 3.6.1+
-- **Dart**: 3.6.1+
-
-### 로컬 실행
-```bash
-# 의존성 설치
-flutter pub get
-
-# 웹 디버그 모드 실행
-flutter run -d chrome
-
-# 웹 릴리즈 빌드
-flutter build web --release
-```
-
-### 환경 변수
-런타임 시 다음 환경 변수가 필요합니다:
-- `CLIENT_ID`: Discord OAuth Client ID
-- `REDIRECT_URI`: OAuth 리다이렉트 URI
-- `ROUTE_URI`: 라우팅 기본 URI
-- `BACKEND_URI`: 백엔드 서버 URI
-
-## 🐳 Docker 배포
-
-### Dockerfile 빌드
-```bash
-docker build \
-  --build-arg CLIENT_ID=your_client_id \
-  --build-arg REDIRECT_URI=your_redirect_uri \
-  --build-arg ROUTE_URI=your_route_uri \
-  --build-arg BACKEND_URI=your_backend_uri \
-  -t constellation-cafe-webui .
-```
-
-### 컨테이너 실행
-```bash
-docker run -p 1104:1104 constellation-cafe-webui
-```
-
-애플리케이션은 포트 1104에서 실행됩니다.
-
 ## 📚 사용된 주요 라이브러리
 
 ### 핵심 라이브러리
@@ -162,11 +117,13 @@ docker run -p 1104:1104 constellation-cafe-webui
 ### 페이지 구조 가이드라인
 - **HomePage**와 **LoginPage**: Scaffold 사용
 - **기타 페이지**: ShellRoute의 하위로 구성하여 Widget 사용
-
-### API 사용법
-- `lib/data/api`를 통해 API 호출
-- 내부적으로 `lib/core/network`를 통해 백엔드나 빗자루에 API 요청
-
+- 
 ### 카테고리 설계
 - 통합 검색 지원 (Category + Search Bar + Tags)
 - 사용자/관리자 영역 분리된 카테고리 구조
+---
+
+## 📚 **참조 자료**
+- [배포 가이드](./docs/deploy.md): 로컬 및 클라우드 환경 배포 절차
+
+---
