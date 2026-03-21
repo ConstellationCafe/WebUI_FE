@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // domain
 import '../../../../domain/Common/Version/game_version_type.dart';
 // Provider
-import '../../../../domain/friendly_match/Mode/S1/ModeTypeS1.dart';
-import '../../../../domain/friendly_match/Mode/S2/ModeTypeS2.dart';
-import '../../../../domain/friendly_match/Mode/Type/ModeType.dart';
-import '../../../../domain/friendly_match/Platform/S1/PlatformTypeS1.dart';
-import '../../../../domain/friendly_match/Platform/S2/PlatformTypeS2.dart';
-import '../../../../domain/friendly_match/Platform/Type/PlatformType.dart';
+import '../../../../domain/friendly_match/mode/s1/mode_type_s1.dart';
+import '../../../../domain/friendly_match/mode/s2/mode_type_s2.dart';
+import '../../../../domain/friendly_match/mode/type/mode_type.dart';
+import '../../../../domain/friendly_match/platform/s1/platform_type_s1.dart';
+import '../../../../domain/friendly_match/platform/s2/platform_type_s2.dart';
+import '../../../../domain/friendly_match/platform/type/platform_type.dart';
 import '../state/Notifier/friendly_match_notifier.dart';
 
 // Const

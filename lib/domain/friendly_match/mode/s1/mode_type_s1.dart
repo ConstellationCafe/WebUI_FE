@@ -1,4 +1,4 @@
-import '../Type/model_type.dart';
+import '../Type/mode_type.dart';
 
 enum FriendlyMatchS1ModeType implements FriendlyMatchModeType {
   timeslip_rotation("타임슬립 로테이션"),
