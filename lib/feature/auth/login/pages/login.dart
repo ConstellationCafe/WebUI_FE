@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/DiscordLoginButton.dart';
+import '../widgets/discord_login_button.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});

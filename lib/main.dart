@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/state/Notifier/global_state_notifier.dart';
-import 'routes/RouteProvider.dart';
+import 'routes/router_provider.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'core/constants/Theme/ThemeData.dart';

@@ -2,8 +2,8 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 //
-// import '../../../Data/DBEditorTest/DBController.dart';
-// // import '../../../Data/DBEditor/DBcontroller.dart';
+// import '../../../data/DBEditorTest/DBController.dart';
+// // import '../../../data/DBEditor/DBcontroller.dart';
 //
 // class DBSearch extends ConsumerStatefulWidget {
 //   final DBController controller;

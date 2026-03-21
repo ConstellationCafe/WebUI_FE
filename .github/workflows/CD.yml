@@ -11,7 +11,7 @@ jobs:
       - name: "Checkout Github Repository"
         uses: actions/checkout@v2
 
-      - name: "Login and Copy project via SSH on Remote Server"
+      - name: "login and Copy project via SSH on Remote Server"
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_ADDR }}
