@@ -10,7 +10,8 @@ import '../../../../domain/FriendlyMatch/Platform/S1/PlatformTypeS1.dart';
 import '../../../../domain/FriendlyMatch/Platform/S2/PlatformTypeS2.dart';
 import '../../../../domain/FriendlyMatch/Platform/Type/PlatformType.dart';
 // Provider
-import '../state/Provider/StateProvider.dart';
+import '../state/Notifier/friendly_match_notifier.dart';
+
 // Const
 import '../../../../core/constants/ConstPadding.dart';
 import '../../../../core/constants/ConstSize.dart';

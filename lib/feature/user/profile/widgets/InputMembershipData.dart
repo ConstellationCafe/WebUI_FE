@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // Provider
 import '../../../../core/widgets/snackBar/SaveResultBar.dart';
-import '../state/Provider/StateProvider.dart';
 // Const
 import 'package:constellation_cafe/core/constants/ConstPadding.dart';
 import 'package:constellation_cafe/core/constants/ConstSize.dart';
+
+import '../state/Notifier/membership_notifier.dart';
 
 class InputMembershipData extends ConsumerStatefulWidget {
   final double width;

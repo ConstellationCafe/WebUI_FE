@@ -1,10 +1,10 @@
 import 'package:constellation_cafe/core/di/ApiProvider.dart';
-import 'package:constellation_cafe/core/state/Provider/GlobalStateProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:constellation_cafe/routes/LoginCheckProvider.dart';
+import '../../../core/state/Notifier/global_state_notifier.dart';
 import 'ProfileIcon.dart';
 
 class ProfileMenu extends ConsumerWidget {

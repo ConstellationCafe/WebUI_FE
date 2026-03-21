@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/ConstPadding.dart';
 import '../../../../core/constants/ConstSize.dart';
-import '../state/Provider/StateProvider.dart';
+import '../state/Notifier/friendly_match_notifier.dart';
 import 'SubmitButton.dart';
 
 class ViewFriendlyMatch extends ConsumerStatefulWidget {

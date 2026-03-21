@@ -1,7 +1,8 @@
 
-import 'package:constellation_cafe/core/state/Provider/GlobalStateProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/state/Notifier/global_state_notifier.dart';
 
 class ProfileIcon extends ConsumerWidget {
   final VoidCallback? onTap;

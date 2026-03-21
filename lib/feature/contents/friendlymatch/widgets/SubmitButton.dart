@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/ApiProvider.dart';
 import '../../../../core/widgets/snackBar/SaveResultBar.dart';
 import '../../../../domain/FriendlyMatch/FriendlyMatchTemplate.dart';
-import '../state/Provider/StateProvider.dart';
+import '../state/Notifier/friendly_match_notifier.dart';
 
 
 class SubmitButton extends ConsumerStatefulWidget {

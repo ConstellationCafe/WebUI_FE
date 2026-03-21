@@ -6,7 +6,7 @@ import 'package:constellation_cafe/core/constants/ScreenWidth/ScreenWidth.dart';
 import '../../../../core/constants/ConstSize.dart';
 import '../../../../core/widgets/loading/PageLoading.dart';
 import '../../../../routes/LoginCheckProvider.dart';
-import '../state/Provider/StateProvider.dart';
+import '../state/Notifier/membership_notifier.dart';
 import '../widgets/InputMembershipData.dart';
 import '../widgets/ViewMembershipCard.dart';
 
