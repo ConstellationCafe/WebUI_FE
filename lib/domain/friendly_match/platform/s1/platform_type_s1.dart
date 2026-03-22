@@ -1,4 +1,4 @@
-import '../Type/platform_type.dart';
+import '../type/platform_type.dart';
 
 enum FriendlyMatchS1PlatformType implements FriendlyMatchPlatformType {
   bo1("bo1"),
