@@ -17,7 +17,7 @@ class SocketClient extends SocketInterface {
       final response = await http.post(
         url,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-type': 'application/json',
         },
         body: json.encode(model.toJson()),
       ).timeout(

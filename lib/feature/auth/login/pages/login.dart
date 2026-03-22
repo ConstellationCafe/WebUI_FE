@@ -1,15 +1,13 @@
-// lib/features/auth/presentation/pages/login.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/constants/ConstSize.dart';
-import '../widgets/DiscordLoginButton.dart';
-import '../../../../core/constants/ConstPadding.dart';
+import '../widgets/discord_login_button.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenW = MediaQuery.sizeOf(context).width;
 
     const cardHPadding = 36.0;
