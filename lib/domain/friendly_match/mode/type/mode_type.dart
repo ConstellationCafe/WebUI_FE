@@ -1,5 +1,5 @@
 
-import '../../../Common/common_type.dart';
+import '../../../common/common_type.dart';
 
 abstract class FriendlyMatchModeType extends CommonType {
   FriendlyMatchModeType();

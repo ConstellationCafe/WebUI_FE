@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // domain
-import '../../../../domain/Common/Version/game_version_type.dart';
+import '../../../../domain/common/version/game_version_type.dart';
 // Provider
 import '../../../../domain/friendly_match/mode/s1/mode_type_s1.dart';
 import '../../../../domain/friendly_match/mode/s2/mode_type_s2.dart';

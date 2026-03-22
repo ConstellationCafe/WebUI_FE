@@ -7,7 +7,7 @@ import '../../../../core/widgets/snackBar/SaveResultBar.dart';
 import 'package:constellation_cafe/core/constants/ConstPadding.dart';
 import 'package:constellation_cafe/core/constants/ConstSize.dart';
 
-import '../state/Notifier/membership_notifier.dart';
+import '../state/notifier/membership_notifier.dart';
 
 class InputMembershipData extends ConsumerStatefulWidget {
   final double width;
