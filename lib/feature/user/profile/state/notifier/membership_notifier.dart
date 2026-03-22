@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:constellation_cafe/data/api/discordBot/MembershipAPI.dart';
 import '../../../../../core/state/Notifier/global_state_notifier.dart';
-import '../State/membership_state.dart';
+import '../state/membership_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:constellation_cafe/core/di/ApiProvider.dart';
 
