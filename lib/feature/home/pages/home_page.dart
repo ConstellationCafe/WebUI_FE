@@ -30,77 +30,87 @@ class HomePage extends ConsumerWidget {
             drawer: isDesktop
                 ? null
                 : SizedBox(
-              width: 180,
-              child: Drawer(
-                child: Padding(
-                  padding: ConstPadding.bigPaddingAll,
-                  child: MainMenuBar(),
-                ),
-              ),
-            ),
-            body: Padding(
-              padding: EdgeInsets.fromLTRB(
-                ConstPadding.bigPadding,
-                ConstPadding.bigPadding,
-                ConstPadding.bigPadding,
-                0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 상단(고정)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Builder(
-                        builder: (scaffoldContext) => MainAppBar(
-                          showMenuButton: !isDesktop,
-                          onMenuPressed: () => Scaffold.of(scaffoldContext).openDrawer(),
-                        ),
+                    width: 180,
+                    child: Drawer(
+                      child: Padding(
+                        padding: ConstPadding.bigPaddingAll,
+                        child: MainMenuBar(),
                       ),
-                      ProfileMenu(),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: ConstPadding.tinyPadding),
-                  const Divider(thickness: 1, color: Colors.grey),
-                  const SizedBox(height: ConstPadding.tinyPadding),
-
-                  // 아래(남은 영역)
-                  Expanded(
-                    child: Row(
+                  body: Container(
+                    padding: EdgeInsets.fromLTRB(
+                      ConstPadding.bigPadding,
+                      ConstPadding.bigPadding,
+                      ConstPadding.bigPadding,
+                      0,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFFf5f7fa),
+                          Color(0xFFc3cfe2),
+                        ],
+                      ),
+                    ),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (isDesktop) ...[
-                          MainMenuBar(),
-                          const SizedBox(width: 10),
-                        ],
+                        // 상단(고정)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Builder(
+                              builder: (scaffoldContext) => MainAppBar(
+                                showMenuButton: !isDesktop,
+                                onMenuPressed: () => Scaffold.of(scaffoldContext).openDrawer(),
+                              ),
+                            ),
+                            ProfileMenu(),
+                          ],
+                        ),
+                        const SizedBox(height: ConstPadding.tinyPadding),
+                        const Divider(thickness: 1, color: Colors.grey),
+                        const SizedBox(height: ConstPadding.tinyPadding),
 
+                        // 아래(남은 영역)
                         Expanded(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              // "화면보다 작으면 가운데 / 크면 위 + 스크롤"을 확실히 만들려면
-                              // 스크롤 child를 최소높이=viewport로 만들고,
-                              // 그 안에서 Alignment.center로 정렬해야 합니다.
-                              return SingleChildScrollView(
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    minHeight: constraints.maxHeight,
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.center, // <-- 여기 중요
-                                    child: child ?? const SizedBox.shrink(),
-                                  ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (isDesktop) ...[
+                                MainMenuBar(),
+                                const SizedBox(width: 10),
+                              ],
+
+                              Expanded(
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    // "화면보다 작으면 가운데 / 크면 위 + 스크롤"을 확실히 만들려면
+                                    // 스크롤 child를 최소높이=viewport로 만들고,
+                                    // 그 안에서 Alignment.center로 정렬해야 합니다.
+                                    return SingleChildScrollView(
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          minHeight: constraints.maxHeight,
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.center, // <-- 여기 중요
+                                          child: child ?? const SizedBox.shrink(),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                            },
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
           );
         }
     );
