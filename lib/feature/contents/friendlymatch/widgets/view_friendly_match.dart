@@ -33,6 +33,13 @@ class _ViewFriendlyMatchState extends ConsumerState<ViewFriendlyMatch> {
             color: Colors.white,
             // border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFF000D27).withOpacity(0.12),  // rgba(0, 13, 39, 0.12)
+                blurRadius: 24,                              // 24px 흐림
+                offset: Offset(0, 8),                        // 0px x, 8px y
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
