@@ -32,7 +32,9 @@ class _DBEditorState extends State<DBEditor> {
           height: editorH,
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 2),
+              color: Colors.white,
+              // border: Border.all(color: Colors.black, width: 2),
+              borderRadius: BorderRadius.circular(10)
             ),
             padding: const EdgeInsets.all(ConstSize.mediumWidth),
             child: Column(

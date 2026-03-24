@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/data/model/dbEditor/DBController.dart';
 
+import '../../../constants/ConstSize.dart';
 import '../../loading/ButtonLoading.dart';
 
 class SaveButton extends StatefulWidget {
@@ -51,20 +52,23 @@ class _SaveButtonState extends State<SaveButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: _isLoading ? null : _onPressed,
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(0, 30),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-      child: _isLoading
-          ? const SizedBox(
-            width: 18,
-            height: 18,
-            child: ButtonLoading(),
-          )
-          : const Text("저장"),
+    return SizedBox(
+        height: ConstSize.bigHeight,
+        child: ElevatedButton(
+          onPressed: _isLoading ? null : _onPressed,
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(0, 30),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: _isLoading
+              ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: ButtonLoading(),
+              )
+              : const Text("저장"),
+        )
     );
   }
 }

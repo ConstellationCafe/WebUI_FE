@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/data/model/dbEditor/DBController.dart';
 
+import '../../../constants/ConstSize.dart';
+
 class DeleteButton extends StatelessWidget {
   final DBController controller;
 
@@ -9,16 +11,19 @@ class DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        controller.deleteRow();
-      },
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(0, 30),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-      child: const Text("삭제"),
+    return SizedBox(
+        height: ConstSize.bigHeight,
+        child: ElevatedButton(
+          onPressed: () {
+            controller.deleteRow();
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(0, 30),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: const Text("삭제"),
+        )
     );
   }
 }

@@ -40,11 +40,11 @@ class LoginPage extends ConsumerWidget {
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch, // ★ 가로로 꽉 채우기
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Row가 Column 폭(=DiscordLoginButton 폭)과 동일하게 되도록
                   SizedBox(
-                    width: double.infinity, // ★ Row 영역을 최대폭으로 고정
+                    width: double.infinity,
                     child: Row(
                       children: [
                         ClipRRect(
@@ -78,7 +78,7 @@ class LoginPage extends ConsumerWidget {
 
                   // 버튼도 같은 폭(=Column 폭)으로
                   const SizedBox(
-                    width: double.infinity, // ★ 버튼 폭도 최대폭으로 고정
+                    width: double.infinity,
                     child: DiscordLoginButton(),
                   ),
                 ],

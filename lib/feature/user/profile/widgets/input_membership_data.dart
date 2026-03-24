@@ -65,65 +65,71 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
     final notifier = ref.read(membershipProvider.notifier);
     return SizedBox(
       width: widget.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextFormField(
-            controller: _uid1Controller,
-            decoration: InputDecoration(
-                labelText: 'UID1'
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextFormField(
+              controller: _uid1Controller,
+              decoration: InputDecoration(
+                  labelText: 'UID1'
+              ),
+              onChanged: (value) {
+                notifier.update(
+                  uid1: value,
+                );
+              },
             ),
-            onChanged: (value) {
-              notifier.update(
-                uid1: value,
-              );
-            },
-          ),
-          const SizedBox(height: ConstSize.mediumSpacing),
-          TextFormField(
-            controller: _uid2Controller,
-            decoration: InputDecoration(
-                labelText: 'UID2'
+            const SizedBox(height: ConstSize.mediumSpacing),
+            TextFormField(
+              controller: _uid2Controller,
+              decoration: InputDecoration(
+                  labelText: 'UID2'
+              ),
+              onChanged: (value) {
+                notifier.update(
+                  uid2: value,
+                );
+              },
             ),
-            onChanged: (value) {
-              notifier.update(
-                uid2: value,
-              );
-            },
-          ),
-          const SizedBox(height: ConstSize.mediumSpacing),
-          TextFormField(
-            controller: _guildController,
-            decoration: InputDecoration(
-              labelText: 'Guild',
-              contentPadding: ConstPadding.mediumPaddingAll,
+            const SizedBox(height: ConstSize.mediumSpacing),
+            TextFormField(
+              controller: _guildController,
+              decoration: InputDecoration(
+                labelText: 'Guild',
+                contentPadding: ConstPadding.mediumPaddingAll,
+              ),
+              onChanged: (value) {
+                notifier.update(
+                  guild: value,
+                );
+              },
             ),
-            onChanged: (value) {
-              notifier.update(
-                guild: value,
-              );
-            },
-          ),
-          const SizedBox(height: ConstSize.mediumSpacing),
-          ElevatedButton(
-            onPressed: _isLoading ? null : _onPressed,
-            child: _isLoading
-                ? SizedBox(
-              width: 18,
-              height: 18,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Theme.of(context).colorScheme.onPrimary,
+            const SizedBox(height: ConstSize.mediumSpacing),
+            ElevatedButton(
+              onPressed: _isLoading ? null : _onPressed,
+              child: _isLoading
+                  ? SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              )
+                  : Text(
+                "저장",
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
               ),
             )
-                : Text(
-                  "저장",
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
-                ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
