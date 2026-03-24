@@ -120,6 +120,7 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
     return SizedBox(
       width: widget.width,
       child: Container(
+        padding: ConstPadding.largePaddingAll,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
