@@ -95,10 +95,11 @@ class _EditableCellState extends State<DBDataCell> {
           height: widget.rowHeight,
           color: bgColor,
           padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(value)
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(value),
           ),
-        ),
+        )
       );
     }
   }
