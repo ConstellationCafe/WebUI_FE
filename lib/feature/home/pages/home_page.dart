@@ -90,7 +90,7 @@ class HomePage extends ConsumerWidget {
                                   builder: (context, constraints) {
                                     // "화면보다 작으면 가운데 / 크면 위 + 스크롤"을 확실히 만들려면
                                     // 스크롤 child를 최소높이=viewport로 만들고,
-                                    // 그 안에서 Alignment.center로 정렬해야 합니다.
+                                    // 그 안에서 Alignment.center로 정렬
                                     return SingleChildScrollView(
                                       child: ConstrainedBox(
                                         constraints: BoxConstraints(
@@ -105,6 +105,7 @@ class HomePage extends ConsumerWidget {
                                   },
                                 ),
                               ),
+                              const SizedBox(height: ConstPadding.tinyPadding),
                             ],
                           ),
                         ),
