@@ -66,6 +66,7 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
     return SizedBox(
       width: widget.width,
       child: Container(
+        padding: ConstPadding.largePaddingAll,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -82,6 +83,7 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
           children: [
             TextFormField(
               controller: _uid1Controller,
+              cursorColor: Colors.black,
               decoration: InputDecoration(
                   labelText: 'UID1'
               ),
@@ -94,6 +96,7 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
             const SizedBox(height: ConstSize.mediumSpacing),
             TextFormField(
               controller: _uid2Controller,
+              cursorColor: Colors.black,
               decoration: InputDecoration(
                   labelText: 'UID2'
               ),
@@ -106,6 +109,7 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
             const SizedBox(height: ConstSize.mediumSpacing),
             TextFormField(
               controller: _guildController,
+              cursorColor: Colors.black,
               decoration: InputDecoration(
                 labelText: 'Guild',
                 contentPadding: ConstPadding.mediumPaddingAll,
