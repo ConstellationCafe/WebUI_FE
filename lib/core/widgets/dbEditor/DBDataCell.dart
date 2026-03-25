@@ -67,6 +67,16 @@ class _EditableCellState extends State<DBDataCell> {
         child: TextFormField(
           controller: _controller,
           autofocus: true,
+          cursorColor: Colors.black,
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(horizontal: 4.0),
+          ),
           onChanged: (value) {
             widget.controller.model[widget.colIndex][widget.rowIndex] = value;
           },
