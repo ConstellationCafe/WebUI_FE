@@ -64,22 +64,24 @@ class _EditableCellState extends State<DBDataCell> {
         height: widget.rowHeight,
         color: bgColor,
         padding: const EdgeInsets.all(4.0),
-        child: TextFormField(
-          controller: _controller,
-          autofocus: true,
-          cursorColor: Colors.black,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            isDense: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          ),
-          onChanged: (value) {
-            widget.controller.model[widget.colIndex][widget.rowIndex] = value;
-          },
+        child: Center(
+          child: TextFormField(
+            controller: _controller,
+            autofocus: true,
+            cursorColor: Colors.black,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 4.0),
+            ),
+            onChanged: (value) {
+              widget.controller.model[widget.colIndex][widget.rowIndex] = value;
+            },
+          )
         ),
       );
     } else {
@@ -93,7 +95,9 @@ class _EditableCellState extends State<DBDataCell> {
           height: widget.rowHeight,
           color: bgColor,
           padding: const EdgeInsets.all(8.0),
-          child: Text(value),
+          child: Center(
+            child: Text(value)
+          ),
         ),
       );
     }
