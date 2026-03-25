@@ -4,16 +4,13 @@ import 'package:constellation_cafe/core/network/discordBot/socket/Interface.dart
 import 'package:constellation_cafe/data/model/request/SocketModel.dart';
 
 class SocketClient extends SocketInterface {
-  static const String routerUrl = String.fromEnvironment('ROUTE_URI'); // https://constellationcafe.p-e.kr/route/
+  static const String routerUrl = "https://constellationcafe.p-e.kr/route/"; // https://constellationcafe.p-e.kr/route/
   static const int _timeout = 10;
 
   @override
   Future<Map<String, dynamic>> send(SocketModel model) async {
     try {
       final url = Uri.parse(routerUrl);
-      // 연결 테스트를 위한 로그
-      print("요청 URL: $url");
-      print("요청 데이터: ${json.encode(model.toJson())}");
       final response = await http.post(
         url,
         headers: {
@@ -26,12 +23,10 @@ class SocketClient extends SocketInterface {
           throw Exception('요청 시간이 초과되었습니다.');
         },
       );
-      print("응답 상태 코드: ${response.statusCode}");
 
       // HTTP 상태 코드 확인
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        print("frontend: $responseData");
         return responseData;
       } else {
         // 서버에서 에러 응답을 보낸 경우
