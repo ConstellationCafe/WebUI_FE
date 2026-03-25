@@ -136,88 +136,97 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Version 드롭다운
-            DropdownButtonFormField<GameVersionType>(
-              value: _selectedVersion,
-              items: GameVersionType.values
-                  .map((version) => DropdownMenuItem(
-                value: version,
-                child: Text(version.typeToString()),
-              ))
-                  .toList(),
-              onChanged: _onVersionChanged,
-              decoration: InputDecoration(
-                labelText: 'version',
-                contentPadding: ConstPadding.bigPaddingAll,
+            SizedBox(
+              height: 40,
+              child: DropdownButtonFormField<GameVersionType>(
+                initialValue: _selectedVersion,
+                isExpanded: true,
+                items: GameVersionType.values
+                    .map((version) => DropdownMenuItem(
+                  value: version,
+                  child: Text(version.typeToString()),
+                ))
+                    .toList(),
+                onChanged: _onVersionChanged,
+                decoration: InputDecoration(
+                  labelText: 'version',
+                ),
+                style: const TextStyle(fontSize: ConstSize.bigTextSize),
               ),
-              style: const TextStyle(fontSize: ConstSize.bigTextSize),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: ConstSize.mediumHeight),
 
             // Mode 드롭다운
-            DropdownButtonFormField<FriendlyMatchModeType>(
-              value: _selectedMode,
-              items: _getCurrentModeList
-                  .map((mode) => DropdownMenuItem(
-                value: mode,
-                child: Text(
-                  mode.typeToString(),
+            SizedBox(
+              height: 40,
+              child: DropdownButtonFormField<FriendlyMatchModeType>(
+                initialValue: _selectedMode,
+                items: _getCurrentModeList.map((mode) =>
+                    DropdownMenuItem(
+                      value: mode,
+                      child: Text(
+                        mode.typeToString(),
+                      ),
+                    )).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedMode = value;
+                      notifier.update(mode: _selectedMode.typeToString());
+                    });
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'mode',
                 ),
-              ))
-                  .toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedMode = value;
-                    notifier.update(mode: _selectedMode.typeToString());
-                  });
-                }
-              },
-              decoration: InputDecoration(
-                labelText: 'mode',
-                contentPadding: ConstPadding.bigPaddingAll,
-              ),
-              style: const TextStyle(fontSize: ConstSize.bigTextSize),
+                style: const TextStyle(fontSize: ConstSize.bigTextSize),
+              )
             ),
             const SizedBox(height: ConstSize.mediumHeight),
 
             // Platform 드롭다운
-            DropdownButtonFormField<FriendlyMatchPlatformType>(
-              value: _selectedPlatform,
-              items: _getCurrentPlatformList
-                  .map((platform) => DropdownMenuItem(
-                value: platform,
-                child: Text(
-                  platform.typeToString(),
+            SizedBox(
+              height: 40,
+              child: DropdownButtonFormField<FriendlyMatchPlatformType>(
+                initialValue: _selectedPlatform,
+                items: _getCurrentPlatformList.map((platform) =>
+                    DropdownMenuItem(
+                      value: platform,
+                      child: Text(
+                        platform.typeToString(),
+                      ),
+                    )).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedPlatform = value;
+                      notifier.update(platform: _selectedPlatform.typeToString());
+                    });
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'BoN',
                 ),
-              ))
-                  .toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedPlatform = value;
-                    notifier.update(platform: _selectedPlatform.typeToString());
-                  });
-                }
-              },
-              decoration: InputDecoration(
-                labelText: 'BoN',
-                contentPadding: ConstPadding.bigPaddingAll,
-              ),
-              style: const TextStyle(fontSize: ConstSize.bigTextSize),
+                style: const TextStyle(fontSize: ConstSize.bigTextSize),
+              )
             ),
             const SizedBox(height: ConstSize.mediumHeight),
 
             // Room 텍스트 입력
-            TextFormField(
-              controller: _roomController,
-              decoration: InputDecoration(
-                  labelText: 'Room'
-              ),
-              onChanged: (value) {
-                notifier.update(
-                  roomNumber: value,
-                );
-              },
+            SizedBox(
+              height: 40,
+              child: TextFormField(
+                controller: _roomController,
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                    labelText: 'Room',
+                ),
+                onChanged: (value) {
+                  notifier.update(
+                    roomNumber: value,
+                  );
+                },
+              )
             ),
             const SizedBox(height: ConstSize.mediumHeight),
 
@@ -225,9 +234,9 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
             TextFormField(
               controller: _messageController,
               maxLines: 3,
+              cursorColor: Colors.black,
               decoration: InputDecoration(
                 labelText: 'Message',
-                contentPadding: ConstPadding.bigPaddingAll,
               ),
               onChanged: (value) {
                 notifier.update(

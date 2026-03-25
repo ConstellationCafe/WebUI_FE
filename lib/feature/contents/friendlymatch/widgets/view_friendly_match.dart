@@ -70,19 +70,19 @@ class _ViewFriendlyMatchState extends ConsumerState<ViewFriendlyMatch> {
                   )
                 ],
               ),
-              Text("version",
+              Text("Version",
                   style: TextStyle(
                     fontWeight: FontWeight.bold, // 볼드체
                   )
               ),
               Text(state.version),
-              Text("mode",
+              Text("Mode",
                   style: TextStyle(
                     fontWeight: FontWeight.bold, // 볼드체
                   )
               ),
               Text(state.mode),
-              Text("platform",
+              Text("Platform",
                   style: TextStyle(
                     fontWeight: FontWeight.bold, // 볼드체
                   )
