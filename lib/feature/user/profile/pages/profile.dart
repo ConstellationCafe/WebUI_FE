@@ -30,8 +30,12 @@ class _ProfileState extends ConsumerState<Profile> {
       error: (_, __) => PageLoading(),
       data: (isLoggedIn) {
         if (!isLoggedIn) return const SizedBox.shrink();
-        
+
         final state = ref.watch(membershipProvider);
+        ///
+        final notifier = ref.watch(membershipProvider.notifier);
+        notifier.initialize();
+        ///
         if (state.isLoading) {
           return PageLoading();
         }
