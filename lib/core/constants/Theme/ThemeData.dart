@@ -130,12 +130,12 @@ class CustomTheme {
     // 입력 위젯 테마
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Color(0xFFE0E0E0), // 더 명확한 배경색
+      fillColor: Color(0xFFE0E0E0),
       labelStyle: TextStyle(color: secondaryColor),
-      hintStyle: TextStyle(color: Colors.grey[600]),
+      hintStyle: TextStyle(color: Color(0xFF757575)), // Colors.grey[600]과 유사
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8), // 8의 배수
-        borderSide: BorderSide(color: Colors.grey[400]!),
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Color(0xFF9E9E9E)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
