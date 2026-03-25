@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/feature/auth/login/widgets/login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,84 +9,21 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final screenW = MediaQuery.sizeOf(context).width;
-
-    const cardHPadding = 36.0;
-    const cardVPadding = 28.0;
-
-    final outerMargin = screenW < 500 ? 16.0 : 0.0;
-    final maxCardWidth = 400.0;
-
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: outerMargin),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxCardWidth),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: cardHPadding,
-                vertical: cardVPadding,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 20,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Row가 Column 폭(=DiscordLoginButton 폭)과 동일하게 되도록
-                  SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'assets/icons/main_icon.jpg',
-                            width: 52,
-                            height: 52,
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.high,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            "섀버 별자리 Cafe",
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.3,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 버튼도 같은 폭(=Column 폭)으로
-                  const SizedBox(
-                    width: double.infinity,
-                    child: DiscordLoginButton(),
-                  ),
-                ],
-              ),
-            ),
-          ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFf5f7fa),
+                Color(0xFFc3cfe2),
+              ],
+            )
         ),
+        child: Center(
+          child: LoginWidget(),
+        )
       ),
     );
   }
