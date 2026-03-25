@@ -1,6 +1,6 @@
 
 import 'package:constellation_cafe/core/network/auth/Interface.dart';
-import 'package:constellation_cafe/domain/Login/Method/LoginMethod.dart';
+import 'package:constellation_cafe/domain/login/method/LoginMethod.dart';
 import 'package:constellation_cafe/data/model/response/backend/ApiResponse.dart';
 
 class Login {
