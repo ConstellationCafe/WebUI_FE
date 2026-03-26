@@ -1,4 +1,5 @@
 // flutter
+import 'package:constellation_cafe/feature/contents/pointlog/pages/view_point_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -62,6 +63,11 @@ GoRouter router(Ref ref) {
           GoRoute(
             path: "/content",
             pageBuilder: (context, state) => _noAnim(state, const ContentList()),
+          ),
+          // 이건 /profile 의 회원증에서 PointLogButton 눌러도 이동
+          GoRoute(
+            path: "/point_log",
+            pageBuilder: (context, state) => _noAnim(state, const ViewPointLog()),
           ),
         ],
       ),

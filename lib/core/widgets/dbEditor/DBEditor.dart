@@ -11,8 +11,13 @@ import 'EditorBar.dart';
 
 class DBEditor extends StatefulWidget {
   final RepositoryInterface repository;
+  final bool readonly;
 
-  const DBEditor({super.key, required this.repository});
+  const DBEditor({
+    super.key,
+    required this.repository,
+    this.readonly = false,
+  });
 
   @override
   State<DBEditor> createState() => _DBEditorState();
@@ -50,8 +55,10 @@ class _DBEditorState extends State<DBEditor> {
                 DBColumns(controller: controller),
                 SizedBox(height: ConstSize.mediumHeight),
                 Expanded(child: DBDataView(controller: controller)),
-                SizedBox(height: ConstSize.mediumHeight),
-                EditorBar(controller: controller),
+                if (widget.readonly==false)...[
+                  SizedBox(height: ConstSize.mediumHeight),
+                  EditorBar(controller: controller),
+                ]
               ],
             ),
           ),

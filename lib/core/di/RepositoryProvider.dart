@@ -6,6 +6,7 @@ import 'package:constellation_cafe/data/api/backend/repository/chatbot/LearningR
 import 'package:constellation_cafe/data/api/backend/repository/chatbot/MenuRepository.dart';
 import 'package:constellation_cafe/data/api/backend/repository/chatbot/MusicRepository.dart';
 import 'package:constellation_cafe/data/api/backend/repository/chatbot/ContentRepository.dart';
+import 'package:constellation_cafe/data/api/backend/repository/membership/PointRepository.dart';
 import 'DioProvider.dart';
 
 // Api
@@ -20,4 +21,7 @@ final musicRepositoryProvider = Provider<RepositoryInterface>(
 );
 final contentRepositoryProvider = Provider<RepositoryInterface>(
       (ref) => ContentRepository(dio: ref.watch(dioProvider)),
+);
+final pointRepositoryProvider = Provider<RepositoryInterface>(
+      (ref) => PointRepository(dio: ref.watch(dioProvider)),
 );

@@ -8,6 +8,8 @@ import '../state/notifier/membership_notifier.dart';
 // Const
 import 'package:constellation_cafe/core/constants/ConstPadding.dart';
 import 'package:constellation_cafe/core/constants/ConstSize.dart';
+// Widget
+import 'point_log_button.dart';
 
 class ViewMembershipCard extends ConsumerWidget {
   final double width;
@@ -158,12 +160,9 @@ class ViewMembershipCard extends ConsumerWidget {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("별자리 포인트", style: theme.textTheme.labelMedium),
-                    Text(state.coin, style: theme.textTheme.bodyMedium)
-                  ],
+                PointLogButton(
+                    state: state,
+                    theme: theme.textTheme
                 ),
                 SizedBox(width: ConstSize.mediumSpacing),
                 Column(
