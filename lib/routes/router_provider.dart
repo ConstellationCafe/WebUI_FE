@@ -18,6 +18,8 @@ import 'package:constellation_cafe/feature/contents/menu/pages/menu_list.dart';
 import 'package:constellation_cafe/feature/contents/music/pages/music_list.dart';
 import 'package:constellation_cafe/feature/contents/content/pages/content_list.dart';
 
+import 'package:constellation_cafe/core/widgets/loading/PageLoading.dart';
+
 import 'login_check_notifier.dart';
 
 part 'router_provider.g.dart';
@@ -72,6 +74,11 @@ GoRouter router(Ref ref) {
         ],
       ),
     ],
+    // GoRoute 에 없는 경로로 이동시 / 으로 리다이렉트
+    errorBuilder: (context, state) {
+      Future.microtask(() => context.go('/'));
+      return const PageLoading();
+    },
     redirect: (context, state) {
       final loc = state.matchedLocation;
       final isAtLoginPage = loc == "/login";
@@ -85,12 +92,10 @@ GoRouter router(Ref ref) {
       if (!isLoggedIn) {
         return isAtLoginPage ? null : "/login";
       }
-
       // 로그인 상태에서 /login 접근 시 홈으로 이동
       if (isAtLoginPage) {
         return "/";
       }
-
       return null;
     },
   );
