@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import './hold_painter.dart';
+
 class UsageStep {
   final GlobalKey key;
   final String message;
@@ -27,32 +31,55 @@ class _UsageState extends State<Usage> {
 
   @override
   void initState() {
+    print("initState");
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("addPostFrameCallback");
       _checkAndShow();
     });
   }
 
   Future<void> _checkAndShow() async {
-    final prefs = await SharedPreferences.getInstance();
-    final shown = prefs.getBool(widget.usageKey) ?? false;
-
-    if (!shown) {
-      _showStep();
-    }
+    print("_checkAndShow");
+    _showStep();
+    // final prefs = await SharedPreferences.getInstance();
+    // final shown = prefs.getBool(widget.usageKey) ?? false;
+    //
+    // if (!shown) {
+    //   _showStep();
+    // }
   }
 
   void _showStep() {
+    if (_overlayEntry != null) return;
+
     final step = widget.steps[currentStep];
 
-    final renderBox =
-        step.key.currentContext?.findRenderObject() as RenderBox?;
+    print("a");
+    final targetContext = step.key.currentContext;
+    if (targetContext == null) {
+      Future.delayed(const Duration(milliseconds: 100), _showStep);
+      return;
+    }
 
-    if (renderBox == null) return;
+    print("b");
+    final renderBox = targetContext.findRenderObject() as RenderBox?;
+    if (renderBox == null || !renderBox.hasSize) {
+      Future.delayed(const Duration(milliseconds: 100), _showStep);
+      return;
+    }
 
+    print("c");
     final size = renderBox.size;
-    final offset = renderBox.localToGlobal(Offset.zero);
 
+    final overlay = Overlay.of(this.context, rootOverlay: true);
+
+    final offset = renderBox.localToGlobal(
+      Offset.zero,
+      ancestor: overlay.context.findRenderObject(),
+    );
+
+    print("d");
     _overlayEntry = OverlayEntry(
       builder: (context) => GestureDetector(
         onTap: _nextStep,
@@ -61,8 +88,8 @@ class _UsageState extends State<Usage> {
           child: Stack(
             children: [
               CustomPaint(
-                size: MediaQuery.of(context).size,
-                painter: _HolePainter(
+                size: overlay.context.size ?? MediaQuery.of(context).size,
+                painter: HolePainter(
                   rect: Rect.fromLTWH(
                     offset.dx,
                     offset.dy,
@@ -71,7 +98,6 @@ class _UsageState extends State<Usage> {
                   ),
                 ),
               ),
-
               Positioned(
                 top: offset.dy + size.height + 16,
                 left: 24,
@@ -84,7 +110,8 @@ class _UsageState extends State<Usage> {
       ),
     );
 
-    Overlay.of(context).insert(_overlayEntry!);
+    print("insert");
+    overlay.insert(_overlayEntry!);
   }
 
   Widget _messageBox(String message) {
@@ -118,7 +145,7 @@ class _UsageState extends State<Usage> {
       _showStep();
     } else {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(widget.usageKey, true);
+      // await prefs.setBool(widget.usageKey, true);
     }
   }
 

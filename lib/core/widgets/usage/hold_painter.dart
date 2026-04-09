@@ -1,7 +1,9 @@
-class _HolePainter extends CustomPainter {
+import 'package:flutter/material.dart';
+
+class HolePainter extends CustomPainter {
   final Rect rect;
 
-  _HolePainter({required this.rect});
+  HolePainter({required this.rect});
 
   @override
   void paint(Canvas canvas, Size size) {

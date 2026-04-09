@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import '../../../../core/widgets/usage/usage.dart';
+
 class ProfileUsage {
   static List<UsageStep> steps({
     required GlobalKey membershipCardKey,
