@@ -19,7 +19,11 @@ class AdminCategory extends ConsumerWidget {
           ),
           SizedBox(height: ConstSize.tinyWidth),
           MenuContainer(
-            iconImage: Image.asset("assets/icons/category/admin/point.png"),
+            iconImage: Image.asset(
+              "assets/icons/category/admin/point.png",
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high
+            ),
             menuName: "포인트 관리",
             callbackUrl: "/point",
           ),
