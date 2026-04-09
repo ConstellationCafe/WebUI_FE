@@ -8,6 +8,8 @@ import '../state/notifier/membership_notifier.dart';
 // Const
 import 'package:constellation_cafe/core/constants/ConstPadding.dart';
 import 'package:constellation_cafe/core/constants/ConstSize.dart';
+// Widget
+import 'point_log_button.dart';
 
 class ViewMembershipCard extends ConsumerWidget {
   final double width;
@@ -131,34 +133,25 @@ class ViewMembershipCard extends ConsumerWidget {
             // 대회 경력
             Column(
               mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (state.s1Data?.isNotEmpty ?? false) ... [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("s1 경력", style: theme.textTheme.labelMedium),
-                      Text(
-                          state.s1Data!,
-                          style: theme.textTheme.bodyMedium,
-                          softWrap: true,
-                          overflow: TextOverflow.visible
-                      )
-                    ],
+                  Text("s1 경력", style: theme.textTheme.labelMedium),
+                  Text(
+                      state.s1Data!,
+                      style: theme.textTheme.bodyMedium,
+                      softWrap: true,
+                      overflow: TextOverflow.visible
                   )
                 ],
                 if (state.s2Data?.isNotEmpty ?? false) ... [
                   SizedBox(height: ConstSize.mediumSpacing),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("s2 경력", style: theme.textTheme.labelMedium),
-                      Text(
-                          state.s2Data!,
-                          style: theme.textTheme.bodyMedium,
-                          softWrap: true,
-                          overflow: TextOverflow.visible
-                      )
-                    ],
+                  Text("s2 경력", style: theme.textTheme.labelMedium),
+                  Text(
+                      state.s2Data!,
+                      style: theme.textTheme.bodyMedium,
+                      softWrap: true,
+                      overflow: TextOverflow.visible
                   )
                 ],
               ],
@@ -167,12 +160,9 @@ class ViewMembershipCard extends ConsumerWidget {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("별자리 포인트", style: theme.textTheme.labelMedium),
-                    Text(state.coin, style: theme.textTheme.bodyMedium)
-                  ],
+                PointLogButton(
+                    state: state,
+                    theme: theme.textTheme
                 ),
                 SizedBox(width: ConstSize.mediumSpacing),
                 Column(

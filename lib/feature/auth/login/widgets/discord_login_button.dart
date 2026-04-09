@@ -19,7 +19,7 @@ class DiscordLoginButton extends ConsumerWidget {
     final isDesktop = deviceType == "wideWidth" || deviceType == "laptopWidth";
 
     return SizedBox(
-      width: isDesktop ? 200 : double.infinity,
+      width: isDesktop ? 160 : double.infinity,
       height: 40,
       child: ElevatedButton.icon(
         onPressed: () => loginApi.discordLogin(),

@@ -20,31 +20,48 @@ class UserCategory extends ConsumerWidget {
           ),
           SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
-            iconImage: Image.asset("assets/icons/category/user/friendly_match.png"),
+            iconImage: Image.asset(
+              "assets/icons/category/user/friendly_match.png",
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
+            ),
             menuName: "친선전",
             callbackUrl: "/friendly_match",
           ),
           SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
-            iconImage: Image.asset("assets/icons/category/user/learning.png"),
+            iconImage: Image.asset(
+              "assets/icons/category/user/learning.png",
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
+            ),
             menuName: "가르치기",
             callbackUrl: "/learning",
           ),
           SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
-            iconImage: Image.asset("assets/icons/category/user/recommend_menu.png"),
+            iconImage: Image.asset(
+              "assets/icons/category/user/recommend_menu.png",
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,),
             menuName: "메뉴추천",
             callbackUrl: "/menu",
           ),
           SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
-            iconImage: Image.asset("assets/icons/category/user/recommend_music.png"),
+            iconImage: Image.asset(
+              "assets/icons/category/user/recommend_music.png",
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,),
             menuName: "노래추천",
             callbackUrl: "/music",
           ),
           SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
-            iconImage: Image.asset("assets/icons/category/user/recommend_content.png"),
+            iconImage: Image.asset(
+              "assets/icons/category/user/recommend_content.png",
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,),
             menuName: "놀이추천",
             callbackUrl: "/content",
           ),

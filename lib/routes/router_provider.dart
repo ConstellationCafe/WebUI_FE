@@ -1,4 +1,5 @@
 // flutter
+import 'package:constellation_cafe/feature/contents/pointlog/pages/view_point_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,6 +17,8 @@ import 'package:constellation_cafe/feature/contents/learning/pages/learning_list
 import 'package:constellation_cafe/feature/contents/menu/pages/menu_list.dart';
 import 'package:constellation_cafe/feature/contents/music/pages/music_list.dart';
 import 'package:constellation_cafe/feature/contents/content/pages/content_list.dart';
+
+import 'package:constellation_cafe/core/widgets/loading/PageLoading.dart';
 
 import 'login_check_notifier.dart';
 
@@ -63,9 +66,19 @@ GoRouter router(Ref ref) {
             path: "/content",
             pageBuilder: (context, state) => _noAnim(state, const ContentList()),
           ),
+          // 이건 /profile 의 회원증에서 PointLogButton 눌러도 이동
+          GoRoute(
+            path: "/point_log",
+            pageBuilder: (context, state) => _noAnim(state, const ViewPointLog()),
+          ),
         ],
       ),
     ],
+    // GoRoute 에 없는 경로로 이동시 / 으로 리다이렉트
+    errorBuilder: (context, state) {
+      Future.microtask(() => context.go('/'));
+      return const PageLoading();
+    },
     redirect: (context, state) {
       final loc = state.matchedLocation;
       final isAtLoginPage = loc == "/login";
@@ -79,12 +92,10 @@ GoRouter router(Ref ref) {
       if (!isLoggedIn) {
         return isAtLoginPage ? null : "/login";
       }
-
       // 로그인 상태에서 /login 접근 시 홈으로 이동
       if (isAtLoginPage) {
         return "/";
       }
-
       return null;
     },
   );

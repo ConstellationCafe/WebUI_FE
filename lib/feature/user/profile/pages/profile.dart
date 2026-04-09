@@ -37,6 +37,10 @@ class _ProfileState extends ConsumerState<Profile> {
         if (!isLoggedIn) return const SizedBox.shrink();
 
         final state = ref.watch(membershipProvider);
+        // MEMO : 현재는 build시마다 initialize() 호출
+        final notifier = ref.watch(membershipProvider.notifier);
+        notifier.initialize();
+
         if (state.isLoading) {
           return PageLoading();
         }
