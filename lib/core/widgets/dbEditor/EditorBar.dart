@@ -10,9 +10,18 @@ import 'package:flutter/material.dart';
 class EditorBar extends StatelessWidget {
   final DBController controller;
 
+  final GlobalKey? addKey;
+  final GlobalKey? deleteKey;
+  final GlobalKey? editKey;
+  final GlobalKey? saveKey;
+
   const EditorBar({
     super.key,
-    required this.controller
+    required this.controller,
+    this.addKey,
+    this.deleteKey,
+    this.editKey,
+    this.saveKey,
   });
 
   @override
@@ -21,10 +30,22 @@ class EditorBar extends StatelessWidget {
       spacing: 8,        // 가로 간격
       runSpacing: 8,     // 세로 간격 (줄 바뀔 때)
       children: [
-        AddButton(controller: controller),
-        EditButton(controller: controller),
-        DeleteButton(controller: controller),
-        SaveButton(controller: controller),
+        AddButton(
+            key: addKey,
+            controller: controller
+        ),
+        EditButton(
+            key: deleteKey,
+            controller: controller
+        ),
+        DeleteButton(
+            key: editKey,
+            controller: controller
+        ),
+        SaveButton(
+            key: saveKey,
+            controller: controller
+        ),
       ],
     );
   }

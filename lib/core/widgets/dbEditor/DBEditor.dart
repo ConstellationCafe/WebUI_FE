@@ -4,10 +4,12 @@ import 'package:constellation_cafe/core/constants/ConstSize.dart';
 import 'package:constellation_cafe/data/api/backend/repository/RepositoryInterface.dart';
 import 'package:constellation_cafe/data/model/entity/EntityInterface.dart';
 import 'package:constellation_cafe/data/model/dbEditor/DBController.dart';
+import '../usage/usage.dart';
 import 'DBColumns.dart';
 import 'DBDataView.dart';
 // import 'DBSearch.dart';
 import 'EditorBar.dart';
+import 'editor_usage.dart';
 
 class DBEditor extends StatefulWidget {
   final RepositoryInterface repository;
@@ -26,44 +28,74 @@ class DBEditor extends StatefulWidget {
 class _DBEditorState extends State<DBEditor> {
   DBController? _controller;
 
-  Widget createDBEditor(DBController controller) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final maxH = constraints.maxHeight.isFinite ? constraints.maxHeight : 500.0;
-        final editorH = maxH < 500 ? maxH : 500.0;
+  final GlobalKey columnKey = GlobalKey();
+  final GlobalKey viewKey = GlobalKey();
+  final GlobalKey addKey = GlobalKey();
+  final GlobalKey deleteKey = GlobalKey();
+  final GlobalKey editKey = GlobalKey();
+  final GlobalKey saveKey = GlobalKey();
 
-        return SizedBox(
-          width: 500,
-          height: editorH,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              // border: Border.all(color: Colors.black, width: 2),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xFF000D27).withOpacity(0.12),  // rgba(0, 13, 39, 0.12)
-                  blurRadius: 24,                              // 24px 흐림
-                  offset: Offset(0, 8),                        // 0px x, 8px y
+  Widget createDBEditor(DBController controller) {
+    return Usage(
+        usageKey: EditorUsage.key,
+        steps: EditorUsage.steps(
+          columnKey: columnKey,
+          viewKey: viewKey,
+          addKey: addKey,
+          deleteKey: deleteKey,
+          editKey: editKey,
+          saveKey: saveKey,
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final maxH = constraints.maxHeight.isFinite ? constraints.maxHeight : 500.0;
+            final editorH = maxH < 500 ? maxH : 500.0;
+
+            return SizedBox(
+              width: 500,
+              height: editorH,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // border: Border.all(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF000D27).withOpacity(0.12),  // rgba(0, 13, 39, 0.12)
+                      blurRadius: 24,                              // 24px 흐림
+                      offset: Offset(0, 8),                        // 0px x, 8px y
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            padding: const EdgeInsets.all(ConstSize.mediumWidth),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                DBColumns(controller: controller),
-                SizedBox(height: ConstSize.mediumHeight),
-                Expanded(child: DBDataView(controller: controller)),
-                if (widget.readonly==false)...[
-                  SizedBox(height: ConstSize.mediumHeight),
-                  EditorBar(controller: controller),
-                ]
-              ],
-            ),
-          ),
-        );
-      },
+                padding: const EdgeInsets.all(ConstSize.mediumWidth),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    DBColumns(
+                        key: columnKey,
+                        controller: controller
+                    ),
+                    SizedBox(height: ConstSize.mediumHeight),
+                    Expanded(child: DBDataView(
+                        key: viewKey,
+                        controller: controller
+                    )),
+                    if (widget.readonly==false)...[
+                      SizedBox(height: ConstSize.mediumHeight),
+                      EditorBar(
+                          addKey: addKey,
+                          deleteKey: deleteKey,
+                          editKey: editKey,
+                          saveKey: saveKey,
+                          controller: controller
+                      ),
+                    ]
+                  ],
+                ),
+              ),
+            );
+          },
+        )
     );
   }
 
