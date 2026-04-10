@@ -4,17 +4,17 @@ import '../../../../core/widgets/usage/usage.dart';
 
 class ProfileUsage {
   static List<UsageStep> steps({
-    required GlobalKey membershipCardKey,
+    required GlobalKey pointLogButtonKey,
     required GlobalKey inputDataKey,
   }) {
     return [
       UsageStep(
-        key: membershipCardKey,
-        message: '여기서 내 멤버십 정보를 확인할 수 있어요.',
+        key: inputDataKey,
+        message: '여기에서 변경할 값을 입력하고 저장 버튼을 누르면 수정 할 수 있어요',
       ),
       UsageStep(
-        key: inputDataKey,
-        message: '여기에서 멤버십 정보를 수정할 수 있어요.',
+        key: pointLogButtonKey,
+        message: '또한 해당 버튼을 누르면 포인트 입출 내역를 확인 할 수 있어요',
       ),
     ];
   }

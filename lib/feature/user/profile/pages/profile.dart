@@ -24,6 +24,7 @@ class _ProfileState extends ConsumerState<Profile> {
   final double childWidgetWidth = 400;
 
   final GlobalKey membershipCardKey = GlobalKey();
+  final GlobalKey pointLogButtonKey = GlobalKey();
   final GlobalKey inputDataKey = GlobalKey();
 
   @override
@@ -45,11 +46,10 @@ class _ProfileState extends ConsumerState<Profile> {
           return PageLoading();
         }
 
-        print("Usage call");
         return Usage(
           usageKey: ProfileUsage.key,
           steps: ProfileUsage.steps(
-            membershipCardKey: membershipCardKey,
+            pointLogButtonKey: pointLogButtonKey,
             inputDataKey: inputDataKey,
           ),
           child: LayoutBuilder(
@@ -66,6 +66,7 @@ class _ProfileState extends ConsumerState<Profile> {
                       ViewMembershipCard(
                         key: membershipCardKey,
                         width: childWidgetWidth,
+                        pointLogButtonKey: pointLogButtonKey
                       ),
                       SizedBox(height: ConstSize.bigHeight),
                       InputMembershipData(
@@ -83,6 +84,7 @@ class _ProfileState extends ConsumerState<Profile> {
                       ViewMembershipCard(
                         key: membershipCardKey,
                         width: childWidgetWidth,
+                        pointLogButtonKey: pointLogButtonKey
                       ),
                       SizedBox(width: ConstSize.bigWidth),
                       InputMembershipData(
