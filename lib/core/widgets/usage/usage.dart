@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './hold_painter.dart';
 import './usage_content.dart';
+import '../../routes/router_provider.dart'; // RouteObserver 임포트
 
 class UsageStep {
   final GlobalKey key;
@@ -26,7 +27,7 @@ class Usage extends StatefulWidget {
   State<Usage> createState() => _UsageState();
 }
 
-class _UsageState extends State<Usage> {
+class _UsageState extends State<Usage> with RouteAware {
   OverlayEntry? _overlayEntry;
   int currentStep = 0;
 
@@ -43,6 +44,12 @@ class _UsageState extends State<Usage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    
+    // RouteObserver 구독
+    final route = ModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
 
     // 🔥 route / MediaQuery 변경 대응
     if (_overlayEntry != null) {
@@ -72,6 +79,29 @@ class _UsageState extends State<Usage> {
     // if (!shown) {
     //   _showStep();
     // }
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+    super.dispose();
+  }
+
+  @override
+  void didPushNext() {
+    // 새로운 화면이 위에 푸시될 때 오버레이 숨기기
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  @override
+  void didPopNext() {
+    // 위에 있던 화면이 팝되고 다시 이 화면이 보일 때 오버레이 복구
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showStep();
+    });
   }
 
   void _rebuildOverlay() {

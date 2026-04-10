@@ -24,12 +24,15 @@ import 'login_check_notifier.dart';
 
 part 'router_provider.g.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 @riverpod
 GoRouter router(Ref ref) {
   final loginCheck = ref.watch(loginCheckProvider);
 
   return GoRouter(
     initialLocation: '/',
+    observers: [routeObserver],
     routes: [
       GoRoute(
         path: "/login",
