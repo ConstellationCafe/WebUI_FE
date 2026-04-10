@@ -13,10 +13,12 @@ import 'point_log_button.dart';
 
 class ViewMembershipCard extends ConsumerWidget {
   final double width;
+  final GlobalKey? pointLogButtonKey;
 
   const ViewMembershipCard({
     super.key,
-    required this.width
+    required this.width,
+    this.pointLogButtonKey
   });
 
   @override
@@ -161,6 +163,7 @@ class ViewMembershipCard extends ConsumerWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 PointLogButton(
+                    key: pointLogButtonKey,
                     state: state,
                     theme: theme.textTheme
                 ),

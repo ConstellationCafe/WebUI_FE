@@ -8,10 +8,12 @@ import 'submit_button.dart';
 
 class ViewFriendlyMatch extends ConsumerStatefulWidget {
   final double width;
+  final GlobalKey? submitKey;
 
   const ViewFriendlyMatch({
     super.key,
-    required this.width
+    required this.width,
+    this.submitKey
   });
 
   @override
@@ -113,7 +115,9 @@ class _ViewFriendlyMatchState extends ConsumerState<ViewFriendlyMatch> {
                     ),
                   ),
                   SizedBox(width: ConstSize.bigWidth),
-                  SubmitButton()
+                  SubmitButton(
+                    key: widget.submitKey,
+                  )
                 ],
               )
             ],
