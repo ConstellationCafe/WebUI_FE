@@ -21,7 +21,12 @@ class HolePainter extends CustomPainter {
     canvas.drawRect(layer, backgroundPaint);
 
     // 구멍 뚫기 (라운드 처리)
-    final rrect = RRect.fromRectAndRadius(rect.inflate(8), Radius.circular(12));
+    final centerX = size.width / 2 - rect.width / 2;
+    final centerY = size.height / 2 - rect.height / 2;
+
+    final adjustedRect = Rect.fromLTWH(centerX, centerY, rect.width, rect.height);
+
+    final rrect = RRect.fromRectAndRadius(adjustedRect.inflate(8), Radius.circular(12));
     canvas.drawRRect(rrect, clearPaint);
 
     canvas.restore();

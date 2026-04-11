@@ -31,7 +31,7 @@ class _UsageState extends State<Usage> with RouteAware {
   OverlayEntry? _overlayEntry;
   int currentStep = 0;
 
-  Size? _lastSize; // 👈 화면 크기 추적
+  Size? _lastSize; // 화면 크기 추적
 
   @override
   void initState() {
@@ -91,14 +91,12 @@ class _UsageState extends State<Usage> with RouteAware {
 
   @override
   void didPushNext() {
-    // 새로운 화면이 위에 푸시될 때 오버레이 숨기기
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
 
   @override
   void didPopNext() {
-    // 위에 있던 화면이 팝되고 다시 이 화면이 보일 때 오버레이 복구
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showStep();
     });
@@ -129,8 +127,8 @@ class _UsageState extends State<Usage> with RouteAware {
       _showStep();
     } else {
       final prefs = await SharedPreferences.getInstance();
-      // await prefs.setBool(widget.usageKey, true);
-    }
+      // await prefs.setBool(widget.usageKey, true);    
+      }
   }
 
   void _showStep() {
@@ -140,7 +138,6 @@ class _UsageState extends State<Usage> with RouteAware {
 
     final targetContext = step.key.currentContext;
 
-    // 🔥 target 사라지면 overlay 종료
     if (targetContext == null) {
       return;
     }
@@ -183,7 +180,7 @@ class _UsageState extends State<Usage> with RouteAware {
               // 🔥 설명 UI (타겟 바로 아래)
               Positioned(
                 top: offset.dy + size.height + 12,
-                left: offset.dx,
+                left: (MediaQuery.of(context).size.width - size.width.clamp(200, 400)) / 2,
                 width: size.width.clamp(200, 400),
                 child: UsageContent(
                   message: step.message,
@@ -206,7 +203,6 @@ class _UsageState extends State<Usage> with RouteAware {
   Widget build(BuildContext context) {
     final currentSize = MediaQuery.of(context).size;
 
-    // 🔥 화면 크기 변경 감지
     if (_lastSize != currentSize) {
       _lastSize = currentSize;
 
