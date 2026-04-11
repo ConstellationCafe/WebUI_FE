@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../routes/router_provider.dart';
 import './hold_painter.dart';
 import './usage_content.dart';
-import '../../routes/router_provider.dart'; // RouteObserver 임포트
 
 class UsageStep {
   final GlobalKey key;
@@ -72,13 +72,12 @@ class _UsageState extends State<Usage> with RouteAware {
   }
 
   Future<void> _checkAndShow() async {
-    _showStep();
-    // final prefs = await SharedPreferences.getInstance();
-    // final shown = prefs.getBool(widget.usageKey) ?? false;
-    //
-    // if (!shown) {
-    //   _showStep();
-    // }
+    final prefs = await SharedPreferences.getInstance();
+    final shown = prefs.getBool(widget.usageKey) ?? false;
+
+    if (!shown) {
+      _showStep();
+    }
   }
 
   @override
@@ -129,7 +128,7 @@ class _UsageState extends State<Usage> with RouteAware {
       _showStep();
     } else {
       final prefs = await SharedPreferences.getInstance();
-      // await prefs.setBool(widget.usageKey, true);
+      await prefs.setBool(widget.usageKey, true);
     }
   }
 
