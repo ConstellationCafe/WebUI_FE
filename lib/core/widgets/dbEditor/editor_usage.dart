@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../usage/usage_step.dart';
 
-import 'package:constellation_cafe/core/widgets/usage/usage.dart';
 
 class EditorUsage {
   static List<UsageStep> steps({

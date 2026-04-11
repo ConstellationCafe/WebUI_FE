@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/widgets/usage/usage.dart';
+import '../../../../core/widgets/usage/usage_step.dart';
 
 class ProfileUsage {
   static List<UsageStep> steps({

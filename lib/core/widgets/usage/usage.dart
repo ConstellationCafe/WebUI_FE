@@ -1,15 +1,9 @@
+import 'package:constellation_cafe/core/widgets/usage/painter/hold_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../routes/router_provider.dart';
-import './hold_painter.dart';
 import './usage_content.dart';
-
-class UsageStep {
-  final GlobalKey key;
-  final String message;
-
-  UsageStep({required this.key, required this.message});
-}
+import 'usage_step.dart';
 
 class Usage extends StatefulWidget {
   final Widget child;
@@ -30,8 +24,10 @@ class Usage extends StatefulWidget {
 class _UsageState extends State<Usage> with RouteAware {
   OverlayEntry? _overlayEntry;
   int currentStep = 0;
+  Size? _lastSize;
 
-  Size? _lastSize; // 👈 화면 크기 추적
+  static const double _gap = 40;
+  static const double _contentHeight = 120.0;
 
   @override
   void initState() {
@@ -41,42 +37,29 @@ class _UsageState extends State<Usage> with RouteAware {
     });
   }
 
+  Future<void> _checkAndShow() async {
+    _showStep();
+    // final prefs = await SharedPreferences.getInstance();
+    // final shown = prefs.getBool(widget.usageKey) ?? false;
+    //
+    // if (!shown) {
+    //   _showStep();
+    // }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
-    // RouteObserver 구독
+
     final route = ModalRoute.of(context);
     if (route != null) {
       routeObserver.subscribe(this, route);
     }
 
-    // 🔥 route / MediaQuery 변경 대응
     if (_overlayEntry != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _rebuildOverlay();
       });
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant Usage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    // 🔥 widget rebuild 대응
-    if (_overlayEntry != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _rebuildOverlay();
-      });
-    }
-  }
-
-  Future<void> _checkAndShow() async {
-    final prefs = await SharedPreferences.getInstance();
-    final shown = prefs.getBool(widget.usageKey) ?? false;
-
-    if (!shown) {
-      _showStep();
     }
   }
 
@@ -90,14 +73,12 @@ class _UsageState extends State<Usage> with RouteAware {
 
   @override
   void didPushNext() {
-    // 새로운 화면이 위에 푸시될 때 오버레이 숨기기
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
 
   @override
   void didPopNext() {
-    // 위에 있던 화면이 팝되고 다시 이 화면이 보일 때 오버레이 복구
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showStep();
     });
@@ -112,11 +93,13 @@ class _UsageState extends State<Usage> with RouteAware {
   void _prevStep() {
     if (currentStep == 0) return;
 
+    currentStep--;
     _overlayEntry?.remove();
     _overlayEntry = null;
 
-    currentStep--;
-    _showStep();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showStep();
+    });
   }
 
   void _nextStep() async {
@@ -125,10 +108,12 @@ class _UsageState extends State<Usage> with RouteAware {
 
     if (currentStep < widget.steps.length - 1) {
       currentStep++;
-      _showStep();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showStep();
+      });
     } else {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(widget.usageKey, true);
+      // final prefs = await SharedPreferences.getInstance();
+      // await prefs.setBool(widget.usageKey, true);
     }
   }
 
@@ -136,76 +121,115 @@ class _UsageState extends State<Usage> with RouteAware {
     if (_overlayEntry != null) return;
 
     final step = widget.steps[currentStep];
-
     final targetContext = step.key.currentContext;
 
-    // 🔥 target 사라지면 overlay 종료
     if (targetContext == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showStep();
+      });
       return;
     }
 
     final renderBox = targetContext.findRenderObject() as RenderBox?;
+
     if (renderBox == null || !renderBox.hasSize) {
-      Future.delayed(const Duration(milliseconds: 100), _showStep);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showStep();
+      });
       return;
     }
 
     final size = renderBox.size;
-
-    final overlay = Overlay.of(this.context, rootOverlay: true);
+    final overlay = Overlay.of(context, rootOverlay: true);
 
     final offset = renderBox.localToGlobal(
       Offset.zero,
       ancestor: overlay.context.findRenderObject(),
     );
 
+    final screenSize = MediaQuery.of(context).size;
+    final padding = MediaQuery.of(context).padding;
+
+    // 🔥 위치 계산 (gap 적용)
+    double top = offset.dy + size.height + _gap;
+
+    if (top + _contentHeight > screenSize.height - padding.bottom) {
+      top = offset.dy - _contentHeight - _gap;
+    }
+
+    top = top.clamp(
+      padding.top + _gap,
+      screenSize.height - padding.bottom - _contentHeight - _gap, // 하단 여유 20 추가
+    );
+
+    double left = offset.dx;
+    const minWidth = 200.0;
+    const maxWidth = 400.0;
+
+    final width = size.width.clamp(minWidth, maxWidth);
+
+    left = left.clamp(
+      8.0,
+      screenSize.width - width - 8.0,
+    );
+
     _overlayEntry = OverlayEntry(
-      builder: (context) => GestureDetector(
-        onTap: _nextStep,
-        child: Material(
-          color: Colors.transparent,
-          child: Stack(
-            children: [
-              // 🔥 어두운 배경 + hole
-              CustomPaint(
-                size: overlay.context.size ?? MediaQuery.of(context).size,
-                painter: HolePainter(
-                  rect: Rect.fromLTWH(
-                    offset.dx,
-                    offset.dy,
-                    size.width,
-                    size.height,
+      builder: (context) => Material(
+        color: Colors.transparent,
+        child: Stack(
+          children: [
+            // 🔥 배경 터치 처리
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: _nextStep,
+                behavior: HitTestBehavior.opaque,
+                child: CustomPaint(
+                  size: overlay.context.size ?? screenSize,
+                  painter: HolePainter(
+                    rect: Rect.fromLTWH(
+                      offset.dx,
+                      offset.dy,
+                      size.width,
+                      size.height,
+                    ),
                   ),
                 ),
               ),
+            ),
 
-              // 🔥 설명 UI (타겟 바로 아래)
-              Positioned(
-                top: offset.dy + size.height + 12,
-                left: offset.dx,
-                width: size.width.clamp(200, 400),
-                child: UsageContent(
-                  message: step.message,
-                  onNext: _nextStep,
-                  onPrev: _prevStep,
-                  isLastStep: currentStep == widget.steps.length - 1,
-                  isFirstStep: currentStep == 0,
-                ),
+            // 🔥 설명 UI
+            Positioned(
+              top: top,
+              left: left,
+              width: width,
+              child: UsageContent(
+                message: step.message,
+                onNext: _nextStep,
+                onPrev: _prevStep,
+                isLastStep: currentStep == widget.steps.length - 1,
+                isFirstStep: currentStep == 0,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
 
     overlay.insert(_overlayEntry!);
+
+    // 🔥 overlay 먼저 띄우고 scroll
+    Scrollable.ensureVisible(
+      targetContext,
+      duration: const Duration(milliseconds: 300),
+      alignment: 0.5,
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final currentSize = MediaQuery.of(context).size;
 
-    // 🔥 화면 크기 변경 감지
     if (_lastSize != currentSize) {
       _lastSize = currentSize;
 
