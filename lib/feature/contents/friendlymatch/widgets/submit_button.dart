@@ -18,7 +18,7 @@ class _SubmitButtonState extends ConsumerState<SubmitButton> {
   bool _isLoading = false;
 
   FriendlyMatchTemplate toTemplate() {
-    final state = ref.read(friendlyMatchProvider); // ✅ read 사용
+    final state = ref.read(friendlyMatchProvider);
     return FriendlyMatchTemplate(
       version: state.version,
       mode: state.mode,

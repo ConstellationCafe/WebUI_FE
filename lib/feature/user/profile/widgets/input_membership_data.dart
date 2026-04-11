@@ -125,19 +125,19 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
               onPressed: _isLoading ? null : _onPressed,
               child: _isLoading
                   ? SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              )
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  )
                   : Text(
-                "저장",
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                ),
-              ),
+                    "저장",
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
+                  ),
             )
           ],
         ),
