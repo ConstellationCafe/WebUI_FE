@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/widgets/usage/usage_step.dart';
+import 'package:constellation_cafe/shared/widgets/usage/usage_step.dart';
 
 class ProfileUsage {
   static List<UsageStep> steps({

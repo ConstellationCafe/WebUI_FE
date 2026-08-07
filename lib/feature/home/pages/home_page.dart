@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/ConstPadding.dart';
 import '../../../core/constants/ScreenWidth/ScreenWidth.dart';
-import '../../../core/widgets/MenuBarArea/MainMenuBar.dart';
-import '../../../core/widgets/appbar/MainAppBar.dart';
-import '../../../routes/login_check_notifier.dart';
+import 'package:constellation_cafe/shared/widgets/MenuBarArea/MainMenuBar.dart';
+import 'package:constellation_cafe/shared/widgets/appbar/MainAppBar.dart';
+import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 import '../widgets/profile_menu.dart';
 
 class HomePage extends ConsumerWidget {

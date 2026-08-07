@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/ScreenWidth/ScreenWidth.dart';
 import '../../../../core/constants/ConstSize.dart';
-import '../../../../core/widgets/loading/PageLoading.dart';
-import '../../../../core/widgets/usage/usage.dart';
-import '../../../../routes/login_check_notifier.dart';
+import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
+import 'package:constellation_cafe/shared/widgets/usage/usage.dart';
+import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 import '../state/notifier/membership_notifier.dart';
 import '../widgets/input_membership_data.dart';
 import '../widgets/profile_usage.dart';

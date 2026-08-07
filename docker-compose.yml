@@ -1,0 +1,16 @@
+services:
+  services:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CLIENT_ID: ${CLIENT_ID}
+        REDIRECT_URI: ${REDIRECT_URI}
+        ROUTE_URI: ${ROUTE_URI}
+        BACKEND_URI: ${BACKEND_URI}
+
+    image: webui_fe
+    container_name: webui_fe
+
+    ports:
+      - "1104:1104"

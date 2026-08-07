@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../../core/state/Notifier/global_state_notifier.dart';
+import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import '../state/membership_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:constellation_cafe/core/di/ApiProvider.dart';
+import 'package:constellation_cafe/di/ApiProvider.dart';
 
 part 'membership_notifier.g.dart';
 
@@ -26,7 +26,7 @@ class MembershipNotifier extends _$MembershipNotifier {
   /// 상태 초기화
   Future<void> initialize() async {
     final membershipApi = ref.read(membershipApiProvider);
-    final globalState = ref.read(globalStateProvider);
+    final globalState = ref.read(currentUserStateProvider);
 
     _membershipID = globalState.userId;
     String avatar = globalState.avatarUrl;

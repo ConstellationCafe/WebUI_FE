@@ -15,15 +15,15 @@ final membershipProvider = MembershipNotifierProvider._();
 final class MembershipNotifierProvider
     extends $NotifierProvider<MembershipNotifier, MembershipState> {
   MembershipNotifierProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'membershipProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'membershipProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$membershipNotifierHash();
@@ -50,11 +50,14 @@ abstract class _$MembershipNotifier extends $Notifier<MembershipState> {
   @override
   void runBuild() {
     final ref = this.ref as $Ref<MembershipState, MembershipState>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<MembershipState, MembershipState>,
-        MembershipState,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<MembershipState, MembershipState>,
+              MembershipState,
+              Object?,
+              Object?
+            >;
     element.handleCreate(ref, build);
   }
 }

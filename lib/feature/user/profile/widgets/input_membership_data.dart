@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // Provider
-import '../../../../core/widgets/snackBar/SaveResultBar.dart';
+import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
 // Const
 import 'package:constellation_cafe/core/constants/ConstPadding.dart';
 import 'package:constellation_cafe/core/constants/ConstSize.dart';

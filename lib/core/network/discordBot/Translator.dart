@@ -1,7 +1,7 @@
 import 'package:constellation_cafe/core/network/discordBot/Interface.dart';
 import 'package:constellation_cafe/core/network/discordBot/socket/Interface.dart';
 import 'package:constellation_cafe/core/network/discordBot/socket/Client.dart';
-import 'package:constellation_cafe/data/model/request/SocketModel.dart';
+import 'package:constellation_cafe/shared/model/request/SocketModel.dart';
 
 class APITranslator extends APIInterface {
   final SocketInterface client = SocketClient();

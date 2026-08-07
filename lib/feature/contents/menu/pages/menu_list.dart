@@ -2,9 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/di/RepositoryProvider.dart';
-import '../../../../core/widgets/dbEditor/DBEditor.dart';
-import '../../../../routes/login_check_notifier.dart';
+import 'package:constellation_cafe/di/RepositoryProvider.dart';
+import 'package:constellation_cafe/shared/widgets/db_editor/DBEditor.dart';
+import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 
 class MenuList extends ConsumerWidget {
   const MenuList({super.key});
