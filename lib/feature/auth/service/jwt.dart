@@ -1,5 +1,5 @@
 import 'package:constellation_cafe/shared/model/response/backend/ApiResponse.dart';
-import 'package:constellation_cafe/feature/auth/service/auth_Interface.dart';
+import 'package:constellation_cafe/feature/auth/api/auth_Interface.dart';
 
 
 class Jwt {
