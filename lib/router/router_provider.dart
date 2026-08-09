@@ -21,7 +21,7 @@ import 'package:constellation_cafe/feature/contents/content/pages/content_list.d
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
-import '../feature/erp_select/page/guild_select.dart';
+import '../feature/guild_select/page/guild_select.dart';
 
 part 'router_provider.g.dart';
 
@@ -46,28 +46,28 @@ GoRouter router(Ref ref) {
       ShellRoute(
         pageBuilder: (context, state, child) => _noAnim(state, HomePage(child: child)),
         routes: [
-          GoRoute(
-            path: "/",
-            pageBuilder: (context, state) => _noAnim(state, const HomeContent()),
-          ),
           // GoRoute(
-          //   path: "/home",
-          //   redirect: (context, state) async {
-          //     final guildId = state.uri.queryParameters['guild_id'];
-          //     if (guildId == null) {
-          //       return "/select";
-          //     }
-          //     final isValid = await validateGuildId(guildId);
-          //     if (!isValid) {
-          //       return "/select";
-          //     }
-          //     return null; // 정상 진입
-          //   },
-          //   pageBuilder: (context, state) {
-          //     final guildId = state.uri.queryParameters['guild_id'];
-          //     return _noAnim(state, HomeContent(guildId: guildId!));
-          //   },
+          //   path: "/",
+          //   pageBuilder: (context, state) => _noAnim(state, const HomeContent()),
           // ),
+          GoRoute(
+            path: "/home",
+            redirect: (context, state) async {
+              final guildId = state.uri.queryParameters['guild_id'];
+              if (guildId == null) {
+                return "/select";
+              }
+              final isValid = await validateGuildId(guildId);
+              if (!isValid) {
+                return "/select";
+              }
+              return null; // 정상 진입
+            },
+            pageBuilder: (context, state) {
+              final guildId = state.uri.queryParameters['guild_id'];
+              return _noAnim(state, HomeContent(guildId: guildId!));
+            },
+          ),
           GoRoute(
             path: "/profile",
             pageBuilder: (context, state) => _noAnim(state, const Profile()),

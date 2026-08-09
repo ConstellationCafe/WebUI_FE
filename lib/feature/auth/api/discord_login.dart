@@ -7,11 +7,11 @@ class DiscordLogin {
 
   static const redirectUri = String.fromEnvironment('REDIRECT_URI');  // https://constellationcafe.p-e.kr/auth/discord_login
 
-  static const scope = "identify";
+  static const scope = "identify+guilds";
 
   Uri get discordAuthUri => Uri.https(
     "discord.com",
-    "/api/oauth2/authorize",
+    "/oauth2/authorize",
     {
       "client_id": clientId,
       "redirect_uri": redirectUri,
