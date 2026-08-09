@@ -1,10 +1,11 @@
 
 import 'package:constellation_cafe/di/DioProvider.dart';
+import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
-import 'package:constellation_cafe/feature/auth/service/auth_Interface.dart';
-import 'package:constellation_cafe/feature/auth/service/oauth_service.dart';
+import 'package:constellation_cafe/feature/auth/api/auth_Interface.dart';
+import 'package:constellation_cafe/feature/auth/api/oauth_service.dart';
 import 'package:constellation_cafe/feature/contents/friendly_match/api/shadowverse_api.dart';
 import 'package:constellation_cafe/feature/user/profile/api/membership_api.dart';
 import 'package:constellation_cafe/feature/auth/service/jwt.dart';
@@ -13,9 +14,9 @@ import 'package:constellation_cafe/feature/auth/service/login.dart';
 
 // Network
 final _oauthProvider = Provider<AuthServiceInterface>((ref) {
-  final dio = ref.watch(dioProvider);
-  // ErrorInterceptor는 DioProvider에서 이미 추가됨
-  return OAuthService(dio: dio);
+    final dio = ref.watch(dioProvider);
+    // ErrorInterceptor는 DioProvider에서 이미 추가됨
+    return OAuthService(dio: dio);
 });
 final _apiTranslatorProvider = Provider((ref) => APITranslator());
 
@@ -26,6 +27,10 @@ final jwtApiProvider = Provider(
 final loginApiProvider = Provider<Login>(
       (ref) => Login(ref.read(_oauthProvider)),
 );
+final guildApiProvider = Provider((ref) {
+    final dio = ref.watch(dioProvider);
+    return GuildApi(dio: dio);
+});
 final shadowverseApiProvider = Provider(
     (ref) => ShadowverseAPI(ref.read(_apiTranslatorProvider)),
 );
