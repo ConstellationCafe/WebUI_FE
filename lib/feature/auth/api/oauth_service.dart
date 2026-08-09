@@ -1,7 +1,7 @@
 
 import 'package:constellation_cafe/shared/model/response/backend/ApiResponse.dart';
 import 'package:constellation_cafe/feature/auth/api/discord_login.dart';
-import 'package:constellation_cafe/feature/auth/service/auth_Interface.dart';
+import 'package:constellation_cafe/feature/auth/api/auth_Interface.dart';
 import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
