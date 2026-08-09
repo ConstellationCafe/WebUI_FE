@@ -36,7 +36,6 @@ class PointRepository implements RepositoryInterface<PointEntity> {
             return m;
           }).toList();
       final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
-      print(entities);
       if (entities.isNotEmpty) {
         return entities
             .map((e) => PointEntity.fromJson(metadata, e))
