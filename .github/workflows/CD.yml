@@ -2,7 +2,7 @@ name: WebUI_FE_CD
 
 on:
   push:
-    branches: ["elaina"]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.SERVER_PWD }}
           port: ${{ secrets.SERVER_PORT }}
           source: "./*"
-          target: "/home/elaina/dockers/WebUI_FE/service"
+          target: "/home/elaina/workspace/dockers/WebUI_FE/service"
 
       - name: "Deploy docker via SSH on Remote Server"
         uses: appleboy/ssh-action@master
@@ -32,7 +32,7 @@ jobs:
             set -e
             
             # Docker로 서비스 빌드 및 실행
-            cd ~/dockers/WebUI_FE/service
+            cd ~/workspace/dockers/WebUI_FE/service
             docker build -t docker:WebUI_FE_service \
               --build-arg CLIENT_ID='${{ secrets.CLIENT_ID }}' \
               --build-arg REDIRECT_URI='${{ secrets.REDIRECT_URI }}' \
