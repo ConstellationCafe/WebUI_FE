@@ -46,10 +46,10 @@ GoRouter router(Ref ref) {
       ShellRoute(
         pageBuilder: (context, state, child) => _noAnim(state, HomePage(child: child)),
         routes: [
-          // GoRoute(
-          //   path: "/",
-          //   pageBuilder: (context, state) => _noAnim(state, const HomeContent()),
-          // ),
+          GoRoute(
+            path: "/",
+            redirect: (context, state) => "/select",
+          ),
           GoRoute(
             path: "/home",
             // redirect: (context, state) async {
@@ -106,19 +106,30 @@ GoRouter router(Ref ref) {
       final loc = state.matchedLocation;
       final isAtLoginPage = loc == "/login";
 
-      // 로딩 중에는 리다이렉트 유보
-      if (loginCheck.isLoading) return null;
+      print("===== GoRouter redirect =====");
+      print("location: $loc");
+      print("loginCheck loading: ${loginCheck.isLoading}");
+      print("loginCheck value: ${loginCheck.value}");
+      print("loginCheck error: ${loginCheck.error}");
+
+      if (loginCheck.isLoading) {
+        print("→ loading, redirect 없음");
+        return null;
+      }
 
       final isLoggedIn = loginCheck.value ?? false;
 
-      // 비로그인 상태면 /login으로 이동
       if (!isLoggedIn) {
+        print("→ 로그인 안 됨 → /login");
         return isAtLoginPage ? null : "/login";
       }
-      // 로그인 상태에서 /login 접근 시 홈으로 이동
+
       if (isAtLoginPage) {
+        print("→ 로그인 상태에서 /login 접근 → /");
         return "/";
       }
+
+      print("→ redirect 없음");
       return null;
     },
   );
