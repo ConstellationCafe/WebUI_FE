@@ -20,7 +20,7 @@ final class CurrentUserStateNotifierProvider
         argument: null,
         retry: null,
         name: r'currentUserStateProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -42,7 +42,7 @@ final class CurrentUserStateNotifierProvider
 }
 
 String _$currentUserStateNotifierHash() =>
-    r'9283fbea137216d9c51a0824d2884546f2529477';
+    r'65f4fbe9cf5bedffb935ce90f3e832fadd248911';
 
 abstract class _$CurrentUserStateNotifier extends $Notifier<CurrentUserState> {
   CurrentUserState build();

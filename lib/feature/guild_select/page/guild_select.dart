@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,6 +35,7 @@ class GuildSelectPage extends ConsumerWidget {
     final isDesktop = _isDesktop(deviceType);
     final login = ref.watch(loginCheckProvider);
     final guildApi = ref.read(guildApiProvider);
+    final guildStateNotifier = ref.watch(currentGuildStateProvider.notifier);
     return login.when(
       loading: () => const SizedBox.shrink(),
       error: (_, __) => const SizedBox.shrink(),
@@ -46,7 +48,6 @@ class GuildSelectPage extends ConsumerWidget {
                 child: CircularProgressIndicator(),
               );
             }
-
             if (snapshot.hasError) {
               return Center(
                 child: Text(
@@ -56,7 +57,6 @@ class GuildSelectPage extends ConsumerWidget {
             }
 
             final guilds = snapshot.data ?? [];
-
             return Scaffold(
               body: Container(
                 width: double.infinity,
@@ -86,16 +86,19 @@ class GuildSelectPage extends ConsumerWidget {
                           children: [
                             const SelectPageHeader(),
                             const SizedBox(height: 36),
-
                             GuildList(
                               guilds: guilds,
                               onGuildSelected: (guild) {
+                                guildStateNotifier.setGuild(
+                                    guildId: guild.id,
+                                    guildName: guild.name,
+                                    guildIcon: guild.iconUrl
+                                );
                                 context.go(
                                   '/home?guild_id=${guild.id}',
                                 );
                               },
                             ),
-
                             const SizedBox(height: 28),
                             const SelectPageFooter(),
                           ],

@@ -52,21 +52,18 @@ GoRouter router(Ref ref) {
           // ),
           GoRoute(
             path: "/home",
-            redirect: (context, state) async {
-              final guildId = state.uri.queryParameters['guild_id'];
-              if (guildId == null) {
-                return "/select";
-              }
-              final isValid = await validateGuildId(guildId);
-              if (!isValid) {
-                return "/select";
-              }
-              return null; // 정상 진입
-            },
-            pageBuilder: (context, state) {
-              final guildId = state.uri.queryParameters['guild_id'];
-              return _noAnim(state, HomeContent(guildId: guildId!));
-            },
+            // redirect: (context, state) async {
+            //   final guildId = state.uri.queryParameters['guild_id'];
+            //   if (guildId == null) {
+            //     return "/select";
+            //   }
+            //   final isValid = await validateGuildId(guildId);
+            //   if (!isValid) {
+            //     return "/select";
+            //   }
+            //   return null; // 정상 진입
+            // },
+            pageBuilder: (context, state) => _noAnim(state, HomeContent()),
           ),
           GoRoute(
             path: "/profile",

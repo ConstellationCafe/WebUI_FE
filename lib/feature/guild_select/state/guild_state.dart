@@ -1,17 +1,18 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../models/current_guild_state.dart';
-import '../models/guild.dart';
-
-part 'current_guild_provider.g.dart';
+part 'guild_state.freezed.dart';
 
 @freezed
 abstract class CurrentGuildState with _$CurrentGuildState {
   const factory CurrentGuildState({
     required String guildId,
+    required String guildName,
+    required String guildIcon,
   }) = _CurrentGuildState;
 
   factory CurrentGuildState.initial() => const CurrentGuildState(
-    guildId: "",
+    guildId: '',
+    guildName: '',
+    guildIcon: '',
   );
 }

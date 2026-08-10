@@ -42,7 +42,7 @@ final class FriendlyMatchNotifierProvider
 }
 
 String _$friendlyMatchNotifierHash() =>
-    r'bf8555aea3f64782073ae0c35a46953db8850d4d';
+    r'c090b62366c9d9def6fc0912bb92b0d574eb9967';
 
 abstract class _$FriendlyMatchNotifier extends $Notifier<FriendlyMatchState> {
   FriendlyMatchState build();
