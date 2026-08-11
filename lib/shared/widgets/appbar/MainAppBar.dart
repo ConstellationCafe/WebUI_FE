@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,7 @@ class MainAppBar extends ConsumerStatefulWidget {
 class _MainAppBarState extends ConsumerState<MainAppBar> {
   @override
   Widget build(BuildContext context) {
+    final guild = ref.watch(currentGuildStateProvider);
     return SizedBox(
       width: 155,
       child: Row(
@@ -35,7 +37,7 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
               onTap: () => context.go('/'),
               child: ClipOval(
                 child: Image.asset(
-                  "assets/icons/main_icon.jpg",
+                  guild.guildIcon,
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,
@@ -44,7 +46,7 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
               ),
             ),
           const Spacer(),
-          const Text("섀버 별자리 Cafe"),
+          Text(guild.guildName),
         ],
       ),
     );
