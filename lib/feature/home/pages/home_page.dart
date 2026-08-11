@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/ConstPadding.dart';
 import '../../../core/constants/ScreenWidth/ScreenWidth.dart';
-import 'package:constellation_cafe/shared/widgets/MenuBarArea/MainMenuBar.dart';
-import 'package:constellation_cafe/shared/widgets/appbar/MainAppBar.dart';
+import 'package:constellation_cafe/feature/home/widgets/menu_bar_area/main_menu_bar.dart';
+import 'package:constellation_cafe/feature/home/widgets/appbar/MainAppBar.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
-import '../widgets/profile_menu.dart';
+import '../widgets/profile/profile_menu.dart';
 
 class HomePage extends ConsumerWidget {
   final Widget? child;
