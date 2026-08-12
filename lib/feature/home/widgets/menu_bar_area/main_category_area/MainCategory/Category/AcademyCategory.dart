@@ -19,16 +19,15 @@ class AcademyCategory extends ConsumerWidget {
           ),
           SizedBox(height: ConstSize.tinyWidth),
           // 메뉴 목록
-          // TODO : 실제 아카데미 관련 기능 구현 후 연결
-          // MenuContainer(
-          //   iconImage: Image.asset(
-          //       "assets/icons/category/admin/point.png",
-          //       fit: BoxFit.contain,
-          //       filterQuality: FilterQuality.high
-          //   ),
-          //   menuName: "포인트 관리",
-          //   callbackUrl: "/point",
-          // ),
+          MenuContainer(
+            iconImage: Image.asset(
+                "assets/icons/category/admin/point.png",
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high
+            ),
+            menuName: "수업 기록",
+            callbackUrl: "/academy/lesson_record",
+          ),
         ]
     );
   }
