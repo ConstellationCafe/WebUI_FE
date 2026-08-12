@@ -21,6 +21,7 @@ import 'package:constellation_cafe/feature/contents/content/pages/content_list.d
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
+import '../feature/contents/academy/class_content_record/page/class_content_record.dart';
 import '../feature/guild_select/page/guild_select.dart';
 
 part 'router_provider.g.dart';
@@ -30,7 +31,7 @@ final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<v
 @riverpod
 GoRouter router(Ref ref) {
   final loginCheck = ref.watch(loginCheckProvider);
-
+  print("GoRouter");
   return GoRouter(
     initialLocation: '/',
     observers: [routeObserver],
@@ -85,42 +86,40 @@ GoRouter router(Ref ref) {
             path: "/content",
             pageBuilder: (context, state) => _noAnim(state, const ContentList()),
           ),
-          // 이건 /profile 의 회원증에서 PointLogButton 눌러도 이동
           GoRoute(
             path: "/point_log",
             pageBuilder: (context, state) => _noAnim(state, const ViewPointLog()),
           ),
+          GoRoute(
+            path: "/academy/lesson_record",
+            pageBuilder: (context, state) => _noAnim(state, const LessonRecordPage()),
+          ),
         ],
       ),
     ],
-    // GoRoute 에 없는 경로로 이동시 / 으로 리다이렉트
-    errorBuilder: (context, state) {
-      Future.microtask(() => context.go('/'));
-      return const PageLoading();
+    onException: (context, state, router) {
+      router.go('/');
     },
     redirect: (context, state) {
-      if (loginCheck.isLoading) {
-        return null;
-      }
-      // 로그인하지 않은 상태
-      final isLoggedIn = loginCheck.value ?? false;
+      if (loginCheck.isLoading) return null;
       final loc = state.matchedLocation;
-      if (!isLoggedIn) {
-        // if (loc == "/login") {
-        //   return null;
-        // }
-        return "/login";
+      final isLoggedIn = loginCheck.value ?? false;
+      print("current loc : $loc");
+      switch (loc) {
+        case "/":
+          // 로그인 → /select
+          // 비로그인 → /login
+          return isLoggedIn ? "/select" : "/login";
+        case "/login":
+          // 로그인 → /select
+          // 비로그인 → /login 유지
+          return isLoggedIn ? "/select" : null;
+        default:
+          // 로그인 → 현재 경로 유지
+          // 비로그인 → /login
+          return isLoggedIn ? null : "/login";
       }
-      // 로그인한 상태에서 /login 접근
-      else if (loc == "/login") {
-        return "/select";
-      }
-      // 로그인한 상태에서 루트 접근
-      else if (loc == "/") {
-        return "/select";
-      }
-      return null;
-    },
+    }
   );
 }
 
