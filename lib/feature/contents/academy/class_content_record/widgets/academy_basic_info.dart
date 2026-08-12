@@ -20,7 +20,7 @@ class AcademyBasicInfo extends ConsumerWidget {
       WidgetRef ref,
       ) {
     final notifier =
-    ref.read(academyNotifierProvider.notifier);
+    ref.read(academyProvider.notifier);
 
     return AcademySectionCard(
       title: '기본 정보',

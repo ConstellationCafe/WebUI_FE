@@ -20,12 +20,10 @@ class LessonRecordPage extends ConsumerWidget {
       BuildContext context,
       WidgetRef ref,
       ) {
-    final state = ref.watch(
-      AcademyNotifierProvider,
-    );
+    final state = ref.watch(academyProvider);
 
     final notifier =
-    ref.read(academyNotifierProvider.notifier);
+    ref.read(academyProvider.notifier);
 
     final width = MediaQuery.sizeOf(context).width;
 

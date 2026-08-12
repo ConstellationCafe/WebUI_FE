@@ -21,7 +21,7 @@ class AcademyTeacherInfo extends ConsumerWidget {
       WidgetRef ref,
       ) {
     final notifier =
-    ref.read(academyNotifierProvider.notifier);
+    ref.read(academyProvider.notifier);
 
     return AcademySectionCard(
       title: '교사 정보',

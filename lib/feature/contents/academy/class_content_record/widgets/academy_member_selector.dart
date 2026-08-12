@@ -35,7 +35,7 @@ class _AcademyMemberSelectorState
   Widget build(BuildContext context) {
     final state = widget.state;
     final notifier =
-    ref.read(academyNotifierProvider.notifier);
+    ref.read(academyProvider.notifier);
 
     final keyword =
     _searchController.text.trim().toLowerCase();
