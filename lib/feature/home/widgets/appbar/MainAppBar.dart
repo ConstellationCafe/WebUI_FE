@@ -36,7 +36,7 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
             GestureDetector(
               onTap: () => context.go('/'),
               child: ClipOval(
-                child: Image.asset(
+                child: Image.network(
                   guild.guildIcon,
                   width: 40,
                   height: 40,
