@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // Provider
-import '../state/notifier/membership_notifier.dart';
+import '../notifier/membership_notifier.dart';
 // Const
 import 'package:constellation_cafe/core/constants/ConstPadding.dart';
 import 'package:constellation_cafe/core/constants/ConstSize.dart';
