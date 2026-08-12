@@ -47,10 +47,6 @@ GoRouter router(Ref ref) {
         pageBuilder: (context, state, child) => _noAnim(state, HomePage(child: child)),
         routes: [
           GoRoute(
-            path: "/",
-            redirect: (context, state) => "/select",
-          ),
-          GoRoute(
             path: "/home",
             // redirect: (context, state) async {
             //   final guildId = state.uri.queryParameters['guild_id'];
@@ -103,33 +99,26 @@ GoRouter router(Ref ref) {
       return const PageLoading();
     },
     redirect: (context, state) {
-      final loc = state.matchedLocation;
-      final isAtLoginPage = loc == "/login";
-
-      print("===== GoRouter redirect =====");
-      print("location: $loc");
-      print("loginCheck loading: ${loginCheck.isLoading}");
-      print("loginCheck value: ${loginCheck.value}");
-      print("loginCheck error: ${loginCheck.error}");
-
       if (loginCheck.isLoading) {
-        print("→ loading, redirect 없음");
         return null;
       }
-
+      // 로그인하지 않은 상태
       final isLoggedIn = loginCheck.value ?? false;
-
+      final loc = state.matchedLocation;
       if (!isLoggedIn) {
-        print("→ 로그인 안 됨 → /login");
-        return isAtLoginPage ? null : "/login";
+        // if (loc == "/login") {
+        //   return null;
+        // }
+        return "/login";
       }
-
-      if (isAtLoginPage) {
-        print("→ 로그인 상태에서 /login 접근 → /");
-        return "/";
+      // 로그인한 상태에서 /login 접근
+      else if (loc == "/login") {
+        return "/select";
       }
-
-      print("→ redirect 없음");
+      // 로그인한 상태에서 루트 접근
+      else if (loc == "/") {
+        return "/select";
+      }
       return null;
     },
   );
