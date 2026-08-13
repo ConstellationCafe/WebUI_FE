@@ -134,6 +134,7 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Version 드롭다운
             SizedBox(

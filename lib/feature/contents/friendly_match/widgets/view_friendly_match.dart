@@ -45,6 +45,7 @@ class _ViewFriendlyMatchState extends ConsumerState<ViewFriendlyMatch> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
