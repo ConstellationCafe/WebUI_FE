@@ -53,50 +53,55 @@ class _ProfileState extends ConsumerState<Profile> {
             constraints.maxWidth,
           );
 
-          final content = [
-            ViewMembershipCard(
-              key: membershipCardKey,
-              width: ProfileConstants.childWidgetWidth,
-              pointLogButtonKey: pointLogButtonKey,
-            ),
-            const SizedBox(
-              width: ConstSize.mediumSpacing,
-            ),
-            InputMembershipData(
-              key: inputDataKey,
-              width: ProfileConstants.childWidgetWidth,
-            ),
-          ];
-
           if (deviceType == ScreenWidth.mobile ||
               deviceType == ScreenWidth.tablet) {
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  content[0],
+                  ViewMembershipCard(
+                    key: membershipCardKey,
+                    width: ProfileConstants.childWidgetWidth,
+                    pointLogButtonKey: pointLogButtonKey,
+                  ),
                   const SizedBox(
                     height: ConstSize.mediumSpacing,
                   ),
-                  content[2],
+                  InputMembershipData(
+                    key: inputDataKey,
+                    width: ProfileConstants.childWidgetWidth,
+                  )
                 ],
               ),
             );
+          } else {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: constraints.maxWidth,
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ViewMembershipCard(
+                        key: membershipCardKey,
+                        width: ProfileConstants.childWidgetWidth,
+                        pointLogButtonKey: pointLogButtonKey,
+                      ),
+                      const SizedBox(
+                        width: ConstSize.mediumSpacing,
+                      ),
+                      InputMembershipData(
+                        key: inputDataKey,
+                        width: ProfileConstants.childWidgetWidth,
+                      )
+                    ]
+                ),
+              ),
+            );
           }
-
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: constraints.maxWidth,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: content,
-              ),
-            ),
-          );
         },
       ),
     );
