@@ -9,7 +9,6 @@ class AcademyCategory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext build, WidgetRef ref) {
-    print("AcademyCategory build");
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
