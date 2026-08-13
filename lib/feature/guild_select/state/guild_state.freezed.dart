@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CurrentGuildState {
 
- String get guildId; String get guildName; String get guildIcon;
+ String get guildId; String get guildName; String? get guildIcon;
 /// Create a copy of CurrentGuildState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $CurrentGuildStateCopyWith<$Res>  {
   factory $CurrentGuildStateCopyWith(CurrentGuildState value, $Res Function(CurrentGuildState) _then) = _$CurrentGuildStateCopyWithImpl;
 @useResult
 $Res call({
- String guildId, String guildName, String guildIcon
+ String guildId, String guildName, String? guildIcon
 });
 
 
@@ -62,12 +62,12 @@ class _$CurrentGuildStateCopyWithImpl<$Res>
 
 /// Create a copy of CurrentGuildState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? guildId = null,Object? guildName = null,Object? guildIcon = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? guildId = null,Object? guildName = null,Object? guildIcon = freezed,}) {
   return _then(_self.copyWith(
 guildId: null == guildId ? _self.guildId : guildId // ignore: cast_nullable_to_non_nullable
 as String,guildName: null == guildName ? _self.guildName : guildName // ignore: cast_nullable_to_non_nullable
-as String,guildIcon: null == guildIcon ? _self.guildIcon : guildIcon // ignore: cast_nullable_to_non_nullable
-as String,
+as String,guildIcon: freezed == guildIcon ? _self.guildIcon : guildIcon // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -152,7 +152,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String guildId,  String guildName,  String guildIcon)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String guildId,  String guildName,  String? guildIcon)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CurrentGuildState() when $default != null:
 return $default(_that.guildId,_that.guildName,_that.guildIcon);case _:
@@ -173,7 +173,7 @@ return $default(_that.guildId,_that.guildName,_that.guildIcon);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String guildId,  String guildName,  String guildIcon)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String guildId,  String guildName,  String? guildIcon)  $default,) {final _that = this;
 switch (_that) {
 case _CurrentGuildState():
 return $default(_that.guildId,_that.guildName,_that.guildIcon);case _:
@@ -193,7 +193,7 @@ return $default(_that.guildId,_that.guildName,_that.guildIcon);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String guildId,  String guildName,  String guildIcon)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String guildId,  String guildName,  String? guildIcon)?  $default,) {final _that = this;
 switch (_that) {
 case _CurrentGuildState() when $default != null:
 return $default(_that.guildId,_that.guildName,_that.guildIcon);case _:
@@ -208,12 +208,12 @@ return $default(_that.guildId,_that.guildName,_that.guildIcon);case _:
 
 
 class _CurrentGuildState implements CurrentGuildState {
-  const _CurrentGuildState({required this.guildId, required this.guildName, required this.guildIcon});
+  const _CurrentGuildState({required this.guildId, required this.guildName, this.guildIcon});
   
 
 @override final  String guildId;
 @override final  String guildName;
-@override final  String guildIcon;
+@override final  String? guildIcon;
 
 /// Create a copy of CurrentGuildState
 /// with the given fields replaced by the non-null parameter values.
@@ -245,7 +245,7 @@ abstract mixin class _$CurrentGuildStateCopyWith<$Res> implements $CurrentGuildS
   factory _$CurrentGuildStateCopyWith(_CurrentGuildState value, $Res Function(_CurrentGuildState) _then) = __$CurrentGuildStateCopyWithImpl;
 @override @useResult
 $Res call({
- String guildId, String guildName, String guildIcon
+ String guildId, String guildName, String? guildIcon
 });
 
 
@@ -262,12 +262,12 @@ class __$CurrentGuildStateCopyWithImpl<$Res>
 
 /// Create a copy of CurrentGuildState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? guildId = null,Object? guildName = null,Object? guildIcon = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? guildId = null,Object? guildName = null,Object? guildIcon = freezed,}) {
   return _then(_CurrentGuildState(
 guildId: null == guildId ? _self.guildId : guildId // ignore: cast_nullable_to_non_nullable
 as String,guildName: null == guildName ? _self.guildName : guildName // ignore: cast_nullable_to_non_nullable
-as String,guildIcon: null == guildIcon ? _self.guildIcon : guildIcon // ignore: cast_nullable_to_non_nullable
-as String,
+as String,guildIcon: freezed == guildIcon ? _self.guildIcon : guildIcon // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

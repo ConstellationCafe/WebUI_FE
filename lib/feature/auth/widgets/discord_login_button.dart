@@ -1,11 +1,11 @@
-// lib/features/auth/presentation/widgets/discord_login_button.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/constants/ConstPadding.dart';
-import 'package:constellation_cafe/core/constants/ConstSize.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_size.dart';
+import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/di/ApiProvider.dart';
-import 'package:constellation_cafe/core/constants/ScreenWidth/ScreenWidth.dart';
+import '../constants/auth_constants.dart';
 
 class DiscordLoginButton extends ConsumerWidget {
   const DiscordLoginButton({super.key});
@@ -13,34 +13,40 @@ class DiscordLoginButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginApi = ref.read(loginApiProvider);
-
     final width = MediaQuery.sizeOf(context).width;
-    final deviceType = ScreenWidth.widthChecker(width);
-    final isDesktop = deviceType == "wideWidth" || deviceType == "laptopWidth";
-
+    final isDesktop = ScreenWidth.isDesktop(width);
     return SizedBox(
-      width: isDesktop ? 160 : double.infinity,
-      height: 40,
+      width: isDesktop
+          ? AuthConstants.discordLoginButtonDesktopWidth
+          : double.infinity,
+      height: AuthConstants.discordLoginButtonHeight,
       child: ElevatedButton.icon(
-        onPressed: () => loginApi.discordLogin(),
+        onPressed: loginApi.discordLogin,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blueAccent,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(
+          backgroundColor: AuthConstants.discordLoginButtonColor,
+          foregroundColor: Theme.of(context).colorScheme.primary,
+          padding: const EdgeInsets.symmetric(
             horizontal: ConstPadding.tinyPadding,
             vertical: 0,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(
+              AuthConstants.discordLoginButtonRadius,
+            ),
           ),
         ),
-        icon: const Icon(Icons.discord, size: 18),
-        label: const Text(
-          "Discord로 로그인",
+        icon: const Icon(
+          Icons.discord,
+          size: AuthConstants.discordLoginButtonIconSize,
+        ),
+        label: Text(
+          'Discord로 로그인',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
-          style: TextStyle(fontSize: ConstSize.bigTextSize),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+            fontSize: ConstSize.mediumTextSize,
+          ),
         ),
       ),
     );
