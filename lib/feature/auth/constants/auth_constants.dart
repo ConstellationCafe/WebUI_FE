@@ -23,4 +23,5 @@ class AuthConstants {
   static const double discordLoginButtonRadius = 5.0;
   static const double discordLoginButtonIconSize = 18.0;
   static const Color discordLoginButtonColor = Colors.blueAccent;
+  static const Color discordLoginButtonTextColor = Colors.white;
 }
