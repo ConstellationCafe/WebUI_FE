@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'categories/MainCategory.dart';
+import 'categories/main_category.dart';
 
 class MainMenuBar extends ConsumerStatefulWidget {
   const MainMenuBar({super.key});
