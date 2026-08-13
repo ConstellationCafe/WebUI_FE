@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:constellation_cafe/core/constants/ConstPadding.dart';
-import 'package:constellation_cafe/core/constants/ScreenWidth/ScreenWidth.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/screen_width.dart';
 import '../notifier/academy_notifier.dart';
 import '../widgets/academy_basic_info.dart';
 import '../widgets/academy_member_selector.dart';
@@ -16,12 +16,9 @@ class LessonRecordPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(
-      BuildContext context,
-      WidgetRef ref,
-      ) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    print("LessonRecordPage build");
     final state = ref.watch(academyProvider);
-
     final notifier =
     ref.read(academyProvider.notifier);
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/constants/ConstPadding.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
 import '../domain/teacher.dart';
 import '../notifier/academy_notifier.dart';
 import '../state/academy_form_state.dart';

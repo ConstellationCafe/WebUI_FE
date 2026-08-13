@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/shared/model/db_editor/DBController.dart';
-import 'package:constellation_cafe/core/constants/ConstSize.dart';
+import 'package:constellation_cafe/core/constants/const_size.dart';
 
 class AddButton extends StatelessWidget {
   final DBController controller;

@@ -13,8 +13,8 @@ import 'package:constellation_cafe/feature/contents/friendly_match/domain/platfo
 import 'package:constellation_cafe/feature/contents/friendly_match/notifier/friendly_match_notifier.dart';
 
 // Const
-import 'package:constellation_cafe/core/constants/ConstPadding.dart';
-import 'package:constellation_cafe/core/constants/ConstSize.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_size.dart';
 
 class InputFriendlyMatch extends ConsumerStatefulWidget {
   final double width;

@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/constants/ConstSize.dart';
-import 'package:constellation_cafe/core/constants/ScreenWidth/ScreenWidth.dart';
+import 'package:constellation_cafe/core/constants/const_size.dart';
+import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/usage/usage.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 import '../widgets/input_friendly_match.dart';
