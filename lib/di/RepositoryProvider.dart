@@ -6,7 +6,7 @@ import 'package:constellation_cafe/feature/contents/learning/repository/learning
 import 'package:constellation_cafe/feature/contents/menu//repository/menu_repository.dart';
 import 'package:constellation_cafe/feature/contents/music//repository/music_repository.dart';
 import 'package:constellation_cafe/feature/contents/content/repository/content_repository.dart';
-import 'package:constellation_cafe/feature/user/profile/repository/point_repository.dart';
+import 'package:constellation_cafe/feature/profile/repository/point_repository.dart';
 import 'DioProvider.dart';
 
 // Api
