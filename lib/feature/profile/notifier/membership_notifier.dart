@@ -37,44 +37,36 @@ class MembershipNotifier extends _$MembershipNotifier {
     if (_initialized || _initializing) {
       return;
     }
-
     _initializing = true;
-
+    state = state.copyWith(isLoading: true);
     try {
       final membershipApi = ref.read(membershipApiProvider);
       final globalState = ref.read(currentUserStateProvider);
 
-      _membershipID = globalState.userId;
-      final avatar = globalState.avatarUrl;
-
-      state = state.copyWith(isLoading: true);
-
       final data = await membershipApi.createCard([
-        _membershipID,
+        globalState.userId,
       ]);
-
       final payload = data['payload'];
       final raw = payload?['result'];
 
       final List<String> result = List<String>.from(
         raw.map((e) => e?.toString() ?? ''),
       );
-
+      final avatar = globalState.avatarUrl;
       result.add(avatar);
 
-      state = MembershipState.fromList(result);
-
+      state = MembershipState.fromList(result).copyWith(
+        isLoading: false,
+      );
       _initialUid1 = state.uid1;
       _initialUid2 = state.uid2;
       _initialGuild = state.guild;
-
       _initialized = true;
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
+      rethrow;
     } finally {
       _initializing = false;
-
-      if (!_initialized) {
-        state = state.copyWith(isLoading: false);
-      }
     }
   }
 
