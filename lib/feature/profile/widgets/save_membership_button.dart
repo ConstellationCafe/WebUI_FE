@@ -31,7 +31,7 @@ class SaveMembershipButton extends StatelessWidget {
           : Text(
               '저장',
               style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onPrimary,
+                color: theme.colorScheme.onSecondary,
               ),
             ),
     );
