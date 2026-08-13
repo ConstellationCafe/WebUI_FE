@@ -1,5 +1,7 @@
 // flutter
-import 'package:constellation_cafe/feature/user/profile/pages/view_point_log.dart';
+import 'package:constellation_cafe/feature/contents/academy/routes/academy_routes.dart';
+import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
+import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -7,124 +9,132 @@ import 'package:go_router/go_router.dart';
 // auth
 import 'package:constellation_cafe/feature/auth/pages/login.dart';
 // home
-import 'package:constellation_cafe/feature/home/pages/home_page.dart';
-import 'package:constellation_cafe/feature/home/widgets/home_contents.dart';
+import 'package:constellation_cafe/feature/home/frame/pages/home_frame.dart';
+import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
 // user
-import 'package:constellation_cafe/feature/user/profile/pages/profile.dart';
+import 'package:constellation_cafe/feature/profile/pages/profile.dart';
 // contents
 import 'package:constellation_cafe/feature/contents/friendly_match/pages/friendly_match.dart';
 import 'package:constellation_cafe/feature/contents/learning/pages/learning_list.dart';
 import 'package:constellation_cafe/feature/contents/menu/pages/menu_list.dart';
 import 'package:constellation_cafe/feature/contents/music/pages/music_list.dart';
 import 'package:constellation_cafe/feature/contents/content/pages/content_list.dart';
-
-import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
-
 import '../feature/auth/notifier/login_check_notifier.dart';
-import '../feature/contents/academy/class_content_record/page/class_content_record.dart';
 import '../feature/guild_select/page/guild_select.dart';
 
 part 'router_provider.g.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+final RouteObserver<ModalRoute<void>> routeObserver =
+  RouteObserver<ModalRoute<void>>();
 
 @riverpod
 GoRouter router(Ref ref) {
-  final loginCheck = ref.watch(loginCheckProvider);
-  print("GoRouter");
+  // 로그인 상태 변경 시 redirect를 다시 실행하기 위한 notifier
+  final refreshNotifier = ValueNotifier<int>(0);
+  ref.listen(
+    loginCheckProvider,
+    (_, __) => refreshNotifier.value++
+  );
+  ref.onDispose(() {
+    refreshNotifier.dispose();
+  });
+
   return GoRouter(
     initialLocation: '/',
     observers: [routeObserver],
     routes: [
+      // 무한 루프 문제 때문에 "/"은 명시적으로 라우트 만듦
       GoRoute(
-        path: "/login",
+        path: '/',
+        pageBuilder: (context, state) => _noAnim(state, const PageLoading()),
+      ),
+      GoRoute(
+        path: '/login',
         pageBuilder: (context, state) => _noAnim(state, const LoginPage()),
       ),
       GoRoute(
-        path: "/select",
+        path: '/select',
         pageBuilder: (context, state) => _noAnim(state, const GuildSelectPage()),
       ),
       ShellRoute(
-        pageBuilder: (context, state, child) => _noAnim(state, HomePage(child: child)),
+        pageBuilder: (context, state, child) => _noAnim(state, HomeFrame(child: child)),
         routes: [
           GoRoute(
-            path: "/home",
-            // redirect: (context, state) async {
-            //   final guildId = state.uri.queryParameters['guild_id'];
-            //   if (guildId == null) {
-            //     return "/select";
-            //   }
-            //   final isValid = await validateGuildId(guildId);
-            //   if (!isValid) {
-            //     return "/select";
-            //   }
-            //   return null; // 정상 진입
-            // },
-            pageBuilder: (context, state) => _noAnim(state, HomeContent()),
+            path: '/home',
+            pageBuilder: (context, state) =>
+                _noAnim(state, HomeContent()),
           ),
           GoRoute(
-            path: "/profile",
-            pageBuilder: (context, state) => _noAnim(state, const Profile()),
+            path: '/profile',
+            pageBuilder: (context, state) =>
+                _noAnim(state, const Profile()),
           ),
           GoRoute(
-            path: "/friendly_match",
-            pageBuilder: (context, state) => _noAnim(state, const FriendlyMatch()),
+            path: '/friendly_match',
+            pageBuilder: (context, state) =>
+                _noAnim(state, const FriendlyMatch()),
           ),
           GoRoute(
-            path: "/learning",
-            pageBuilder: (context, state) => _noAnim(state, const LearningList()),
+            path: '/learning',
+            pageBuilder: (context, state) =>
+                _noAnim(state, const LearningList()),
           ),
           GoRoute(
-            path: "/menu",
-            pageBuilder: (context, state) => _noAnim(state, const MenuList()),
+            path: '/menu',
+            pageBuilder: (context, state) =>
+                _noAnim(state, const MenuList()),
           ),
           GoRoute(
-            path: "/music",
-            pageBuilder: (context, state) => _noAnim(state, const MusicList()),
+            path: '/music',
+            pageBuilder: (context, state) =>
+                _noAnim(state, const MusicList()),
           ),
           GoRoute(
-            path: "/content",
-            pageBuilder: (context, state) => _noAnim(state, const ContentList()),
+            path: '/content',
+            pageBuilder: (context, state) =>
+                _noAnim(state, const ContentList()),
           ),
           GoRoute(
-            path: "/point_log",
-            pageBuilder: (context, state) => _noAnim(state, const ViewPointLog()),
+            path: '/point_log',
+            pageBuilder: (context, state) =>
+                _noAnim(state, const ViewPointLog()),
           ),
-          GoRoute(
-            path: "/academy/lesson_record",
-            pageBuilder: (context, state) => _noAnim(state, const LessonRecordPage()),
-          ),
+          ...academyRoutes,
         ],
       ),
     ],
+    // 존재하지 않는 경로
     onException: (context, state, router) {
       router.go('/');
     },
+    // 로그인 상태 변경 시 GoRouter를 재생성하지 않고
+    // redirect만 다시 실행
+    refreshListenable: refreshNotifier,
     redirect: (context, state) {
-      if (loginCheck.isLoading) return null;
-      final loc = state.matchedLocation;
-      final isLoggedIn = loginCheck.value ?? false;
-      print("current loc : $loc");
-      switch (loc) {
-        case "/":
-          // 로그인 → /select
-          // 비로그인 → /login
-          return isLoggedIn ? "/select" : "/login";
-        case "/login":
-          // 로그인 → /select
-          // 비로그인 → /login 유지
-          return isLoggedIn ? "/select" : null;
-        default:
-          // 로그인 → 현재 경로 유지
-          // 비로그인 → /login
-          return isLoggedIn ? null : "/login";
+      final loginCheck = ref.read(loginCheckProvider);
+      // 로그인 상태 확인 중이면 현재 경로 유지
+      if (loginCheck.isLoading) {
+        return null;
       }
-    }
+      final isLoggedIn = loginCheck.value ?? false;
+      final loc = state.matchedLocation;
+      switch (loc) {
+        case '/':
+          return isLoggedIn ? '/select' : '/login';
+        case '/login':
+          return isLoggedIn ? '/select' : null;
+        default:
+          return isLoggedIn ? null : '/login';
+      }
+    },
   );
 }
 
 /// 애니메이션 없는 페이지 전환 헬퍼
-Page<void> _noAnim(GoRouterState state, Widget child) {
+Page<void> _noAnim(
+    GoRouterState state,
+    Widget child,
+    ) {
   return NoTransitionPage<void>(
     key: state.pageKey,
     child: child,
