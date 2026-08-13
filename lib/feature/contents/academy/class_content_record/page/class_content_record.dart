@@ -17,7 +17,6 @@ class LessonRecordPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print("LessonRecordPage build");
     final state = ref.watch(academyProvider);
     final notifier =
     ref.read(academyProvider.notifier);
