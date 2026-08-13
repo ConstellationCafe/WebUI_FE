@@ -7,7 +7,7 @@ import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
 import 'package:constellation_cafe/feature/auth/api/auth_Interface.dart';
 import 'package:constellation_cafe/feature/auth/api/oauth_service.dart';
 import 'package:constellation_cafe/feature/contents/friendly_match/api/shadowverse_api.dart';
-import 'package:constellation_cafe/feature/user/profile/api/membership_api.dart';
+import 'package:constellation_cafe/feature/profile/api/membership_api.dart';
 import 'package:constellation_cafe/feature/auth/service/jwt.dart';
 import 'package:constellation_cafe/feature/auth/service/login.dart';
 
