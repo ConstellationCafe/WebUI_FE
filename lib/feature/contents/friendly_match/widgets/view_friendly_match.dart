@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/constants/ConstPadding.dart';
-import '../../../../core/constants/ConstSize.dart';
+import '../../../../core/constants/const_padding.dart';
+import '../../../../core/constants/const_size.dart';
 import 'package:constellation_cafe/feature/contents/friendly_match/notifier/friendly_match_notifier.dart';
 import 'submit_button.dart';
 
