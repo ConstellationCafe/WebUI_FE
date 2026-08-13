@@ -1,31 +1,34 @@
-// flutter
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// Provider
-import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
-// Const
-import 'package:constellation_cafe/core/constants/ConstPadding.dart';
-import 'package:constellation_cafe/core/constants/ConstSize.dart';
 
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_size.dart';
+import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
+
+import '../../../core/constants/const_shadow.dart';
+import '../constants/profile_constants.dart';
 import '../notifier/membership_notifier.dart';
+import 'save_membership_button.dart';
 
 class InputMembershipData extends ConsumerStatefulWidget {
   final double width;
 
   const InputMembershipData({
     super.key,
-    required this.width
+    required this.width,
   });
 
   @override
-  ConsumerState<InputMembershipData> createState() => _InputMembershipDataState();
+  ConsumerState<InputMembershipData> createState() =>
+      _InputMembershipDataState();
 }
 
 class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _uid1Controller = TextEditingController();
   final TextEditingController _uid2Controller = TextEditingController();
   final TextEditingController _guildController = TextEditingController();
+
+  // 저장중인지를 나타내는 플래그
   bool _isLoading = false;
 
   @override
@@ -36,12 +39,18 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
     super.dispose();
   }
 
+  // 저장 & 결과 표시
   Future<void> _onPressed() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final notifier = ref.read(membershipProvider.notifier);
       final results = await notifier.saveIfChanged();
-      if (!mounted) return;
+
+      if (!mounted) return; // 저장하는 동안 페이지가 닫혔다면 여기서 종료
+
       await SaveResultBar.showAll(
         context,
         results,
@@ -50,32 +59,42 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
         clearBefore: true,
       );
     } catch (e) {
+      if (!mounted) return; // 저장하는 동안 페이지가 닫혔다면 여기서 종료
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SaveResultBar.build(context, '저장 중 오류 발생: $e'),
+        SaveResultBar.build(
+          context,
+          '저장 중 오류 발생: $e',
+        ),
       );
     } finally {
-      Future.delayed(const Duration(seconds: 1), () {
-        if (mounted) setState(() => _isLoading = false);
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(membershipProvider.notifier);
-    return SizedBox(
-      width: widget.width,
+    final theme = Theme.of(context);
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: widget.width,
+      ),
       child: Container(
+        width: double.infinity,
         padding: ConstPadding.largePaddingAll,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFF000D27).withOpacity(0.12),  // rgba(0, 13, 39, 0.12)
-              blurRadius: 24,                              // 24px 흐림
-              offset: Offset(0, 8),                        // 0px x, 8px y
-            ),
+          color: theme.colorScheme.primary,
+          borderRadius: BorderRadius.circular(
+            ProfileConstants.cardRadius,
+          ),
+          boxShadow: const [
+            ConstShadow.card,
           ],
         ),
         child: Column(
@@ -83,9 +102,8 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
           children: [
             TextFormField(
               controller: _uid1Controller,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                  labelText: 'UID1'
+              decoration: const InputDecoration(
+                labelText: 'UID1',
               ),
               onChanged: (value) {
                 notifier.update(
@@ -93,12 +111,13 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
                 );
               },
             ),
-            const SizedBox(height: ConstSize.mediumSpacing),
+            const SizedBox(
+              height: ConstSize.mediumSpacing,
+            ),
             TextFormField(
               controller: _uid2Controller,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                  labelText: 'UID2'
+              decoration: const InputDecoration(
+                labelText: 'UID2',
               ),
               onChanged: (value) {
                 notifier.update(
@@ -106,13 +125,13 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
                 );
               },
             ),
-            const SizedBox(height: ConstSize.mediumSpacing),
+            const SizedBox(
+              height: ConstSize.mediumSpacing,
+            ),
             TextFormField(
               controller: _guildController,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Guild',
-                contentPadding: ConstPadding.mediumPaddingAll,
               ),
               onChanged: (value) {
                 notifier.update(
@@ -120,25 +139,13 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
                 );
               },
             ),
-            const SizedBox(height: ConstSize.mediumSpacing),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _onPressed,
-              child: _isLoading
-                  ? SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  )
-                  : Text(
-                    "저장",
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSecondary,
-                    ),
-                  ),
-            )
+            const SizedBox(
+              height: ConstSize.mediumSpacing,
+            ),
+            SaveMembershipButton(
+              isLoading: _isLoading,
+              onPressed: _onPressed,
+            ),
           ],
         ),
       ),

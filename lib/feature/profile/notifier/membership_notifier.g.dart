@@ -20,7 +20,7 @@ final class MembershipNotifierProvider
         argument: null,
         retry: null,
         name: r'membershipProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -42,7 +42,7 @@ final class MembershipNotifierProvider
 }
 
 String _$membershipNotifierHash() =>
-    r'af19316d7024c74d23ee68a79220cbaa89901256';
+    r'0bee98ebb695099f6266944e756660d313b38a81';
 
 abstract class _$MembershipNotifier extends $Notifier<MembershipState> {
   MembershipState build();

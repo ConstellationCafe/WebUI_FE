@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/feature/user/profile/state/membership_state.dart';
+import 'package:constellation_cafe/feature/profile/state/membership_state.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

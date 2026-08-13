@@ -1,5 +1,5 @@
 
-import 'package:constellation_cafe/feature/user/profile/domain/entity/point_entity.dart';
+import 'package:constellation_cafe/feature/profile/domain/entity/point_entity.dart';
 import 'package:dio/dio.dart';
 import '../../../../shared/domain/repository/repository_interface.dart';
 
