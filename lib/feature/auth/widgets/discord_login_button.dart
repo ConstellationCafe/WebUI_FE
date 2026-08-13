@@ -46,6 +46,7 @@ class DiscordLoginButton extends ConsumerWidget {
           softWrap: false,
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
             fontSize: ConstSize.mediumTextSize,
+            color: AuthConstants.discordLoginButtonTextColor,
           ),
         ),
       ),
