@@ -1,4 +1,3 @@
-import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,8 +9,6 @@ class HomeContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final login = ref.watch(loginCheckProvider);
-    final user = ref.watch(currentUserStateProvider);
-
     return login.when(
       loading: () => const SizedBox.shrink(),
       error: (_, __) => const SizedBox.shrink(),
