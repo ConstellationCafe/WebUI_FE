@@ -99,6 +99,7 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
               controller: _uid1Controller,

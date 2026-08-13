@@ -41,6 +41,7 @@ class ViewMembershipCard extends ConsumerWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             // 회원증 상단
             Row(
