@@ -12,14 +12,16 @@ class MainMenuBar extends ConsumerStatefulWidget {
 
 class _MainMenuBarState extends ConsumerState<MainMenuBar> {
   @override
-  Widget build(BuildContext build) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // MainSearchBar(),
-        // SizedBox(height: 10),
-        MainCategory()
-      ],
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // MainSearchBar(),
+          // SizedBox(height: 10),
+          MainCategory(),
+        ],
+      ),
     );
   }
 }
