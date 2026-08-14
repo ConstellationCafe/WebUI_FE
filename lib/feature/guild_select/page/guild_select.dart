@@ -5,15 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:constellation_cafe/core/constants/const_color.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
-import 'package:constellation_cafe/di/ApiProvider.dart';
-import 'package:constellation_cafe/feature/guild_select/domain/guild.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:constellation_cafe/feature/guild_select/widgets/guild_tile_list.dart';
 import 'package:constellation_cafe/feature/guild_select/widgets/page_footer.dart';
 import 'package:constellation_cafe/feature/guild_select/widgets/page_header.dart';
-
+import 'package:constellation_cafe/feature/guild_select/provider/guild_list_provider.dart';
 import '../../../shared/widgets/loading/PageLoading.dart';
 import '../constants/guild_constants.dart';
+
 
 class GuildSelectPage extends ConsumerWidget {
   final Widget? child;
@@ -25,7 +24,8 @@ class GuildSelectPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final guildApi = ref.read(guildApiProvider);
+    final guildsAsync = ref.watch(guildListProvider);
+
     final guildStateNotifier = ref.read(
       currentGuildStateProvider.notifier,
     );
@@ -33,23 +33,18 @@ class GuildSelectPage extends ConsumerWidget {
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = ScreenWidth.isDesktop(width);
 
-    return FutureBuilder<List<Guild>>(
-      future: guildApi.findAll(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const PageLoading();
-        }
+    return guildsAsync.when(
+      loading: () => const PageLoading(),
 
-        if (snapshot.hasError) {
-          return const Scaffold(
-            body: Center(
-              child: Text('길드 목록을 불러오지 못했습니다.'),
-            ),
-          );
-        }
+      error: (error, stack) {
+        return const Scaffold(
+          body: Center(
+            child: Text('길드 목록을 불러오지 못했습니다.'),
+          ),
+        );
+      },
 
-        final guilds = snapshot.data ?? [];
-
+      data: (guilds) {
         return Scaffold(
           body: Container(
             width: double.infinity,
@@ -80,9 +75,11 @@ class GuildSelectPage extends ConsumerWidget {
                 child: Column(
                   children: [
                     const SelectPageHeader(),
+
                     const SizedBox(
                       height: GuildConstants.headerListSpacing,
                     ),
+
                     GuildList(
                       guilds: guilds,
                       onGuildSelected: (guild) {
@@ -97,9 +94,11 @@ class GuildSelectPage extends ConsumerWidget {
                         );
                       },
                     ),
+
                     const SizedBox(
                       height: GuildConstants.listFooterSpacing,
                     ),
+
                     const SelectPageFooter(),
                   ],
                 ),
