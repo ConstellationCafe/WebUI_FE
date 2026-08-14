@@ -49,61 +49,58 @@ class _ProfileState extends ConsumerState<Profile> {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final deviceType = ScreenWidth.widthChecker(
+          final isDesktop = ScreenWidth.isDesktop(
             constraints.maxWidth,
           );
 
-          if (deviceType == ScreenWidth.mobile ||
-              deviceType == ScreenWidth.tablet) {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ViewMembershipCard(
-                    key: membershipCardKey,
-                    width: ProfileConstants.childWidgetWidth,
-                    pointLogButtonKey: pointLogButtonKey,
-                  ),
-                  const SizedBox(
-                    height: ConstSize.mediumSpacing,
-                  ),
-                  InputMembershipData(
-                    key: inputDataKey,
-                    width: ProfileConstants.childWidgetWidth,
-                  )
-                ],
-              ),
-            );
-          } else {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: constraints.maxWidth,
-                ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ViewMembershipCard(
-                        key: membershipCardKey,
-                        width: ProfileConstants.childWidgetWidth,
-                        pointLogButtonKey: pointLogButtonKey,
-                      ),
-                      const SizedBox(
-                        width: ConstSize.mediumSpacing,
-                      ),
-                      InputMembershipData(
-                        key: inputDataKey,
-                        width: ProfileConstants.childWidgetWidth,
-                      )
-                    ]
-                ),
-              ),
-            );
-          }
+          return SingleChildScrollView(
+            child: isDesktop
+                ? _buildDesktop()
+                : _buildMobile(),
+          );
         },
       ),
+    );
+  }
+
+  Widget _buildDesktop() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ViewMembershipCard(
+          key: membershipCardKey,
+          width: ProfileConstants.childWidgetWidth,
+          pointLogButtonKey: pointLogButtonKey,
+        ),
+        const SizedBox(
+          width: ConstSize.mediumSpacing,
+        ),
+        InputMembershipData(
+          key: inputDataKey,
+          width: ProfileConstants.childWidgetWidth,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMobile() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ViewMembershipCard(
+          key: membershipCardKey,
+          width: ProfileConstants.childWidgetWidth,
+          pointLogButtonKey: pointLogButtonKey,
+        ),
+        const SizedBox(
+          height: ConstSize.mediumSpacing,
+        ),
+        InputMembershipData(
+          key: inputDataKey,
+          width: ProfileConstants.childWidgetWidth,
+        ),
+      ],
     );
   }
 }
