@@ -1,14 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/usage/usage.dart';
-import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
+
+import '../constants/friendly_match_constants.dart';
+import '../widgets/friendly_match_usage.dart';
 import '../widgets/input_friendly_match.dart';
 import '../widgets/view_friendly_match.dart';
-import '../widgets/friendly_match_usage.dart';
 
 class FriendlyMatch extends ConsumerStatefulWidget {
   const FriendlyMatch({super.key});
@@ -18,68 +18,88 @@ class FriendlyMatch extends ConsumerStatefulWidget {
 }
 
 class _FriendlyMatchState extends ConsumerState<FriendlyMatch> {
-  final double childWidgetWidth = 400;
-
   final GlobalKey submitKey = GlobalKey();
   final GlobalKey inputDataKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    final login = ref.watch(loginCheckProvider);
-    return login.when(
-        loading: () => const SizedBox.shrink(),
-        error: (_, __) => const SizedBox.shrink(),
-        data: (isLoggedIn) {
-          if (!isLoggedIn) return const SizedBox.shrink();
-          return Usage(
-              usageKey: FriendlyMatchUsage.key,
-              steps: FriendlyMatchUsage.steps(
-                submitKey: submitKey,
-                inputDataKey: inputDataKey,
-              ),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  String deviceType = ScreenWidth.widthChecker(constraints.maxWidth);
+    return Usage(
+      usageKey: FriendlyMatchUsage.key,
+      steps: FriendlyMatchUsage.steps(
+        submitKey: submitKey,
+        inputDataKey: inputDataKey,
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isDesktop = ScreenWidth.isDesktop(constraints.maxWidth);
 
-                  switch (deviceType) {
-                    case "mobileWidth":
-                    case "tabletWidth":
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ViewFriendlyMatch(
-                              submitKey: submitKey,
-                              width: childWidgetWidth
-                          ),
-                          SizedBox(height: ConstSize.bigHeight),
-                          InputFriendlyMatch(
-                              key: inputDataKey,
-                              width: childWidgetWidth
-                          ),
-                        ],
-                      );
-                    default:
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ViewFriendlyMatch(
-                              submitKey: submitKey,
-                              width: childWidgetWidth
-                          ),
-                          SizedBox(width: ConstSize.bigWidth),
-                          InputFriendlyMatch(
-                              key: inputDataKey,
-                              width: childWidgetWidth
-                          ),
-                        ],
-                      );
-                  }  // switch
-                },
-              )
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(
+              ConstSize.mediumSpacing,
+            ),
+            child: isDesktop
+                ? _buildDesktop(constraints)
+                : _buildMobile(constraints),
           );
-        }
+        },
+      ),
+    );
+  }
+
+  Widget _buildDesktop(BoxConstraints constraints) {
+    final availableWidth =
+        constraints.maxWidth - (ConstSize.mediumSpacing * 2);
+
+    final contentWidth = availableWidth.clamp(
+      0.0,
+      FriendlyMatchConstants.contentWidth,
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ViewFriendlyMatch(
+          submitKey: submitKey,
+          width: contentWidth,
+        ),
+        const SizedBox(
+          width: ConstSize.largeSpacing,
+        ),
+        InputFriendlyMatch(
+          key: inputDataKey,
+          width: contentWidth,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMobile(BoxConstraints constraints) {
+    final availableWidth =
+        constraints.maxWidth - (ConstSize.mediumSpacing * 2);
+
+    final contentWidth = availableWidth.clamp(
+      0.0,
+      FriendlyMatchConstants.contentWidth,
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ViewFriendlyMatch(
+          submitKey: submitKey,
+          width: contentWidth,
+        ),
+        const SizedBox(
+          height: ConstSize.largeSpacing,
+        ),
+        InputFriendlyMatch(
+          key: inputDataKey,
+          width: contentWidth,
+        ),
+      ],
     );
   }
 }
