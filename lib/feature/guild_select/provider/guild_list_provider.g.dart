@@ -26,7 +26,7 @@ final class GuildListProvider
         argument: null,
         retry: null,
         name: r'guildListProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -46,4 +46,4 @@ final class GuildListProvider
   }
 }
 
-String _$guildListHash() => r'0ac37e783f0d66585ce626d35af85cedf2ade6d6';
+String _$guildListHash() => r'fba4cf22bd68f37efbe3904fccc1e7106bc8adec';
