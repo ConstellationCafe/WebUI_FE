@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+
+import '../../constants/academy_constants.dart';
 import '../domain/member.dart';
 import '../notifier/academy_notifier.dart';
 import '../state/academy_form_state.dart';
@@ -34,21 +36,22 @@ class _AcademyMemberSelectorState
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
-    final notifier =
-    ref.read(academyProvider.notifier);
+    final notifier = ref.read(academyProvider.notifier);
 
-    final keyword =
-    _searchController.text.trim().toLowerCase();
+    final keyword = _searchController.text
+        .trim()
+        .toLowerCase();
 
     final filteredMembers = state.members.where(
-          (member) =>
-          member.name.toLowerCase().contains(keyword),
+          (member) => member.name
+          .toLowerCase()
+          .contains(keyword),
     );
 
     return AcademySectionCard(
-      title: '참여 멤버 (채팅방 멤버)',
+      title: '참여 학생',
       icon: Icons.people_outline_rounded,
-      trailing: OutlinedButton(
+      trailing: ElevatedButton(
         onPressed: state.members.isEmpty
             ? null
             : notifier.selectAllMembers,
@@ -67,42 +70,28 @@ class _AcademyMemberSelectorState
               ),
             ),
           ),
-
           const SizedBox(
             height: ConstPadding.smallPadding,
           ),
-
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: filteredMembers.map(
-                  (member) {
-                final selected = state.selectedMembers
-                    .any(
-                      (element) => element.id == member.id,
-                );
-
-                return FilterChip(
-                  selected: selected,
-                  avatar: CircleAvatar(
-                    radius: 12,
-                    child: Text(
-                      member.name.characters.first,
-                    ),
-                  ),
-                  label: Text(member.name),
-                  onSelected: (_) {
-                    notifier.toggleMember(member);
-                  },
-                );
-              },
-            ).toList(),
+            spacing: AcademyConstants.memberChipSpacing,
+            runSpacing: AcademyConstants.memberChipRunSpacing,
+            children: filteredMembers.map((member) {
+              final selected = state.selectedMembers.any(
+                    (element) => element.id == member.id,
+              );
+              return FilterChip(
+                selected: selected,
+                label: Text(member.name),
+                onSelected: (_) {
+                  notifier.toggleMember(member);
+                },
+              );
+            }).toList(),
           ),
-
           const SizedBox(
             height: ConstPadding.smallPadding,
           ),
-
           Text(
             '총 ${state.selectedMembers.length}명 선택됨',
             style: Theme.of(context)
