@@ -86,7 +86,7 @@ class AcademyNotifier extends _$AcademyNotifier {
         return;
       }
 
-      final members = await _api.getChatMembers(
+      final members = await _api.getStudents(
         academy.id,
         className,
       );
@@ -168,9 +168,13 @@ class AcademyNotifier extends _$AcademyNotifier {
   }
 
   void setEducationDate(DateTime date) {
+    print('setEducationDate: $date');
+
     state = state.copyWith(
       educationDate: date,
     );
+
+    print('현재 state: ${state.educationDate}');
   }
 
   void setStartTime(DateTime time) {

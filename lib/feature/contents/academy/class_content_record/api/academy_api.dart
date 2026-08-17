@@ -55,12 +55,12 @@ class AcademyApi {
         .toList();
   }
 
-  Future<List<ChatMember>> getChatMembers(
+  Future<List<ChatMember>> getStudents(
       String academyId,
       String className,
       ) async {
     final response = await dio.get(
-      '$base/api/academy/$academyId/classes/$className/members',
+      '$base/api/academy/$academyId/classes/$className/students',
     );
 
     final List<dynamic> data = response.data['response'];
