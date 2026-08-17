@@ -9,4 +9,9 @@ abstract final class AcademyConstants {
   // Saving indicator
   static const double savingIndicatorSize = 16;
   static const double savingIndicatorStrokeWidth = 2;
+
+  // Lesson Record
+  static const double memberChipSpacing = 8;
+  static const double memberChipRunSpacing = 8;
+  static const double memberAvatarRadius = 12;
 }
