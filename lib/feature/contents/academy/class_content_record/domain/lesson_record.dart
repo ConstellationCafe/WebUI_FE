@@ -24,4 +24,16 @@ class LessonRecord {
     required this.memberIds,
     required this.description,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'academyId': academyId,
+      'className': className,
+      'subject': subject,
+      'mainTeacherId': mainTeacherId,
+      'coTeacherIds': coTeacherIds,
+      'memberIds': memberIds,
+      'description': description,
+    };
+  }
 }

@@ -6,15 +6,15 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
+import '../../../../../shared/widgets/breadcrumb/app_breadcrumb.dart';
 import '../../constants/academy_constants.dart';
 import '../notifier/academy_notifier.dart';
-import '../widgets/academy_basic_info.dart';
-import '../widgets/academy_member_selector.dart';
-import '../widgets/academy_teacher_info.dart';
+import '../widgets/basic_info/academy_basic_info.dart';
+import '../widgets/member_selector.dart';
+import '../widgets/teacher_info/academy_teacher_info.dart';
 import '../widgets/lesson_description.dart';
-import '../widgets/lesson_record_breadcrumb.dart';
 import '../widgets/lesson_record_header.dart';
-import '../widgets/lesson_record_bottom_actions.dart';
+import '../widgets/lesson_record_bottom.dart';
 
 class LessonRecordPage extends ConsumerWidget {
   const LessonRecordPage({
@@ -77,7 +77,12 @@ class LessonRecordPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const LessonRecordBreadcrumb(),
+              AppBreadcrumb(
+                items: [
+                  '수업 관리',
+                  '수업 내용 기록',
+                ],
+              ),
               const SizedBox(height: ConstPadding.smallPadding),
               LessonRecordHeader(
                 isDesktop: isDesktop,
@@ -88,7 +93,7 @@ class LessonRecordPage extends ConsumerWidget {
               AcademyMemberSelector(state: state),
               LessonDescription(description: state.description),
               const SizedBox(height: ConstPadding.mediumPadding),
-              LessonRecordBottomActions(
+              LessonRecordBottom(
                 isSaving: state.isSaving,
                 onSave: saveLesson,
                 onCancel: cancel,

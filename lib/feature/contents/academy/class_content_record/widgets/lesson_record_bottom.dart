@@ -5,12 +5,12 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
 
-class LessonRecordBottomActions extends StatelessWidget {
+class LessonRecordBottom extends StatelessWidget {
   final bool isSaving;
   final VoidCallback onSave;
   final VoidCallback onCancel;
 
-  const LessonRecordBottomActions({
+  const LessonRecordBottom({
     super.key,
     required this.isSaving,
     required this.onSave,

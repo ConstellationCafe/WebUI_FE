@@ -8,4 +8,12 @@ class ChatMember {
     required this.name,
     this.profileImageUrl,
   });
+
+  factory ChatMember.fromJson(Map<String, dynamic> json) {
+    return ChatMember(
+      id: json['id'].toString(),
+      name: json['name'].toString(),
+      profileImageUrl: json['profileImageUrl'].toString(),
+    );
+  }
 }

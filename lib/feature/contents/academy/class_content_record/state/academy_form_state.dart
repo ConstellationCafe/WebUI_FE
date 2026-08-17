@@ -1,4 +1,6 @@
 import '../domain/academy.dart';
+import '../domain/academy_class.dart';
+import '../domain/subject.dart';
 import '../domain/teacher.dart';
 import '../domain/member.dart';
 
@@ -7,8 +9,8 @@ class AcademyFormState {
   final bool isSaving;
 
   final List<Academy> academies;
-  final List<String> classes;
-  final List<String> subjects;
+  final List<AcademyClass> classes;
+  final List<Subject> subjects;
 
   final List<AcademyTeacher> teachers;
   final List<ChatMember> members;
@@ -55,8 +57,8 @@ class AcademyFormState {
     bool? isLoading,
     bool? isSaving,
     List<Academy>? academies,
-    List<String>? classes,
-    List<String>? subjects,
+    List<AcademyClass>? classes,
+    List<Subject>? subjects,
     List<AcademyTeacher>? teachers,
     List<ChatMember>? members,
     Academy? selectedAcademy,

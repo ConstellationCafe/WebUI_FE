@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../../di/ApiProvider.dart';
 import '../api/academy_api.dart';
 import '../domain/teacher.dart';
 import '../domain/member.dart';
@@ -7,11 +8,6 @@ import '../domain/lesson_record.dart';
 import '../state/academy_form_state.dart';
 
 part 'academy_notifier.g.dart';
-
-@riverpod
-AcademyApi academyApi(Ref ref) {
-  return AcademyApi();
-}
 
 @riverpod
 class AcademyNotifier extends _$AcademyNotifier {

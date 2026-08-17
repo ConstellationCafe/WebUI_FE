@@ -8,4 +8,12 @@ class AcademyTeacher {
     required this.name,
     this.profileImageUrl,
   });
+
+  factory AcademyTeacher.fromJson(Map<String, dynamic> json) {
+    return AcademyTeacher(
+      id: json['id'].toString(),
+      name: json['name'].toString(),
+      profileImageUrl: json['profileImageUrl'].toString(),
+    );
+  }
 }

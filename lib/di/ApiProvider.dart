@@ -1,5 +1,6 @@
 
 import 'package:constellation_cafe/di/DioProvider.dart';
+import 'package:constellation_cafe/feature/contents/academy/class_content_record/api/academy_api.dart';
 import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,4 +38,7 @@ final shadowverseApiProvider = Provider(
 final membershipApiProvider = Provider(
     (ref) => MembershipAPI(ref.read(_apiTranslatorProvider))
 );
-
+final academyApiProvider = Provider((ref) {
+    final dio = ref.watch(dioProvider);
+    return AcademyApi(dio: dio);
+});
