@@ -12,6 +12,7 @@ class AcademyDateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,8 +29,19 @@ class AcademyDateField extends StatelessWidget {
               firstDate: DateTime(2020),
               lastDate: DateTime(2100),
               initialDate: date ?? DateTime.now(),
+              builder: (context, child) {
+                return Theme(
+                  data: Theme.of(context).copyWith(
+                    textButtonTheme: TextButtonThemeData(
+                      style: TextButton.styleFrom(
+                        foregroundColor: colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                  child: child!,
+                );
+              },
             );
-
             if (selectedDate != null) {
               onChanged(selectedDate);
             }

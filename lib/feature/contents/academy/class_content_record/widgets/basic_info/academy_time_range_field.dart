@@ -17,6 +17,7 @@ class AcademyTimeRangeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -41,11 +42,21 @@ class AcademyTimeRangeField extends StatelessWidget {
                       hour: 10,
                       minute: 0,
                     ),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
                   );
-
                   if (time != null) {
                     final now = DateTime.now();
-
                     onStartTimeChanged(
                       DateTime(
                         now.year,
@@ -78,6 +89,18 @@ class AcademyTimeRangeField extends StatelessWidget {
                       hour: 12,
                       minute: 0,
                     ),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
                   );
 
                   if (time != null) {
