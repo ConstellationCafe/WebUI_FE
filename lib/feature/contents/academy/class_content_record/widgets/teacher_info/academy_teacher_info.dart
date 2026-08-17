@@ -28,32 +28,30 @@ class AcademyTeacherInfo extends ConsumerWidget {
     return AcademySectionCard(
       title: '교사 정보',
       icon: Icons.person_outline_rounded,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: MainTeacherField(
-                  teachers: state.teachers,
-                  selectedTeacher: state.mainTeacher,
-                  onChanged: notifier.selectMainTeacher,
-                ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: MainTeacherField(
+                teachers: state.teachers,
+                selectedTeacher: state.mainTeacher,
+                onChanged: notifier.selectMainTeacher,
               ),
-              const SizedBox(
-                width: ConstPadding.mediumPadding,
+            ),
+            const SizedBox(
+              width: ConstPadding.mediumPadding,
+            ),
+            Expanded(
+              child: CoTeacherField(
+                teachers: state.teachers,
+                mainTeacher: state.mainTeacher,
+                selectedCoTeachers: state.selectedCoTeachers,
+                onChanged: notifier.toggleCoTeacher,
               ),
-              Expanded(
-                child: CoTeacherField(
-                  teachers: state.teachers,
-                  mainTeacher: state.mainTeacher,
-                  selectedCoTeachers: state.selectedCoTeachers,
-                  onChanged: notifier.toggleCoTeacher,
-                ),
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
