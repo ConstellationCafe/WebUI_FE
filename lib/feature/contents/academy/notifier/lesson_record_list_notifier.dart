@@ -1,6 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/di/ApiProvider.dart';
+
+import '../api/academy_api.dart';
 import '../api/lesson_record_api.dart';
 import '../state/lesson_record_list_state.dart';
 
@@ -9,17 +11,131 @@ part 'lesson_record_list_notifier.g.dart';
 @riverpod
 class LessonRecordListNotifier
     extends _$LessonRecordListNotifier {
-  late final LessonRecordApi _api;
+  late final LessonRecordApi _lessonRecordApi;
+  late final AcademyApi _academyApi;
 
   @override
   LessonRecordListState build() {
-    _api = ref.watch(lessonRecordApiProvider);
+    _lessonRecordApi = ref.watch(
+      lessonRecordApiProvider,
+    );
 
-    Future.microtask(loadRecords);
+    _academyApi = ref.watch(
+      academyApiProvider,
+    );
+
+    Future.microtask(_initialize);
 
     return const LessonRecordListState(
       isLoading: true,
     );
+  }
+
+  Future<void> _initialize() async {
+    try {
+      final academies =
+      await _academyApi.getAcademies();
+
+      state = state.copyWith(
+        isLoading: false,
+        academies: academies,
+      );
+
+      await loadRecords();
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  Future<void> selectAcademy(
+      String? academyId,
+      ) async {
+    if (academyId == null || academyId.isEmpty) {
+      state = state.copyWith(
+        selectedAcademyId: null,
+        selectedClassId: null,
+        selectedSubjectId: null,
+        classes: [],
+        subjects: [],
+      );
+
+      return;
+    }
+
+    state = state.copyWith(
+      selectedAcademyId: academyId,
+      selectedClassId: null,
+      selectedSubjectId: null,
+      classes: [],
+      subjects: [],
+      isFilterLoading: true,
+    );
+
+    try {
+      final classes =
+      await _academyApi.getClasses(academyId);
+
+      final subjects =
+      await _academyApi.getSubjects(academyId);
+
+      state = state.copyWith(
+        isFilterLoading: false,
+        classes: classes,
+        subjects: subjects,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isFilterLoading: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  void selectClass(
+      String? classId,
+      ) {
+    state = state.copyWith(
+      selectedClassId: classId,
+    );
+  }
+
+  void selectSubject(
+      String? subjectId,
+      ) {
+    state = state.copyWith(
+      selectedSubjectId: subjectId,
+    );
+  }
+
+  void setDate(
+      DateTime? date,
+      ) {
+    state = state.copyWith(
+      selectedDate: date,
+    );
+  }
+
+  void setTime(
+      String? time,
+      ) {
+    state = state.copyWith(
+      selectedTime: time,
+    );
+  }
+
+  void setTeacher(
+      String? teacherId,
+      ) {
+    state = state.copyWith(
+      selectedTeacherId: teacherId,
+    );
+  }
+
+  Future<void> search() async {
+    await loadRecords();
   }
 
   Future<void> loadRecords() async {
@@ -27,16 +143,18 @@ class LessonRecordListNotifier
       isLoading: true,
       errorMessage: null,
     );
+
     try {
-      final records = await _api.getLessonRecords(
+      final records =
+      await _lessonRecordApi.getLessonRecords(
+        academyId: state.selectedAcademyId,
+        classId: state.selectedClassId,
         date: state.selectedDate,
         time: state.selectedTime,
-        subject: state.selectedSubject,
-        // 현재는 null.
-        // 추후 관리자 화면에서 teacherId를 지정하면
-        // 해당 교사의 수업 기록 조회가 가능하다.
+        subject: state.selectedSubjectId,
         teacherId: state.selectedTeacherId,
       );
+
       state = state.copyWith(
         isLoading: false,
         records: records,
@@ -49,41 +167,16 @@ class LessonRecordListNotifier
     }
   }
 
-  void setDate(DateTime? date) {
-    state = state.copyWith(
-      selectedDate: date,
-    );
-  }
-
-  void setTime(String? time) {
-    state = state.copyWith(
-      selectedTime: time,
-    );
-  }
-
-  void setSubject(String? subject) {
-    state = state.copyWith(
-      selectedSubject: subject,
-    );
-  }
-
-  /// 추후 관리자 기능에서 사용
-  void setTeacher(String? teacherId) {
-    state = state.copyWith(
-      selectedTeacherId: teacherId,
-    );
-  }
-
-  Future<void> search() async {
-    await loadRecords();
-  }
-
   Future<void> resetFilters() async {
     state = state.copyWith(
+      selectedAcademyId: null,
+      selectedClassId: null,
+      selectedSubjectId: null,
       selectedDate: null,
       selectedTime: null,
-      selectedSubject: null,
       selectedTeacherId: null,
+      classes: [],
+      subjects: [],
     );
 
     await loadRecords();

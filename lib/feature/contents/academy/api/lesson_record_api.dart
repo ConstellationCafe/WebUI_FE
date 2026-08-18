@@ -3,12 +3,19 @@ import 'package:dio/dio.dart';
 import '../domain/model/lesson_record_summary.dart';
 
 class LessonRecordApi {
-  static const base = String.fromEnvironment('BACKEND_URI');
+  static const base = String.fromEnvironment(
+    'BACKEND_URI',
+  );
+
   final Dio dio;
 
-  LessonRecordApi({required this.dio});
+  LessonRecordApi({
+    required this.dio,
+  });
 
   Future<List<LessonRecordSummary>> getLessonRecords({
+    String? academyId,
+    String? classId,
     DateTime? date,
     String? time,
     String? subject,
@@ -17,16 +24,27 @@ class LessonRecordApi {
     final response = await dio.get(
       '$base/api/academy/lesson-records',
       queryParameters: {
+        if (academyId != null &&
+            academyId.isNotEmpty)
+          'academyId': academyId,
+
+        if (classId != null &&
+            classId.isNotEmpty)
+          'classId': classId,
+
         if (date != null)
           'date': _formatDate(date),
 
-        if (time != null && time.isNotEmpty)
+        if (time != null &&
+            time.isNotEmpty)
           'time': time,
 
-        if (subject != null && subject.isNotEmpty)
+        if (subject != null &&
+            subject.isNotEmpty)
           'subject': subject,
 
-        if (teacherId != null && teacherId.isNotEmpty)
+        if (teacherId != null &&
+            teacherId.isNotEmpty)
           'teacherId': teacherId,
       },
     );
@@ -49,11 +67,13 @@ class LessonRecordApi {
   }
 
   String _formatDate(DateTime date) {
-    final month =
-    date.month.toString().padLeft(2, '0');
+    final month = date.month
+        .toString()
+        .padLeft(2, '0');
 
-    final day =
-    date.day.toString().padLeft(2, '0');
+    final day = date.day
+        .toString()
+        .padLeft(2, '0');
 
     return '${date.year}-$month-$day';
   }

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LessonRecordListState {
 
- bool get isLoading; List<LessonRecordSummary> get records; DateTime? get selectedDate; String? get selectedTime; String? get selectedSubject; String? get selectedTeacherId; String? get errorMessage;
+ bool get isLoading; bool get isFilterLoading; List<LessonRecordSummary> get records; List<Academy> get academies; List<AcademyClass> get classes; List<Subject> get subjects; String? get selectedAcademyId; String? get selectedClassId; String? get selectedSubjectId; DateTime? get selectedDate; String? get selectedTime; String? get selectedTeacherId; String? get errorMessage;
 /// Create a copy of LessonRecordListState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $LessonRecordListStateCopyWith<LessonRecordListState> get copyWith => _$LessonRe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonRecordListState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.records, records)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedTime, selectedTime) || other.selectedTime == selectedTime)&&(identical(other.selectedSubject, selectedSubject) || other.selectedSubject == selectedSubject)&&(identical(other.selectedTeacherId, selectedTeacherId) || other.selectedTeacherId == selectedTeacherId)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonRecordListState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isFilterLoading, isFilterLoading) || other.isFilterLoading == isFilterLoading)&&const DeepCollectionEquality().equals(other.records, records)&&const DeepCollectionEquality().equals(other.academies, academies)&&const DeepCollectionEquality().equals(other.classes, classes)&&const DeepCollectionEquality().equals(other.subjects, subjects)&&(identical(other.selectedAcademyId, selectedAcademyId) || other.selectedAcademyId == selectedAcademyId)&&(identical(other.selectedClassId, selectedClassId) || other.selectedClassId == selectedClassId)&&(identical(other.selectedSubjectId, selectedSubjectId) || other.selectedSubjectId == selectedSubjectId)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedTime, selectedTime) || other.selectedTime == selectedTime)&&(identical(other.selectedTeacherId, selectedTeacherId) || other.selectedTeacherId == selectedTeacherId)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(records),selectedDate,selectedTime,selectedSubject,selectedTeacherId,errorMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,isFilterLoading,const DeepCollectionEquality().hash(records),const DeepCollectionEquality().hash(academies),const DeepCollectionEquality().hash(classes),const DeepCollectionEquality().hash(subjects),selectedAcademyId,selectedClassId,selectedSubjectId,selectedDate,selectedTime,selectedTeacherId,errorMessage);
 
 @override
 String toString() {
-  return 'LessonRecordListState(isLoading: $isLoading, records: $records, selectedDate: $selectedDate, selectedTime: $selectedTime, selectedSubject: $selectedSubject, selectedTeacherId: $selectedTeacherId, errorMessage: $errorMessage)';
+  return 'LessonRecordListState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, records: $records, academies: $academies, classes: $classes, subjects: $subjects, selectedAcademyId: $selectedAcademyId, selectedClassId: $selectedClassId, selectedSubjectId: $selectedSubjectId, selectedDate: $selectedDate, selectedTime: $selectedTime, selectedTeacherId: $selectedTeacherId, errorMessage: $errorMessage)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $LessonRecordListStateCopyWith<$Res>  {
   factory $LessonRecordListStateCopyWith(LessonRecordListState value, $Res Function(LessonRecordListState) _then) = _$LessonRecordListStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, List<LessonRecordSummary> records, DateTime? selectedDate, String? selectedTime, String? selectedSubject, String? selectedTeacherId, String? errorMessage
+ bool isLoading, bool isFilterLoading, List<LessonRecordSummary> records, List<Academy> academies, List<AcademyClass> classes, List<Subject> subjects, String? selectedAcademyId, String? selectedClassId, String? selectedSubjectId, DateTime? selectedDate, String? selectedTime, String? selectedTeacherId, String? errorMessage
 });
 
 
@@ -62,13 +62,19 @@ class _$LessonRecordListStateCopyWithImpl<$Res>
 
 /// Create a copy of LessonRecordListState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? records = null,Object? selectedDate = freezed,Object? selectedTime = freezed,Object? selectedSubject = freezed,Object? selectedTeacherId = freezed,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isFilterLoading = null,Object? records = null,Object? academies = null,Object? classes = null,Object? subjects = null,Object? selectedAcademyId = freezed,Object? selectedClassId = freezed,Object? selectedSubjectId = freezed,Object? selectedDate = freezed,Object? selectedTime = freezed,Object? selectedTeacherId = freezed,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isFilterLoading: null == isFilterLoading ? _self.isFilterLoading : isFilterLoading // ignore: cast_nullable_to_non_nullable
 as bool,records: null == records ? _self.records : records // ignore: cast_nullable_to_non_nullable
-as List<LessonRecordSummary>,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
+as List<LessonRecordSummary>,academies: null == academies ? _self.academies : academies // ignore: cast_nullable_to_non_nullable
+as List<Academy>,classes: null == classes ? _self.classes : classes // ignore: cast_nullable_to_non_nullable
+as List<AcademyClass>,subjects: null == subjects ? _self.subjects : subjects // ignore: cast_nullable_to_non_nullable
+as List<Subject>,selectedAcademyId: freezed == selectedAcademyId ? _self.selectedAcademyId : selectedAcademyId // ignore: cast_nullable_to_non_nullable
+as String?,selectedClassId: freezed == selectedClassId ? _self.selectedClassId : selectedClassId // ignore: cast_nullable_to_non_nullable
+as String?,selectedSubjectId: freezed == selectedSubjectId ? _self.selectedSubjectId : selectedSubjectId // ignore: cast_nullable_to_non_nullable
+as String?,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,selectedTime: freezed == selectedTime ? _self.selectedTime : selectedTime // ignore: cast_nullable_to_non_nullable
-as String?,selectedSubject: freezed == selectedSubject ? _self.selectedSubject : selectedSubject // ignore: cast_nullable_to_non_nullable
 as String?,selectedTeacherId: freezed == selectedTeacherId ? _self.selectedTeacherId : selectedTeacherId // ignore: cast_nullable_to_non_nullable
 as String?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -156,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  List<LessonRecordSummary> records,  DateTime? selectedDate,  String? selectedTime,  String? selectedSubject,  String? selectedTeacherId,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isFilterLoading,  List<LessonRecordSummary> records,  List<Academy> academies,  List<AcademyClass> classes,  List<Subject> subjects,  String? selectedAcademyId,  String? selectedClassId,  String? selectedSubjectId,  DateTime? selectedDate,  String? selectedTime,  String? selectedTeacherId,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LessonRecordListState() when $default != null:
-return $default(_that.isLoading,_that.records,_that.selectedDate,_that.selectedTime,_that.selectedSubject,_that.selectedTeacherId,_that.errorMessage);case _:
+return $default(_that.isLoading,_that.isFilterLoading,_that.records,_that.academies,_that.classes,_that.subjects,_that.selectedAcademyId,_that.selectedClassId,_that.selectedSubjectId,_that.selectedDate,_that.selectedTime,_that.selectedTeacherId,_that.errorMessage);case _:
   return orElse();
 
 }
@@ -177,10 +183,10 @@ return $default(_that.isLoading,_that.records,_that.selectedDate,_that.selectedT
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  List<LessonRecordSummary> records,  DateTime? selectedDate,  String? selectedTime,  String? selectedSubject,  String? selectedTeacherId,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isFilterLoading,  List<LessonRecordSummary> records,  List<Academy> academies,  List<AcademyClass> classes,  List<Subject> subjects,  String? selectedAcademyId,  String? selectedClassId,  String? selectedSubjectId,  DateTime? selectedDate,  String? selectedTime,  String? selectedTeacherId,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _LessonRecordListState():
-return $default(_that.isLoading,_that.records,_that.selectedDate,_that.selectedTime,_that.selectedSubject,_that.selectedTeacherId,_that.errorMessage);case _:
+return $default(_that.isLoading,_that.isFilterLoading,_that.records,_that.academies,_that.classes,_that.subjects,_that.selectedAcademyId,_that.selectedClassId,_that.selectedSubjectId,_that.selectedDate,_that.selectedTime,_that.selectedTeacherId,_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +203,10 @@ return $default(_that.isLoading,_that.records,_that.selectedDate,_that.selectedT
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  List<LessonRecordSummary> records,  DateTime? selectedDate,  String? selectedTime,  String? selectedSubject,  String? selectedTeacherId,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isFilterLoading,  List<LessonRecordSummary> records,  List<Academy> academies,  List<AcademyClass> classes,  List<Subject> subjects,  String? selectedAcademyId,  String? selectedClassId,  String? selectedSubjectId,  DateTime? selectedDate,  String? selectedTime,  String? selectedTeacherId,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _LessonRecordListState() when $default != null:
-return $default(_that.isLoading,_that.records,_that.selectedDate,_that.selectedTime,_that.selectedSubject,_that.selectedTeacherId,_that.errorMessage);case _:
+return $default(_that.isLoading,_that.isFilterLoading,_that.records,_that.academies,_that.classes,_that.subjects,_that.selectedAcademyId,_that.selectedClassId,_that.selectedSubjectId,_that.selectedDate,_that.selectedTime,_that.selectedTeacherId,_that.errorMessage);case _:
   return null;
 
 }
@@ -212,10 +218,11 @@ return $default(_that.isLoading,_that.records,_that.selectedDate,_that.selectedT
 
 
 class _LessonRecordListState implements LessonRecordListState {
-  const _LessonRecordListState({this.isLoading = false, final  List<LessonRecordSummary> records = const [], this.selectedDate, this.selectedTime, this.selectedSubject, this.selectedTeacherId, this.errorMessage}): _records = records;
+  const _LessonRecordListState({this.isLoading = false, this.isFilterLoading = false, final  List<LessonRecordSummary> records = const [], final  List<Academy> academies = const [], final  List<AcademyClass> classes = const [], final  List<Subject> subjects = const [], this.selectedAcademyId, this.selectedClassId, this.selectedSubjectId, this.selectedDate, this.selectedTime, this.selectedTeacherId, this.errorMessage}): _records = records,_academies = academies,_classes = classes,_subjects = subjects;
   
 
 @override@JsonKey() final  bool isLoading;
+@override@JsonKey() final  bool isFilterLoading;
  final  List<LessonRecordSummary> _records;
 @override@JsonKey() List<LessonRecordSummary> get records {
   if (_records is EqualUnmodifiableListView) return _records;
@@ -223,9 +230,32 @@ class _LessonRecordListState implements LessonRecordListState {
   return EqualUnmodifiableListView(_records);
 }
 
+ final  List<Academy> _academies;
+@override@JsonKey() List<Academy> get academies {
+  if (_academies is EqualUnmodifiableListView) return _academies;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_academies);
+}
+
+ final  List<AcademyClass> _classes;
+@override@JsonKey() List<AcademyClass> get classes {
+  if (_classes is EqualUnmodifiableListView) return _classes;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_classes);
+}
+
+ final  List<Subject> _subjects;
+@override@JsonKey() List<Subject> get subjects {
+  if (_subjects is EqualUnmodifiableListView) return _subjects;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_subjects);
+}
+
+@override final  String? selectedAcademyId;
+@override final  String? selectedClassId;
+@override final  String? selectedSubjectId;
 @override final  DateTime? selectedDate;
 @override final  String? selectedTime;
-@override final  String? selectedSubject;
 @override final  String? selectedTeacherId;
 @override final  String? errorMessage;
 
@@ -239,16 +269,16 @@ _$LessonRecordListStateCopyWith<_LessonRecordListState> get copyWith => __$Lesso
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonRecordListState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._records, _records)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedTime, selectedTime) || other.selectedTime == selectedTime)&&(identical(other.selectedSubject, selectedSubject) || other.selectedSubject == selectedSubject)&&(identical(other.selectedTeacherId, selectedTeacherId) || other.selectedTeacherId == selectedTeacherId)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonRecordListState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isFilterLoading, isFilterLoading) || other.isFilterLoading == isFilterLoading)&&const DeepCollectionEquality().equals(other._records, _records)&&const DeepCollectionEquality().equals(other._academies, _academies)&&const DeepCollectionEquality().equals(other._classes, _classes)&&const DeepCollectionEquality().equals(other._subjects, _subjects)&&(identical(other.selectedAcademyId, selectedAcademyId) || other.selectedAcademyId == selectedAcademyId)&&(identical(other.selectedClassId, selectedClassId) || other.selectedClassId == selectedClassId)&&(identical(other.selectedSubjectId, selectedSubjectId) || other.selectedSubjectId == selectedSubjectId)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedTime, selectedTime) || other.selectedTime == selectedTime)&&(identical(other.selectedTeacherId, selectedTeacherId) || other.selectedTeacherId == selectedTeacherId)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(_records),selectedDate,selectedTime,selectedSubject,selectedTeacherId,errorMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,isFilterLoading,const DeepCollectionEquality().hash(_records),const DeepCollectionEquality().hash(_academies),const DeepCollectionEquality().hash(_classes),const DeepCollectionEquality().hash(_subjects),selectedAcademyId,selectedClassId,selectedSubjectId,selectedDate,selectedTime,selectedTeacherId,errorMessage);
 
 @override
 String toString() {
-  return 'LessonRecordListState(isLoading: $isLoading, records: $records, selectedDate: $selectedDate, selectedTime: $selectedTime, selectedSubject: $selectedSubject, selectedTeacherId: $selectedTeacherId, errorMessage: $errorMessage)';
+  return 'LessonRecordListState(isLoading: $isLoading, isFilterLoading: $isFilterLoading, records: $records, academies: $academies, classes: $classes, subjects: $subjects, selectedAcademyId: $selectedAcademyId, selectedClassId: $selectedClassId, selectedSubjectId: $selectedSubjectId, selectedDate: $selectedDate, selectedTime: $selectedTime, selectedTeacherId: $selectedTeacherId, errorMessage: $errorMessage)';
 }
 
 
@@ -259,7 +289,7 @@ abstract mixin class _$LessonRecordListStateCopyWith<$Res> implements $LessonRec
   factory _$LessonRecordListStateCopyWith(_LessonRecordListState value, $Res Function(_LessonRecordListState) _then) = __$LessonRecordListStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, List<LessonRecordSummary> records, DateTime? selectedDate, String? selectedTime, String? selectedSubject, String? selectedTeacherId, String? errorMessage
+ bool isLoading, bool isFilterLoading, List<LessonRecordSummary> records, List<Academy> academies, List<AcademyClass> classes, List<Subject> subjects, String? selectedAcademyId, String? selectedClassId, String? selectedSubjectId, DateTime? selectedDate, String? selectedTime, String? selectedTeacherId, String? errorMessage
 });
 
 
@@ -276,13 +306,19 @@ class __$LessonRecordListStateCopyWithImpl<$Res>
 
 /// Create a copy of LessonRecordListState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? records = null,Object? selectedDate = freezed,Object? selectedTime = freezed,Object? selectedSubject = freezed,Object? selectedTeacherId = freezed,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isFilterLoading = null,Object? records = null,Object? academies = null,Object? classes = null,Object? subjects = null,Object? selectedAcademyId = freezed,Object? selectedClassId = freezed,Object? selectedSubjectId = freezed,Object? selectedDate = freezed,Object? selectedTime = freezed,Object? selectedTeacherId = freezed,Object? errorMessage = freezed,}) {
   return _then(_LessonRecordListState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isFilterLoading: null == isFilterLoading ? _self.isFilterLoading : isFilterLoading // ignore: cast_nullable_to_non_nullable
 as bool,records: null == records ? _self._records : records // ignore: cast_nullable_to_non_nullable
-as List<LessonRecordSummary>,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
+as List<LessonRecordSummary>,academies: null == academies ? _self._academies : academies // ignore: cast_nullable_to_non_nullable
+as List<Academy>,classes: null == classes ? _self._classes : classes // ignore: cast_nullable_to_non_nullable
+as List<AcademyClass>,subjects: null == subjects ? _self._subjects : subjects // ignore: cast_nullable_to_non_nullable
+as List<Subject>,selectedAcademyId: freezed == selectedAcademyId ? _self.selectedAcademyId : selectedAcademyId // ignore: cast_nullable_to_non_nullable
+as String?,selectedClassId: freezed == selectedClassId ? _self.selectedClassId : selectedClassId // ignore: cast_nullable_to_non_nullable
+as String?,selectedSubjectId: freezed == selectedSubjectId ? _self.selectedSubjectId : selectedSubjectId // ignore: cast_nullable_to_non_nullable
+as String?,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,selectedTime: freezed == selectedTime ? _self.selectedTime : selectedTime // ignore: cast_nullable_to_non_nullable
-as String?,selectedSubject: freezed == selectedSubject ? _self.selectedSubject : selectedSubject // ignore: cast_nullable_to_non_nullable
 as String?,selectedTeacherId: freezed == selectedTeacherId ? _self.selectedTeacherId : selectedTeacherId // ignore: cast_nullable_to_non_nullable
 as String?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
