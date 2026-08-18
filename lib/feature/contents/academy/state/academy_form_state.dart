@@ -4,6 +4,8 @@ import '../domain/model/subject.dart';
 import '../domain/model/teacher.dart';
 import '../domain/model/member.dart';
 
+const Object _academyFormStateUnset = Object();
+
 class AcademyFormState {
   final bool isLoading;
   final bool isSaving;
@@ -61,44 +63,98 @@ class AcademyFormState {
     List<Subject>? subjects,
     List<AcademyTeacher>? teachers,
     List<ChatMember>? members,
-    Academy? selectedAcademy,
-    String? selectedClass,
-    String? selectedSubject,
-    AcademyTeacher? mainTeacher,
+
+    Object? selectedAcademy = _academyFormStateUnset,
+    Object? selectedClass = _academyFormStateUnset,
+    Object? selectedSubject = _academyFormStateUnset,
+
+    Object? mainTeacher = _academyFormStateUnset,
+
     List<AcademyTeacher>? selectedCoTeachers,
     List<ChatMember>? selectedMembers,
-    DateTime? educationDate,
-    DateTime? startTime,
-    DateTime? endTime,
+
+    Object? educationDate = _academyFormStateUnset,
+    Object? startTime = _academyFormStateUnset,
+    Object? endTime = _academyFormStateUnset,
+
     String? description,
-    String? errorMessage,
+
+    Object? errorMessage = _academyFormStateUnset,
   }) {
     return AcademyFormState(
       isLoading: isLoading ?? this.isLoading,
       isSaving: isSaving ?? this.isSaving,
+
       academies: academies ?? this.academies,
       classes: classes ?? this.classes,
       subjects: subjects ?? this.subjects,
+
       teachers: teachers ?? this.teachers,
       members: members ?? this.members,
-      selectedAcademy: selectedAcademy ?? this.selectedAcademy,
-      selectedClass: selectedClass ?? this.selectedClass,
-      selectedSubject: selectedSubject ?? this.selectedSubject,
-      mainTeacher: mainTeacher ?? this.mainTeacher,
+
+      selectedAcademy: identical(
+        selectedAcademy,
+        _academyFormStateUnset,
+      )
+          ? this.selectedAcademy
+          : selectedAcademy as Academy?,
+
+      selectedClass: identical(
+        selectedClass,
+        _academyFormStateUnset,
+      )
+          ? this.selectedClass
+          : selectedClass as String?,
+
+      selectedSubject: identical(
+        selectedSubject,
+        _academyFormStateUnset,
+      )
+          ? this.selectedSubject
+          : selectedSubject as String?,
+
+      mainTeacher: identical(
+        mainTeacher,
+        _academyFormStateUnset,
+      )
+          ? this.mainTeacher
+          : mainTeacher as AcademyTeacher?,
+
       selectedCoTeachers:
       selectedCoTeachers ?? this.selectedCoTeachers,
+
       selectedMembers:
       selectedMembers ?? this.selectedMembers,
-      educationDate:
-      educationDate ?? this.educationDate,
-      startTime:
-      startTime ?? this.startTime,
-      endTime:
-      endTime ?? this.endTime,
-      description:
-      description ?? this.description,
-      errorMessage:
-      errorMessage ?? this.errorMessage,
+
+      educationDate: identical(
+        educationDate,
+        _academyFormStateUnset,
+      )
+          ? this.educationDate
+          : educationDate as DateTime?,
+
+      startTime: identical(
+        startTime,
+        _academyFormStateUnset,
+      )
+          ? this.startTime
+          : startTime as DateTime?,
+
+      endTime: identical(
+        endTime,
+        _academyFormStateUnset,
+      )
+          ? this.endTime
+          : endTime as DateTime?,
+
+      description: description ?? this.description,
+
+      errorMessage: identical(
+        errorMessage,
+        _academyFormStateUnset,
+      )
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 }

@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 
 import '../domain/model/academy.dart';
 import '../domain/model/academy_class.dart';
-import '../domain/model/teacher.dart';
 import '../domain/model/member.dart';
 import '../domain/model/lesson_record.dart';
+import '../domain/model/teacher.dart';
 
 class AcademyApi {
   static const base = String.fromEnvironment('BACKEND_URI');

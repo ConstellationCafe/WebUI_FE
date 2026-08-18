@@ -2,9 +2,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../di/ApiProvider.dart';
 import '../api/academy_api.dart';
-import '../domain/model/teacher.dart';
 import '../domain/model/member.dart';
 import '../domain/model/lesson_record.dart';
+import '../domain/model/teacher.dart';
 import '../state/academy_form_state.dart';
 
 part 'academy_notifier.g.dart';
@@ -31,6 +31,7 @@ class AcademyNotifier extends _$AcademyNotifier {
       state = state.copyWith(
         isLoading: false,
         academies: academies,
+        errorMessage: null,
       );
     } catch (e) {
       state = state.copyWith(
@@ -51,19 +52,33 @@ class AcademyNotifier extends _$AcademyNotifier {
       selectedAcademy: academy,
       selectedClass: null,
       selectedSubject: null,
+      mainTeacher: null,
+      selectedCoTeachers: [],
+      selectedMembers: [],
+      members: [],
       isLoading: true,
+      errorMessage: null,
     );
 
     try {
-      final classes = await _api.getClasses(academyId);
-      final subjects = await _api.getSubjects(academyId);
-      final teachers = await _api.getTeachers(academyId);
+      final classes = await _api.getClasses(
+        academyId,
+      );
+
+      final subjects = await _api.getSubjects(
+        academyId,
+      );
+
+      final teachers = await _api.getTeachers(
+        academyId,
+      );
 
       state = state.copyWith(
         isLoading: false,
         classes: classes,
         subjects: subjects,
         teachers: teachers,
+        errorMessage: null,
       );
     } catch (e) {
       state = state.copyWith(
@@ -73,19 +88,31 @@ class AcademyNotifier extends _$AcademyNotifier {
     }
   }
 
-  Future<void> selectClass(String className) async {
+  Future<void> selectClass(
+      String className,
+      ) async {
+    final academy = state.selectedAcademy;
+
+    if (academy == null) {
+      state = state.copyWith(
+        selectedClass: null,
+        members: [],
+        selectedMembers: [],
+        isLoading: false,
+        errorMessage: '학원을 먼저 선택해주세요.',
+      );
+      return;
+    }
+
     state = state.copyWith(
       selectedClass: className,
+      selectedMembers: [],
+      members: [],
       isLoading: true,
+      errorMessage: null,
     );
 
     try {
-      final academy = state.selectedAcademy;
-
-      if (academy == null) {
-        return;
-      }
-
       final members = await _api.getStudents(
         academy.id,
         className,
@@ -94,6 +121,7 @@ class AcademyNotifier extends _$AcademyNotifier {
       state = state.copyWith(
         isLoading: false,
         members: members,
+        errorMessage: null,
       );
     } catch (e) {
       state = state.copyWith(
@@ -103,9 +131,12 @@ class AcademyNotifier extends _$AcademyNotifier {
     }
   }
 
-  void selectSubject(String subject) {
+  void selectSubject(
+      String subject,
+      ) {
     state = state.copyWith(
       selectedSubject: subject,
+      errorMessage: null,
     );
   }
 
@@ -120,7 +151,9 @@ class AcademyNotifier extends _$AcademyNotifier {
   void toggleCoTeacher(
       AcademyTeacher teacher,
       ) {
-    final selected = [...state.selectedCoTeachers];
+    final selected = [
+      ...state.selectedCoTeachers,
+    ];
 
     final exists = selected.any(
           (element) => element.id == teacher.id,
@@ -142,7 +175,9 @@ class AcademyNotifier extends _$AcademyNotifier {
   void toggleMember(
       ChatMember member,
       ) {
-    final selected = [...state.selectedMembers];
+    final selected = [
+      ...state.selectedMembers,
+    ];
 
     final exists = selected.any(
           (element) => element.id == member.id,
@@ -163,29 +198,39 @@ class AcademyNotifier extends _$AcademyNotifier {
 
   void selectAllMembers() {
     state = state.copyWith(
-      selectedMembers: [...state.members],
+      selectedMembers: [
+        ...state.members,
+      ],
     );
   }
 
-  void setEducationDate(DateTime date) {
+  void setEducationDate(
+      DateTime date,
+      ) {
     state = state.copyWith(
       educationDate: date,
     );
   }
 
-  void setStartTime(DateTime time) {
+  void setStartTime(
+      DateTime time,
+      ) {
     state = state.copyWith(
       startTime: time,
     );
   }
 
-  void setEndTime(DateTime time) {
+  void setEndTime(
+      DateTime time,
+      ) {
     state = state.copyWith(
       endTime: time,
     );
   }
 
-  void setDescription(String description) {
+  void setDescription(
+      String description,
+      ) {
     state = state.copyWith(
       description: description,
     );
@@ -198,34 +243,63 @@ class AcademyNotifier extends _$AcademyNotifier {
 
     state = state.copyWith(
       isSaving: true,
+      errorMessage: null,
     );
 
     try {
-      final start = state.startTime!;
-      final end = state.endTime!;
+      final selectedAcademy = state.selectedAcademy;
+      final selectedClass = state.selectedClass;
+      final selectedSubject = state.selectedSubject;
+      final educationDate = state.educationDate;
+      final startTime = state.startTime;
+      final endTime = state.endTime;
+      final mainTeacher = state.mainTeacher;
 
-      final duration = end.difference(start);
+      if (selectedAcademy == null ||
+          selectedClass == null ||
+          selectedSubject == null ||
+          educationDate == null ||
+          startTime == null ||
+          endTime == null ||
+          mainTeacher == null) {
+        state = state.copyWith(
+          isSaving: false,
+        );
+
+        return false;
+      }
+
+      final duration = endTime.difference(
+        startTime,
+      );
 
       final record = LessonRecord(
-        academyId: state.selectedAcademy!.id,
-        className: state.selectedClass!,
-        subject: state.selectedSubject!,
-        educationDate: state.educationDate!,
+        academyId: selectedAcademy.id,
+        className: selectedClass,
+        subject: selectedSubject,
+        educationDate: educationDate,
         educationDuration: duration,
-        mainTeacherId: state.mainTeacher!.id,
+        mainTeacherId: mainTeacher.id,
         coTeacherIds: state.selectedCoTeachers
-            .map((teacher) => teacher.id)
+            .map(
+              (teacher) => teacher.id,
+        )
             .toList(),
         memberIds: state.selectedMembers
-            .map((member) => member.id)
+            .map(
+              (member) => member.id,
+        )
             .toList(),
         description: state.description.trim(),
       );
 
-      await _api.createLessonRecord(record);
+      await _api.createLessonRecord(
+        record,
+      );
 
       state = state.copyWith(
         isSaving: false,
+        errorMessage: null,
       );
 
       return true;
@@ -240,28 +314,40 @@ class AcademyNotifier extends _$AcademyNotifier {
   }
 
   bool _validate() {
-    if (state.selectedAcademy == null) {
+    final selectedAcademy = state.selectedAcademy;
+    final selectedClass = state.selectedClass;
+    final selectedSubject = state.selectedSubject;
+    final educationDate = state.educationDate;
+    final startTime = state.startTime;
+    final endTime = state.endTime;
+    final mainTeacher = state.mainTeacher;
+
+    if (selectedAcademy == null) {
       return false;
     }
 
-    if (state.selectedClass == null) {
+    if (selectedClass == null) {
       return false;
     }
 
-    if (state.selectedSubject == null) {
+    if (selectedSubject == null) {
       return false;
     }
 
-    if (state.educationDate == null) {
+    if (educationDate == null) {
       return false;
     }
 
-    if (state.startTime == null ||
-        state.endTime == null) {
+    if (startTime == null ||
+        endTime == null) {
       return false;
     }
 
-    if (state.mainTeacher == null) {
+    if (mainTeacher == null) {
+      return false;
+    }
+
+    if (!endTime.isAfter(startTime)) {
       return false;
     }
 
