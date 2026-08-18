@@ -1,5 +1,6 @@
 
 import 'package:constellation_cafe/di/DioProvider.dart';
+import 'package:constellation_cafe/feature/contents/academy/student_status/api/student_status_api.dart';
 import 'package:constellation_cafe/feature/contents/academy/write_lesson_record/api/academy_api.dart';
 import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,4 +48,8 @@ final academyApiProvider = Provider((ref) {
 final lessonRecordApiProvider = Provider((ref) {
     final dio = ref.watch(dioProvider);
     return LessonRecordApi(dio: dio);
+});
+final studentStatusApiProvider = Provider((ref) {
+    final dio = ref.watch(dioProvider);
+    return StudentStatusApi(dio: dio);
 });
