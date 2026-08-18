@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/feature/contents/academy/class_content_record/domain/subject.dart';
+import 'package:constellation_cafe/feature/contents/academy/write_lesson_record/domain/subject.dart';
 import 'package:dio/dio.dart';
 
 import '../domain/academy.dart';

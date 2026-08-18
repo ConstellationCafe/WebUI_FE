@@ -30,6 +30,8 @@ class LessonRecord {
       'academyId': academyId,
       'className': className,
       'subject': subject,
+      'educationDate': educationDate.toIso8601String(),
+      'educationDuration': educationDuration.inMinutes,
       'mainTeacherId': mainTeacherId,
       'coTeacherIds': coTeacherIds,
       'memberIds': memberIds,
