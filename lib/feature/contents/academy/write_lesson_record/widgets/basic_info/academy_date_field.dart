@@ -30,18 +30,19 @@ class AcademyDateField extends StatelessWidget {
               lastDate: DateTime(2100),
               initialDate: date ?? DateTime.now(),
               builder: (context, child) {
+                final colorScheme = Theme.of(context).colorScheme;
                 return Theme(
                   data: Theme.of(context).copyWith(
                     textButtonTheme: TextButtonThemeData(
                       style: TextButton.styleFrom(
-                        foregroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.secondary,
                       ),
                     ),
                   ),
                   child: child!,
                 );
               },
-            );
+            );;
             if (selectedDate != null) {
               onChanged(selectedDate);
             }

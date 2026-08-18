@@ -47,7 +47,7 @@ class AcademyTimeRangeField extends StatelessWidget {
                         data: Theme.of(context).copyWith(
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
-                              foregroundColor: colorScheme.primary,
+                              foregroundColor: colorScheme.secondary,
                             ),
                           ),
                         ),
@@ -94,7 +94,7 @@ class AcademyTimeRangeField extends StatelessWidget {
                         data: Theme.of(context).copyWith(
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
-                              foregroundColor: colorScheme.primary,
+                              foregroundColor: colorScheme.secondary,
                             ),
                           ),
                         ),

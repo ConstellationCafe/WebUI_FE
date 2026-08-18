@@ -1,6 +1,6 @@
 
 import 'package:constellation_cafe/di/DioProvider.dart';
-import 'package:constellation_cafe/feature/contents/academy/class_content_record/api/academy_api.dart';
+import 'package:constellation_cafe/feature/contents/academy/write_lesson_record/api/academy_api.dart';
 import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +11,8 @@ import 'package:constellation_cafe/feature/contents/friendly_match/api/shadowver
 import 'package:constellation_cafe/feature/profile/api/membership_api.dart';
 import 'package:constellation_cafe/feature/auth/service/jwt.dart';
 import 'package:constellation_cafe/feature/auth/service/login.dart';
+
+import '../feature/contents/academy/read_lesson_record/api/lesson_record_api.dart';
 
 
 // Network
@@ -41,4 +43,8 @@ final membershipApiProvider = Provider(
 final academyApiProvider = Provider((ref) {
     final dio = ref.watch(dioProvider);
     return AcademyApi(dio: dio);
+});
+final lessonRecordApiProvider = Provider((ref) {
+    final dio = ref.watch(dioProvider);
+    return LessonRecordApi(dio: dio);
 });

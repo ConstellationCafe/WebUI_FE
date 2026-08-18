@@ -26,7 +26,16 @@ class AcademyCategory extends ConsumerWidget {
                 filterQuality: FilterQuality.high
             ),
             menuName: "수업 기록",
-            callbackUrl: "/academy/lesson_record",
+            callbackUrl: "/academy/write_lesson_record",
+          ),
+          MenuContainer(
+            iconImage: Image.asset(
+                "assets/icons/category/admin/point.png",
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high
+            ),
+            menuName: "수업 기록 조회",
+            callbackUrl: "/academy/read_lesson_record",
           ),
         ]
     );

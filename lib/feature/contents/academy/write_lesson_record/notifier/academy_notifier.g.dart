@@ -41,7 +41,7 @@ final class AcademyNotifierProvider
   }
 }
 
-String _$academyNotifierHash() => r'a5baa8607040f6b420ed2a6b881bfd321f0674cd';
+String _$academyNotifierHash() => r'285d7cf41b6358b0fa5934c2729ee38de8ccd771';
 
 abstract class _$AcademyNotifier extends $Notifier<AcademyFormState> {
   AcademyFormState build();

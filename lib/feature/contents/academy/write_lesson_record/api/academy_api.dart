@@ -9,7 +9,6 @@ import '../domain/lesson_record.dart';
 
 class AcademyApi {
   static const base = String.fromEnvironment('BACKEND_URI');
-
   final Dio dio;
 
   AcademyApi({required this.dio});

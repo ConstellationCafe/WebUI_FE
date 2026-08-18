@@ -168,13 +168,9 @@ class AcademyNotifier extends _$AcademyNotifier {
   }
 
   void setEducationDate(DateTime date) {
-    print('setEducationDate: $date');
-
     state = state.copyWith(
       educationDate: date,
     );
-
-    print('현재 state: ${state.educationDate}');
   }
 
   void setStartTime(DateTime time) {
