@@ -1,8 +1,6 @@
-enum StudentStatusType {
-  graduation,
-  expulsion,
-  withdrawal,
-}
+
+
+import '../type/student_status_type.dart';
 
 class StudentStatusForm {
   final String academyId;
