@@ -36,22 +36,23 @@ class StudentStatusActions
         ),
 
         ElevatedButton.icon(
-          onPressed:
-          isProcessing ? null : onProcess,
+          onPressed: isProcessing
+              ? null
+              : onProcess,
           icon: isProcessing
               ? const SizedBox(
-            width: AcademyConstants.savingIndicatorSize,
-            height: AcademyConstants.savingIndicatorSize,
-            child: ButtonLoading(),
-          )
+                  width: AcademyConstants.savingIndicatorSize,
+                  height: AcademyConstants.savingIndicatorSize,
+                  child: ButtonLoading(),
+                )
               : const Icon(
-            Icons.check,
-          ),
+                  Icons.check,
+                ),
           label: Text(
-            isProcessing
-                ? '처리 중...'
-                : '처리하기',
-          ),
+                  isProcessing
+                      ? '처리 중...'
+                      : '처리하기',
+                 ),
         ),
       ],
     );
