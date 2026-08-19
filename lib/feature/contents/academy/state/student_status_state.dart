@@ -4,7 +4,7 @@ import '../domain/model/academy.dart';
 import '../domain/model/academy_class.dart';
 import '../domain/model/student.dart';
 import '../domain/model/subject.dart';
-import '../domain/model/student_status_form.dart';
+import '../domain/type/student_status_type.dart';
 
 part 'student_status_state.freezed.dart';
 
