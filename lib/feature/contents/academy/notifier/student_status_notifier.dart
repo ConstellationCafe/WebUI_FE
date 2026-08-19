@@ -7,6 +7,7 @@ import '../domain/model/academy_class.dart';
 import '../domain/model/student.dart';
 import '../domain/model/student_status_form.dart';
 import '../domain/model/subject.dart';
+import '../domain/type/student_status_type.dart';
 import '../state/student_status_state.dart';
 
 part 'student_status_notifier.g.dart';
@@ -200,45 +201,36 @@ class StudentStatusNotifier
     if (!_validate()) {
       return false;
     }
-
     state = state.copyWith(
       isProcessing: true,
       errorMessage: null,
     );
-
     try {
-      final statusType =
-      state.selectedStatusType!;
-
+      final statusType = state.selectedStatusType!;
       final form = StudentStatusForm(
-        academyId:
-        state.selectedAcademyId!,
-        className:
-        state.selectedClassName!,
-        studentId:
-        state.selectedStudentId!,
+        // 학생 지정
+        academyId: state.selectedAcademyId!,
+        className: state.selectedClassName!,
+        studentId: state.selectedStudentId!,
+        // 졸업 / 자퇴 / 퇴학
         statusType: statusType,
-        subjectIds:
-        statusType ==
-            StudentStatusType.graduation
-            ? state.selectedSubjectIds
-            : const [],
+        // 학생 졸업 처리시엔 과목 선택란 추가
+        subjectIds: statusType == StudentStatusType.graduation
+                    ? state.selectedSubjectIds
+                    : const [],
+        // 자퇴 / 퇴학 사유
         reason: state.reason.trim(),
       );
-
       await _api.process(form);
-
       state = state.copyWith(
         isProcessing: false,
       );
-
       return true;
     } catch (e) {
       state = state.copyWith(
         isProcessing: false,
         errorMessage: e.toString(),
       );
-
       return false;
     }
   }
