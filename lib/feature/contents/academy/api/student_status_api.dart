@@ -1,12 +1,18 @@
 import 'package:dio/dio.dart';
 
+import '../../../../core/network/discordBot/Translator.dart';
 import '../domain/model/student_status_form.dart';
-import '../domain/response/student_status_response.dart';
+import '../domain/dto/response/student_status_response.dart';
+import '../domain/type/student_status_type.dart';
 
 class StudentStatusApi {
+  final APITranslator translator;
   final Dio dio;
 
-  StudentStatusApi({required this.dio});
+  StudentStatusApi({
+    required this.translator,
+    required this.dio
+  });
 
   Future<StudentStatusResponse> getOptions({
     String? academyId,
@@ -25,34 +31,23 @@ class StudentStatusApi {
     );
   }
 
-  Future<void> process(
-      StudentStatusForm form,
-      ) async {
-    await dio.post(
-      '/academy/student-status',
-      data: {
-        'academyId': form.academyId,
-        'className': form.className,
-        'studentId': form.studentId,
-        'status': _statusToString(form.statusType),
-        'subjectIds': form.subjectIds,
-        'reason': form.reason,
-      },
-    );
-  }
-
-  String _statusToString(
-      StudentStatusType status,
-      ) {
-    switch (status) {
+  // FIXME : args = [discordID, academy_name, academy_class, subject]가 되게 수정
+  Future<void> process(StudentStatusForm form) async {
+    /* 학생의 졸업 / 자퇴 / 퇴학 처리 */
+    String path = "";
+    List args = [];
+    switch (form.statusType) {
       case StudentStatusType.graduation:
-        return 'GRADUATION';
-
+        path = "/ConstellationAPI/AcademyAPI/graduate_approve";
+        args = [form.studentId, form.academyId, form.className, form.subjectIds];
       case StudentStatusType.expulsion:
-        return 'EXPULSION';
-
+        path = "/ConstellationAPI/AcademyAPI/dropout_student";
+        args = [form.studentId, form.academyId, form.className];
       case StudentStatusType.withdrawal:
-        return 'WITHDRAWAL';
+        path = "/ConstellationAPI/AcademyAPI/suspended_command";
+        args = [form.studentId, form.academyId, form.className];
     }
+    final res = await translator.request(path, args);
+    return res["payload"]["result"];
   }
 }
