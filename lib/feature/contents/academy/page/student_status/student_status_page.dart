@@ -91,12 +91,9 @@ class StudentStatusPage
                 icon: Icons.person_outline,
                 child: StudentStatusBasicInfo(
                   state: state,
-                  onAcademyChanged:
-                  notifier.selectAcademy,
-                  onClassChanged:
-                  notifier.selectClass,
-                  onStudentChanged:
-                  notifier.selectStudent,
+                  onAcademyChanged: notifier.selectAcademy,
+                  onClassChanged: notifier.selectClass,
+                  onStudentChanged: notifier.selectStudent,
                 ),
               ),
 
@@ -128,13 +125,10 @@ class StudentStatusPage
                 state.isProcessing,
                 onCancel: context.pop,
                 onProcess: () async {
-                  final success =
-                  await notifier.process();
-
+                  final success = await notifier.process();
                   if (!context.mounted) {
                     return;
                   }
-
                   if (success) {
                     ScaffoldMessenger.of(
                       context,
@@ -145,7 +139,6 @@ class StudentStatusPage
                         ),
                       ),
                     );
-
                     context.pop();
                   } else {
                     ScaffoldMessenger.of(
