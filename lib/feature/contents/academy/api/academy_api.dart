@@ -14,10 +14,7 @@ class AcademyApi {
   AcademyApi({required this.dio});
 
   Future<List<Academy>> getAcademies() async {
-    final response = await dio.get(
-      '$base/api/academy',
-    );
-
+    final response = await dio.get('$base/api/academy');
     final List<dynamic> data = response.data['response'];
     return data
         .map((json) => Academy.fromJson(json))
@@ -25,9 +22,7 @@ class AcademyApi {
   }
 
   Future<List<AcademyClass>> getClasses(String academyId) async {
-    final response = await dio.get(
-      '$base/api/academy/$academyId/classes',
-    );
+    final response = await dio.get('$base/api/academy/$academyId/classes');
     final List<dynamic> data = response.data['response'];
     return data
         .map((json) => AcademyClass.fromJson(json))
@@ -35,9 +30,7 @@ class AcademyApi {
   }
 
   Future<List<Subject>> getSubjects(String academyId) async {
-    final response = await dio.get(
-      '$base/api/academy/$academyId/subjects',
-    );
+    final response = await dio.get('$base/api/academy/$academyId/subjects');
     final List<dynamic> data = response.data['response'];
     return data
         .map((json) => Subject.fromJson(json))
@@ -45,35 +38,18 @@ class AcademyApi {
   }
 
   Future<List<AcademyTeacher>> getTeachers(String academyId) async {
-    final response = await dio.get(
-      '$base/api/academy/$academyId/teachers',
-    );
+    final response = await dio.get('$base/api/academy/$academyId/teachers');
     final List<dynamic> data = response.data['response'];
     return data
         .map((json) => AcademyTeacher.fromJson(json))
         .toList();
   }
 
-  Future<List<ChatMember>> getStudents(
-      String academyId,
-      String className,
-      ) async {
-    final response = await dio.get(
-      '$base/api/academy/$academyId/classes/$className/students',
-    );
-
+  Future<List<ChatMember>> getStudents(String academyId, String className) async {
+    final response = await dio.get('$base/api/academy/$academyId/classes/$className/students');
     final List<dynamic> data = response.data['response'];
     return data
         .map((json) => ChatMember.fromJson(json))
         .toList();
-  }
-
-  Future<void> createLessonRecord(
-      LessonRecord record,
-      ) async {
-    await dio.post(
-      '$base/api/academy/lesson-record',
-      data: record.toJson(),
-    );
   }
 }
