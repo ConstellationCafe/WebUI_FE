@@ -51,5 +51,8 @@ final lessonRecordApiProvider = Provider((ref) {
 });
 final studentStatusApiProvider = Provider((ref) {
     final dio = ref.watch(dioProvider);
-    return StudentStatusApi(dio: dio);
+    return StudentStatusApi(
+        translator: ref.read(_apiTranslatorProvider),
+        dio: dio
+    );
 });
