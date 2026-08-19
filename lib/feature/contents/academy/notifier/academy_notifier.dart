@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../di/ApiProvider.dart';
 import '../api/academy_api.dart';
+import '../api/lesson_record_api.dart';
 import '../domain/model/member.dart';
 import '../domain/model/lesson_record.dart';
 import '../domain/model/teacher.dart';
@@ -11,11 +12,12 @@ part 'academy_notifier.g.dart';
 
 @riverpod
 class AcademyNotifier extends _$AcademyNotifier {
-  late final AcademyApi _api;
+  late final AcademyApi academyApi;
+  late final LessonRecordApi lessonRecordApi;
 
   @override
   AcademyFormState build() {
-    _api = ref.watch(academyApiProvider);
+    academyApi = ref.watch(academyApiProvider);
 
     Future.microtask(_initialize);
 
@@ -26,7 +28,7 @@ class AcademyNotifier extends _$AcademyNotifier {
 
   Future<void> _initialize() async {
     try {
-      final academies = await _api.getAcademies();
+      final academies = await academyApi.getAcademies();
 
       state = state.copyWith(
         isLoading: false,
@@ -61,15 +63,15 @@ class AcademyNotifier extends _$AcademyNotifier {
     );
 
     try {
-      final classes = await _api.getClasses(
+      final classes = await academyApi.getClasses(
         academyId,
       );
 
-      final subjects = await _api.getSubjects(
+      final subjects = await academyApi.getSubjects(
         academyId,
       );
 
-      final teachers = await _api.getTeachers(
+      final teachers = await academyApi.getTeachers(
         academyId,
       );
 
@@ -113,7 +115,7 @@ class AcademyNotifier extends _$AcademyNotifier {
     );
 
     try {
-      final members = await _api.getStudents(
+      final members = await academyApi.getStudents(
         academy.id,
         className,
       );
@@ -293,7 +295,7 @@ class AcademyNotifier extends _$AcademyNotifier {
         description: state.description.trim(),
       );
 
-      await _api.createLessonRecord(
+      await lessonRecordApi.createLessonRecord(
         record,
       );
 
