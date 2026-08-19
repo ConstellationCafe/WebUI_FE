@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/const_padding.dart';
 
-import '../../domain/model/student_status_form.dart';
+import '../../domain/type/student_status_type.dart';
 import '../../state/student_status_state.dart';
 
 class StudentStatusProcessForm
