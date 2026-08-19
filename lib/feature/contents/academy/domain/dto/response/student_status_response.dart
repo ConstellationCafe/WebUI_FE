@@ -1,8 +1,7 @@
-import 'package:constellation_cafe/feature/contents/academy/domain/response/student_option_response.dart';
+import 'package:constellation_cafe/feature/contents/academy/domain/dto/response/student_option_response.dart';
 
 import 'academy_option_response.dart';
 import 'class_option_response.dart';
-import 'student_status_response.dart';
 import 'subject_option_response.dart';
 
 class StudentStatusResponse {
