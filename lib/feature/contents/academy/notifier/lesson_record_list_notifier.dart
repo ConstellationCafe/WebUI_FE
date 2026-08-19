@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/feature/contents/academy/domain/dto/request/lesson_record_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/di/ApiProvider.dart';
@@ -145,15 +146,25 @@ class LessonRecordListNotifier
     );
 
     try {
-      final records =
-      await _lessonRecordApi.getLessonRecords(
-        academyId: state.selectedAcademyId,
-        classId: state.selectedClassId,
-        date: state.selectedDate,
-        time: state.selectedTime,
-        subject: state.selectedSubjectId,
-        teacherId: state.selectedTeacherId,
+      final records = await _lessonRecordApi.getLessonRecords(
+        LessonRecordRequest(
+          academyId: state.selectedAcademyId,
+          classId: state.selectedClassId,
+          date: state.selectedDate,
+          time: state.selectedTime,
+          subject: state.selectedSubjectId,
+          teacherId: state.selectedTeacherId,
+        ),
       );
+      // final records =
+      // await _lessonRecordApi.getLessonRecords(
+      //   academyId: state.selectedAcademyId,
+      //   classId: state.selectedClassId,
+      //   date: state.selectedDate,
+      //   time: state.selectedTime,
+      //   subject: state.selectedSubjectId,
+      //   teacherId: state.selectedTeacherId,
+      // );
 
       state = state.copyWith(
         isLoading: false,
