@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/const_padding.dart';
 
-import '../../state/student_status_state.dart';
+import '../../state/student_status_state/student_status_state.dart';
 
 class StudentStatusBasicInfo
     extends StatelessWidget {

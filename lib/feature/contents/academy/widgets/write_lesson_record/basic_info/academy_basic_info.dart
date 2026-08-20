@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
-import '../../../notifier/academy_notifier.dart';
-import '../../../state/academy_form_state.dart';
+import '../../../notifier/academy_notifier/lesson_record_notifier.dart';
+import '../../../state/lesson_record_form_state/lesson_record_form_state.dart';
 import 'academy_date_field.dart';
 import '../academy_section_card.dart';
 import 'academy_selection_fields.dart';

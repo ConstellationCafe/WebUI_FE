@@ -1,14 +1,14 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../di/ApiProvider.dart';
-import '../api/student_status_api.dart';
-import '../domain/model/academy.dart';
-import '../domain/model/academy_class.dart';
-import '../domain/model/student.dart';
-import '../domain/model/student_status_form.dart';
-import '../domain/model/subject.dart';
-import '../domain/type/student_status_type.dart';
-import '../state/student_status_state.dart';
+import '../../../../../di/ApiProvider.dart';
+import '../../data/api/student_status_api.dart';
+import '../../domain/model/academy.dart';
+import '../../domain/model/academy_class.dart';
+import '../../domain/model/student.dart';
+import '../../domain/model/student_status_form.dart';
+import '../../domain/model/subject.dart';
+import '../../domain/type/student_status_type.dart';
+import '../../state/student_status_state/student_status_state.dart';
 
 part 'student_status_notifier.g.dart';
 

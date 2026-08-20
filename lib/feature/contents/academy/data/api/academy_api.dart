@@ -1,11 +1,10 @@
 import 'package:constellation_cafe/feature/contents/academy/domain/model/subject.dart';
 import 'package:dio/dio.dart';
 
-import '../domain/model/academy.dart';
-import '../domain/model/academy_class.dart';
-import '../domain/model/member.dart';
-import '../domain/model/lesson_record.dart';
-import '../domain/model/teacher.dart';
+import '../../domain/model/academy.dart';
+import '../../domain/model/academy_class.dart';
+import '../../domain/model/student.dart';
+import '../../domain/model/teacher.dart';
 
 class AcademyApi {
   static const base = String.fromEnvironment('BACKEND_URI');
@@ -37,19 +36,19 @@ class AcademyApi {
         .toList();
   }
 
-  Future<List<AcademyTeacher>> getTeachers(String academyId) async {
+  Future<List<Teacher>> getTeachers(String academyId) async {
     final response = await dio.get('$base/api/academy/$academyId/teachers');
     final List<dynamic> data = response.data['response'];
     return data
-        .map((json) => AcademyTeacher.fromJson(json))
+        .map((json) => Teacher.fromJson(json))
         .toList();
   }
 
-  Future<List<ChatMember>> getStudents(String academyId, String className) async {
+  Future<List<Student>> getStudents(String academyId, String className) async {
     final response = await dio.get('$base/api/academy/$academyId/classes/$className/students');
     final List<dynamic> data = response.data['response'];
     return data
-        .map((json) => ChatMember.fromJson(json))
+        .map((json) => Student.fromJson(json))
         .toList();
   }
 }

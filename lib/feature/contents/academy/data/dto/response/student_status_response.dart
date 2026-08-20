@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/feature/contents/academy/domain/dto/response/student_option_response.dart';
+import '../../../data/dto/response/student_option_response.dart';
 
 import 'academy_option_response.dart';
 import 'class_option_response.dart';

@@ -7,7 +7,7 @@ import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../notifier/student_status_notifier.dart';
+import '../../notifier/student_status_notifier/student_status_notifier.dart';
 import '../../widgets/student_status/student_status_actions.dart';
 import '../../widgets/student_status/student_status_basic_info.dart';
 import '../../widgets/student_status/student_status_process_form.dart';

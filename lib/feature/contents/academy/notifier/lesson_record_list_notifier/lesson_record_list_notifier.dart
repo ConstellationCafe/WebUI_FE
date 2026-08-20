@@ -1,68 +1,39 @@
-import 'package:constellation_cafe/feature/contents/academy/domain/dto/request/lesson_record_request.dart';
+import 'package:constellation_cafe/feature/contents/academy/data/dto/request/lesson_record_query_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/di/ApiProvider.dart';
 
-import '../api/academy_api.dart';
-import '../api/lesson_record_api.dart';
-import '../state/lesson_record_list_state.dart';
+import '../../data/api/academy_api.dart';
+import '../../data/api/lesson_record_api.dart';
+import '../../state/lesson_record_list_state/lesson_record_list_state.dart';
 
 part 'lesson_record_list_notifier.g.dart';
 
 @riverpod
-class LessonRecordListNotifier
-    extends _$LessonRecordListNotifier {
+class LessonRecordListNotifier extends _$LessonRecordListNotifier {
   late final LessonRecordApi _lessonRecordApi;
   late final AcademyApi _academyApi;
 
   @override
   LessonRecordListState build() {
-    _lessonRecordApi = ref.watch(
-      lessonRecordApiProvider,
-    );
-
-    _academyApi = ref.watch(
-      academyApiProvider,
-    );
-
-    Future.microtask(_initialize);
-
-    return const LessonRecordListState(
+    _lessonRecordApi = ref.watch(lessonRecordApiProvider);
+    _academyApi = ref.watch(academyApiProvider);
+    return LessonRecordListState(
       isLoading: true,
     );
   }
 
-  Future<void> _initialize() async {
-    try {
-      final academies =
-      await _academyApi.getAcademies();
-
+  Future<void> selectAcademy(String? academyId) async {
+    if (academyId == null) {
       state = state.copyWith(
-        isLoading: false,
-        academies: academies,
+        lessonRecordList: state.lessonRecordList.copyWith(
+          selectedAcademyId: null,
+          selectedClassId: null,
+          selectedSubjectId: null,
+          classes: [],
+          subjects: [],
+        )
       );
-
-      await loadRecords();
-    } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
-    }
-  }
-
-  Future<void> selectAcademy(
-      String? academyId,
-      ) async {
-    if (academyId == null || academyId.isEmpty) {
-      state = state.copyWith(
-        selectedAcademyId: null,
-        selectedClassId: null,
-        selectedSubjectId: null,
-        classes: [],
-        subjects: [],
-      );
-
       return;
     }
 
@@ -147,7 +118,7 @@ class LessonRecordListNotifier
 
     try {
       final records = await _lessonRecordApi.getLessonRecords(
-        LessonRecordRequest(
+        LessonRecordQueryRequest(
           academyId: state.selectedAcademyId,
           classId: state.selectedClassId,
           date: state.selectedDate,

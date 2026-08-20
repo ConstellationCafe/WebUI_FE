@@ -7,7 +7,7 @@ import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../notifier/lesson_record_list_notifier.dart';
+import '../../notifier/lesson_record_list_notifier/lesson_record_list_notifier.dart';
 import '../../widgets/read_lesson_record/lesson_record_filter.dart';
 import '../../widgets/read_lesson_record/lesson_record_list.dart';
 

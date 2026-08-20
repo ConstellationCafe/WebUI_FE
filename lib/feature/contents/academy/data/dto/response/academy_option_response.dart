@@ -7,9 +7,7 @@ class AcademyOptionResponse {
     required this.name,
   });
 
-  factory AcademyOptionResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory AcademyOptionResponse.fromJson(Map<String, dynamic> json) {
     return AcademyOptionResponse(
       id: json['id'].toString(),
       name: json['name'] as String,

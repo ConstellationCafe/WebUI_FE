@@ -1,7 +1,8 @@
 
 import 'package:constellation_cafe/di/DioProvider.dart';
-import 'package:constellation_cafe/feature/contents/academy/api/student_status_api.dart';
-import 'package:constellation_cafe/feature/contents/academy/api/academy_api.dart';
+import 'package:constellation_cafe/feature/contents/academy/data/api/student_status_api.dart';
+import 'package:constellation_cafe/feature/contents/academy/data/api/academy_api.dart';
+import 'package:constellation_cafe/feature/contents/academy/data/api/lesson_record_api.dart';
 import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,7 +14,7 @@ import 'package:constellation_cafe/feature/profile/api/membership_api.dart';
 import 'package:constellation_cafe/feature/auth/service/jwt.dart';
 import 'package:constellation_cafe/feature/auth/service/login.dart';
 
-import '../feature/contents/academy/api/lesson_record_api.dart';
+
 
 
 // Network

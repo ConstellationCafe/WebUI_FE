@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../notifier/academy_notifier.dart';
+import '../../notifier/academy_notifier/lesson_record_notifier.dart';
 import 'academy_section_card.dart';
 
 class LessonDescription extends ConsumerWidget {

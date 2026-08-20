@@ -1,16 +1,16 @@
-class AcademyStudent {
+class Student {
   final String id;
   final String name;
   final String? profileImageUrl;
 
-  const AcademyStudent({
+  const Student({
     required this.id,
     required this.name,
     this.profileImageUrl,
   });
 
-  factory AcademyStudent.fromJson(Map<String, dynamic> json) {
-    return AcademyStudent(
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
       id: json['id'].toString(),
       name: json['name'].toString(),
       profileImageUrl: json['profileImageUrl'].toString(),

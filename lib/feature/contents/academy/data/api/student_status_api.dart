@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-import '../../../../core/network/discordBot/Translator.dart';
-import '../domain/model/student_status_form.dart';
-import '../domain/dto/response/student_status_response.dart';
-import '../domain/type/student_status_type.dart';
+import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
+import '../../data/dto/response/student_status_response.dart';
+import '../../domain/model/student_status_form.dart';
+import '../../domain/type/student_status_type.dart';
 
 class StudentStatusApi {
   final APITranslator translator;

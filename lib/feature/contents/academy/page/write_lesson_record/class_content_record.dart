@@ -8,7 +8,7 @@ import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../../../../../shared/widgets/breadcrumb/app_breadcrumb.dart';
 import '../../constants/academy_constants.dart';
-import '../../notifier/academy_notifier.dart';
+import '../../notifier/academy_notifier/lesson_record_notifier.dart';
 import '../../widgets/write_lesson_record/basic_info/academy_basic_info.dart';
 import '../../widgets/write_lesson_record/lesson_description.dart';
 import '../../widgets/write_lesson_record/lesson_record_bottom.dart';

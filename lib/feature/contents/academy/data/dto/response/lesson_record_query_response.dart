@@ -1,4 +1,4 @@
-class LessonRecordResponse {
+class LessonRecordQueryResponse {
   final String id;
   final String academyName;
   final String className;
@@ -9,7 +9,7 @@ class LessonRecordResponse {
   final String description;
   final int memberCount;
 
-  const LessonRecordResponse({
+  const LessonRecordQueryResponse({
     required this.id,
     required this.academyName,
     required this.className,
@@ -21,8 +21,8 @@ class LessonRecordResponse {
     required this.memberCount,
   });
 
-  factory LessonRecordResponse.fromJson(Map<String, dynamic> json) {
-    return LessonRecordResponse(
+  factory LessonRecordQueryResponse.fromJson(Map<String, dynamic> json) {
+    return LessonRecordQueryResponse(
       id: json['id'].toString(),
       academyName: json['academyName'] ?? '',
       className: json['className'] ?? '',

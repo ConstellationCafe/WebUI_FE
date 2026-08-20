@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../state/academy_form_state.dart';
+import '../../../state/lesson_record_form_state/lesson_record_form_state.dart';
 
 class AcademySelectionFields extends StatelessWidget {
   final AcademyFormState state;
