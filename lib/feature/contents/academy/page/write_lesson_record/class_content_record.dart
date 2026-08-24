@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_query_notifier/lesson_record_query_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,7 @@ import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../../../../../shared/widgets/breadcrumb/app_breadcrumb.dart';
 import '../../constants/academy_constants.dart';
-import '../../notifier/academy_notifier/lesson_record_notifier.dart';
+import '../../notifier/lesson_record_form_notifier/lesson_record_form_notifier.dart';
 import '../../widgets/write_lesson_record/basic_info/academy_basic_info.dart';
 import '../../widgets/write_lesson_record/lesson_description.dart';
 import '../../widgets/write_lesson_record/lesson_record_bottom.dart';
@@ -24,13 +25,14 @@ class LessonRecordPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(academyProvider);
-    final notifier = ref.read(academyProvider.notifier);
+    final queryState = ref.watch(lessonRecordQueryProvider);
+    final formState = ref.watch(lessonRecordFormProvider);
+    final notifier = ref.read(lessonRecordFormProvider.notifier);
 
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = ScreenWidth.isDesktop(width);
 
-    if (state.isLoading && state.academies.isEmpty) {
+    if (queryState.isLoading && queryState.queryForm.academies.isEmpty) {
       return const PageLoading();
     }
 
@@ -63,6 +65,7 @@ class LessonRecordPage extends ConsumerWidget {
       context.pop();
     }
 
+    final queryNotifier = ref.read(lessonRecordQueryProvider.notifier);
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
         horizontal: isDesktop
@@ -89,13 +92,42 @@ class LessonRecordPage extends ConsumerWidget {
                 isDesktop: isDesktop,
               ),
               const SizedBox(height: ConstPadding.mediumPadding),
-              AcademyBasicInfo(state: state),
-              AcademyTeacherInfo(state: state),
-              AcademyMemberSelector(state: state),
-              LessonDescription(description: state.description),
+              AcademyBasicInfo(
+                // model
+                academies: queryState.queryForm.academies,
+                classes: queryState.queryForm.classes,
+                subjects: queryState.queryForm.subjects,
+                selectedAcademy: queryState.queryForm.selectedAcademy,
+                selectedAcademyClass: queryState.queryForm.selectedAcademyClass,
+                selectedSubject: queryState.queryForm.selectedSubject,
+                educationDate: queryState.queryForm.educationDate,
+                startTime: queryState.queryForm.startTime,
+                endTime: queryState.queryForm.endTime,
+                // callback
+                onAcademyChanged: queryNotifier.selectAcademy,
+                onClassChanged: queryNotifier.selectClass,
+                onSubjectChanged: queryNotifier.selectSubject,
+                onEducationDateChanged: queryNotifier.setEducationDate,
+                onStartTimeChanged: queryNotifier.setStartTime,
+                onEndTimeChanged: queryNotifier.setEndTime,
+              ),
+              AcademyTeacherInfo(
+                teachers: queryState.queryForm.teachers,
+                mainTeacher: queryState.queryForm.mainTeacher,
+                selectedCoTeachers: queryState.queryForm.selectedCoTeachers,
+                onMainTeacherChanged: queryNotifier.selectMainTeacher,
+                onCoTeacherToggle: queryNotifier.toggleCoTeacher,
+              ),
+              AcademyMemberSelector(
+                students: queryState.queryForm.students,
+                selectedStudents: queryState.queryForm.selectedStudents,
+                onStudentToggle: queryNotifier.toggleStudent,
+                onSelectAll: queryNotifier.selectAllStudents,
+              ),
+              LessonDescription(description: formState.lessonRecordForm.description),
               const SizedBox(height: ConstPadding.mediumPadding),
               LessonRecordBottom(
-                isSaving: state.isSaving,
+                isSaving: formState.isSaving,
                 onSave: saveLesson,
                 onCancel: cancel,
               ),

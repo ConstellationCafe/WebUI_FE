@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../domain/model/teacher.dart';
 
 class CoTeacherField extends StatelessWidget {
-  final List<AcademyTeacher> teachers;
-  final AcademyTeacher? mainTeacher;
-  final List<AcademyTeacher> selectedCoTeachers;
+  final List<Teacher> teachers;
+  final Teacher? mainTeacher;
+  final List<Teacher> selectedCoTeachers;
 
-  final ValueChanged<AcademyTeacher> onChanged;
+  final ValueChanged<Teacher> onChanged;
 
   const CoTeacherField({
     super.key,
@@ -21,7 +21,7 @@ class CoTeacherField extends StatelessWidget {
   Widget build(BuildContext context) {
     final availableTeachers = teachers
         .where(
-          (teacher) => teacher.id != mainTeacher?.id,
+          (teacher) => teacher.sk != mainTeacher?.sk,
     )
         .toList();
 
@@ -34,22 +34,18 @@ class CoTeacherField extends StatelessWidget {
           required: false,
         ),
         const SizedBox(height: 6),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<Teacher>(
           hint: const Text('교사 이름을 선택하세요'),
           items: availableTeachers
               .map(
-                (teacher) => DropdownMenuItem<String>(
-              value: teacher.id,
+                (teacher) => DropdownMenuItem<Teacher>(
+              value: teacher,
               child: Text(teacher.name),
             ),
           )
               .toList(),
-          onChanged: (value) {
-            if (value == null) return;
-
-            final teacher = availableTeachers.firstWhere(
-                  (teacher) => teacher.id == value,
-            );
+          onChanged: (teacher) {
+            if (teacher == null) return;
 
             onChanged(teacher);
           },

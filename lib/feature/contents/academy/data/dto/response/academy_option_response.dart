@@ -1,5 +1,5 @@
 class AcademyOptionResponse {
-  final String id;
+  final int id;
   final String name;
 
   const AcademyOptionResponse({
@@ -9,7 +9,7 @@ class AcademyOptionResponse {
 
   factory AcademyOptionResponse.fromJson(Map<String, dynamic> json) {
     return AcademyOptionResponse(
-      id: json['id'].toString(),
+      id: json['id'].toInt(),
       name: json['name'] as String,
     );
   }

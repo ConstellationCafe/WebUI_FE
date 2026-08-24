@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '../../../state/lesson_record_form_state/lesson_record_form_state.dart';
+import '../../../domain/model/academy.dart';
+import '../../../domain/model/academy_class.dart';
+import '../../../domain/model/subject.dart';
 
 class AcademySelectionFields extends StatelessWidget {
-  final AcademyFormState state;
+  final List<Academy> academies;
+  final List<AcademyClass> classes;
+  final List<Subject> subjects;
 
-  final ValueChanged<String> onAcademyChanged;
-  final ValueChanged<String> onClassChanged;
-  final ValueChanged<String> onSubjectChanged;
+  final Academy? selectedAcademy;
+  final AcademyClass? selectedAcademyClass;
+  final Subject? selectedSubject;
+
+  final ValueChanged<Academy> onAcademyChanged;
+  final ValueChanged<AcademyClass> onClassChanged;
+  final ValueChanged<Subject> onSubjectChanged;
 
   const AcademySelectionFields({
     super.key,
-    required this.state,
+    required this.academies,
+    required this.classes,
+    required this.subjects,
+    required this.selectedAcademy,
+    required this.selectedAcademyClass,
+    required this.selectedSubject,
     required this.onAcademyChanged,
     required this.onClassChanged,
     required this.onSubjectChanged,
@@ -22,18 +35,18 @@ class AcademySelectionFields extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _dropdown(
+          child: _dropdown<Academy>(
             context,
             label: '아카데미 이름',
             hint: '아카데미를 선택하세요',
-            value: state.selectedAcademy?.id.toString(),
-            items: state.academies
+            value: selectedAcademy,
+            items: academies
                 .map(
-                  (academy) => DropdownMenuItem<String>(
-                    value: academy.id.toString(),
-                    child: Text(academy.name),
-                  ),
-                )
+                  (academy) => DropdownMenuItem<Academy>(
+                value: academy,
+                child: Text(academy.name),
+              ),
+            )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -44,20 +57,20 @@ class AcademySelectionFields extends StatelessWidget {
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: _dropdown(
+          child: _dropdown<AcademyClass>(
             context,
             label: '분반',
             hint: '분반을 선택하세요',
-            value: state.selectedClass,
-            items: state.classes
+            value: selectedAcademyClass,
+            items: classes
                 .map(
-                  (academyClass) => DropdownMenuItem<String>(
-                    value: academyClass.id.toString(),
-                    child: Text(
-                      '${academyClass.classNumber}분반',
-                    ),
-                  ),
-                )
+                  (academyClass) => DropdownMenuItem<AcademyClass>(
+                value: academyClass,
+                child: Text(
+                  '${academyClass.classNumber}분반',
+                ),
+              ),
+            )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -68,18 +81,18 @@ class AcademySelectionFields extends StatelessWidget {
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: _dropdown(
+          child: _dropdown<Subject>(
             context,
             label: '과목',
             hint: '과목을 선택하세요',
-            value: state.selectedSubject,
-            items: state.subjects
+            value: selectedSubject,
+            items: subjects
                 .map(
-                  (subject) => DropdownMenuItem<String>(
-                    value: subject.id.toString(),
-                    child: Text(subject.name),
-                  ),
-                )
+                  (subject) => DropdownMenuItem<Subject>(
+                value: subject,
+                child: Text(subject.name),
+              ),
+            )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -92,13 +105,13 @@ class AcademySelectionFields extends StatelessWidget {
     );
   }
 
-  Widget _dropdown(
+  Widget _dropdown<T>(
       BuildContext context, {
         required String label,
         required String hint,
-        required String? value,
-        required List<DropdownMenuItem<String>> items,
-        required ValueChanged<String?> onChanged,
+        required T? value,
+        required List<DropdownMenuItem<T>> items,
+        required ValueChanged<T?> onChanged,
       }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +122,7 @@ class AcademySelectionFields extends StatelessWidget {
           required: true,
         ),
         const SizedBox(height: 6),
-        DropdownButtonFormField<String>(
+        DropdownButtonFormField<T>(
           value: value,
           hint: Text(hint),
           items: items,

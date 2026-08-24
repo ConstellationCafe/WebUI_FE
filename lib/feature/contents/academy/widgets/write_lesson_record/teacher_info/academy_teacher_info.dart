@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
-import '../../../notifier/academy_notifier/lesson_record_notifier.dart';
-import '../../../state/lesson_record_form_state/lesson_record_form_state.dart';
+
+import '../../../domain/model/teacher.dart';
 import '../academy_section_card.dart';
 import 'co_teacher_field.dart';
 import 'main_teacher_field.dart';
 
-class AcademyTeacherInfo extends ConsumerWidget {
-  final AcademyFormState state;
+class AcademyTeacherInfo extends StatelessWidget {
+  final List<Teacher> teachers;
+  final Teacher? mainTeacher;
+  final List<Teacher> selectedCoTeachers;
+
+  final ValueChanged<Teacher> onMainTeacherChanged;
+  final ValueChanged<Teacher> onCoTeacherToggle;
 
   const AcademyTeacherInfo({
     super.key,
-    required this.state,
+    required this.teachers,
+    required this.mainTeacher,
+    required this.selectedCoTeachers,
+    required this.onMainTeacherChanged,
+    required this.onCoTeacherToggle,
   });
 
   @override
-  Widget build(
-      BuildContext context,
-      WidgetRef ref,
-      ) {
-    final notifier =
-    ref.read(academyProvider.notifier);
-
+  Widget build(BuildContext context) {
     return AcademySectionCard(
       title: '교사 정보',
       icon: Icons.person_outline_rounded,
@@ -33,9 +35,9 @@ class AcademyTeacherInfo extends ConsumerWidget {
           children: [
             Expanded(
               child: MainTeacherField(
-                teachers: state.teachers,
-                selectedTeacher: state.mainTeacher,
-                onChanged: notifier.selectMainTeacher,
+                teachers: teachers,
+                selectedTeacher: mainTeacher,
+                onChanged: onMainTeacherChanged,
               ),
             ),
             const SizedBox(
@@ -43,10 +45,10 @@ class AcademyTeacherInfo extends ConsumerWidget {
             ),
             Expanded(
               child: CoTeacherField(
-                teachers: state.teachers,
-                mainTeacher: state.mainTeacher,
-                selectedCoTeachers: state.selectedCoTeachers,
-                onChanged: notifier.toggleCoTeacher,
+                teachers: teachers,
+                mainTeacher: mainTeacher,
+                selectedCoTeachers: selectedCoTeachers,
+                onChanged: onCoTeacherToggle,
               ),
             ),
           ],

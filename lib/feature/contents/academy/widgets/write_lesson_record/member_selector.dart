@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../notifier/academy_notifier/lesson_record_notifier.dart';
-import '../../state/lesson_record_form_state/lesson_record_form_state.dart';
+import '../../domain/model/student.dart';
 import 'academy_section_card.dart';
 
-class AcademyMemberSelector extends ConsumerStatefulWidget {
-  final AcademyFormState state;
+class AcademyMemberSelector extends StatefulWidget {
+  final List<Student> students;
+  final List<Student> selectedStudents;
+
+  final ValueChanged<Student> onStudentToggle;
+  final VoidCallback onSelectAll;
 
   const AcademyMemberSelector({
     super.key,
-    required this.state,
+    required this.students,
+    required this.selectedStudents,
+    required this.onStudentToggle,
+    required this.onSelectAll,
   });
 
   @override
-  ConsumerState<AcademyMemberSelector> createState() =>
+  State<AcademyMemberSelector> createState() =>
       _AcademyMemberSelectorState();
 }
 
 class _AcademyMemberSelectorState
-    extends ConsumerState<AcademyMemberSelector> {
+    extends State<AcademyMemberSelector> {
   final TextEditingController _searchController =
   TextEditingController();
 
@@ -34,26 +39,19 @@ class _AcademyMemberSelectorState
 
   @override
   Widget build(BuildContext context) {
-    final state = widget.state;
-    final notifier = ref.read(academyProvider.notifier);
+    final keyword = _searchController.text.trim().toLowerCase();
 
-    final keyword = _searchController.text
-        .trim()
-        .toLowerCase();
-
-    final filteredMembers = state.members.where(
-          (member) => member.name
-          .toLowerCase()
-          .contains(keyword),
+    final filteredStudents = widget.students.where(
+          (student) => student.name.toLowerCase().contains(keyword),
     );
 
     return AcademySectionCard(
       title: '참여 학생',
       icon: Icons.people_outline_rounded,
       trailing: ElevatedButton(
-        onPressed: state.members.isEmpty
+        onPressed: widget.students.isEmpty
             ? null
-            : notifier.selectAllMembers,
+            : widget.onSelectAll,
         child: const Text('전체 선택'),
       ),
       child: Column(
@@ -75,15 +73,16 @@ class _AcademyMemberSelectorState
           Wrap(
             spacing: AcademyConstants.memberChipSpacing,
             runSpacing: AcademyConstants.memberChipRunSpacing,
-            children: filteredMembers.map((member) {
-              final selected = state.selectedMembers.any(
-                    (element) => element.id == member.id,
+            children: filteredStudents.map((student) {
+              final selected = widget.selectedStudents.any(
+                    (element) => element.sk == student.sk,
               );
+
               return FilterChip(
                 selected: selected,
-                label: Text(member.name),
+                label: Text(student.name),
                 onSelected: (_) {
-                  notifier.toggleMember(member);
+                  widget.onStudentToggle(student);
                 },
               );
             }).toList(),
@@ -92,10 +91,8 @@ class _AcademyMemberSelectorState
             height: ConstPadding.smallPadding,
           ),
           Text(
-            '총 ${state.selectedMembers.length}명 선택됨',
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall,
+            '총 ${widget.selectedStudents.length}명 선택됨',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

@@ -2,19 +2,31 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/const_padding.dart';
 
-import '../../state/student_status_state/student_status_state.dart';
+import '../../domain/model/academy.dart';
+import '../../domain/model/academy_class.dart';
+import '../../domain/model/student.dart';
 
-class StudentStatusBasicInfo
-    extends StatelessWidget {
-  final StudentStatusState state;
+class StudentStatusBasicInfo extends StatelessWidget {
+  final List<Academy> academies;
+  final List<AcademyClass> classes;
+  final List<Student> students;
 
-  final ValueChanged<String> onAcademyChanged;
-  final ValueChanged<String> onClassChanged;
-  final ValueChanged<String> onStudentChanged;
+  final Academy? selectedAcademy;
+  final AcademyClass? selectedAcademyClass;
+  final Student? selectedStudent;
+
+  final ValueChanged<Academy> onAcademyChanged;
+  final ValueChanged<AcademyClass> onClassChanged;
+  final ValueChanged<Student> onStudentChanged;
 
   const StudentStatusBasicInfo({
     super.key,
-    required this.state,
+    required this.academies,
+    required this.classes,
+    required this.students,
+    required this.selectedAcademy,
+    required this.selectedAcademyClass,
+    required this.selectedStudent,
     required this.onAcademyChanged,
     required this.onClassChanged,
     required this.onStudentChanged,
@@ -23,94 +35,85 @@ class StudentStatusBasicInfo
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '학생 정보',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-
         const SizedBox(
           height: ConstPadding.mediumPadding,
         ),
-
-        DropdownButtonFormField<String>(
-          value: state.selectedAcademyId,
+        DropdownButtonFormField<Academy>(
+          value: selectedAcademy,
           decoration: const InputDecoration(
             labelText: '아카데미 *',
             hintText: '아카데미를 선택하세요',
           ),
-          items: state.academies
+          items: academies
               .map(
-                (academy) =>
-                DropdownMenuItem<String>(
-                  value: academy.id,
-                  child: Text(academy.name),
-                ),
+                (academy) => DropdownMenuItem<Academy>(
+              value: academy,
+              child: Text(academy.name),
+            ),
           )
               .toList(),
-          onChanged: (value) {
-            if (value != null) {
-              onAcademyChanged(value);
+          onChanged: (academy) {
+            if (academy != null) {
+              onAcademyChanged(academy);
             }
           },
         ),
-
         const SizedBox(
           height: ConstPadding.mediumPadding,
         ),
-
-        DropdownButtonFormField<String>(
-          value: state.selectedClassName,
+        DropdownButtonFormField<AcademyClass>(
+          value: selectedAcademyClass,
           decoration: const InputDecoration(
             labelText: '분반 *',
             hintText: '분반을 선택하세요',
           ),
-          items: state.classes
+          items: classes
               .map(
-                (classInfo) =>
-                DropdownMenuItem<String>(
-                  value: classInfo.id.toString(),
-                  child: Text("${classInfo.classNumber}분반"),
+                (academyClass) =>
+                DropdownMenuItem<AcademyClass>(
+                  value: academyClass,
+                  child: Text(
+                    '${academyClass.classNumber}분반',
+                  ),
                 ),
           )
               .toList(),
-          onChanged: state.selectedAcademyId == null
+          onChanged: selectedAcademy == null
               ? null
-              : (value) {
-            if (value != null) {
-              onClassChanged(value);
+              : (academyClass) {
+            if (academyClass != null) {
+              onClassChanged(academyClass);
             }
           },
         ),
-
         const SizedBox(
           height: ConstPadding.mediumPadding,
         ),
-
-        DropdownButtonFormField<String>(
-          value: state.selectedStudentId,
+        DropdownButtonFormField<Student>(
+          value: selectedStudent,
           decoration: const InputDecoration(
             labelText: '학생 *',
             hintText: '학생을 선택하세요',
           ),
-          items: state.students
+          items: students
               .map(
-                (student) =>
-                DropdownMenuItem<String>(
-                  value: student.id,
-                  child: Text(student.name),
-                ),
+                (student) => DropdownMenuItem<Student>(
+              value: student,
+              child: Text(student.name),
+            ),
           )
               .toList(),
-          onChanged: state.selectedClassName == null
+          onChanged: selectedAcademyClass == null
               ? null
-              : (value) {
-            if (value != null) {
-              onStudentChanged(value);
+              : (student) {
+            if (student != null) {
+              onStudentChanged(student);
             }
           },
         ),

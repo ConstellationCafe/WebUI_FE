@@ -1,7 +1,7 @@
 class LessonRecord {
-  final String academyId;
+  final int academyId;
   final String className;
-  final String subject;
+  final String subjectName;
 
   final DateTime educationDate;
   final Duration educationDuration;
@@ -16,7 +16,7 @@ class LessonRecord {
   const LessonRecord({
     required this.academyId,
     required this.className,
-    required this.subject,
+    required this.subjectName,
     required this.educationDate,
     required this.educationDuration,
     required this.mainTeacherId,
@@ -29,7 +29,7 @@ class LessonRecord {
     return {
       'academyId': academyId,
       'className': className,
-      'subject': subject,
+      'subject': subjectName,
       'educationDate': educationDate.toIso8601String(),
       'educationDuration': educationDuration.inMinutes,
       'mainTeacherId': mainTeacherId,

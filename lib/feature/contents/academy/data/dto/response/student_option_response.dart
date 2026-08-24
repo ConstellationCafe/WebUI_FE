@@ -1,17 +1,18 @@
 class StudentOptionResponse {
-  final String id;
+  final String sk;
+  final String discordID;
   final String name;
 
   const StudentOptionResponse({
-    required this.id,
+    required this.sk,
+    required this.discordID,
     required this.name,
   });
 
-  factory StudentOptionResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory StudentOptionResponse.fromJson(Map<String, dynamic> json) {
     return StudentOptionResponse(
-      id: json['id'].toString(),
+      sk: json['sk'].toString(),
+      discordID: json['discordID'].toString(),
       name: json['name'] as String,
     );
   }

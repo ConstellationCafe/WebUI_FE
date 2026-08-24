@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/const_padding.dart';
 
+import '../../domain/model/subject.dart';
 import '../../domain/type/student_status_type.dart';
-import '../../state/student_status_state/student_status_state.dart';
 
-class StudentStatusProcessForm
-    extends StatelessWidget {
-  final StudentStatusState state;
+class StudentStatusProcessForm extends StatelessWidget {
+  final List<Subject> subjects;
+  final StudentStatusType? selectedStatusType;
+  final List<Subject> selectedSubjects;
+  final String reason;
 
-  final ValueChanged<StudentStatusType>
-  onStatusChanged;
-
-  final ValueChanged<String>
-  onSubjectChanged;
-
-  final ValueChanged<String>
-  onReasonChanged;
+  final ValueChanged<StudentStatusType> onStatusChanged;
+  final ValueChanged<Subject> onSubjectChanged;
+  final ValueChanged<String> onReasonChanged;
 
   const StudentStatusProcessForm({
     super.key,
-    required this.state,
+    required this.subjects,
+    required this.selectedStatusType,
+    required this.selectedSubjects,
+    required this.reason,
     required this.onStatusChanged,
     required this.onSubjectChanged,
     required this.onReasonChanged,
@@ -29,12 +29,10 @@ class StudentStatusProcessForm
   @override
   Widget build(BuildContext context) {
     final isGraduation =
-        state.selectedStatusType ==
-            StudentStatusType.graduation;
+        selectedStatusType == StudentStatusType.graduation;
 
     return Column(
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '처리 정보',
@@ -42,22 +40,18 @@ class StudentStatusProcessForm
               .textTheme
               .titleMedium,
         ),
-
         const SizedBox(
           height: ConstPadding.mediumPadding,
         ),
-
         Text(
           '처리 유형 *',
           style: Theme.of(context)
               .textTheme
               .labelLarge,
         ),
-
         const SizedBox(
           height: ConstPadding.smallPadding,
         ),
-
         Wrap(
           spacing: ConstPadding.mediumPadding,
           children: [
@@ -78,24 +72,20 @@ class StudentStatusProcessForm
             ),
           ],
         ),
-
         if (isGraduation) ...[
           const SizedBox(
             height: ConstPadding.mediumPadding,
           ),
-
           Text(
             '졸업 교과목',
             style: Theme.of(context)
                 .textTheme
                 .labelLarge,
           ),
-
           const SizedBox(
             height: ConstPadding.smallPadding,
           ),
-
-          if (state.subjects.isEmpty)
+          if (subjects.isEmpty)
             Text(
               '선택 가능한 교과목이 없습니다.',
               style: Theme.of(context)
@@ -106,27 +96,26 @@ class StudentStatusProcessForm
             Wrap(
               spacing: ConstPadding.smallPadding,
               runSpacing: ConstPadding.smallPadding,
-              children: state.subjects.map(
+              children: subjects.map(
                     (subject) {
-                  final selected =
-                  state.selectedSubjectIds
-                      .contains(subject.id);
+                  final selected = selectedSubjects.any(
+                        (selectedSubject) =>
+                    selectedSubject.id == subject.id,
+                  );
 
                   return FilterChip(
                     selected: selected,
                     label: Text(subject.name),
                     onSelected: (_) {
-                      onSubjectChanged(subject.name);
+                      onSubjectChanged(subject);
                     },
                   );
                 },
               ).toList(),
             ),
-
           const SizedBox(
             height: ConstPadding.tinyPadding,
           ),
-
           Text(
             '교과목은 선택하지 않아도 됩니다.',
             style: Theme.of(context)
@@ -134,11 +123,9 @@ class StudentStatusProcessForm
                 .bodySmall,
           ),
         ],
-
         const SizedBox(
           height: ConstPadding.mediumPadding,
         ),
-
         TextField(
           onChanged: onReasonChanged,
           maxLines: 4,
@@ -161,7 +148,7 @@ class StudentStatusProcessForm
       children: [
         Radio<StudentStatusType>(
           value: value,
-          groupValue: state.selectedStatusType,
+          groupValue: selectedStatusType,
           onChanged: (value) {
             if (value != null) {
               onStatusChanged(value);

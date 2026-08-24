@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../data/dto/response/lesson_record_query_response.dart';
+import '../../domain/model/lesson_record_view.dart';
 
 class LessonRecordCard extends StatelessWidget {
-  final LessonRecordQueryResponse record;
+  final LessonRecordView record;
 
   const LessonRecordCard({
     super.key,
@@ -33,7 +33,7 @@ class LessonRecordCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    record.subject,
+                    record.subjectName,
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),

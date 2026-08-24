@@ -20,7 +20,7 @@ class AcademyApi {
         .toList();
   }
 
-  Future<List<AcademyClass>> getClasses(String academyId) async {
+  Future<List<AcademyClass>> getClasses(int academyId) async {
     final response = await dio.get('$base/api/academy/$academyId/classes');
     final List<dynamic> data = response.data['response'];
     return data
@@ -28,7 +28,7 @@ class AcademyApi {
         .toList();
   }
 
-  Future<List<Subject>> getSubjects(String academyId) async {
+  Future<List<Subject>> getSubjects(int academyId) async {
     final response = await dio.get('$base/api/academy/$academyId/subjects');
     final List<dynamic> data = response.data['response'];
     return data
@@ -36,7 +36,7 @@ class AcademyApi {
         .toList();
   }
 
-  Future<List<Teacher>> getTeachers(String academyId) async {
+  Future<List<Teacher>> getTeachers(int academyId) async {
     final response = await dio.get('$base/api/academy/$academyId/teachers');
     final List<dynamic> data = response.data['response'];
     return data
@@ -44,8 +44,8 @@ class AcademyApi {
         .toList();
   }
 
-  Future<List<Student>> getStudents(String academyId, String className) async {
-    final response = await dio.get('$base/api/academy/$academyId/classes/$className/students');
+  Future<List<Student>> getStudents(int academyId, int classId) async {
+    final response = await dio.get('$base/api/academy/$academyId/classes/$classId/students');
     final List<dynamic> data = response.data['response'];
     return data
         .map((json) => Student.fromJson(json))

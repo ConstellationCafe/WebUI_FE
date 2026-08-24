@@ -3,22 +3,20 @@
 import '../type/student_status_type.dart';
 
 class StudentStatusForm {
-  final String academyId;
+  final String academyName;
   final String className;
-  final String studentId;
+  final String studentDiscordId;
 
   final StudentStatusType statusType;
-
   /// 졸업인 경우에만 사용.
   /// 0개 이상 선택 가능.
-  final List<String> subjectIds;
-
+  final List<int> subjectIds;
   final String reason;
 
   const StudentStatusForm({
-    required this.academyId,
+    required this.academyName,
     required this.className,
-    required this.studentId,
+    required this.studentDiscordId,
     required this.statusType,
     this.subjectIds = const [],
     this.reason = '',

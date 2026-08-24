@@ -1,7 +1,7 @@
+import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_form_notifier/lesson_record_form_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../notifier/academy_notifier/lesson_record_notifier.dart';
 import 'academy_section_card.dart';
 
 class LessonDescription extends ConsumerWidget {
@@ -17,8 +17,7 @@ class LessonDescription extends ConsumerWidget {
       BuildContext context,
       WidgetRef ref,
       ) {
-    final notifier =
-    ref.read(academyProvider.notifier);
+    final notifier = ref.read(lessonRecordFormProvider.notifier);
 
     return AcademySectionCard(
       title: '수업 설명',

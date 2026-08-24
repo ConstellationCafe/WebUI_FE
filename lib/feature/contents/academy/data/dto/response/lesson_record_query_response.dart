@@ -2,7 +2,7 @@ class LessonRecordQueryResponse {
   final String id;
   final String academyName;
   final String className;
-  final String subject;
+  final String subjectName;
   final DateTime educationDate;
   final Duration educationDuration;
   final String mainTeacherName;
@@ -13,7 +13,7 @@ class LessonRecordQueryResponse {
     required this.id,
     required this.academyName,
     required this.className,
-    required this.subject,
+    required this.subjectName,
     required this.educationDate,
     required this.educationDuration,
     required this.mainTeacherName,
@@ -26,7 +26,7 @@ class LessonRecordQueryResponse {
       id: json['id'].toString(),
       academyName: json['academyName'] ?? '',
       className: json['className'] ?? '',
-      subject: json['subject'] ?? '',
+      subjectName: json['subject'] ?? '',
       educationDate: DateTime.parse(
         json['educationDate'],
       ),

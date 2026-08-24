@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../domain/model/teacher.dart';
 
 class MainTeacherField extends StatelessWidget {
-  final List<AcademyTeacher> teachers;
-  final AcademyTeacher? selectedTeacher;
-  final ValueChanged<AcademyTeacher> onChanged;
+  final List<Teacher> teachers;
+  final Teacher? selectedTeacher;
+  final ValueChanged<Teacher> onChanged;
 
   const MainTeacherField({
     super.key,
@@ -25,23 +25,19 @@ class MainTeacherField extends StatelessWidget {
           required: true,
         ),
         const SizedBox(height: 6),
-        DropdownButtonFormField<String>(
-          value: selectedTeacher?.id,
+        DropdownButtonFormField<Teacher>(
+          value: selectedTeacher,
           hint: const Text('담당 교사를 선택하세요'),
           items: teachers
               .map(
-                (teacher) => DropdownMenuItem<String>(
-              value: teacher.id,
+                (teacher) => DropdownMenuItem<Teacher>(
+              value: teacher,
               child: Text(teacher.name),
             ),
           )
               .toList(),
-          onChanged: (value) {
-            if (value == null) return;
-
-            final teacher = teachers.firstWhere(
-                  (teacher) => teacher.id == value,
-            );
+          onChanged: (teacher) {
+            if (teacher == null) return;
 
             onChanged(teacher);
           },

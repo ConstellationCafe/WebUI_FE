@@ -1,6 +1,6 @@
 class LessonRecordQueryRequest {
-  final String? academyId;
-  final String? classId;
+  final int? academyId;
+  final int? classId;
   final DateTime? date;
   final String? time;
   final String? subject;
@@ -17,8 +17,8 @@ class LessonRecordQueryRequest {
 
   factory LessonRecordQueryRequest.fromJson(Map<String, dynamic> json) {
     return LessonRecordQueryRequest(
-      academyId: json['academyId'] as String?,
-      classId: json['classId'] as String?,
+      academyId: json['academyId'] as int?,
+      classId: json['classId'] as int?,
       date: json['date'] != null
           ? DateTime.tryParse(json['date'] as String)
           : null,

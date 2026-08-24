@@ -1,3 +1,4 @@
+import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_query_notifier/lesson_record_query_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,8 +8,10 @@ import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../notifier/lesson_record_form_notifier/lesson_record_form_notifier.dart';
 import '../../notifier/lesson_record_list_notifier/lesson_record_list_notifier.dart';
-import '../../widgets/read_lesson_record/lesson_record_filter.dart';
+import '../../widgets/read_lesson_record/lesson_record_filter/lesson_record_filter.dart';
+import '../../widgets/read_lesson_record/lesson_record_header.dart';
 import '../../widgets/read_lesson_record/lesson_record_list.dart';
 
 class LessonRecordListPage
@@ -18,23 +21,16 @@ class LessonRecordListPage
   });
 
   @override
-  Widget build(
-      BuildContext context,
-      WidgetRef ref,
-      ) {
-    final state = ref.watch(
-      lessonRecordListProvider,
-    );
-
-    final notifier = ref.read(
-      lessonRecordListProvider.notifier,
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final listState = ref.watch(lessonRecordListProvider);
+    final queryState = ref.watch(lessonRecordQueryProvider);
+    final listNotifier = ref.read(lessonRecordListProvider.notifier);
+    final queryNotifier = ref.read(lessonRecordQueryProvider.notifier);
 
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = ScreenWidth.isDesktop(width);
 
-    if (state.isLoading &&
-        state.records.isEmpty) {
+    if (listState.isLoading) {
       return const PageLoading();
     }
 
@@ -55,82 +51,40 @@ class LessonRecordListPage
             crossAxisAlignment:
             CrossAxisAlignment.start,
             children: [
-              _header(context),
-
+              LessonRecordHeader(),
               const SizedBox(
                 height: ConstPadding.mediumPadding,
               ),
-
               LessonRecordFilter(
-                academies: state.academies,
-                classes: state.classes,
-                subjects: state.subjects,
-                selectedAcademyId:
-                state.selectedAcademyId,
-                selectedClassId:
-                state.selectedClassId,
-                selectedSubjectId:
-                state.selectedSubjectId,
-                selectedDate:
-                state.selectedDate,
-                selectedTime:
-                state.selectedTime,
-                isLoading:
-                state.isFilterLoading,
-
-                onAcademyChanged:
-                notifier.selectAcademy,
-                onClassChanged:
-                notifier.selectClass,
-                onSubjectChanged:
-                notifier.selectSubject,
-                onDateChanged:
-                notifier.setDate,
-                onTimeChanged:
-                notifier.setTime,
-
-                onSearch:
-                notifier.search,
-                onReset:
-                notifier.resetFilters,
+                isLoading: queryState.isLoading,
+                // model
+                academies: queryState.queryForm.academies,
+                classes: queryState.queryForm.classes,
+                subjects: queryState.queryForm.subjects,
+                selectedAcademyId: queryState.queryForm.selectedAcademy?.id,
+                selectedClassId: queryState.queryForm.selectedAcademyClass?.id,
+                selectedSubjectId: queryState.queryForm.selectedSubject?.id,
+                selectedDate: queryState.queryForm.educationDate,
+                selectedTime: queryState.queryForm.startTime,
+                // event
+                onAcademyChanged: queryNotifier.selectAcademy,
+                onClassChanged: queryNotifier.selectClass,
+                onSubjectChanged: queryNotifier.selectSubject,
+                onDateChanged: queryNotifier.setEducationDate,
+                onTimeChanged: queryNotifier.setStartTime,
+                onSearch: listNotifier.search,
+                onReset: queryNotifier.resetFilters,
               ),
-
               const SizedBox(
                 height: ConstPadding.largePadding,
               ),
-
               LessonRecordList(
-                records: state.records,
+                records: listState.lessonRecordList.records,
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _header(
-      BuildContext context,
-      ) {
-    final textTheme =
-        Theme.of(context).textTheme;
-
-    return Column(
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
-      children: [
-        Text(
-          '수업 내용 기록',
-          style: textTheme.headlineMedium,
-        ),
-        const SizedBox(
-          height: ConstPadding.tinyPadding,
-        ),
-        Text(
-          '기록한 수업 내용을 조회할 수 있습니다.',
-          style: textTheme.bodyMedium,
-        ),
-      ],
     );
   }
 }

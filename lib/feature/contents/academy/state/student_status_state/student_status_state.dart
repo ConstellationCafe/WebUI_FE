@@ -7,11 +7,9 @@ part 'student_status_state.freezed.dart';
 @freezed
 abstract class StudentStatusState with _$StudentStatusState {
   const factory StudentStatusState({
-    @Default(false)
-    bool isLoading,
-    @Default(false)
-    bool isProcessing,
-    StudentStatus? studentStatus,
+    @Default(false) bool isLoading,
+    @Default(false) bool isProcessing,
+    @Default(StudentStatus()) StudentStatus studentStatus,
     String? errorMessage,
   }) = _StudentStatusState;
 }

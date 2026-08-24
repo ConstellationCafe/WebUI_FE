@@ -1,5 +1,5 @@
 class Academy {
-  final String id;
+  final int id;
   final String name;
 
   const Academy({
@@ -9,7 +9,7 @@ class Academy {
 
   factory Academy.fromJson(Map<String, dynamic> json) {
     return Academy(
-      id: json['id'].toString(),
+      id: json['id'].toInt(),
       name: json['name'].toString(),
     );
   }

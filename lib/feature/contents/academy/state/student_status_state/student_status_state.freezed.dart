@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StudentStatusState {
 
- bool get isLoading; bool get isProcessing; StudentStatus? get studentStatus; String? get errorMessage;
+ bool get isLoading; bool get isProcessing; StudentStatus get studentStatus; String? get errorMessage;
 /// Create a copy of StudentStatusState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,11 +45,11 @@ abstract mixin class $StudentStatusStateCopyWith<$Res>  {
   factory $StudentStatusStateCopyWith(StudentStatusState value, $Res Function(StudentStatusState) _then) = _$StudentStatusStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, bool isProcessing, StudentStatus? studentStatus, String? errorMessage
+ bool isLoading, bool isProcessing, StudentStatus studentStatus, String? errorMessage
 });
 
 
-$StudentStatusCopyWith<$Res>? get studentStatus;
+$StudentStatusCopyWith<$Res> get studentStatus;
 
 }
 /// @nodoc
@@ -62,12 +62,12 @@ class _$StudentStatusStateCopyWithImpl<$Res>
 
 /// Create a copy of StudentStatusState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isProcessing = null,Object? studentStatus = freezed,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isProcessing = null,Object? studentStatus = null,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isProcessing: null == isProcessing ? _self.isProcessing : isProcessing // ignore: cast_nullable_to_non_nullable
-as bool,studentStatus: freezed == studentStatus ? _self.studentStatus : studentStatus // ignore: cast_nullable_to_non_nullable
-as StudentStatus?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as bool,studentStatus: null == studentStatus ? _self.studentStatus : studentStatus // ignore: cast_nullable_to_non_nullable
+as StudentStatus,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -75,12 +75,9 @@ as String?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$StudentStatusCopyWith<$Res>? get studentStatus {
-    if (_self.studentStatus == null) {
-    return null;
-  }
-
-  return $StudentStatusCopyWith<$Res>(_self.studentStatus!, (value) {
+$StudentStatusCopyWith<$Res> get studentStatus {
+  
+  return $StudentStatusCopyWith<$Res>(_self.studentStatus, (value) {
     return _then(_self.copyWith(studentStatus: value));
   });
 }
@@ -165,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isProcessing,  StudentStatus? studentStatus,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isProcessing,  StudentStatus studentStatus,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StudentStatusState() when $default != null:
 return $default(_that.isLoading,_that.isProcessing,_that.studentStatus,_that.errorMessage);case _:
@@ -186,7 +183,7 @@ return $default(_that.isLoading,_that.isProcessing,_that.studentStatus,_that.err
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isProcessing,  StudentStatus? studentStatus,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isProcessing,  StudentStatus studentStatus,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusState():
 return $default(_that.isLoading,_that.isProcessing,_that.studentStatus,_that.errorMessage);case _:
@@ -206,7 +203,7 @@ return $default(_that.isLoading,_that.isProcessing,_that.studentStatus,_that.err
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isProcessing,  StudentStatus? studentStatus,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isProcessing,  StudentStatus studentStatus,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusState() when $default != null:
 return $default(_that.isLoading,_that.isProcessing,_that.studentStatus,_that.errorMessage);case _:
@@ -221,12 +218,12 @@ return $default(_that.isLoading,_that.isProcessing,_that.studentStatus,_that.err
 
 
 class _StudentStatusState implements StudentStatusState {
-  const _StudentStatusState({this.isLoading = false, this.isProcessing = false, this.studentStatus, this.errorMessage});
+  const _StudentStatusState({this.isLoading = false, this.isProcessing = false, this.studentStatus = const StudentStatus(), this.errorMessage});
   
 
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool isProcessing;
-@override final  StudentStatus? studentStatus;
+@override@JsonKey() final  StudentStatus studentStatus;
 @override final  String? errorMessage;
 
 /// Create a copy of StudentStatusState
@@ -259,11 +256,11 @@ abstract mixin class _$StudentStatusStateCopyWith<$Res> implements $StudentStatu
   factory _$StudentStatusStateCopyWith(_StudentStatusState value, $Res Function(_StudentStatusState) _then) = __$StudentStatusStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, bool isProcessing, StudentStatus? studentStatus, String? errorMessage
+ bool isLoading, bool isProcessing, StudentStatus studentStatus, String? errorMessage
 });
 
 
-@override $StudentStatusCopyWith<$Res>? get studentStatus;
+@override $StudentStatusCopyWith<$Res> get studentStatus;
 
 }
 /// @nodoc
@@ -276,12 +273,12 @@ class __$StudentStatusStateCopyWithImpl<$Res>
 
 /// Create a copy of StudentStatusState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isProcessing = null,Object? studentStatus = freezed,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isProcessing = null,Object? studentStatus = null,Object? errorMessage = freezed,}) {
   return _then(_StudentStatusState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isProcessing: null == isProcessing ? _self.isProcessing : isProcessing // ignore: cast_nullable_to_non_nullable
-as bool,studentStatus: freezed == studentStatus ? _self.studentStatus : studentStatus // ignore: cast_nullable_to_non_nullable
-as StudentStatus?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as bool,studentStatus: null == studentStatus ? _self.studentStatus : studentStatus // ignore: cast_nullable_to_non_nullable
+as StudentStatus,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -290,12 +287,9 @@ as String?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$StudentStatusCopyWith<$Res>? get studentStatus {
-    if (_self.studentStatus == null) {
-    return null;
-  }
-
-  return $StudentStatusCopyWith<$Res>(_self.studentStatus!, (value) {
+$StudentStatusCopyWith<$Res> get studentStatus {
+  
+  return $StudentStatusCopyWith<$Res>(_self.studentStatus, (value) {
     return _then(_self.copyWith(studentStatus: value));
   });
 }

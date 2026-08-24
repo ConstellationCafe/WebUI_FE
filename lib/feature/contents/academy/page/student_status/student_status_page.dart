@@ -12,8 +12,7 @@ import '../../widgets/student_status/student_status_actions.dart';
 import '../../widgets/student_status/student_status_basic_info.dart';
 import '../../widgets/student_status/student_status_process_form.dart';
 
-class StudentStatusPage
-    extends ConsumerWidget {
+class StudentStatusPage extends ConsumerWidget {
   const StudentStatusPage({
     super.key,
   });
@@ -23,22 +22,21 @@ class StudentStatusPage
       BuildContext context,
       WidgetRef ref,
       ) {
-    final state =
-    ref.watch(studentStatusProvider);
+    final state = ref.watch(studentStatusProvider);
 
-    final notifier =
-    ref.read(studentStatusProvider.notifier);
+    final notifier = ref.read(
+      studentStatusProvider.notifier,
+    );
 
-    final width =
-        MediaQuery.sizeOf(context).width;
+    final width = MediaQuery.sizeOf(context).width;
 
-    final isDesktop =
-    ScreenWidth.isDesktop(width);
+    final isDesktop = ScreenWidth.isDesktop(width);
 
-    if (state.isLoading &&
-        state.academies.isEmpty) {
+    if (state.isLoading && state.studentStatus.academies.isEmpty) {
       return const PageLoading();
     }
+
+    final studentStatus = state.studentStatus;
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
@@ -50,100 +48,94 @@ class StudentStatusPage
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxWidth:
-            AcademyConstants.contentMaxWidth,
+            maxWidth: AcademyConstants.contentMaxWidth,
           ),
           child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _breadcrumb(context),
-
               const SizedBox(
                 height: ConstPadding.smallPadding,
               ),
-
               Text(
                 '학생 상태 처리',
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium,
               ),
-
               const SizedBox(
                 height: ConstPadding.tinyPadding,
               ),
-
               Text(
                 '학생의 졸업, 퇴학, 자퇴 처리를 진행합니다.',
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium,
               ),
-
               const SizedBox(
                 height: ConstPadding.largePadding,
               ),
-
               _sectionCard(
                 context,
                 title: '학생 정보',
                 icon: Icons.person_outline,
                 child: StudentStatusBasicInfo(
-                  state: state,
+                  academies: studentStatus.academies,
+                  classes: studentStatus.classes,
+                  students: studentStatus.students,
+                  selectedAcademy: studentStatus.selectedAcademy,
+                  selectedAcademyClass:
+                  studentStatus.selectedAcademyClass,
+                  selectedStudent: studentStatus.selectedStudent,
                   onAcademyChanged: notifier.selectAcademy,
                   onClassChanged: notifier.selectClass,
                   onStudentChanged: notifier.selectStudent,
                 ),
               ),
-
               const SizedBox(
                 height: ConstPadding.mediumPadding,
               ),
-
               _sectionCard(
                 context,
                 title: '처리 정보',
                 icon: Icons.assignment_outlined,
                 child: StudentStatusProcessForm(
-                  state: state,
-                  onStatusChanged:
-                  notifier.selectStatus,
-                  onSubjectChanged:
-                  notifier.toggleSubject,
-                  onReasonChanged:
-                  notifier.setReason,
+                  subjects: studentStatus.subjects,
+                  selectedStatusType:
+                  studentStatus.selectedStatusType,
+                  selectedSubjects:
+                  studentStatus.selectedSubjects,
+                  reason: studentStatus.reason,
+                  onStatusChanged: notifier.selectStatus,
+                  onSubjectChanged: notifier.toggleSubject,
+                  onReasonChanged: notifier.setReason,
                 ),
               ),
-
               const SizedBox(
                 height: ConstPadding.mediumPadding,
               ),
-
               StudentStatusActions(
-                isProcessing:
-                state.isProcessing,
+                isProcessing: state.isProcessing,
                 onCancel: context.pop,
                 onProcess: () async {
                   final success = await notifier.process();
+
                   if (!context.mounted) {
                     return;
                   }
+
                   if (success) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
                           '학생 상태 처리가 완료되었습니다.',
                         ),
                       ),
                     );
+
                     context.pop();
                   } else {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
                           '필수 항목을 확인해주세요.',
@@ -163,8 +155,7 @@ class StudentStatusPage
   Widget _breadcrumb(
       BuildContext context,
       ) {
-    final textTheme =
-        Theme.of(context).textTheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Row(
       children: [
@@ -179,8 +170,7 @@ class StudentStatusPage
           ),
           child: Icon(
             Icons.chevron_right,
-            size: AcademyConstants
-                .breadcrumbIconSize,
+            size: AcademyConstants.breadcrumbIconSize,
           ),
         ),
         Text(
@@ -203,8 +193,7 @@ class StudentStatusPage
       child: Padding(
         padding: ConstPadding.largePaddingAll,
         child: Column(
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
