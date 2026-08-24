@@ -21,13 +21,6 @@ class TimeDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<DateTime?>(
       initialValue: selectedTime,
-      style: const TextStyle(
-        color: CustomTheme.tertiaryColor,
-      ),
-      icon: const Icon(
-        Icons.access_time,
-        color: CustomTheme.tertiaryColor,
-      ),
       decoration: const InputDecoration(
         labelText: '시간',
       ),
@@ -39,7 +32,6 @@ class TimeDropdown extends StatelessWidget {
         ..._timeOptions.map(
               (time) {
             final now = DateTime.now();
-
             final value = time == '오전'
                 ? DateTime(
                     now.year,

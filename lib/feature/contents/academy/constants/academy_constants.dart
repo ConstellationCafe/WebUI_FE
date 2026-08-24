@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 abstract final class AcademyConstants {
   // Layout
   static const double contentMaxWidth = 1100;
@@ -21,4 +23,7 @@ abstract final class AcademyConstants {
   static const double recordCardSpacing = 12.0;
   static const double memberIconSize = 16.0;
   static const double emptyIconSize = 48.0;
+
+  // Time Picker
+  static const Color timePickerSelectedTextColor = Color(0xFFFFFFFF);
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants/academy_constants.dart';
+
 class AcademyTimeRangeField extends StatelessWidget {
   final DateTime? startTime;
   final DateTime? endTime;
@@ -42,18 +44,22 @@ class AcademyTimeRangeField extends StatelessWidget {
                       hour: 10,
                       minute: 0,
                     ),
-                    builder: (context, child) {
-                      return Theme(
-                        data: Theme.of(context).copyWith(
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: colorScheme.secondary,
+                      builder: (context, child) {
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                foregroundColor: colorScheme.secondary,
+                              ),
+                            ),
+                            timePickerTheme: TimePickerThemeData(
+                              dayPeriodColor: colorScheme.secondary,
+                              dayPeriodTextColor: AcademyConstants.timePickerSelectedTextColor,
                             ),
                           ),
-                        ),
-                        child: child!,
-                      );
-                    },
+                          child: child!,
+                        );
+                      },
                   );
                   if (time != null) {
                     final now = DateTime.now();
@@ -89,18 +95,22 @@ class AcademyTimeRangeField extends StatelessWidget {
                       hour: 12,
                       minute: 0,
                     ),
-                    builder: (context, child) {
-                      return Theme(
-                        data: Theme.of(context).copyWith(
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: colorScheme.secondary,
+                      builder: (context, child) {
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                foregroundColor: colorScheme.secondary,
+                              ),
+                            ),
+                            timePickerTheme: TimePickerThemeData(
+                              dayPeriodColor: colorScheme.secondary,
+                              dayPeriodTextColor: AcademyConstants.timePickerSelectedTextColor,
                             ),
                           ),
-                        ),
-                        child: child!,
-                      );
-                    },
+                          child: child!,
+                        );
+                      },
                   );
 
                   if (time != null) {
