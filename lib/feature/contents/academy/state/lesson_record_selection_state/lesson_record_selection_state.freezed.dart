@@ -25,12 +25,12 @@ $LessonRecordSelectionStateCopyWith<LessonRecordSelectionState> get copyWith => 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonRecordSelectionState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.queryForm, queryForm)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonRecordSelectionState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.queryForm, queryForm) || other.queryForm == queryForm)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(queryForm),errorMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,queryForm,errorMessage);
 
 @override
 String toString() {
@@ -49,7 +49,7 @@ $Res call({
 });
 
 
-
+$LessonRecordSelectionCopyWith<$Res> get queryForm;
 
 }
 /// @nodoc
@@ -62,15 +62,24 @@ class _$LessonRecordSelectionStateCopyWithImpl<$Res>
 
 /// Create a copy of LessonRecordSelectionState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? queryForm = freezed,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? queryForm = null,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,queryForm: freezed == queryForm ? _self.queryForm : queryForm // ignore: cast_nullable_to_non_nullable
+as bool,queryForm: null == queryForm ? _self.queryForm : queryForm // ignore: cast_nullable_to_non_nullable
 as LessonRecordSelection,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
-
+/// Create a copy of LessonRecordSelectionState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$LessonRecordSelectionCopyWith<$Res> get queryForm {
+  
+  return $LessonRecordSelectionCopyWith<$Res>(_self.queryForm, (value) {
+    return _then(_self.copyWith(queryForm: value));
+  });
+}
 }
 
 
@@ -225,12 +234,12 @@ _$LessonRecordSelectionStateCopyWith<_LessonRecordSelectionState> get copyWith =
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonRecordSelectionState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.queryForm, queryForm)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonRecordSelectionState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.queryForm, queryForm) || other.queryForm == queryForm)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(queryForm),errorMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,queryForm,errorMessage);
 
 @override
 String toString() {
@@ -249,7 +258,7 @@ $Res call({
 });
 
 
-
+@override $LessonRecordSelectionCopyWith<$Res> get queryForm;
 
 }
 /// @nodoc
@@ -262,16 +271,25 @@ class __$LessonRecordSelectionStateCopyWithImpl<$Res>
 
 /// Create a copy of LessonRecordSelectionState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? queryForm = freezed,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? queryForm = null,Object? errorMessage = freezed,}) {
   return _then(_LessonRecordSelectionState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,queryForm: freezed == queryForm ? _self.queryForm : queryForm // ignore: cast_nullable_to_non_nullable
+as bool,queryForm: null == queryForm ? _self.queryForm : queryForm // ignore: cast_nullable_to_non_nullable
 as LessonRecordSelection,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
 
-
+/// Create a copy of LessonRecordSelectionState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$LessonRecordSelectionCopyWith<$Res> get queryForm {
+  
+  return $LessonRecordSelectionCopyWith<$Res>(_self.queryForm, (value) {
+    return _then(_self.copyWith(queryForm: value));
+  });
+}
 }
 
 // dart format on
