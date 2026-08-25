@@ -80,8 +80,7 @@ class StudentStatusQueryForm extends StatelessWidget {
               AcademyConstants.studentStatusFilterRunSpacing,
               children: [
                 SizedBox(
-                  width: AcademyConstants
-                      .studentStatusFilterFieldWidth,
+                  width: AcademyConstants.studentStatusFilterFieldWidth,
                   child: DropdownButtonFormField<Academy?>(
                     value: selectedAcademy,
                     decoration: const InputDecoration(
@@ -95,13 +94,13 @@ class StudentStatusQueryForm extends StatelessWidget {
                         ),
                       ),
                       ...academies.map(
-                            (academy) =>
-                            DropdownMenuItem<Academy?>(
-                              value: academy,
-                              child: Text(
-                                academy.name,
-                              ),
-                            ),
+                        (academy) =>
+                        DropdownMenuItem<Academy?>(
+                          value: academy,
+                          child: Text(
+                            academy.name,
+                          ),
+                        ),
                       ),
                     ],
                     onChanged: isLoading
@@ -110,8 +109,7 @@ class StudentStatusQueryForm extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: AcademyConstants
-                      .studentStatusFilterFieldWidth,
+                  width: AcademyConstants.studentStatusFilterFieldWidth,
                   child:
                   DropdownButtonFormField<AcademyClass?>(
                     value: selectedAcademyClass,
@@ -127,26 +125,24 @@ class StudentStatusQueryForm extends StatelessWidget {
                         ),
                       ),
                       ...classes.map(
-                            (academyClass) =>
-                            DropdownMenuItem<
-                                AcademyClass?>(
-                              value: academyClass,
-                              child: Text(
-                                '${academyClass.classNumber}분반',
-                              ),
-                            ),
+                        (academyClass) =>
+                        DropdownMenuItem<
+                            AcademyClass?>(
+                          value: academyClass,
+                          child: Text(
+                            '${academyClass.classNumber}분반',
+                          ),
+                        ),
                       ),
                     ],
                     onChanged:
-                    selectedAcademy == null ||
-                        isLoading
+                    selectedAcademy == null || isLoading
                         ? null
                         : onClassChanged,
                   ),
                 ),
                 SizedBox(
-                  width: AcademyConstants
-                      .studentStatusFilterFieldWidth,
+                  width: AcademyConstants.studentStatusFilterFieldWidth,
                   child: DropdownButtonFormField<Student?>(
                     value: selectedStudent,
                     decoration: const InputDecoration(
@@ -160,18 +156,17 @@ class StudentStatusQueryForm extends StatelessWidget {
                         ),
                       ),
                       ...students.map(
-                            (student) =>
-                            DropdownMenuItem<Student?>(
-                              value: student,
-                              child: Text(
-                                student.name,
-                              ),
-                            ),
+                        (student) =>
+                        DropdownMenuItem<Student?>(
+                          value: student,
+                          child: Text(
+                            student.name,
+                          ),
+                        ),
                       ),
                     ],
                     onChanged:
-                    selectedAcademyClass == null ||
-                        isLoading
+                    selectedAcademyClass == null || isLoading
                         ? null
                         : onStudentChanged,
                   ),
@@ -207,8 +202,7 @@ class StudentStatusQueryForm extends StatelessWidget {
                 ),
                 ChoiceChip(
                   label: const Text('재적'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.enrolled,
+                  selected: selectedStatus == StudentRosterStatus.enrolled,
                   onSelected: isLoading
                       ? null
                       : (_) {
@@ -219,8 +213,7 @@ class StudentStatusQueryForm extends StatelessWidget {
                 ),
                 ChoiceChip(
                   label: const Text('졸업'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.graduation,
+                  selected: selectedStatus == StudentRosterStatus.graduation,
                   onSelected: isLoading
                       ? null
                       : (_) {
@@ -231,27 +224,25 @@ class StudentStatusQueryForm extends StatelessWidget {
                 ),
                 ChoiceChip(
                   label: const Text('퇴학'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.expulsion,
+                  selected: selectedStatus == StudentRosterStatus.expulsion,
                   onSelected: isLoading
                       ? null
                       : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.expulsion,
-                    );
-                  },
+                          onStatusChanged(
+                            StudentRosterStatus.expulsion,
+                          );
+                        },
                 ),
                 ChoiceChip(
                   label: const Text('자퇴'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.withdrawal,
+                  selected: selectedStatus == StudentRosterStatus.withdrawal,
                   onSelected: isLoading
                       ? null
                       : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.withdrawal,
-                    );
-                  },
+                          onStatusChanged(
+                            StudentRosterStatus.withdrawal,
+                          );
+                        },
                 ),
               ],
             ),
@@ -280,20 +271,15 @@ class StudentStatusQueryForm extends StatelessWidget {
                   isLoading ? null : onSearch,
                   icon: isLoading
                       ? const SizedBox(
-                    width: AcademyConstants
-                        .savingIndicatorSize,
-                    height: AcademyConstants
-                        .savingIndicatorSize,
-                    child:
-                    CircularProgressIndicator(
-                      strokeWidth:
-                      AcademyConstants
-                          .savingIndicatorStrokeWidth,
-                    ),
-                  )
+                          width: AcademyConstants.savingIndicatorSize,
+                          height: AcademyConstants.savingIndicatorSize,
+                          child: CircularProgressIndicator(
+                            strokeWidth: AcademyConstants.savingIndicatorStrokeWidth,
+                          ),
+                        )
                       : const Icon(
-                    Icons.search,
-                  ),
+                          Icons.search,
+                        ),
                   label: const Text(
                     '조회',
                   ),

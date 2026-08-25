@@ -4,6 +4,7 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
 import '../../domain/model/student_status_list/student_status_list.dart';
+import 'student_status_summary_item.dart';
 
 class StudentStatusSummary extends StatelessWidget {
   final StudentStatusList studentStatusList;
@@ -41,108 +42,38 @@ class StudentStatusSummary extends StatelessWidget {
               height: ConstPadding.largePadding,
             ),
             Wrap(
-              spacing: AcademyConstants
-                  .studentStatusSummarySpacing,
-              runSpacing: AcademyConstants
-                  .studentStatusSummaryRunSpacing,
+              spacing: AcademyConstants.studentStatusSummarySpacing,
+              runSpacing: AcademyConstants.studentStatusSummaryRunSpacing,
               children: [
-                _summaryItem(
-                  context,
+                StudentStatusSummaryItem(
                   label: '전체',
-                  count:
-                  studentStatusList.totalCount,
+                  count: studentStatusList.totalCount,
                   icon: Icons.people_outline,
                 ),
-                _summaryItem(
-                  context,
+                StudentStatusSummaryItem(
                   label: '재적',
-                  count:
-                  studentStatusList.enrolledCount,
-                  icon:
-                  Icons.school_outlined,
+                  count: studentStatusList.enrolledCount,
+                  icon: Icons.school_outlined,
                 ),
-                _summaryItem(
-                  context,
+                StudentStatusSummaryItem(
                   label: '졸업',
-                  count: studentStatusList
-                      .graduationCount,
-                  icon:
-                  Icons.workspace_premium_outlined,
+                  count: studentStatusList.graduationCount,
+                  icon: Icons.workspace_premium_outlined,
                 ),
-                _summaryItem(
-                  context,
+                StudentStatusSummaryItem(
                   label: '퇴학',
-                  count:
-                  studentStatusList.expulsionCount,
-                  icon:
-                  Icons.person_remove_outlined,
+                  count: studentStatusList.expulsionCount,
+                  icon: Icons.person_remove_outlined,
                 ),
-                _summaryItem(
-                  context,
+                StudentStatusSummaryItem(
                   label: '자퇴',
-                  count: studentStatusList
-                      .withdrawalCount,
-                  icon:
-                  Icons.logout_outlined,
+                  count: studentStatusList.withdrawalCount,
+                  icon: Icons.logout_outlined,
                 ),
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _summaryItem(
-      BuildContext context, {
-        required String label,
-        required int count,
-        required IconData icon,
-      }) {
-    final theme = Theme.of(context);
-
-    return Container(
-      width: AcademyConstants
-          .studentStatusSummaryItemWidth,
-      padding: ConstPadding.mediumPaddingAll,
-      decoration: BoxDecoration(
-        color:
-        theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(
-          AcademyConstants.cardBorderRadius,
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            color: theme.colorScheme.primary,
-          ),
-          const SizedBox(
-            width: ConstPadding.mediumPadding,
-          ),
-          Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style:
-                theme.textTheme.bodyMedium,
-              ),
-              const SizedBox(
-                height: ConstPadding.tinyPadding,
-              ),
-              Text(
-                '$count명',
-                style: theme.textTheme.titleLarge
-                    ?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

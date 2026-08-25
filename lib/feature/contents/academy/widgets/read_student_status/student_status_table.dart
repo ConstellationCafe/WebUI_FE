@@ -5,6 +5,7 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 import '../../constants/academy_constants.dart';
 import '../../domain/model/student_status_view/student_status_view.dart';
 import '../../domain/type/student_roster_status.dart';
+import 'StudentStatusBadge.dart';
 
 class StudentStatusTable extends StatelessWidget {
   final List<StudentStatusView> items;
@@ -59,18 +60,10 @@ class StudentStatusTable extends StatelessWidget {
                         .studentStatusTableMinWidth,
                   ),
                   child: DataTable(
-                    headingRowHeight:
-                    AcademyConstants
-                        .studentStatusTableHeaderHeight,
-                    dataRowMinHeight:
-                    AcademyConstants
-                        .studentStatusTableRowHeight,
-                    dataRowMaxHeight:
-                    AcademyConstants
-                        .studentStatusTableRowHeight,
-                    columnSpacing:
-                    AcademyConstants
-                        .studentStatusTableColumnSpacing,
+                    headingRowHeight: AcademyConstants.studentStatusTableHeaderHeight,
+                    dataRowMinHeight: AcademyConstants.studentStatusTableRowHeight,
+                    dataRowMaxHeight: AcademyConstants.studentStatusTableRowHeight,
+                    columnSpacing: AcademyConstants.studentStatusTableColumnSpacing,
                     columns: const [
                       DataColumn(
                         label: Text('번호'),
@@ -96,14 +89,11 @@ class StudentStatusTable extends StatelessWidget {
                     ],
                     rows: List.generate(
                       items.length,
-                          (index) {
+                      (index) {
                         final item = items[index];
-
-                        final number =
-                            totalCount -
-                                ((currentPage - 1) *
-                                    pageSize) -
-                                index;
+                        final number = totalCount
+                            - ((currentPage - 1) * pageSize)
+                            - index;
 
                         return DataRow(
                           cells: [
@@ -128,9 +118,8 @@ class StudentStatusTable extends StatelessWidget {
                               ),
                             ),
                             DataCell(
-                              _statusBadge(
-                                context,
-                                item.status,
+                              StudentStatusBadge(
+                                status: item.status,
                               ),
                             ),
                             DataCell(
@@ -143,9 +132,7 @@ class StudentStatusTable extends StatelessWidget {
                             DataCell(
                               Text(
                                 item.reason
-                                    ?.trim()
-                                    .isNotEmpty ==
-                                    true
+                                    ?.trim().isNotEmpty == true
                                     ? item.reason!
                                     : '-',
                               ),
@@ -186,65 +173,6 @@ class StudentStatusTable extends StatelessWidget {
                   .bodyLarge,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _statusBadge(
-      BuildContext context,
-      StudentRosterStatus status,
-      ) {
-    final theme = Theme.of(context);
-
-    final Color backgroundColor;
-    final Color foregroundColor;
-
-    switch (status) {
-      case StudentRosterStatus.enrolled:
-        backgroundColor =
-            theme.colorScheme.primaryContainer;
-        foregroundColor =
-            theme.colorScheme.onPrimaryContainer;
-
-      case StudentRosterStatus.graduation:
-        backgroundColor =
-            theme.colorScheme.secondaryContainer;
-        foregroundColor =
-            theme.colorScheme.onSecondaryContainer;
-
-      case StudentRosterStatus.expulsion:
-        backgroundColor =
-            theme.colorScheme.errorContainer;
-        foregroundColor =
-            theme.colorScheme.onErrorContainer;
-
-      case StudentRosterStatus.withdrawal:
-        backgroundColor =
-            theme.colorScheme.surfaceContainerHighest;
-        foregroundColor =
-            theme.colorScheme.onSurfaceVariant;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AcademyConstants
-            .studentStatusBadgeHorizontalPadding,
-        vertical: AcademyConstants
-            .studentStatusBadgeVerticalPadding,
-      ),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(
-          AcademyConstants
-              .studentStatusBadgeBorderRadius,
-        ),
-      ),
-      child: Text(
-        _statusLabel(status),
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: foregroundColor,
-          fontWeight: FontWeight.w600,
         ),
       ),
     );
