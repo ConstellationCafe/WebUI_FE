@@ -5,7 +5,7 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 import '../../constants/academy_constants.dart';
 import '../../domain/model/student_status_view/student_status_view.dart';
 import '../../domain/type/student_roster_status.dart';
-import 'StudentStatusBadge.dart';
+import 'student_status_badge.dart';
 
 class StudentStatusTable extends StatelessWidget {
   final List<StudentStatusView> items;
