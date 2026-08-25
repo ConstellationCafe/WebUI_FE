@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/utils/date_formatter.dart';
 
-import '../../constants/academy_constants.dart';
 import '../../domain/model/student_status_view/student_status_view.dart';
-import '../../domain/type/student_roster_status.dart';
+import '../../constants/academy_constants.dart';
 import 'student_status_badge.dart';
+import 'student_status_empty_view.dart';
+
 
 class StudentStatusTable extends StatelessWidget {
   final List<StudentStatusView> items;
@@ -50,7 +52,7 @@ class StudentStatusTable extends StatelessWidget {
               height: ConstPadding.largePadding,
             ),
             if (items.isEmpty)
-              _emptyView(context)
+              const StudentStatusEmptyView()
             else
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -124,7 +126,7 @@ class StudentStatusTable extends StatelessWidget {
                             ),
                             DataCell(
                               Text(
-                                _formatDate(
+                                DateFormatter.toYyyyMmDd(
                                   item.changedAt,
                                 ),
                               ),
@@ -148,67 +150,5 @@ class StudentStatusTable extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _emptyView(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: ConstPadding.largePaddingAll,
-        child: Column(
-          children: [
-            Icon(
-              Icons.person_search_outlined,
-              size: AcademyConstants.emptyIconSize,
-              color: Theme.of(context)
-                  .colorScheme
-                  .outline,
-            ),
-            const SizedBox(
-              height: ConstPadding.mediumPadding,
-            ),
-            Text(
-              '조회된 학생이 없습니다.',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _statusLabel(
-      StudentRosterStatus status,
-      ) {
-    switch (status) {
-      case StudentRosterStatus.enrolled:
-        return '재적';
-
-      case StudentRosterStatus.graduation:
-        return '졸업';
-
-      case StudentRosterStatus.expulsion:
-        return '퇴학';
-
-      case StudentRosterStatus.withdrawal:
-        return '자퇴';
-    }
-  }
-
-  String _formatDate(DateTime? date) {
-    if (date == null) {
-      return '-';
-    }
-
-    final year = date.year.toString();
-
-    final month =
-    date.month.toString().padLeft(2, '0');
-
-    final day =
-    date.day.toString().padLeft(2, '0');
-
-    return '$year-$month-$day';
   }
 }
