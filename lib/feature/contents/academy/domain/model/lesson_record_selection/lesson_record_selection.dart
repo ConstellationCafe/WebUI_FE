@@ -6,11 +6,11 @@ import '../student.dart';
 import '../subject.dart';
 import '../teacher.dart';
 
-part 'lesson_record_query.freezed.dart';
+part 'lesson_record_selection.freezed.dart';
 
 @freezed
-abstract class LessonRecordQuery with _$LessonRecordQuery {
-  const factory LessonRecordQuery({
+abstract class LessonRecordSelection with _$LessonRecordSelection {
+  const factory LessonRecordSelection({
     @Default([]) List<Academy> academies,
     @Default([]) List<AcademyClass> classes,
     @Default([]) List<Teacher> teachers,
@@ -25,11 +25,11 @@ abstract class LessonRecordQuery with _$LessonRecordQuery {
     DateTime? educationDate,
     DateTime? startTime,
     DateTime? endTime,
-  }) = _LessonRecordQuery;
+  }) = _LessonRecordSelection;
 }
 
-extension LessonRecordQueryValidation
-on LessonRecordQuery {
+extension LessonRecordSelectionValidation
+on LessonRecordSelection {
   bool get isValid {
     if (selectedAcademy == null) return false;
     if (selectedAcademyClass == null) return false;

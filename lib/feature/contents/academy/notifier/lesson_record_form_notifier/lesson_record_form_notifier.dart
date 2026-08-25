@@ -1,12 +1,12 @@
 import 'package:constellation_cafe/di/ApiProvider.dart';
-import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_query_notifier/lesson_record_query_notifier.dart';
-import 'package:constellation_cafe/feature/contents/academy/state/lesson_record_query_state/lesson_record_query_state.dart';
+import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
+import 'package:constellation_cafe/feature/contents/academy/state/lesson_record_selection_state/lesson_record_selection_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repository/lesson_record_repository.dart';
 import '../../domain/model/lesson_record.dart';
 import '../../domain/model/lesson_record_form/lesson_record_form.dart';
-import '../../domain/model/lesson_record_query/lesson_record_query.dart';
+import '../../domain/model/lesson_record_selection/lesson_record_selection.dart';
 import '../../state/lesson_record_form_state/lesson_record_form_state.dart';
 
 part 'lesson_record_form_notifier.g.dart';
@@ -37,13 +37,13 @@ class LessonRecordFormNotifier
   }
 
   Future<bool> saveLessonRecord() async {
-    final LessonRecordQueryState lessonRecordQueryState =
-    ref.read(lessonRecordQueryProvider);
+    final LessonRecordSelectionState lessonRecordLessonSelectionState =
+    ref.read(lessonRecordSelectionProvider);
 
-    final LessonRecordQuery lessonRecordQuery =
-        lessonRecordQueryState.queryForm;
+    final LessonRecordSelection lessonRecordLessonSelection =
+        lessonRecordLessonSelectionState.queryForm;
 
-    if (!lessonRecordQuery.isValid) {
+    if (!lessonRecordLessonSelection.isValid) {
       return false;
     }
 
@@ -57,25 +57,25 @@ class LessonRecordFormNotifier
           state.lessonRecordForm;
 
       final selectedAcademy =
-      lessonRecordQuery.selectedAcademy!;
+      lessonRecordLessonSelection.selectedAcademy!;
 
       final selectedAcademyClass =
-      lessonRecordQuery.selectedAcademyClass!;
+      lessonRecordLessonSelection.selectedAcademyClass!;
 
       final selectedSubject =
-      lessonRecordQuery.selectedSubject!;
+      lessonRecordLessonSelection.selectedSubject!;
 
       final educationDate =
-      lessonRecordQuery.educationDate!;
+      lessonRecordLessonSelection.educationDate!;
 
       final startTime =
-      lessonRecordQuery.startTime!;
+      lessonRecordLessonSelection.startTime!;
 
       final endTime =
-      lessonRecordQuery.endTime!;
+      lessonRecordLessonSelection.endTime!;
 
       final mainTeacher =
-      lessonRecordQuery.mainTeacher!;
+      lessonRecordLessonSelection.mainTeacher!;
 
       final duration =
       endTime.difference(startTime);
@@ -87,10 +87,10 @@ class LessonRecordFormNotifier
         educationDate: educationDate,
         educationDuration: duration,
         mainTeacherId: mainTeacher.sk,
-        coTeacherIds: lessonRecordQuery.selectedCoTeachers
+        coTeacherIds: lessonRecordLessonSelection.selectedCoTeachers
             .map((teacher) => teacher.sk)
             .toList(),
-        memberIds: lessonRecordQuery.selectedStudents
+        memberIds: lessonRecordLessonSelection.selectedStudents
             .map((member) => member.sk)
             .toList(),
         description: lessonRecordForm.description.trim(),

@@ -9,17 +9,17 @@ import '../../domain/model/academy_class.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/model/teacher.dart';
-import '../../state/lesson_record_query_state/lesson_record_query_state.dart';
+import '../../state/lesson_record_selection_state/lesson_record_selection_state.dart';
 
-part 'lesson_record_query_notifier.g.dart';
+part 'lesson_record_selection_notifier.g.dart';
 
 @riverpod
-class LessonRecordQueryNotifier
-    extends _$LessonRecordQueryNotifier {
+class LessonRecordSelectionNotifier
+    extends _$LessonRecordSelectionNotifier {
   late final LessonRecordRepository repository;
 
   @override
-  LessonRecordQueryState build() {
+  LessonRecordSelectionState build() {
     final AcademyApi academyApi =
     ref.read(academyApiProvider);
 
@@ -33,7 +33,7 @@ class LessonRecordQueryNotifier
 
     _loadAcademies();
 
-    return LessonRecordQueryState(
+    return LessonRecordSelectionState(
       isLoading: true,
     );
   }

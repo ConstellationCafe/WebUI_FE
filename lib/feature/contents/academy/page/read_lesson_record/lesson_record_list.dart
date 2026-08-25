@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_query_notifier/lesson_record_query_notifier.dart';
+import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,9 +23,9 @@ class LessonRecordListPage
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listState = ref.watch(lessonRecordListProvider);
-    final queryState = ref.watch(lessonRecordQueryProvider);
+    final queryState = ref.watch(lessonRecordSelectionProvider);
     final listNotifier = ref.read(lessonRecordListProvider.notifier);
-    final queryNotifier = ref.read(lessonRecordQueryProvider.notifier);
+    final queryNotifier = ref.read(lessonRecordSelectionProvider.notifier);
 
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = ScreenWidth.isDesktop(width);

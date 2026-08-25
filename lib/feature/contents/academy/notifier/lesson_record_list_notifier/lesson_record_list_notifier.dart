@@ -1,12 +1,12 @@
 import 'package:constellation_cafe/di/ApiProvider.dart';
-import 'package:constellation_cafe/feature/contents/academy/domain/model/lesson_record_query/lesson_record_query.dart';
+import 'package:constellation_cafe/feature/contents/academy/domain/model/lesson_record_selection/lesson_record_selection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repository/lesson_record_repository.dart';
 import '../../domain/model/lesson_record_view.dart';
 import '../../state/lesson_record_list_state/lesson_record_list_state.dart';
-import '../../state/lesson_record_query_state/lesson_record_query_state.dart';
-import '../lesson_record_query_notifier/lesson_record_query_notifier.dart';
+import '../../state/lesson_record_selection_state/lesson_record_selection_state.dart';
+import '../lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
 
 part 'lesson_record_list_notifier.g.dart';
 
@@ -37,20 +37,20 @@ class LessonRecordListNotifier
       errorMessage: null,
     );
 
-    final LessonRecordQueryState lessonRecordQueryState =
-    ref.read(lessonRecordQueryProvider);
+    final LessonRecordSelectionState lessonRecordSelectionState =
+    ref.read(lessonRecordSelectionProvider);
 
-    final LessonRecordQuery lessonRecordQuery =
-        lessonRecordQueryState.queryForm;
+    final LessonRecordSelection lessonRecordSelection =
+        lessonRecordSelectionState.queryForm;
 
     try {
       final records = await _repository.getLessonRecords(
-        academyId: lessonRecordQuery.selectedAcademy?.id,
-        classId: lessonRecordQuery.selectedAcademyClass?.id,
-        date: lessonRecordQuery.educationDate,
-        time: lessonRecordQuery.startTime,
-        subject: lessonRecordQuery.selectedSubject?.name,
-        teacherId: lessonRecordQuery.mainTeacher?.sk,
+        academyId: lessonRecordSelection.selectedAcademy?.id,
+        classId: lessonRecordSelection.selectedAcademyClass?.id,
+        date: lessonRecordSelection.educationDate,
+        time: lessonRecordSelection.startTime,
+        subject: lessonRecordSelection.selectedSubject?.name,
+        teacherId: lessonRecordSelection.mainTeacher?.sk,
       );
 
       state = state.copyWith(

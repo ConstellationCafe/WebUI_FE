@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_query_notifier/lesson_record_query_notifier.dart';
+import 'package:constellation_cafe/feature/contents/academy/notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +25,7 @@ class LessonRecordPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final queryState = ref.watch(lessonRecordQueryProvider);
+    final queryState = ref.watch(lessonRecordSelectionProvider);
     final formState = ref.watch(lessonRecordFormProvider);
     final notifier = ref.read(lessonRecordFormProvider.notifier);
 
@@ -65,7 +65,7 @@ class LessonRecordPage extends ConsumerWidget {
       context.pop();
     }
 
-    final queryNotifier = ref.read(lessonRecordQueryProvider.notifier);
+    final queryNotifier = ref.read(lessonRecordSelectionProvider.notifier);
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
         horizontal: isDesktop
