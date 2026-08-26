@@ -4,6 +4,7 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
 import '../../domain/model/student_status_list/student_status_list.dart';
+
 import 'student_status_summary_item.dart';
 
 class StudentStatusSummary extends StatelessWidget {
@@ -20,7 +21,8 @@ class StudentStatusSummary extends StatelessWidget {
       child: Padding(
         padding: ConstPadding.largePaddingAll,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -42,33 +44,59 @@ class StudentStatusSummary extends StatelessWidget {
               height: ConstPadding.largePadding,
             ),
             Wrap(
-              spacing: AcademyConstants.studentStatusSummarySpacing,
-              runSpacing: AcademyConstants.studentStatusSummaryRunSpacing,
+              spacing: AcademyConstants
+                  .studentStatusSummarySpacing,
+              runSpacing: AcademyConstants
+                  .studentStatusSummaryRunSpacing,
               children: [
                 StudentStatusSummaryItem(
                   label: '전체',
-                  count: studentStatusList.totalCount,
-                  icon: Icons.people_outline,
+                  count:
+                  studentStatusList.totalCount,
+                  icon:
+                  Icons.people_outline,
                 ),
                 StudentStatusSummaryItem(
                   label: '재적',
-                  count: studentStatusList.enrolledCount,
-                  icon: Icons.school_outlined,
+                  count:
+                  studentStatusList.enrolledCount,
+                  icon:
+                  Icons.school_outlined,
                 ),
                 StudentStatusSummaryItem(
                   label: '졸업',
-                  count: studentStatusList.graduationCount,
-                  icon: Icons.workspace_premium_outlined,
+                  count: studentStatusList
+                      .graduationCount,
+                  icon:
+                  Icons.workspace_premium_outlined,
                 ),
                 StudentStatusSummaryItem(
                   label: '퇴학',
-                  count: studentStatusList.expulsionCount,
-                  icon: Icons.person_remove_outlined,
+                  count:
+                  studentStatusList.expulsionCount,
+                  icon:
+                  Icons.person_remove_outlined,
                 ),
                 StudentStatusSummaryItem(
                   label: '자퇴',
-                  count: studentStatusList.withdrawalCount,
-                  icon: Icons.logout_outlined,
+                  count: studentStatusList
+                      .withdrawalCount,
+                  icon:
+                  Icons.logout_outlined,
+                ),
+                StudentStatusSummaryItem(
+                  label: '은퇴',
+                  count:
+                  studentStatusList.retirementCount,
+                  icon:
+                  Icons.person_off_outlined,
+                ),
+                StudentStatusSummaryItem(
+                  label: '징계',
+                  count: studentStatusList
+                      .disciplinaryCount,
+                  icon:
+                  Icons.gavel_outlined,
                 ),
               ],
             ),

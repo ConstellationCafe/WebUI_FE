@@ -1,56 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../domain/model/academy.dart';
-import '../../domain/model/academy_class.dart';
-import '../../domain/model/student.dart';
-import '../../domain/model/student_status_list/student_status_list.dart';
-import '../../domain/model/student_status_query/student_status_query.dart';
-import '../../domain/type/student_roster_status.dart';
+import '../../notifier/student_status_list_notifier/student_status_list_notifier.dart';
+
 import '../../widgets/read_student_status/student_status_pagination.dart';
 import '../../widgets/read_student_status/student_status_query_form.dart';
 import '../../widgets/read_student_status/student_status_summary.dart';
 import '../../widgets/read_student_status/student_status_table.dart';
 
-
-class ReadStudentStatusPage extends StatelessWidget {
-  final StudentStatusQuery query;
-  final StudentStatusList studentStatusList;
-  final bool isLoading;
-  final bool isFilterLoading;
-
-  final ValueChanged<Academy?> onAcademyChanged;
-  final ValueChanged<AcademyClass?> onClassChanged;
-  final ValueChanged<Student?> onStudentChanged;
-  final ValueChanged<StudentRosterStatus?> onStatusChanged;
-  final ValueChanged<int> onPageChanged;
-
-  final VoidCallback onReset;
-  final VoidCallback onSearch;
-
+class ReadStudentStatusPage extends ConsumerWidget {
   const ReadStudentStatusPage({
     super.key,
-    required this.query,
-    required this.studentStatusList,
-    required this.isLoading,
-    required this.isFilterLoading,
-    required this.onAcademyChanged,
-    required this.onClassChanged,
-    required this.onStudentChanged,
-    required this.onStatusChanged,
-    required this.onReset,
-    required this.onSearch,
-    required this.onPageChanged,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final isDesktop = ScreenWidth.isDesktop(width);
+  Widget build(
+      BuildContext context,
+      WidgetRef ref,
+      ) {
+    final state = ref.watch(
+      studentStatusListProvider,
+    );
+
+    final notifier = ref.read(
+      studentStatusListProvider.notifier,
+    );
+
+    final query = state.query;
+    final studentStatusList =
+        state.studentStatusList;
+
+    final width =
+        MediaQuery.sizeOf(context).width;
+
+    final isDesktop =
+    ScreenWidth.isDesktop(width);
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
@@ -69,8 +58,8 @@ class ReadStudentStatusPage extends StatelessWidget {
             crossAxisAlignment:
             CrossAxisAlignment.start,
             children: [
-              AppBreadcrumb(
-                items: const [
+              const AppBreadcrumb(
+                items: [
                   '학생 관리',
                   '학생 상태 조회',
                 ],
@@ -88,7 +77,7 @@ class ReadStudentStatusPage extends StatelessWidget {
                 height: ConstPadding.tinyPadding,
               ),
               Text(
-                '학생의 재적, 졸업, 퇴학, 자퇴 명단을 조회합니다.',
+                '학생의 재적, 졸업, 퇴학, 자퇴, 은퇴, 징계 명단을 조회합니다.',
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium,
@@ -104,15 +93,13 @@ class ReadStudentStatusPage extends StatelessWidget {
                 selectedAcademyClass: query.selectedAcademyClass,
                 selectedStudent: query.selectedStudent,
                 selectedStatus: query.selectedStatus,
-
-                isLoading: isFilterLoading,
-
-                onAcademyChanged: onAcademyChanged,
-                onClassChanged: onClassChanged,
-                onStudentChanged: onStudentChanged,
-                onStatusChanged: onStatusChanged,
-                onReset: onReset,
-                onSearch: onSearch,
+                isLoading: state.isFilterLoading,
+                onAcademyChanged: notifier.selectAcademy,
+                onClassChanged: notifier.selectClass,
+                onStudentChanged: notifier.selectStudent,
+                onStatusChanged: notifier.selectStatus,
+                onReset: notifier.resetFilters,
+                onSearch: notifier.search,
               ),
               const SizedBox(
                 height: ConstPadding.mediumPadding,
@@ -123,24 +110,32 @@ class ReadStudentStatusPage extends StatelessWidget {
               const SizedBox(
                 height: ConstPadding.mediumPadding,
               ),
-              if (isLoading)
+              if (state.isLoading)
                 const Center(
-                  child: CircularProgressIndicator(),
+                  child:
+                  CircularProgressIndicator(),
                 )
               else
                 StudentStatusTable(
-                  items: studentStatusList.items,
-                  totalCount: studentStatusList.totalCount,
-                  currentPage: studentStatusList.currentPage,
-                  pageSize: query.pageSize,
+                  items:
+                  studentStatusList.items,
+                  totalCount:
+                  studentStatusList.totalCount,
+                  currentPage:
+                  studentStatusList.currentPage,
+                  pageSize:
+                  query.pageSize,
                 ),
               const SizedBox(
                 height: ConstPadding.mediumPadding,
               ),
               StudentStatusPagination(
-                currentPage: studentStatusList.currentPage,
-                totalPages: studentStatusList.totalPages,
-                onPageChanged: onPageChanged,
+                currentPage:
+                studentStatusList.currentPage,
+                totalPages:
+                studentStatusList.totalPages,
+                onPageChanged:
+                notifier.changePage,
               ),
             ],
           ),

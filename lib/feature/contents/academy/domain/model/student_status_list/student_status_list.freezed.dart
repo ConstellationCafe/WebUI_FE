@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StudentStatusList {
 
- List<StudentStatusView> get items; int get totalCount; int get enrolledCount; int get graduationCount; int get expulsionCount; int get withdrawalCount; int get currentPage; int get totalPages;
+ List<StudentStatusView> get items; int get totalCount; int get enrolledCount; int get graduationCount; int get expulsionCount; int get withdrawalCount; int get retirementCount; int get disciplinaryCount; int get currentPage; int get totalPages;
 /// Create a copy of StudentStatusList
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $StudentStatusListCopyWith<StudentStatusList> get copyWith => _$StudentStatusLis
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentStatusList&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.enrolledCount, enrolledCount) || other.enrolledCount == enrolledCount)&&(identical(other.graduationCount, graduationCount) || other.graduationCount == graduationCount)&&(identical(other.expulsionCount, expulsionCount) || other.expulsionCount == expulsionCount)&&(identical(other.withdrawalCount, withdrawalCount) || other.withdrawalCount == withdrawalCount)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentStatusList&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.enrolledCount, enrolledCount) || other.enrolledCount == enrolledCount)&&(identical(other.graduationCount, graduationCount) || other.graduationCount == graduationCount)&&(identical(other.expulsionCount, expulsionCount) || other.expulsionCount == expulsionCount)&&(identical(other.withdrawalCount, withdrawalCount) || other.withdrawalCount == withdrawalCount)&&(identical(other.retirementCount, retirementCount) || other.retirementCount == retirementCount)&&(identical(other.disciplinaryCount, disciplinaryCount) || other.disciplinaryCount == disciplinaryCount)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),totalCount,enrolledCount,graduationCount,expulsionCount,withdrawalCount,currentPage,totalPages);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),totalCount,enrolledCount,graduationCount,expulsionCount,withdrawalCount,retirementCount,disciplinaryCount,currentPage,totalPages);
 
 @override
 String toString() {
-  return 'StudentStatusList(items: $items, totalCount: $totalCount, enrolledCount: $enrolledCount, graduationCount: $graduationCount, expulsionCount: $expulsionCount, withdrawalCount: $withdrawalCount, currentPage: $currentPage, totalPages: $totalPages)';
+  return 'StudentStatusList(items: $items, totalCount: $totalCount, enrolledCount: $enrolledCount, graduationCount: $graduationCount, expulsionCount: $expulsionCount, withdrawalCount: $withdrawalCount, retirementCount: $retirementCount, disciplinaryCount: $disciplinaryCount, currentPage: $currentPage, totalPages: $totalPages)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $StudentStatusListCopyWith<$Res>  {
   factory $StudentStatusListCopyWith(StudentStatusList value, $Res Function(StudentStatusList) _then) = _$StudentStatusListCopyWithImpl;
 @useResult
 $Res call({
- List<StudentStatusView> items, int totalCount, int enrolledCount, int graduationCount, int expulsionCount, int withdrawalCount, int currentPage, int totalPages
+ List<StudentStatusView> items, int totalCount, int enrolledCount, int graduationCount, int expulsionCount, int withdrawalCount, int retirementCount, int disciplinaryCount, int currentPage, int totalPages
 });
 
 
@@ -62,7 +62,7 @@ class _$StudentStatusListCopyWithImpl<$Res>
 
 /// Create a copy of StudentStatusList
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? totalCount = null,Object? enrolledCount = null,Object? graduationCount = null,Object? expulsionCount = null,Object? withdrawalCount = null,Object? currentPage = null,Object? totalPages = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? totalCount = null,Object? enrolledCount = null,Object? graduationCount = null,Object? expulsionCount = null,Object? withdrawalCount = null,Object? retirementCount = null,Object? disciplinaryCount = null,Object? currentPage = null,Object? totalPages = null,}) {
   return _then(_self.copyWith(
 items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<StudentStatusView>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
@@ -70,6 +70,8 @@ as int,enrolledCount: null == enrolledCount ? _self.enrolledCount : enrolledCoun
 as int,graduationCount: null == graduationCount ? _self.graduationCount : graduationCount // ignore: cast_nullable_to_non_nullable
 as int,expulsionCount: null == expulsionCount ? _self.expulsionCount : expulsionCount // ignore: cast_nullable_to_non_nullable
 as int,withdrawalCount: null == withdrawalCount ? _self.withdrawalCount : withdrawalCount // ignore: cast_nullable_to_non_nullable
+as int,retirementCount: null == retirementCount ? _self.retirementCount : retirementCount // ignore: cast_nullable_to_non_nullable
+as int,disciplinaryCount: null == disciplinaryCount ? _self.disciplinaryCount : disciplinaryCount // ignore: cast_nullable_to_non_nullable
 as int,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,totalPages: null == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
 as int,
@@ -157,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StudentStatusView> items,  int totalCount,  int enrolledCount,  int graduationCount,  int expulsionCount,  int withdrawalCount,  int currentPage,  int totalPages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StudentStatusView> items,  int totalCount,  int enrolledCount,  int graduationCount,  int expulsionCount,  int withdrawalCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StudentStatusList() when $default != null:
-return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduationCount,_that.expulsionCount,_that.withdrawalCount,_that.currentPage,_that.totalPages);case _:
+return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduationCount,_that.expulsionCount,_that.withdrawalCount,_that.retirementCount,_that.disciplinaryCount,_that.currentPage,_that.totalPages);case _:
   return orElse();
 
 }
@@ -178,10 +180,10 @@ return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduatio
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StudentStatusView> items,  int totalCount,  int enrolledCount,  int graduationCount,  int expulsionCount,  int withdrawalCount,  int currentPage,  int totalPages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StudentStatusView> items,  int totalCount,  int enrolledCount,  int graduationCount,  int expulsionCount,  int withdrawalCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusList():
-return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduationCount,_that.expulsionCount,_that.withdrawalCount,_that.currentPage,_that.totalPages);case _:
+return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduationCount,_that.expulsionCount,_that.withdrawalCount,_that.retirementCount,_that.disciplinaryCount,_that.currentPage,_that.totalPages);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +200,10 @@ return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduatio
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StudentStatusView> items,  int totalCount,  int enrolledCount,  int graduationCount,  int expulsionCount,  int withdrawalCount,  int currentPage,  int totalPages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StudentStatusView> items,  int totalCount,  int enrolledCount,  int graduationCount,  int expulsionCount,  int withdrawalCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)?  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusList() when $default != null:
-return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduationCount,_that.expulsionCount,_that.withdrawalCount,_that.currentPage,_that.totalPages);case _:
+return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduationCount,_that.expulsionCount,_that.withdrawalCount,_that.retirementCount,_that.disciplinaryCount,_that.currentPage,_that.totalPages);case _:
   return null;
 
 }
@@ -213,7 +215,7 @@ return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.graduatio
 
 
 class _StudentStatusList implements StudentStatusList {
-  const _StudentStatusList({final  List<StudentStatusView> items = const [], this.totalCount = 0, this.enrolledCount = 0, this.graduationCount = 0, this.expulsionCount = 0, this.withdrawalCount = 0, this.currentPage = 1, this.totalPages = 1}): _items = items;
+  const _StudentStatusList({final  List<StudentStatusView> items = const [], this.totalCount = 0, this.enrolledCount = 0, this.graduationCount = 0, this.expulsionCount = 0, this.withdrawalCount = 0, this.retirementCount = 0, this.disciplinaryCount = 0, this.currentPage = 1, this.totalPages = 1}): _items = items;
   
 
  final  List<StudentStatusView> _items;
@@ -228,6 +230,8 @@ class _StudentStatusList implements StudentStatusList {
 @override@JsonKey() final  int graduationCount;
 @override@JsonKey() final  int expulsionCount;
 @override@JsonKey() final  int withdrawalCount;
+@override@JsonKey() final  int retirementCount;
+@override@JsonKey() final  int disciplinaryCount;
 @override@JsonKey() final  int currentPage;
 @override@JsonKey() final  int totalPages;
 
@@ -241,16 +245,16 @@ _$StudentStatusListCopyWith<_StudentStatusList> get copyWith => __$StudentStatus
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentStatusList&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.enrolledCount, enrolledCount) || other.enrolledCount == enrolledCount)&&(identical(other.graduationCount, graduationCount) || other.graduationCount == graduationCount)&&(identical(other.expulsionCount, expulsionCount) || other.expulsionCount == expulsionCount)&&(identical(other.withdrawalCount, withdrawalCount) || other.withdrawalCount == withdrawalCount)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentStatusList&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.enrolledCount, enrolledCount) || other.enrolledCount == enrolledCount)&&(identical(other.graduationCount, graduationCount) || other.graduationCount == graduationCount)&&(identical(other.expulsionCount, expulsionCount) || other.expulsionCount == expulsionCount)&&(identical(other.withdrawalCount, withdrawalCount) || other.withdrawalCount == withdrawalCount)&&(identical(other.retirementCount, retirementCount) || other.retirementCount == retirementCount)&&(identical(other.disciplinaryCount, disciplinaryCount) || other.disciplinaryCount == disciplinaryCount)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),totalCount,enrolledCount,graduationCount,expulsionCount,withdrawalCount,currentPage,totalPages);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),totalCount,enrolledCount,graduationCount,expulsionCount,withdrawalCount,retirementCount,disciplinaryCount,currentPage,totalPages);
 
 @override
 String toString() {
-  return 'StudentStatusList(items: $items, totalCount: $totalCount, enrolledCount: $enrolledCount, graduationCount: $graduationCount, expulsionCount: $expulsionCount, withdrawalCount: $withdrawalCount, currentPage: $currentPage, totalPages: $totalPages)';
+  return 'StudentStatusList(items: $items, totalCount: $totalCount, enrolledCount: $enrolledCount, graduationCount: $graduationCount, expulsionCount: $expulsionCount, withdrawalCount: $withdrawalCount, retirementCount: $retirementCount, disciplinaryCount: $disciplinaryCount, currentPage: $currentPage, totalPages: $totalPages)';
 }
 
 
@@ -261,7 +265,7 @@ abstract mixin class _$StudentStatusListCopyWith<$Res> implements $StudentStatus
   factory _$StudentStatusListCopyWith(_StudentStatusList value, $Res Function(_StudentStatusList) _then) = __$StudentStatusListCopyWithImpl;
 @override @useResult
 $Res call({
- List<StudentStatusView> items, int totalCount, int enrolledCount, int graduationCount, int expulsionCount, int withdrawalCount, int currentPage, int totalPages
+ List<StudentStatusView> items, int totalCount, int enrolledCount, int graduationCount, int expulsionCount, int withdrawalCount, int retirementCount, int disciplinaryCount, int currentPage, int totalPages
 });
 
 
@@ -278,7 +282,7 @@ class __$StudentStatusListCopyWithImpl<$Res>
 
 /// Create a copy of StudentStatusList
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? totalCount = null,Object? enrolledCount = null,Object? graduationCount = null,Object? expulsionCount = null,Object? withdrawalCount = null,Object? currentPage = null,Object? totalPages = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? totalCount = null,Object? enrolledCount = null,Object? graduationCount = null,Object? expulsionCount = null,Object? withdrawalCount = null,Object? retirementCount = null,Object? disciplinaryCount = null,Object? currentPage = null,Object? totalPages = null,}) {
   return _then(_StudentStatusList(
 items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<StudentStatusView>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
@@ -286,6 +290,8 @@ as int,enrolledCount: null == enrolledCount ? _self.enrolledCount : enrolledCoun
 as int,graduationCount: null == graduationCount ? _self.graduationCount : graduationCount // ignore: cast_nullable_to_non_nullable
 as int,expulsionCount: null == expulsionCount ? _self.expulsionCount : expulsionCount // ignore: cast_nullable_to_non_nullable
 as int,withdrawalCount: null == withdrawalCount ? _self.withdrawalCount : withdrawalCount // ignore: cast_nullable_to_non_nullable
+as int,retirementCount: null == retirementCount ? _self.retirementCount : retirementCount // ignore: cast_nullable_to_non_nullable
+as int,disciplinaryCount: null == disciplinaryCount ? _self.disciplinaryCount : disciplinaryCount // ignore: cast_nullable_to_non_nullable
 as int,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,totalPages: null == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
 as int,

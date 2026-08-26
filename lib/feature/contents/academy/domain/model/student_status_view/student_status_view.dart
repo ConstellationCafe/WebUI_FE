@@ -14,7 +14,7 @@ abstract class StudentStatusView with _$StudentStatusView {
     required Academy academy,
     required AcademyClass academyClass,
     required StudentRosterStatus status,
-    DateTime? changedAt,
+    DateTime? statusChangedAt,
     String? reason,
   }) = _StudentStatusView;
 }

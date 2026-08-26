@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/utils/date_formatter.dart';
 
-import '../../domain/model/student_status_view/student_status_view.dart';
 import '../../constants/academy_constants.dart';
+import '../../domain/model/student_status_view/student_status_view.dart';
+
 import 'student_status_badge.dart';
 import 'student_status_empty_view.dart';
-
 
 class StudentStatusTable extends StatelessWidget {
   final List<StudentStatusView> items;
@@ -29,8 +29,7 @@ class StudentStatusTable extends StatelessWidget {
       child: Padding(
         padding: ConstPadding.largePaddingAll,
         child: Column(
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -62,10 +61,18 @@ class StudentStatusTable extends StatelessWidget {
                         .studentStatusTableMinWidth,
                   ),
                   child: DataTable(
-                    headingRowHeight: AcademyConstants.studentStatusTableHeaderHeight,
-                    dataRowMinHeight: AcademyConstants.studentStatusTableRowHeight,
-                    dataRowMaxHeight: AcademyConstants.studentStatusTableRowHeight,
-                    columnSpacing: AcademyConstants.studentStatusTableColumnSpacing,
+                    headingRowHeight:
+                    AcademyConstants
+                        .studentStatusTableHeaderHeight,
+                    dataRowMinHeight:
+                    AcademyConstants
+                        .studentStatusTableRowHeight,
+                    dataRowMaxHeight:
+                    AcademyConstants
+                        .studentStatusTableRowHeight,
+                    columnSpacing:
+                    AcademyConstants
+                        .studentStatusTableColumnSpacing,
                     columns: const [
                       DataColumn(
                         label: Text('번호'),
@@ -91,11 +98,14 @@ class StudentStatusTable extends StatelessWidget {
                     ],
                     rows: List.generate(
                       items.length,
-                      (index) {
+                          (index) {
                         final item = items[index];
-                        final number = totalCount
-                            - ((currentPage - 1) * pageSize)
-                            - index;
+
+                        final number =
+                            totalCount -
+                                ((currentPage - 1) *
+                                    pageSize) -
+                                index;
 
                         return DataRow(
                           cells: [
@@ -127,14 +137,16 @@ class StudentStatusTable extends StatelessWidget {
                             DataCell(
                               Text(
                                 DateFormatter.toYyyyMmDd(
-                                  item.changedAt,
+                                  item.statusChangedAt,
                                 ),
                               ),
                             ),
                             DataCell(
                               Text(
                                 item.reason
-                                    ?.trim().isNotEmpty == true
+                                    ?.trim()
+                                    .isNotEmpty ==
+                                    true
                                     ? item.reason!
                                     : '-',
                               ),

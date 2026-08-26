@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StudentStatusView {
 
- Student get student; Academy get academy; AcademyClass get academyClass; StudentRosterStatus get status; DateTime? get changedAt; String? get reason;
+ Student get student; Academy get academy; AcademyClass get academyClass; StudentRosterStatus get status; DateTime? get statusChangedAt; String? get reason;
 /// Create a copy of StudentStatusView
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $StudentStatusViewCopyWith<StudentStatusView> get copyWith => _$StudentStatusVie
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentStatusView&&(identical(other.student, student) || other.student == student)&&(identical(other.academy, academy) || other.academy == academy)&&(identical(other.academyClass, academyClass) || other.academyClass == academyClass)&&(identical(other.status, status) || other.status == status)&&(identical(other.changedAt, changedAt) || other.changedAt == changedAt)&&(identical(other.reason, reason) || other.reason == reason));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentStatusView&&(identical(other.student, student) || other.student == student)&&(identical(other.academy, academy) || other.academy == academy)&&(identical(other.academyClass, academyClass) || other.academyClass == academyClass)&&(identical(other.status, status) || other.status == status)&&(identical(other.statusChangedAt, statusChangedAt) || other.statusChangedAt == statusChangedAt)&&(identical(other.reason, reason) || other.reason == reason));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,student,academy,academyClass,status,changedAt,reason);
+int get hashCode => Object.hash(runtimeType,student,academy,academyClass,status,statusChangedAt,reason);
 
 @override
 String toString() {
-  return 'StudentStatusView(student: $student, academy: $academy, academyClass: $academyClass, status: $status, changedAt: $changedAt, reason: $reason)';
+  return 'StudentStatusView(student: $student, academy: $academy, academyClass: $academyClass, status: $status, statusChangedAt: $statusChangedAt, reason: $reason)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $StudentStatusViewCopyWith<$Res>  {
   factory $StudentStatusViewCopyWith(StudentStatusView value, $Res Function(StudentStatusView) _then) = _$StudentStatusViewCopyWithImpl;
 @useResult
 $Res call({
- Student student, Academy academy, AcademyClass academyClass, StudentRosterStatus status, DateTime? changedAt, String? reason
+ Student student, Academy academy, AcademyClass academyClass, StudentRosterStatus status, DateTime? statusChangedAt, String? reason
 });
 
 
@@ -62,13 +62,13 @@ class _$StudentStatusViewCopyWithImpl<$Res>
 
 /// Create a copy of StudentStatusView
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? student = null,Object? academy = null,Object? academyClass = null,Object? status = null,Object? changedAt = freezed,Object? reason = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? student = null,Object? academy = null,Object? academyClass = null,Object? status = null,Object? statusChangedAt = freezed,Object? reason = freezed,}) {
   return _then(_self.copyWith(
 student: null == student ? _self.student : student // ignore: cast_nullable_to_non_nullable
 as Student,academy: null == academy ? _self.academy : academy // ignore: cast_nullable_to_non_nullable
 as Academy,academyClass: null == academyClass ? _self.academyClass : academyClass // ignore: cast_nullable_to_non_nullable
 as AcademyClass,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as StudentRosterStatus,changedAt: freezed == changedAt ? _self.changedAt : changedAt // ignore: cast_nullable_to_non_nullable
+as StudentRosterStatus,statusChangedAt: freezed == statusChangedAt ? _self.statusChangedAt : statusChangedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reason: freezed == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -155,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Student student,  Academy academy,  AcademyClass academyClass,  StudentRosterStatus status,  DateTime? changedAt,  String? reason)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Student student,  Academy academy,  AcademyClass academyClass,  StudentRosterStatus status,  DateTime? statusChangedAt,  String? reason)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StudentStatusView() when $default != null:
-return $default(_that.student,_that.academy,_that.academyClass,_that.status,_that.changedAt,_that.reason);case _:
+return $default(_that.student,_that.academy,_that.academyClass,_that.status,_that.statusChangedAt,_that.reason);case _:
   return orElse();
 
 }
@@ -176,10 +176,10 @@ return $default(_that.student,_that.academy,_that.academyClass,_that.status,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Student student,  Academy academy,  AcademyClass academyClass,  StudentRosterStatus status,  DateTime? changedAt,  String? reason)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Student student,  Academy academy,  AcademyClass academyClass,  StudentRosterStatus status,  DateTime? statusChangedAt,  String? reason)  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusView():
-return $default(_that.student,_that.academy,_that.academyClass,_that.status,_that.changedAt,_that.reason);case _:
+return $default(_that.student,_that.academy,_that.academyClass,_that.status,_that.statusChangedAt,_that.reason);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +196,10 @@ return $default(_that.student,_that.academy,_that.academyClass,_that.status,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Student student,  Academy academy,  AcademyClass academyClass,  StudentRosterStatus status,  DateTime? changedAt,  String? reason)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Student student,  Academy academy,  AcademyClass academyClass,  StudentRosterStatus status,  DateTime? statusChangedAt,  String? reason)?  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusView() when $default != null:
-return $default(_that.student,_that.academy,_that.academyClass,_that.status,_that.changedAt,_that.reason);case _:
+return $default(_that.student,_that.academy,_that.academyClass,_that.status,_that.statusChangedAt,_that.reason);case _:
   return null;
 
 }
@@ -211,14 +211,14 @@ return $default(_that.student,_that.academy,_that.academyClass,_that.status,_tha
 
 
 class _StudentStatusView implements StudentStatusView {
-  const _StudentStatusView({required this.student, required this.academy, required this.academyClass, required this.status, this.changedAt, this.reason});
+  const _StudentStatusView({required this.student, required this.academy, required this.academyClass, required this.status, this.statusChangedAt, this.reason});
   
 
 @override final  Student student;
 @override final  Academy academy;
 @override final  AcademyClass academyClass;
 @override final  StudentRosterStatus status;
-@override final  DateTime? changedAt;
+@override final  DateTime? statusChangedAt;
 @override final  String? reason;
 
 /// Create a copy of StudentStatusView
@@ -231,16 +231,16 @@ _$StudentStatusViewCopyWith<_StudentStatusView> get copyWith => __$StudentStatus
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentStatusView&&(identical(other.student, student) || other.student == student)&&(identical(other.academy, academy) || other.academy == academy)&&(identical(other.academyClass, academyClass) || other.academyClass == academyClass)&&(identical(other.status, status) || other.status == status)&&(identical(other.changedAt, changedAt) || other.changedAt == changedAt)&&(identical(other.reason, reason) || other.reason == reason));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentStatusView&&(identical(other.student, student) || other.student == student)&&(identical(other.academy, academy) || other.academy == academy)&&(identical(other.academyClass, academyClass) || other.academyClass == academyClass)&&(identical(other.status, status) || other.status == status)&&(identical(other.statusChangedAt, statusChangedAt) || other.statusChangedAt == statusChangedAt)&&(identical(other.reason, reason) || other.reason == reason));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,student,academy,academyClass,status,changedAt,reason);
+int get hashCode => Object.hash(runtimeType,student,academy,academyClass,status,statusChangedAt,reason);
 
 @override
 String toString() {
-  return 'StudentStatusView(student: $student, academy: $academy, academyClass: $academyClass, status: $status, changedAt: $changedAt, reason: $reason)';
+  return 'StudentStatusView(student: $student, academy: $academy, academyClass: $academyClass, status: $status, statusChangedAt: $statusChangedAt, reason: $reason)';
 }
 
 
@@ -251,7 +251,7 @@ abstract mixin class _$StudentStatusViewCopyWith<$Res> implements $StudentStatus
   factory _$StudentStatusViewCopyWith(_StudentStatusView value, $Res Function(_StudentStatusView) _then) = __$StudentStatusViewCopyWithImpl;
 @override @useResult
 $Res call({
- Student student, Academy academy, AcademyClass academyClass, StudentRosterStatus status, DateTime? changedAt, String? reason
+ Student student, Academy academy, AcademyClass academyClass, StudentRosterStatus status, DateTime? statusChangedAt, String? reason
 });
 
 
@@ -268,13 +268,13 @@ class __$StudentStatusViewCopyWithImpl<$Res>
 
 /// Create a copy of StudentStatusView
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? student = null,Object? academy = null,Object? academyClass = null,Object? status = null,Object? changedAt = freezed,Object? reason = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? student = null,Object? academy = null,Object? academyClass = null,Object? status = null,Object? statusChangedAt = freezed,Object? reason = freezed,}) {
   return _then(_StudentStatusView(
 student: null == student ? _self.student : student // ignore: cast_nullable_to_non_nullable
 as Student,academy: null == academy ? _self.academy : academy // ignore: cast_nullable_to_non_nullable
 as Academy,academyClass: null == academyClass ? _self.academyClass : academyClass // ignore: cast_nullable_to_non_nullable
 as AcademyClass,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as StudentRosterStatus,changedAt: freezed == changedAt ? _self.changedAt : changedAt // ignore: cast_nullable_to_non_nullable
+as StudentRosterStatus,statusChangedAt: freezed == statusChangedAt ? _self.statusChangedAt : statusChangedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reason: freezed == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

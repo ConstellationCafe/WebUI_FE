@@ -84,8 +84,7 @@ class StudentStatusPage extends ConsumerWidget {
                   classes: studentStatus.classes,
                   students: studentStatus.students,
                   selectedAcademy: studentStatus.selectedAcademy,
-                  selectedAcademyClass:
-                  studentStatus.selectedAcademyClass,
+                  selectedAcademyClass: studentStatus.selectedAcademyClass,
                   selectedStudent: studentStatus.selectedStudent,
                   onAcademyChanged: notifier.selectAcademy,
                   onClassChanged: notifier.selectClass,
