@@ -1,19 +1,19 @@
 
-import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
-import 'package:constellation_cafe/feature/contents/learning/domain/entity/learning_entity.dart';
 import 'package:dio/dio.dart';
+import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
+import 'package:constellation_cafe/feature/contents/chatbot/menu/domain/entity/menu_entity.dart';
 
 
-class LearningRepository implements RepositoryInterface<LearningEntity> {
-  static String apiPath = "/api/repository/learning";
+class MenuRepository implements RepositoryInterface<MenuEntity> {
+  static String apiPath = "/api/repository/menu";
   final Dio dio;
 
-  LearningRepository({
+  MenuRepository({
     required this.dio
   });
 
   @override
-  Future<List<LearningEntity>> findAll() async {
+  Future<List<MenuEntity>> findAll() async {
     final response = await dio.get("$apiPath/list");
     final res = response.data;
 
@@ -24,21 +24,20 @@ class LearningRepository implements RepositoryInterface<LearningEntity> {
           .map((m) {
             // 실제 DB 컬럼명을 DBModel 컬럼명으로 변환
             final col = m['colName'];
-            if (col == 'ln_key') {
-              m['colName'] = 'lnKey';
-            } else if (col == 'ln_value') {
-              m['colName'] = 'lnValue';
+            if (col == 'mn_value') {
+              m['colName'] = 'mnValue';
             }
             return m;
           }).toList();
       final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
       if (entities.isNotEmpty) {
         return entities
-            .map((e) => LearningEntity.fromJson(metadata, e))
+            .map((e) => MenuEntity.fromJson(metadata, e))
             .toList();
       } else {
-        return [LearningEntity.init(metadata)];
+        return [MenuEntity.init(metadata)];
       }
+
     } else {
       final err = res['error'];
       final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
@@ -47,7 +46,7 @@ class LearningRepository implements RepositoryInterface<LearningEntity> {
   }
 
   @override
-  Future<dynamic> save(LearningEntity entity) async {
+  Future<dynamic> save(MenuEntity entity) async {
     final res = await dio.post("$apiPath/save", data: [entity.toJson()]);
     return res.data;
   }

@@ -1,4 +1,4 @@
-import '../../../../../shared/domain/entity/entity_interface.dart';
+import '../../../../../../shared/domain/entity/entity_interface.dart';
 
 class MenuEntity extends Entity {
   String mnValue;

@@ -1,19 +1,19 @@
 
 import 'package:dio/dio.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
-import 'package:constellation_cafe/feature/contents/menu/domain/entity/menu_entity.dart';
+import 'package:constellation_cafe/feature/contents/chatbot/content/domain/entity/content_entity.dart';
 
 
-class MenuRepository implements RepositoryInterface<MenuEntity> {
-  static String apiPath = "/api/repository/menu";
+class ContentRepository implements RepositoryInterface<ContentEntity> {
+  static String apiPath = "/api/repository/content";
   final Dio dio;
 
-  MenuRepository({
+  ContentRepository({
     required this.dio
   });
 
   @override
-  Future<List<MenuEntity>> findAll() async {
+  Future<List<ContentEntity>> findAll() async {
     final response = await dio.get("$apiPath/list");
     final res = response.data;
 
@@ -24,18 +24,18 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
           .map((m) {
             // 실제 DB 컬럼명을 DBModel 컬럼명으로 변환
             final col = m['colName'];
-            if (col == 'mn_value') {
-              m['colName'] = 'mnValue';
+            if (col == 'cn_value') {
+              m['colName'] = 'cnValue';
             }
             return m;
           }).toList();
       final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
       if (entities.isNotEmpty) {
         return entities
-            .map((e) => MenuEntity.fromJson(metadata, e))
+            .map((e) => ContentEntity.fromJson(metadata, e))
             .toList();
       } else {
-        return [MenuEntity.init(metadata)];
+        return [ContentEntity.init(metadata)];
       }
 
     } else {
@@ -46,7 +46,7 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
   }
 
   @override
-  Future<dynamic> save(MenuEntity entity) async {
+  Future<dynamic> save(ContentEntity entity) async {
     final res = await dio.post("$apiPath/save", data: [entity.toJson()]);
     return res.data;
   }

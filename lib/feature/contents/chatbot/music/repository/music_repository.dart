@@ -1,6 +1,6 @@
 
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
-import 'package:constellation_cafe/feature/contents/music/domain/entity/music_entity.dart';
+import 'package:constellation_cafe/feature/contents/chatbot/music/domain/entity/music_entity.dart';
 import 'package:dio/dio.dart';
 
 

@@ -19,12 +19,9 @@ import 'package:constellation_cafe/feature/profile/pages/profile.dart';
 
 // contents
 import 'package:constellation_cafe/feature/contents/friendly_match/pages/friendly_match.dart';
-import 'package:constellation_cafe/feature/contents/learning/pages/learning_list.dart';
-import 'package:constellation_cafe/feature/contents/menu/pages/menu_list.dart';
-import 'package:constellation_cafe/feature/contents/music/pages/music_list.dart';
-import 'package:constellation_cafe/feature/contents/content/pages/content_list.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
+import '../feature/contents/chatbot/routes/chatbot_routes.dart';
 import '../feature/guild_select/page/guild_select.dart';
 import '../feature/guild_select/provider/guild_list_provider.dart';
 
@@ -36,21 +33,17 @@ RouteObserver<ModalRoute<void>>();
 @riverpod
 GoRouter router(Ref ref) {
   final refreshNotifier = ValueNotifier<int>(0);
-
   ref.listen(
     loginCheckProvider,
         (_, __) => refreshNotifier.value++,
   );
-
   ref.listen(
     guildListProvider,
         (_, __) => refreshNotifier.value++,
   );
-
   ref.onDispose(() {
     refreshNotifier.dispose();
   });
-
   return GoRouter(
     initialLocation: '/',
     observers: [
@@ -59,38 +52,34 @@ GoRouter router(Ref ref) {
     routes: [
       GoRoute(
         path: '/',
-        pageBuilder: (context, state) => _noAnim(
+        pageBuilder: (context, state) => noAnim(
           state,
           const PageLoading(),
         ),
       ),
-
-      GoRoute(
-        path: '/loading',
-        pageBuilder: (context, state) => _noAnim(
-          state,
-          const PageLoading(),
-        ),
-      ),
-
       GoRoute(
         path: '/login',
-        pageBuilder: (context, state) => _noAnim(
+        pageBuilder: (context, state) => noAnim(
           state,
           const LoginPage(),
         ),
       ),
-
       GoRoute(
         path: '/select',
-        pageBuilder: (context, state) => _noAnim(
+        pageBuilder: (context, state) => noAnim(
           state,
           const GuildSelectPage(),
         ),
       ),
-
+      GoRoute(
+        path: '/loading',
+        pageBuilder: (context, state) => noAnim(
+          state,
+          const PageLoading(),
+        ),
+      ),
       ShellRoute(
-        pageBuilder: (context, state, child) => _noAnim(
+        pageBuilder: (context, state, child) => noAnim(
           state,
           HomeFrame(
             child: child,
@@ -99,68 +88,33 @@ GoRouter router(Ref ref) {
         routes: [
           GoRoute(
             path: '/home',
-            pageBuilder: (context, state) => _noAnim(
+            pageBuilder: (context, state) => noAnim(
               state,
               HomeContent(),
             ),
           ),
-
           GoRoute(
             path: '/profile',
-            pageBuilder: (context, state) => _noAnim(
+            pageBuilder: (context, state) => noAnim(
               state,
               const Profile(),
             ),
           ),
-
-          GoRoute(
-            path: '/friendly_match',
-            pageBuilder: (context, state) => _noAnim(
-              state,
-              const FriendlyMatch(),
-            ),
-          ),
-
-          GoRoute(
-            path: '/learning',
-            pageBuilder: (context, state) => _noAnim(
-              state,
-              const LearningList(),
-            ),
-          ),
-
-          GoRoute(
-            path: '/menu',
-            pageBuilder: (context, state) => _noAnim(
-              state,
-              const MenuList(),
-            ),
-          ),
-
-          GoRoute(
-            path: '/music',
-            pageBuilder: (context, state) => _noAnim(
-              state,
-              const MusicList(),
-            ),
-          ),
-
-          GoRoute(
-            path: '/content',
-            pageBuilder: (context, state) => _noAnim(
-              state,
-              const ContentList(),
-            ),
-          ),
-
           GoRoute(
             path: '/point_log',
-            pageBuilder: (context, state) => _noAnim(
+            pageBuilder: (context, state) => noAnim(
               state,
               const ViewPointLog(),
             ),
           ),
-
+          GoRoute(
+            path: '/friendly_match',
+            pageBuilder: (context, state) => noAnim(
+              state,
+              const FriendlyMatch(),
+            ),
+          ),
+          ...chatbotRoutes,
           ...academyRoutes,
         ],
       ),
@@ -299,7 +253,7 @@ GoRouter router(Ref ref) {
 }
 
 /// 애니메이션 없는 페이지 전환 헬퍼
-Page<void> _noAnim(
+Page<void> noAnim(
     GoRouterState state,
     Widget child,
     ) {
