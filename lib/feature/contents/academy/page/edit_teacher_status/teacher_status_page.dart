@@ -129,7 +129,7 @@ class TeacherStatusPage extends ConsumerWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          '학생 상태 처리가 완료되었습니다.',
+                          '교사 상태 처리가 완료되었습니다.',
                         ),
                       ),
                     );
