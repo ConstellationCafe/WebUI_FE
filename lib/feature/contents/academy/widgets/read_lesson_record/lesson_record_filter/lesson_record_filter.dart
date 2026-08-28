@@ -57,63 +57,79 @@ class LessonRecordFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: ConstPadding.smallPadding,
-      runSpacing: ConstPadding.smallPadding,
-      crossAxisAlignment: WrapCrossAlignment.end,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(
-          width: AcademyConstants.filterFieldWidth,
-          child: AcademyDropdown(
-            academies: academies,
-            selectedAcademyId: selectedAcademyId,
-            isLoading: isLoading,
-            onChanged: onAcademyChanged,
-          ),
-        ),
-        SizedBox(
-          width: AcademyConstants.filterFieldWidth,
-          child: ClassDropdown(
-            classes: classes,
-            selectedClassId: selectedClassId,
-            onChanged: onClassChanged,
-          ),
-        ),
-        SizedBox(
-          width: AcademyConstants.filterFieldWidth,
-          child: SubjectDropdown(
-            subjects: subjects,
-            selectedSubjectId: selectedSubjectId,
-            onChanged: onSubjectChanged,
-          ),
-        ),
-        SizedBox(
-          width: AcademyConstants.filterFieldWidth,
-          child: DateField(
-            selectedDate: selectedDate,
-            onChanged: onDateChanged,
-          ),
-        ),
-        SizedBox(
-          width: AcademyConstants.filterFieldWidth,
-          child: TimeDropdown(
-            selectedTime: selectedTime,
-            onChanged: onTimeChanged,
-          ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
+        Wrap(
+          spacing: ConstPadding.smallPadding,
+          runSpacing: ConstPadding.smallPadding,
           children: [
-            ElevatedButton(
-              onPressed: isLoading ? null : onSearch,
-              child: const Text('조회'),
+            SizedBox(
+              width: AcademyConstants.filterFieldWidth,
+              child: AcademyDropdown(
+                academies: academies,
+                selectedAcademyId:
+                selectedAcademyId,
+                isLoading: isLoading,
+                onChanged: onAcademyChanged,
+              ),
             ),
+            SizedBox(
+              width: AcademyConstants.filterFieldWidth,
+              child: ClassDropdown(
+                classes: classes,
+                selectedClassId:
+                selectedClassId,
+                onChanged: onClassChanged,
+              ),
+            ),
+            SizedBox(
+              width: AcademyConstants.filterFieldWidth,
+              child: SubjectDropdown(
+                subjects: subjects,
+                selectedSubjectId:
+                selectedSubjectId,
+                onChanged: onSubjectChanged,
+              ),
+            ),
+            SizedBox(
+              width: AcademyConstants.filterFieldWidth,
+              child: DateField(
+                selectedDate: selectedDate,
+                onChanged: onDateChanged,
+              ),
+            ),
+            SizedBox(
+              width: AcademyConstants.filterFieldWidth,
+              child: TimeDropdown(
+                selectedTime: selectedTime,
+                onChanged: onTimeChanged,
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(
+          height: ConstPadding.mediumPadding,
+        ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            OutlinedButton(
+              onPressed:
+              isLoading ? null : onReset,
+              child: const Text('초기화'),
+            ),
+
             const SizedBox(
               width: ConstPadding.smallPadding,
             ),
+
             ElevatedButton(
-              onPressed: isLoading ? null : onReset,
-              child: const Text('초기화'),
+              onPressed:
+              isLoading ? null : onSearch,
+              child: const Text('조회'),
             ),
           ],
         ),
