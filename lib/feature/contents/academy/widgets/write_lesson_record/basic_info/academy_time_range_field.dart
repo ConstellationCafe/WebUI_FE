@@ -53,8 +53,34 @@ class AcademyTimeRangeField extends StatelessWidget {
                               ),
                             ),
                             timePickerTheme: TimePickerThemeData(
-                              dayPeriodColor: colorScheme.secondary,
-                              dayPeriodTextColor: AcademyConstants.timePickerSelectedTextColor,
+                              backgroundColor:
+                              colorScheme.surface,
+
+                              dialBackgroundColor:
+                              Colors.grey.shade200,
+
+                              dayPeriodColor:
+                              WidgetStateColor.resolveWith(
+                                (states) {
+                                  if (states.contains(
+                                    WidgetState.selected,
+                                  )) {
+                                    return colorScheme.secondary;
+                                  }
+                                  return Colors.transparent;
+                                },
+                              ),
+                              dayPeriodTextColor: WidgetStateColor.resolveWith(
+                                (states) {
+                                  if (states.contains(
+                                    WidgetState.selected,
+                                  )) {
+                                    return AcademyConstants
+                                        .timePickerSelectedTextColor;
+                                  }
+                                  return Colors.black;
+                                },
+                              ),
                             ),
                           ),
                           child: child!,
@@ -104,8 +130,38 @@ class AcademyTimeRangeField extends StatelessWidget {
                               ),
                             ),
                             timePickerTheme: TimePickerThemeData(
-                              dayPeriodColor: colorScheme.secondary,
-                              dayPeriodTextColor: AcademyConstants.timePickerSelectedTextColor,
+                              backgroundColor:
+                              colorScheme.surface,
+
+                              dialBackgroundColor:
+                              Colors.grey.shade200,
+
+                              dayPeriodColor:
+                              WidgetStateColor.resolveWith(
+                                    (states) {
+                                  if (states.contains(
+                                    WidgetState.selected,
+                                  )) {
+                                    return colorScheme.secondary;
+                                  }
+
+                                  return Colors.transparent;
+                                },
+                              ),
+
+                              dayPeriodTextColor:
+                              WidgetStateColor.resolveWith(
+                                    (states) {
+                                  if (states.contains(
+                                    WidgetState.selected,
+                                  )) {
+                                    return AcademyConstants
+                                        .timePickerSelectedTextColor;
+                                  }
+
+                                  return Colors.black;
+                                },
+                              ),
                             ),
                           ),
                           child: child!,
