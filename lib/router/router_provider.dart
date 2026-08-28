@@ -22,6 +22,8 @@ import 'package:constellation_cafe/feature/contents/content/pages/content_list.d
 import '../feature/auth/notifier/login_check_notifier.dart';
 import '../feature/guild_select/page/guild_select.dart';
 
+import 'package:constellation_cafe/feature/guild_select/provider/guild_list_provider.dart';
+
 part 'router_provider.g.dart';
 
 final RouteObserver<ModalRoute<void>> routeObserver =
@@ -112,20 +114,61 @@ GoRouter router(Ref ref) {
     refreshListenable: refreshNotifier,
     redirect: (context, state) {
       final loginCheck = ref.read(loginCheckProvider);
-      // 로그인 상태 확인 중이면 현재 경로 유지
+
       if (loginCheck.isLoading) {
         return null;
       }
+
       final isLoggedIn = loginCheck.value ?? false;
       final loc = state.matchedLocation;
-      switch (loc) {
-        case '/':
-          return isLoggedIn ? '/select' : '/login';
-        case '/login':
-          return isLoggedIn ? '/select' : null;
-        default:
-          return isLoggedIn ? null : '/login';
+
+      if (!isLoggedIn) {
+        return loc == '/login' ? null : '/login';
       }
+
+      if (loc == '/') {
+        return '/select';
+      }
+
+      if (loc == '/login') {
+        return '/select';
+      }
+
+      if (loc == '/home') {
+        final guildId =
+        state.uri.queryParameters['guild_id'];
+
+        if (guildId == null || guildId.isEmpty) {
+          return '/select';
+        }
+
+        final guildListAsync =
+        ref.read(guildListProvider);
+
+        // 아직 길드 목록을 불러오는 중이면
+        // redirect하지 않고 현재 상태 유지
+        if (guildListAsync.isLoading) {
+          return null;
+        }
+
+        // 목록 조회 자체가 실패한 경우
+        if (guildListAsync.hasError) {
+          return '/select';
+        }
+
+        final guilds =
+            guildListAsync.value ?? [];
+
+        final isValidGuild = guilds.any(
+              (guild) => guild.id == guildId,
+        );
+
+        if (!isValidGuild) {
+          return '/select';
+        }
+      }
+
+      return null;
     },
   );
 }
