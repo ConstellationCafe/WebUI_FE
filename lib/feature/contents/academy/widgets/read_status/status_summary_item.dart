@@ -33,7 +33,7 @@ class StatusSummaryItem extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: theme.colorScheme.primary,
+            color: theme.colorScheme.secondary,
           ),
           const SizedBox(
             width: ConstPadding.mediumPadding,
