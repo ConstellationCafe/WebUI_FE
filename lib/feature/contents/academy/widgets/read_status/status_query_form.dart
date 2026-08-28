@@ -277,7 +277,14 @@ TStatus extends RosterStatus
                   width: ConstPadding.smallPadding,
                 ),
 
-                FilledButton.icon(
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor:
+                    theme.colorScheme.secondary,
+                    side: BorderSide(
+                      color: theme.colorScheme.secondary,
+                    ),
+                  ),
                   onPressed:
                   isLoading
                       ? null
