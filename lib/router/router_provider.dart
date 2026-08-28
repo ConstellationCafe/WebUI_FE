@@ -1,11 +1,10 @@
 // flutter
-import 'package:constellation_cafe/feature/contents/academy/routes/academy_routes.dart';
-import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
-import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 // auth
 import 'package:constellation_cafe/feature/auth/pages/login.dart';
@@ -16,14 +15,17 @@ import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.da
 
 // user
 import 'package:constellation_cafe/feature/profile/pages/profile.dart';
+import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
 
 // contents
 import 'package:constellation_cafe/feature/contents/friendly_match/pages/friendly_match.dart';
+import 'package:constellation_cafe/feature/contents/academy/routes/academy_routes.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
 import '../feature/contents/chatbot/routes/chatbot_routes.dart';
 import '../feature/guild_select/page/guild_select.dart';
 import '../feature/guild_select/provider/guild_list_provider.dart';
+import 'no_aim_page.dart';
 
 part 'router_provider.g.dart';
 
@@ -33,17 +35,21 @@ RouteObserver<ModalRoute<void>>();
 @riverpod
 GoRouter router(Ref ref) {
   final refreshNotifier = ValueNotifier<int>(0);
+
   ref.listen(
     loginCheckProvider,
         (_, __) => refreshNotifier.value++,
   );
+
   ref.listen(
     guildListProvider,
         (_, __) => refreshNotifier.value++,
   );
+
   ref.onDispose(() {
     refreshNotifier.dispose();
   });
+
   return GoRouter(
     initialLocation: '/',
     observers: [
@@ -57,6 +63,7 @@ GoRouter router(Ref ref) {
           const PageLoading(),
         ),
       ),
+
       GoRoute(
         path: '/login',
         pageBuilder: (context, state) => noAnim(
@@ -64,6 +71,7 @@ GoRouter router(Ref ref) {
           const LoginPage(),
         ),
       ),
+
       GoRoute(
         path: '/select',
         pageBuilder: (context, state) => noAnim(
@@ -71,6 +79,8 @@ GoRouter router(Ref ref) {
           const GuildSelectPage(),
         ),
       ),
+
+      // ShellRoute 밖에 위치
       GoRoute(
         path: '/loading',
         pageBuilder: (context, state) => noAnim(
@@ -78,6 +88,7 @@ GoRouter router(Ref ref) {
           const PageLoading(),
         ),
       ),
+
       ShellRoute(
         pageBuilder: (context, state, child) => noAnim(
           state,
@@ -93,6 +104,7 @@ GoRouter router(Ref ref) {
               HomeContent(),
             ),
           ),
+
           GoRoute(
             path: '/profile',
             pageBuilder: (context, state) => noAnim(
@@ -100,6 +112,7 @@ GoRouter router(Ref ref) {
               const Profile(),
             ),
           ),
+
           GoRoute(
             path: '/point_log',
             pageBuilder: (context, state) => noAnim(
@@ -107,6 +120,7 @@ GoRouter router(Ref ref) {
               const ViewPointLog(),
             ),
           ),
+
           GoRoute(
             path: '/friendly_match',
             pageBuilder: (context, state) => noAnim(
@@ -114,6 +128,7 @@ GoRouter router(Ref ref) {
               const FriendlyMatch(),
             ),
           ),
+
           ...chatbotRoutes,
           ...academyRoutes,
         ],
@@ -131,25 +146,53 @@ GoRouter router(Ref ref) {
     refreshListenable: refreshNotifier,
 
     redirect: (context, state) {
+      final loc = state.matchedLocation;
+
       final loginCheck =
       ref.read(loginCheckProvider);
 
+      /*
+       * /home 직접 접근인데
+       * 로그인 상태 확인조차 끝나지 않았다면
+       * 절대로 ShellRoute에 진입시키지 않는다.
+       */
       if (loginCheck.isLoading) {
+        if (loc == '/home') {
+          final guildId =
+          state.uri.queryParameters['guild_id'];
+
+          return Uri(
+            path: '/loading',
+            queryParameters: {
+              if (guildId != null)
+                'guild_id': guildId,
+            },
+          ).toString();
+        }
+
+        // 이미 /loading이면 그대로 대기
+        if (loc == '/loading') {
+          return null;
+        }
+
         return null;
       }
 
       final isLoggedIn =
           loginCheck.value ?? false;
 
-      final loc =
-          state.matchedLocation;
-
+      /*
+       * 로그인하지 않은 경우
+       */
       if (!isLoggedIn) {
         return loc == '/login'
             ? null
             : '/login';
       }
 
+      /*
+       * 로그인 완료 후 기본 경로 처리
+       */
       if (loc == '/') {
         return '/select';
       }
@@ -158,11 +201,14 @@ GoRouter router(Ref ref) {
         return '/select';
       }
 
-      // /home 직접 접근
+      /*
+       * /home 진입
+       */
       if (loc == '/home') {
         final guildId =
         state.uri.queryParameters['guild_id'];
 
+        // guild_id 자체가 없음
         if (guildId == null ||
             guildId.isEmpty) {
           return '/select';
@@ -171,8 +217,10 @@ GoRouter router(Ref ref) {
         final guildListAsync =
         ref.read(guildListProvider);
 
-        // 아직 검증할 길드 목록이 없으면
-        // ShellRoute 밖의 loading으로 이동
+        /*
+         * 길드 목록이 아직 준비되지 않았다면
+         * ShellRoute 밖의 /loading으로 이동
+         */
         if (guildListAsync.isLoading) {
           return Uri(
             path: '/loading',
@@ -182,6 +230,7 @@ GoRouter router(Ref ref) {
           ).toString();
         }
 
+        // 길드 목록 API 실패
         if (guildListAsync.hasError) {
           return '/select';
         }
@@ -195,18 +244,24 @@ GoRouter router(Ref ref) {
           guild.id == guildId,
         );
 
+        // 목록에 없는 길드
         if (!isValidGuild) {
           return '/select';
         }
 
+        // 로그인 완료 + 길드 목록 완료 + 유효한 길드
+        // 이때만 HomeFrame 진입 허용
         return null;
       }
 
-      // 길드 검증 대기 화면
+      /*
+       * /home 검증 대기용 /loading
+       */
       if (loc == '/loading') {
         final guildId =
         state.uri.queryParameters['guild_id'];
 
+        // guild_id 없이 /loading 직접 접근
         if (guildId == null ||
             guildId.isEmpty) {
           return '/select';
@@ -215,12 +270,15 @@ GoRouter router(Ref ref) {
         final guildListAsync =
         ref.read(guildListProvider);
 
-        // 아직 API 응답 전이면
-        // ShellRoute 밖에서 PageLoading 유지
+        /*
+         * 길드 목록 API가 아직 끝나지 않았으면
+         * PageLoading 유지
+         */
         if (guildListAsync.isLoading) {
           return null;
         }
 
+        // 길드 목록 API 실패
         if (guildListAsync.hasError) {
           return '/select';
         }
@@ -234,11 +292,17 @@ GoRouter router(Ref ref) {
           guild.id == guildId,
         );
 
+        /*
+         * 없는 guild_id
+         */
         if (!isValidGuild) {
           return '/select';
         }
 
-        // 검증 성공 후에만 ShellRoute 진입
+        /*
+         * 검증 완료 + 정상 guild_id
+         * 이제서야 /home 진입
+         */
         return Uri(
           path: '/home',
           queryParameters: {
@@ -249,16 +313,5 @@ GoRouter router(Ref ref) {
 
       return null;
     },
-  );
-}
-
-/// 애니메이션 없는 페이지 전환 헬퍼
-Page<void> noAnim(
-    GoRouterState state,
-    Widget child,
-    ) {
-  return NoTransitionPage<void>(
-    key: state.pageKey,
-    child: child,
   );
 }
