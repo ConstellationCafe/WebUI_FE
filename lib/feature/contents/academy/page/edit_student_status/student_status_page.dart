@@ -81,6 +81,7 @@ class StudentStatusPage extends ConsumerWidget {
                 title: '학생 정보',
                 icon: Icons.person_outline,
                 child: StatusBasicInfo(
+                  memberLabel: '학생',
                   academies: studentStatus.academies,
                   classes: studentStatus.classes,
                   members: studentStatus.students,

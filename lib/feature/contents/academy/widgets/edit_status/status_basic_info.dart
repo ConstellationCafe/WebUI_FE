@@ -8,6 +8,8 @@ import '../../domain/model/academy_member.dart';
 
 class StatusBasicInfo<T extends AcademyMember>
     extends StatelessWidget {
+  final String memberLabel;
+
   final List<Academy> academies;
   final List<AcademyClass> classes;
   final List<T> members;
@@ -22,6 +24,7 @@ class StatusBasicInfo<T extends AcademyMember>
 
   const StatusBasicInfo({
     super.key,
+    required this.memberLabel,
     required this.academies,
     required this.classes,
     required this.members,
@@ -39,7 +42,7 @@ class StatusBasicInfo<T extends AcademyMember>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '학생 정보',
+          '$memberLabel 정보',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(
@@ -98,9 +101,9 @@ class StatusBasicInfo<T extends AcademyMember>
         ),
         DropdownButtonFormField<T>(
           value: selectedMembers,
-          decoration: const InputDecoration(
-            labelText: '학생 *',
-            hintText: '학생을 선택하세요',
+          decoration: InputDecoration(
+            labelText: '$memberLabel *',
+            hintText: '$memberLabel을 선택하세요',
           ),
           items: members
             .map(

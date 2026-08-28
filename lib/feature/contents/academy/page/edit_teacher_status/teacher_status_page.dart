@@ -82,6 +82,7 @@ class TeacherStatusPage extends ConsumerWidget {
                 title: '교사 정보',
                 icon: Icons.person_outline,
                 child: StatusBasicInfo(
+                  memberLabel: '교사',
                   academies: teacherStatus.academies,
                   classes: teacherStatus.classes,
                   members: teacherStatus.teachers,
