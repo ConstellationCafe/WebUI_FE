@@ -39,9 +39,17 @@ class MainAppBar extends ConsumerWidget {
               },
             )
           else
-            // TODO : guild_id 쿼리 파라미터도 넘겨야 함
             GestureDetector(
-              onTap: () => context.go('/home'),
+              onTap: () {
+                context.go(
+                  Uri(
+                    path: '/home',
+                    queryParameters: {
+                      'guild_id': guild.guildId,
+                    },
+                  ).toString(),
+                );
+              },
               child: ClipOval(
                 child: Image.network(
                   guild.guildIcon ?? '',
