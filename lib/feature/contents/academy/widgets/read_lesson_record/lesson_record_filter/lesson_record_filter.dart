@@ -116,10 +116,12 @@ class LessonRecordFilter extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            OutlinedButton(
+            ElevatedButton(
               onPressed:
               isLoading ? null : onReset,
-              child: const Text('초기화'),
+              child: const Text(
+                '초기화',
+              ),
             ),
 
             const SizedBox(
@@ -129,7 +131,9 @@ class LessonRecordFilter extends StatelessWidget {
             ElevatedButton(
               onPressed:
               isLoading ? null : onSearch,
-              child: const Text('조회'),
+              child: const Text(
+                '조회',
+              ),
             ),
           ],
         ),
