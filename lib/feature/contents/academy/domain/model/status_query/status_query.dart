@@ -9,7 +9,7 @@ import '../../type/roster_status.dart';
 part 'status_query.freezed.dart';
 
 @freezed
-class StatusQuery<
+abstract class StatusQuery<
   TMember extends AcademyMember,
   TStatus extends RosterStatus
 > with _$StatusQuery<TMember, TStatus> {

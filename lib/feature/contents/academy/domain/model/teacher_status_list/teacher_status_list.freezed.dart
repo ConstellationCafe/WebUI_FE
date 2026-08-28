@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TeacherStatusList {
 
- List<StatusView> get items; int get totalCount; int get enrolledCount; int get retirementCount; int get disciplinaryCount; int get currentPage; int get totalPages;
+ List<StatusView<Teacher, TeacherRosterStatus>> get items; int get totalCount; int get enrolledCount; int get retirementCount; int get disciplinaryCount; int get currentPage; int get totalPages;
 /// Create a copy of TeacherStatusList
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $TeacherStatusListCopyWith<$Res>  {
   factory $TeacherStatusListCopyWith(TeacherStatusList value, $Res Function(TeacherStatusList) _then) = _$TeacherStatusListCopyWithImpl;
 @useResult
 $Res call({
- List<StatusView> items, int totalCount, int enrolledCount, int retirementCount, int disciplinaryCount, int currentPage, int totalPages
+ List<StatusView<Teacher, TeacherRosterStatus>> items, int totalCount, int enrolledCount, int retirementCount, int disciplinaryCount, int currentPage, int totalPages
 });
 
 
@@ -65,7 +65,7 @@ class _$TeacherStatusListCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? totalCount = null,Object? enrolledCount = null,Object? retirementCount = null,Object? disciplinaryCount = null,Object? currentPage = null,Object? totalPages = null,}) {
   return _then(_self.copyWith(
 items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
-as List<StatusView>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as List<StatusView<Teacher, TeacherRosterStatus>>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
 as int,enrolledCount: null == enrolledCount ? _self.enrolledCount : enrolledCount // ignore: cast_nullable_to_non_nullable
 as int,retirementCount: null == retirementCount ? _self.retirementCount : retirementCount // ignore: cast_nullable_to_non_nullable
 as int,disciplinaryCount: null == disciplinaryCount ? _self.disciplinaryCount : disciplinaryCount // ignore: cast_nullable_to_non_nullable
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StatusView> items,  int totalCount,  int enrolledCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StatusView<Teacher, TeacherRosterStatus>> items,  int totalCount,  int enrolledCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TeacherStatusList() when $default != null:
 return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.retirementCount,_that.disciplinaryCount,_that.currentPage,_that.totalPages);case _:
@@ -177,7 +177,7 @@ return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.retiremen
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StatusView> items,  int totalCount,  int enrolledCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StatusView<Teacher, TeacherRosterStatus>> items,  int totalCount,  int enrolledCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)  $default,) {final _that = this;
 switch (_that) {
 case _TeacherStatusList():
 return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.retirementCount,_that.disciplinaryCount,_that.currentPage,_that.totalPages);case _:
@@ -197,7 +197,7 @@ return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.retiremen
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StatusView> items,  int totalCount,  int enrolledCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StatusView<Teacher, TeacherRosterStatus>> items,  int totalCount,  int enrolledCount,  int retirementCount,  int disciplinaryCount,  int currentPage,  int totalPages)?  $default,) {final _that = this;
 switch (_that) {
 case _TeacherStatusList() when $default != null:
 return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.retirementCount,_that.disciplinaryCount,_that.currentPage,_that.totalPages);case _:
@@ -212,11 +212,11 @@ return $default(_that.items,_that.totalCount,_that.enrolledCount,_that.retiremen
 
 
 class _TeacherStatusList implements TeacherStatusList {
-  const _TeacherStatusList({final  List<StatusView> items = const [], this.totalCount = 0, this.enrolledCount = 0, this.retirementCount = 0, this.disciplinaryCount = 0, this.currentPage = 1, this.totalPages = 1}): _items = items;
+  const _TeacherStatusList({final  List<StatusView<Teacher, TeacherRosterStatus>> items = const <StatusView<Teacher, TeacherRosterStatus>>[], this.totalCount = 0, this.enrolledCount = 0, this.retirementCount = 0, this.disciplinaryCount = 0, this.currentPage = 1, this.totalPages = 1}): _items = items;
   
 
- final  List<StatusView> _items;
-@override@JsonKey() List<StatusView> get items {
+ final  List<StatusView<Teacher, TeacherRosterStatus>> _items;
+@override@JsonKey() List<StatusView<Teacher, TeacherRosterStatus>> get items {
   if (_items is EqualUnmodifiableListView) return _items;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_items);
@@ -259,7 +259,7 @@ abstract mixin class _$TeacherStatusListCopyWith<$Res> implements $TeacherStatus
   factory _$TeacherStatusListCopyWith(_TeacherStatusList value, $Res Function(_TeacherStatusList) _then) = __$TeacherStatusListCopyWithImpl;
 @override @useResult
 $Res call({
- List<StatusView> items, int totalCount, int enrolledCount, int retirementCount, int disciplinaryCount, int currentPage, int totalPages
+ List<StatusView<Teacher, TeacherRosterStatus>> items, int totalCount, int enrolledCount, int retirementCount, int disciplinaryCount, int currentPage, int totalPages
 });
 
 
@@ -279,7 +279,7 @@ class __$TeacherStatusListCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? totalCount = null,Object? enrolledCount = null,Object? retirementCount = null,Object? disciplinaryCount = null,Object? currentPage = null,Object? totalPages = null,}) {
   return _then(_TeacherStatusList(
 items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<StatusView>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as List<StatusView<Teacher, TeacherRosterStatus>>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
 as int,enrolledCount: null == enrolledCount ? _self.enrolledCount : enrolledCount // ignore: cast_nullable_to_non_nullable
 as int,retirementCount: null == retirementCount ? _self.retirementCount : retirementCount // ignore: cast_nullable_to_non_nullable
 as int,disciplinaryCount: null == disciplinaryCount ? _self.disciplinaryCount : disciplinaryCount // ignore: cast_nullable_to_non_nullable

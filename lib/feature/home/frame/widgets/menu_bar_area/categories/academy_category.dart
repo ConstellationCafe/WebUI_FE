@@ -43,8 +43,35 @@ class AcademyCategory extends ConsumerWidget {
                 fit: BoxFit.contain,
                 filterQuality: FilterQuality.high
             ),
+            menuName: "교사 관리",
+            callbackUrl: "/academy/teacher_status",
+          ),
+          MenuContainer(
+            iconImage: Image.asset(
+                "assets/icons/category/admin/point.png",
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high
+            ),
             menuName: "학생 관리",
             callbackUrl: "/academy/student_status",
+          ),
+          MenuContainer(
+            iconImage: Image.asset(
+                "assets/icons/category/admin/point.png",
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high
+            ),
+            menuName: "교사 조회",
+            callbackUrl: "/academy/read_teacher_status",
+          ),
+          MenuContainer(
+            iconImage: Image.asset(
+                "assets/icons/category/admin/point.png",
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high
+            ),
+            menuName: "학생 조회",
+            callbackUrl: "/academy/read_student_status",
           ),
         ]
     );

@@ -91,7 +91,7 @@ class StudentStatusRepository {
   getStudentStatuses({
     int? academyId,
     int? classId,
-    String? studentId,
+    String? academyMemberId,
     StudentRosterStatus? status,
     int page = 1,
     int size = 20,
@@ -99,7 +99,7 @@ class StudentStatusRepository {
     final request = StatusQueryRequest(
       academyId: academyId,
       classId: classId,
-      academyMemberId: studentId,
+      academyMemberId: academyMemberId,
       status: status,
       page: page,
       size: size,

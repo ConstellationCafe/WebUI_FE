@@ -98,7 +98,7 @@ class ReadTeacherStatusPage extends ConsumerWidget {
                   TeacherRosterStatus>(
                 academies: query.academies,
                 classes: query.classes,
-                academyMembers: query.teachers,
+                academyMembers: query.academyMembers,
                 statuses:
                 TeacherRosterStatus.values,
                 selectedAcademy:
@@ -106,7 +106,7 @@ class ReadTeacherStatusPage extends ConsumerWidget {
                 selectedAcademyClass:
                 query.selectedAcademyClass,
                 selectedAcademyMember:
-                query.selectedTeacher,
+                query.selectedAcademyMember,
                 selectedStatus:
                 query.selectedStatus,
                 memberLabel: '교사',
@@ -175,15 +175,10 @@ class ReadTeacherStatusPage extends ConsumerWidget {
                   CircularProgressIndicator(),
                 )
               else
-                StatusTable<
-                    Teacher,
-                    TeacherRosterStatus>(
-                  items:
-                  teacherStatusList.items,
-                  totalCount:
-                  teacherStatusList.totalCount,
-                  currentPage:
-                  teacherStatusList.currentPage,
+                StatusTable<Teacher, TeacherRosterStatus>(
+                  items: teacherStatusList.items,
+                  totalCount: teacherStatusList.totalCount,
+                  currentPage: teacherStatusList.currentPage,
                   pageSize:
                   query.pageSize,
                   title:

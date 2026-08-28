@@ -92,38 +92,24 @@ class ReadStudentStatusPage extends ConsumerWidget {
                 height: ConstPadding.largePadding,
               ),
 
-              StatusQueryForm<
-                  Student,
-                  StudentRosterStatus>(
+              StatusQueryForm<Student, StudentRosterStatus>(
                 academies: query.academies,
                 classes: query.classes,
-                academyMembers: query.students,
-                statuses:
-                StudentRosterStatus.values,
-                selectedAcademy:
-                query.selectedAcademy,
-                selectedAcademyClass:
-                query.selectedAcademyClass,
-                selectedAcademyMember:
-                query.selectedStudent,
-                selectedStatus:
-                query.selectedStatus,
+                academyMembers: query.academyMembers,
+                statuses: StudentRosterStatus.values,
+                selectedAcademy: query.selectedAcademy,
+                selectedAcademyClass: query.selectedAcademyClass,
+                selectedAcademyMember: query.selectedAcademyMember,
+                selectedStatus: query.selectedStatus,
                 memberLabel: '학생',
                 statusLabel: '학생 상태',
-                isLoading:
-                state.isFilterLoading,
-                onAcademyChanged:
-                notifier.selectAcademy,
-                onClassChanged:
-                notifier.selectClass,
-                onAcademyMemberChanged:
-                notifier.selectStudent,
-                onStatusChanged:
-                notifier.selectStatus,
-                onReset:
-                notifier.resetFilters,
-                onSearch:
-                notifier.search,
+                isLoading: state.isFilterLoading,
+                onAcademyChanged: notifier.selectAcademy,
+                onClassChanged: notifier.selectClass,
+                onAcademyMemberChanged: notifier.selectStudent,
+                onStatusChanged: notifier.selectStatus,
+                onReset: notifier.resetFilters,
+                onSearch: notifier.search,
               ),
 
               const SizedBox(

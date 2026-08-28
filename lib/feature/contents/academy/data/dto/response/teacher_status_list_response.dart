@@ -6,7 +6,13 @@ import 'status_pagination_response.dart';
 import 'teacher_status_summary_response.dart';
 
 class TeacherStatusListResponse {
-  final List<StatusItemResponse> items;
+  final List<
+      StatusItemResponse<
+          Teacher,
+          TeacherRosterStatus
+      >
+  > items;
+
   final TeacherStatusSummaryResponse summary;
   final StatusPaginationResponse pagination;
 
@@ -19,24 +25,30 @@ class TeacherStatusListResponse {
   factory TeacherStatusListResponse.fromJson(
       Map<String, dynamic> json,
       ) {
-    final itemsJson = json['items'] as List<dynamic>? ?? [];
+    final itemsJson =
+        json['items'] as List<dynamic>? ?? [];
 
     return TeacherStatusListResponse(
       items: itemsJson
-        .map(
-          (item) =>
-            StatusItemResponse.fromJson(
-              item as Map<String, dynamic>,
-              Teacher.fromJson,
-              TeacherRosterStatus.fromApiValue
-            ),
-        )
+          .map(
+            (item) =>
+        StatusItemResponse<
+            Teacher,
+            TeacherRosterStatus
+        >.fromJson(
+          item as Map<String, dynamic>,
+          Teacher.fromJson,
+          TeacherRosterStatus.fromApiValue,
+        ),
+      )
           .toList(),
-      summary: TeacherStatusSummaryResponse.fromJson(
+      summary:
+      TeacherStatusSummaryResponse.fromJson(
         json['summary']
         as Map<String, dynamic>,
       ),
-      pagination: StatusPaginationResponse.fromJson(
+      pagination:
+      StatusPaginationResponse.fromJson(
         json['pagination']
         as Map<String, dynamic>,
       ),
