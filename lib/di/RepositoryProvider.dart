@@ -2,10 +2,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
-import 'package:constellation_cafe/feature/contents/learning/repository/learning_repository.dart';
-import 'package:constellation_cafe/feature/contents/menu//repository/menu_repository.dart';
-import 'package:constellation_cafe/feature/contents/music//repository/music_repository.dart';
-import 'package:constellation_cafe/feature/contents/content/repository/content_repository.dart';
+import 'package:constellation_cafe/feature/contents/chatbot/learning/repository/learning_repository.dart';
+import 'package:constellation_cafe/feature/contents/chatbot/menu//repository/menu_repository.dart';
+import 'package:constellation_cafe/feature/contents/chatbot/music/repository/music_repository.dart';
+import 'package:constellation_cafe/feature/contents/chatbot/content/repository/content_repository.dart';
 import 'package:constellation_cafe/feature/profile/repository/point_repository.dart';
 import 'DioProvider.dart';
 
