@@ -141,6 +141,8 @@ class StatusProcessForm<T extends StatusType>
         Radio<T>(
           value: value,
           groupValue: selectedStatusType,
+          activeColor:
+          Theme.of(context).colorScheme.secondary,
           onChanged: (value) {
             if (value != null) {
               onStatusChanged(value);
