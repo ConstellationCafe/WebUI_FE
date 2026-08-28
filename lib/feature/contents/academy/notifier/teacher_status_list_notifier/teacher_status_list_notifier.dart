@@ -2,37 +2,37 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/di/ApiProvider.dart';
 
-import '../../data/api/student_status_api.dart';
-import '../../data/repository/student_status_repository.dart';
+import '../../data/api/teacher_status_api.dart';
+import '../../data/repository/teacher_status_repository.dart';
 
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
-import '../../domain/model/student.dart';
+import '../../domain/model/teacher.dart';
 
-import '../../domain/type/student_roster_status.dart';
+import '../../domain/type/teacher_roster_status.dart';
 
-import '../../state/student_status_list_state/student_status_list_state.dart';
+import '../../state/teacher_status_list_state/teacher_status_list_state.dart';
 
-part 'student_status_list_notifier.g.dart';
+part 'teacher_status_list_notifier.g.dart';
 
 @riverpod
-class StudentStatusListNotifier
-    extends _$StudentStatusListNotifier {
-  late final StudentStatusRepository repository;
+class TeacherStatusListNotifier
+    extends _$TeacherStatusListNotifier {
+  late final TeacherStatusRepository repository;
 
   @override
-  StudentStatusListState build() {
-    final StudentStatusApi api = ref.read(
-      studentStatusApiProvider,
+  TeacherStatusListState build() {
+    final TeacherStatusApi api = ref.read(
+      teacherStatusApiProvider,
     );
 
-    repository = StudentStatusRepository(
+    repository = TeacherStatusRepository(
       api: api,
     );
 
     _loadAcademies();
 
-    return const StudentStatusListState(
+    return const TeacherStatusListState(
       isFilterLoading: true,
     );
   }
@@ -146,8 +146,8 @@ class StudentStatusListNotifier
     );
 
     try {
-      final List<Student> students =
-      await repository.getStudents(
+      final List<Teacher> teachers =
+      await repository.getTeachers(
         academy.id,
         academyClass.id,
       );
@@ -155,7 +155,7 @@ class StudentStatusListNotifier
       state = state.copyWith(
         isFilterLoading: false,
         query: state.query.copyWith(
-          academyMembers: students,
+          academyMembers: teachers,
         ),
         errorMessage: null,
       );
@@ -167,12 +167,12 @@ class StudentStatusListNotifier
     }
   }
 
-  void selectStudent(
-      Student? student,
+  void selectTeacher(
+      Teacher? teacher,
       ) {
     state = state.copyWith(
       query: state.query.copyWith(
-        selectedAcademyMember: student,
+        selectedAcademyMember: teacher,
         page: 1,
       ),
       errorMessage: null,
@@ -180,7 +180,7 @@ class StudentStatusListNotifier
   }
 
   void selectStatus(
-      StudentRosterStatus? status,
+      TeacherRosterStatus? status,
       ) {
     state = state.copyWith(
       query: state.query.copyWith(
@@ -192,7 +192,7 @@ class StudentStatusListNotifier
   }
 
   Future<void> search() async {
-    await _loadStudentStatuses(
+    await _loadTeacherStatuses(
       page: 1,
     );
   }
@@ -203,17 +203,17 @@ class StudentStatusListNotifier
     if (page < 1 ||
         page >
             state
-                .studentStatusList
+                .teacherStatusList
                 .totalPages) {
       return;
     }
 
-    await _loadStudentStatuses(
+    await _loadTeacherStatuses(
       page: page,
     );
   }
 
-  Future<void> _loadStudentStatuses({
+  Future<void> _loadTeacherStatuses({
     required int page,
   }) async {
     state = state.copyWith(
@@ -226,7 +226,7 @@ class StudentStatusListNotifier
 
     try {
       final result =
-      await repository.getStudentStatuses(
+      await repository.getTeacherStatuses(
         academyId:
         state.query
             .selectedAcademy
@@ -247,7 +247,7 @@ class StudentStatusListNotifier
 
       state = state.copyWith(
         isLoading: false,
-        studentStatusList: result,
+        teacherStatusList: result,
         errorMessage: null,
       );
     } catch (e) {

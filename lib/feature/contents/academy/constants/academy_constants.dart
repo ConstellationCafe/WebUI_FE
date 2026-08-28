@@ -25,20 +25,20 @@ abstract final class AcademyConstants {
   static const double emptyIconSize = 48.0;
 
   // Read Student Status - Filter
-  static const double studentStatusFilterFieldWidth = 240.0;
-  static const double studentStatusFilterSpacing = 16.0;
-  static const double studentStatusFilterRunSpacing = 16.0;
+  static const double statusFilterFieldWidth = 240.0;
+  static const double statusFilterSpacing = 16.0;
+  static const double statusFilterRunSpacing = 16.0;
 
   // Read Student Status - Summary
-  static const double studentStatusSummaryItemWidth = 180.0;
-  static const double studentStatusSummarySpacing = 12.0;
-  static const double studentStatusSummaryRunSpacing = 12.0;
+  static const double statusSummaryItemWidth = 180.0;
+  static const double statusSummarySpacing = 12.0;
+  static const double statusSummaryRunSpacing = 12.0;
 
   // Read Student Status - Table
-  static const double studentStatusTableMinWidth = 900.0;
-  static const double studentStatusTableColumnSpacing = 32.0;
-  static const double studentStatusTableHeaderHeight = 48.0;
-  static const double studentStatusTableRowHeight = 56.0;
+  static const double statusTableMinWidth = 900.0;
+  static const double statusTableColumnSpacing = 32.0;
+  static const double statusTableHeaderHeight = 48.0;
+  static const double statusTableRowHeight = 56.0;
 
   // Read Student Status - Badge
   static const double studentStatusBadgeHorizontalPadding = 12.0;
@@ -46,8 +46,8 @@ abstract final class AcademyConstants {
   static const double studentStatusBadgeBorderRadius = 16.0;
 
   // Read Student Status - Pagination
-  static const double studentStatusPaginationButtonSize = 40.0;
-  static const double studentStatusPaginationSpacing = 4.0;
+  static const double statusPaginationButtonSize = 40.0;
+  static const double statusPaginationSpacing = 4.0;
 
   // Time Picker
   static const Color timePickerSelectedTextColor = Color(0xFFFFFFFF);

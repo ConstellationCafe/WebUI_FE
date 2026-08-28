@@ -5,42 +5,52 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 import '../../constants/academy_constants.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
-import '../../domain/model/student.dart';
-import '../../domain/type/student_roster_status.dart';
+import '../../domain/model/academy_member.dart';
+import '../../domain/type/roster_status.dart';
 
-class StudentStatusQueryForm extends StatelessWidget {
+class StatusQueryForm<
+TMember extends AcademyMember,
+TStatus extends RosterStatus
+> extends StatelessWidget {
   final List<Academy> academies;
   final List<AcademyClass> classes;
-  final List<Student> students;
+  final List<TMember> academyMembers;
+  final List<TStatus> statuses;
 
   final Academy? selectedAcademy;
   final AcademyClass? selectedAcademyClass;
-  final Student? selectedStudent;
-  final StudentRosterStatus? selectedStatus;
+  final TMember? selectedAcademyMember;
+  final TStatus? selectedStatus;
+
+  final String memberLabel;
+  final String statusLabel;
 
   final bool isLoading;
 
   final ValueChanged<Academy?> onAcademyChanged;
   final ValueChanged<AcademyClass?> onClassChanged;
-  final ValueChanged<Student?> onStudentChanged;
-  final ValueChanged<StudentRosterStatus?> onStatusChanged;
+  final ValueChanged<TMember?> onAcademyMemberChanged;
+  final ValueChanged<TStatus?> onStatusChanged;
 
   final VoidCallback onReset;
   final VoidCallback onSearch;
 
-  const StudentStatusQueryForm({
+  const StatusQueryForm({
     super.key,
     required this.academies,
     required this.classes,
-    required this.students,
+    required this.academyMembers,
+    required this.statuses,
     required this.selectedAcademy,
     required this.selectedAcademyClass,
-    required this.selectedStudent,
+    required this.selectedAcademyMember,
     required this.selectedStatus,
+    required this.memberLabel,
+    required this.statusLabel,
     required this.isLoading,
     required this.onAcademyChanged,
     required this.onClassChanged,
-    required this.onStudentChanged,
+    required this.onAcademyMemberChanged,
     required this.onStatusChanged,
     required this.onReset,
     required this.onSearch,
@@ -48,6 +58,8 @@ class StudentStatusQueryForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       child: Padding(
         padding: ConstPadding.largePaddingAll,
@@ -64,25 +76,24 @@ class StudentStatusQueryForm extends StatelessWidget {
                 ),
                 Text(
                   '조회 조건',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge,
+                  style: theme.textTheme.titleLarge,
                 ),
               ],
             ),
+
             const SizedBox(
               height: ConstPadding.largePadding,
             ),
 
             Wrap(
               spacing:
-              AcademyConstants.studentStatusFilterSpacing,
+              AcademyConstants.statusFilterSpacing,
               runSpacing:
-              AcademyConstants.studentStatusFilterRunSpacing,
+              AcademyConstants.statusFilterRunSpacing,
               children: [
                 SizedBox(
-                  width: AcademyConstants
-                      .studentStatusFilterFieldWidth,
+                  width:
+                  AcademyConstants.statusFilterFieldWidth,
                   child: DropdownButtonFormField<Academy?>(
                     value: selectedAcademy,
                     decoration: const InputDecoration(
@@ -110,9 +121,10 @@ class StudentStatusQueryForm extends StatelessWidget {
                         : onAcademyChanged,
                   ),
                 ),
+
                 SizedBox(
-                  width: AcademyConstants
-                      .studentStatusFilterFieldWidth,
+                  width:
+                  AcademyConstants.statusFilterFieldWidth,
                   child:
                   DropdownButtonFormField<AcademyClass?>(
                     value: selectedAcademyClass,
@@ -145,28 +157,29 @@ class StudentStatusQueryForm extends StatelessWidget {
                         : onClassChanged,
                   ),
                 ),
+
                 SizedBox(
-                  width: AcademyConstants
-                      .studentStatusFilterFieldWidth,
+                  width:
+                  AcademyConstants.statusFilterFieldWidth,
                   child:
-                  DropdownButtonFormField<Student?>(
-                    value: selectedStudent,
-                    decoration: const InputDecoration(
-                      labelText: '학생',
+                  DropdownButtonFormField<TMember?>(
+                    value: selectedAcademyMember,
+                    decoration: InputDecoration(
+                      labelText: memberLabel,
                     ),
                     items: [
-                      const DropdownMenuItem<Student?>(
+                      DropdownMenuItem<TMember?>(
                         value: null,
                         child: Text(
-                          '전체 학생',
+                          '전체 $memberLabel',
                         ),
                       ),
-                      ...students.map(
-                            (student) =>
-                            DropdownMenuItem<Student?>(
-                              value: student,
+                      ...academyMembers.map(
+                            (academyMember) =>
+                            DropdownMenuItem<TMember?>(
+                              value: academyMember,
                               child: Text(
-                                student.name,
+                                academyMember.name,
                               ),
                             ),
                       ),
@@ -175,7 +188,7 @@ class StudentStatusQueryForm extends StatelessWidget {
                     selectedAcademyClass == null ||
                         isLoading
                         ? null
-                        : onStudentChanged,
+                        : onAcademyMemberChanged,
                   ),
                 ),
               ],
@@ -186,77 +199,48 @@ class StudentStatusQueryForm extends StatelessWidget {
             ),
 
             Text(
-              '학생 상태',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge,
+              statusLabel,
+              style: theme.textTheme.labelLarge,
             ),
+
             const SizedBox(
               height: ConstPadding.smallPadding,
             ),
 
             Wrap(
               spacing:
-              AcademyConstants.studentStatusFilterSpacing,
+              AcademyConstants.statusFilterSpacing,
               runSpacing:
-              AcademyConstants.studentStatusFilterRunSpacing,
+              AcademyConstants.statusFilterRunSpacing,
               children: [
                 ChoiceChip(
-                  label: const Text('전체'),
-                  selected: selectedStatus == null,
+                  label: const Text(
+                    '전체',
+                  ),
+                  selected:
+                  selectedStatus == null,
                   onSelected: isLoading
                       ? null
                       : (_) {
                     onStatusChanged(null);
                   },
                 ),
-                ChoiceChip(
-                  label: const Text('재적'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.enrolled,
-                  onSelected: isLoading
-                      ? null
-                      : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.enrolled,
-                    );
-                  },
-                ),
-                ChoiceChip(
-                  label: const Text('졸업'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.graduation,
-                  onSelected: isLoading
-                      ? null
-                      : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.graduation,
-                    );
-                  },
-                ),
-                ChoiceChip(
-                  label: const Text('퇴학'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.expulsion,
-                  onSelected: isLoading
-                      ? null
-                      : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.expulsion,
-                    );
-                  },
-                ),
-                ChoiceChip(
-                  label: const Text('자퇴'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.withdrawal,
-                  onSelected: isLoading
-                      ? null
-                      : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.withdrawal,
-                    );
-                  },
+
+                ...statuses.map(
+                      (status) => ChoiceChip(
+                    label: Text(
+                      status.label,
+                    ),
+                    selected:
+                    selectedStatus == status,
+                    onSelected: isLoading
+                        ? null
+                        : (_) {
+                      onStatusChanged(
+                        status,
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -271,7 +255,9 @@ class StudentStatusQueryForm extends StatelessWidget {
               children: [
                 OutlinedButton.icon(
                   onPressed:
-                  isLoading ? null : onReset,
+                  isLoading
+                      ? null
+                      : onReset,
                   icon: const Icon(
                     Icons.refresh,
                   ),
@@ -279,12 +265,16 @@ class StudentStatusQueryForm extends StatelessWidget {
                     '초기화',
                   ),
                 ),
+
                 const SizedBox(
                   width: ConstPadding.smallPadding,
                 ),
+
                 FilledButton.icon(
                   onPressed:
-                  isLoading ? null : onSearch,
+                  isLoading
+                      ? null
+                      : onSearch,
                   icon: isLoading
                       ? const SizedBox(
                     width: AcademyConstants

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StudentStatusListState {
 
- bool get isLoading; bool get isFilterLoading; StudentStatusQuery get query; StudentStatusList get studentStatusList; String? get errorMessage;
+ bool get isLoading; bool get isFilterLoading; StatusQuery<Student, StudentRosterStatus> get query; StudentStatusList get studentStatusList; String? get errorMessage;
 /// Create a copy of StudentStatusListState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,11 +45,11 @@ abstract mixin class $StudentStatusListStateCopyWith<$Res>  {
   factory $StudentStatusListStateCopyWith(StudentStatusListState value, $Res Function(StudentStatusListState) _then) = _$StudentStatusListStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, bool isFilterLoading, StudentStatusQuery query, StudentStatusList studentStatusList, String? errorMessage
+ bool isLoading, bool isFilterLoading, StatusQuery<Student, StudentRosterStatus> query, StudentStatusList studentStatusList, String? errorMessage
 });
 
 
-$StudentStatusQueryCopyWith<$Res> get query;$StudentStatusListCopyWith<$Res> get studentStatusList;
+$StatusQueryCopyWith<Student, StudentRosterStatus, $Res> get query;$StudentStatusListCopyWith<$Res> get studentStatusList;
 
 }
 /// @nodoc
@@ -67,7 +67,7 @@ class _$StudentStatusListStateCopyWithImpl<$Res>
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isFilterLoading: null == isFilterLoading ? _self.isFilterLoading : isFilterLoading // ignore: cast_nullable_to_non_nullable
 as bool,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
-as StudentStatusQuery,studentStatusList: null == studentStatusList ? _self.studentStatusList : studentStatusList // ignore: cast_nullable_to_non_nullable
+as StatusQuery<Student, StudentRosterStatus>,studentStatusList: null == studentStatusList ? _self.studentStatusList : studentStatusList // ignore: cast_nullable_to_non_nullable
 as StudentStatusList,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -76,9 +76,9 @@ as String?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$StudentStatusQueryCopyWith<$Res> get query {
+$StatusQueryCopyWith<Student, StudentRosterStatus, $Res> get query {
   
-  return $StudentStatusQueryCopyWith<$Res>(_self.query, (value) {
+  return $StatusQueryCopyWith<Student, StudentRosterStatus, $Res>(_self.query, (value) {
     return _then(_self.copyWith(query: value));
   });
 }/// Create a copy of StudentStatusListState
@@ -172,7 +172,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isFilterLoading,  StudentStatusQuery query,  StudentStatusList studentStatusList,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isFilterLoading,  StatusQuery<Student, StudentRosterStatus> query,  StudentStatusList studentStatusList,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StudentStatusListState() when $default != null:
 return $default(_that.isLoading,_that.isFilterLoading,_that.query,_that.studentStatusList,_that.errorMessage);case _:
@@ -193,7 +193,7 @@ return $default(_that.isLoading,_that.isFilterLoading,_that.query,_that.studentS
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isFilterLoading,  StudentStatusQuery query,  StudentStatusList studentStatusList,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isFilterLoading,  StatusQuery<Student, StudentRosterStatus> query,  StudentStatusList studentStatusList,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusListState():
 return $default(_that.isLoading,_that.isFilterLoading,_that.query,_that.studentStatusList,_that.errorMessage);case _:
@@ -213,7 +213,7 @@ return $default(_that.isLoading,_that.isFilterLoading,_that.query,_that.studentS
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isFilterLoading,  StudentStatusQuery query,  StudentStatusList studentStatusList,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isFilterLoading,  StatusQuery<Student, StudentRosterStatus> query,  StudentStatusList studentStatusList,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _StudentStatusListState() when $default != null:
 return $default(_that.isLoading,_that.isFilterLoading,_that.query,_that.studentStatusList,_that.errorMessage);case _:
@@ -228,12 +228,12 @@ return $default(_that.isLoading,_that.isFilterLoading,_that.query,_that.studentS
 
 
 class _StudentStatusListState implements StudentStatusListState {
-  const _StudentStatusListState({this.isLoading = false, this.isFilterLoading = false, this.query = const StudentStatusQuery(), this.studentStatusList = const StudentStatusList(), this.errorMessage});
+  const _StudentStatusListState({this.isLoading = false, this.isFilterLoading = false, this.query = const StatusQuery<Student, StudentRosterStatus>(), this.studentStatusList = const StudentStatusList(), this.errorMessage});
   
 
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool isFilterLoading;
-@override@JsonKey() final  StudentStatusQuery query;
+@override@JsonKey() final  StatusQuery<Student, StudentRosterStatus> query;
 @override@JsonKey() final  StudentStatusList studentStatusList;
 @override final  String? errorMessage;
 
@@ -267,11 +267,11 @@ abstract mixin class _$StudentStatusListStateCopyWith<$Res> implements $StudentS
   factory _$StudentStatusListStateCopyWith(_StudentStatusListState value, $Res Function(_StudentStatusListState) _then) = __$StudentStatusListStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, bool isFilterLoading, StudentStatusQuery query, StudentStatusList studentStatusList, String? errorMessage
+ bool isLoading, bool isFilterLoading, StatusQuery<Student, StudentRosterStatus> query, StudentStatusList studentStatusList, String? errorMessage
 });
 
 
-@override $StudentStatusQueryCopyWith<$Res> get query;@override $StudentStatusListCopyWith<$Res> get studentStatusList;
+@override $StatusQueryCopyWith<Student, StudentRosterStatus, $Res> get query;@override $StudentStatusListCopyWith<$Res> get studentStatusList;
 
 }
 /// @nodoc
@@ -289,7 +289,7 @@ class __$StudentStatusListStateCopyWithImpl<$Res>
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isFilterLoading: null == isFilterLoading ? _self.isFilterLoading : isFilterLoading // ignore: cast_nullable_to_non_nullable
 as bool,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
-as StudentStatusQuery,studentStatusList: null == studentStatusList ? _self.studentStatusList : studentStatusList // ignore: cast_nullable_to_non_nullable
+as StatusQuery<Student, StudentRosterStatus>,studentStatusList: null == studentStatusList ? _self.studentStatusList : studentStatusList // ignore: cast_nullable_to_non_nullable
 as StudentStatusList,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -299,9 +299,9 @@ as String?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$StudentStatusQueryCopyWith<$Res> get query {
+$StatusQueryCopyWith<Student, StudentRosterStatus, $Res> get query {
   
-  return $StudentStatusQueryCopyWith<$Res>(_self.query, (value) {
+  return $StatusQueryCopyWith<Student, StudentRosterStatus, $Res>(_self.query, (value) {
     return _then(_self.copyWith(query: value));
   });
 }/// Create a copy of StudentStatusListState

@@ -1,32 +1,45 @@
-import 'package:constellation_cafe/feature/contents/academy/domain/type/student_roster_status.dart';
+import 'package:constellation_cafe/feature/contents/academy/widgets/read_status/status_badge.dart';
+import 'package:constellation_cafe/feature/contents/academy/widgets/read_status/status_empty_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/utils/date_formatter.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../domain/model/academy_member.dart';
 import '../../domain/model/status_view/status_view.dart';
+import '../../domain/type/roster_status.dart';
 
-import '../../domain/model/student.dart';
-import 'student_status_badge.dart';
-import 'student_status_empty_view.dart';
 
-class StudentStatusTable extends StatelessWidget {
-  final List<StatusView<Student, StudentRosterStatus>> items;
+class StatusTable<
+TMember extends AcademyMember,
+TStatus extends RosterStatus
+> extends StatelessWidget {
+  final List<StatusView<TMember, TStatus>> items;
+
   final int totalCount;
   final int currentPage;
   final int pageSize;
 
-  const StudentStatusTable({
+  final String title;
+  final String memberColumnLabel;
+  final String emptyMessage;
+
+  const StatusTable({
     super.key,
     required this.items,
     required this.totalCount,
     required this.currentPage,
     required this.pageSize,
+    required this.title,
+    required this.memberColumnLabel,
+    required this.emptyMessage,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       child: Padding(
         padding: ConstPadding.largePaddingAll,
@@ -42,10 +55,8 @@ class StudentStatusTable extends StatelessWidget {
                   width: ConstPadding.smallPadding,
                 ),
                 Text(
-                  '학생 명단',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge,
+                  title,
+                  style: theme.textTheme.titleLarge,
                 ),
               ],
             ),
@@ -53,49 +64,61 @@ class StudentStatusTable extends StatelessWidget {
               height: ConstPadding.largePadding,
             ),
             if (items.isEmpty)
-              const StudentStatusEmptyView()
+              StatusEmptyView(
+                message: emptyMessage,
+              )
             else
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(
-                    minWidth: AcademyConstants
-                        .studentStatusTableMinWidth,
+                    minWidth:
+                    AcademyConstants.statusTableMinWidth,
                   ),
                   child: DataTable(
                     headingRowHeight:
-                    AcademyConstants
-                        .studentStatusTableHeaderHeight,
+                    AcademyConstants.statusTableHeaderHeight,
                     dataRowMinHeight:
-                    AcademyConstants
-                        .studentStatusTableRowHeight,
+                    AcademyConstants.statusTableRowHeight,
                     dataRowMaxHeight:
-                    AcademyConstants
-                        .studentStatusTableRowHeight,
+                    AcademyConstants.statusTableRowHeight,
                     columnSpacing:
-                    AcademyConstants
-                        .studentStatusTableColumnSpacing,
-                    columns: const [
-                      DataColumn(
-                        label: Text('번호'),
+                    AcademyConstants.statusTableColumnSpacing,
+                    columns: [
+                      const DataColumn(
+                        label: Text(
+                          '번호',
+                        ),
                       ),
                       DataColumn(
-                        label: Text('학생명'),
+                        label: Text(
+                          memberColumnLabel,
+                        ),
                       ),
-                      DataColumn(
-                        label: Text('아카데미'),
+                      const DataColumn(
+                        label: Text(
+                          '아카데미',
+                        ),
                       ),
-                      DataColumn(
-                        label: Text('분반'),
+                      const DataColumn(
+                        label: Text(
+                          '분반',
+                        ),
                       ),
-                      DataColumn(
-                        label: Text('상태'),
+                      const DataColumn(
+                        label: Text(
+                          '상태',
+                        ),
                       ),
-                      DataColumn(
-                        label: Text('변경일'),
+                      const DataColumn(
+                        label: Text(
+                          '변경일',
+                        ),
                       ),
-                      DataColumn(
-                        label: Text('변경 사유'),
+                      const DataColumn(
+                        label: Text(
+                          '변경 사유',
+                        ),
                       ),
                     ],
                     rows: List.generate(
@@ -105,8 +128,7 @@ class StudentStatusTable extends StatelessWidget {
 
                         final number =
                             totalCount -
-                                ((currentPage - 1) *
-                                    pageSize) -
+                                ((currentPage - 1) * pageSize) -
                                 index;
 
                         return DataRow(
@@ -132,14 +154,16 @@ class StudentStatusTable extends StatelessWidget {
                               ),
                             ),
                             DataCell(
-                              StudentStatusBadge(
+                              StatusBadge<TStatus>(
                                 status: item.status,
                               ),
                             ),
                             DataCell(
                               Text(
-                                DateFormatter.toYyyyMmDd(
-                                  item.statusChangedAt,
+                                item.statusChangedAt == null
+                                    ? '-'
+                                    : DateFormatter.toYyyyMmDd(
+                                  item.statusChangedAt!,
                                 ),
                               ),
                             ),

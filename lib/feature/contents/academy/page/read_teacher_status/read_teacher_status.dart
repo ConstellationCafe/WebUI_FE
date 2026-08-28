@@ -6,16 +6,17 @@ import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../domain/model/student.dart';
-import '../../domain/type/student_roster_status.dart';
-import '../../notifier/student_status_list_notifier/student_status_list_notifier.dart';
+import '../../domain/model/teacher.dart';
+import '../../domain/type/teacher_roster_status.dart';
+import '../../notifier/teacher_status_list_notifier/teacher_status_list_notifier.dart';
+
 import '../../widgets/read_status/status_pagination.dart';
 import '../../widgets/read_status/status_query_form.dart';
 import '../../widgets/read_status/status_summary.dart';
 import '../../widgets/read_status/status_table.dart';
 
-class ReadStudentStatusPage extends ConsumerWidget {
-  const ReadStudentStatusPage({
+class ReadTeacherStatusPage extends ConsumerWidget {
+  const ReadTeacherStatusPage({
     super.key,
   });
 
@@ -25,16 +26,16 @@ class ReadStudentStatusPage extends ConsumerWidget {
       WidgetRef ref,
       ) {
     final state = ref.watch(
-      studentStatusListProvider,
+      teacherStatusListProvider,
     );
 
     final notifier = ref.read(
-      studentStatusListProvider.notifier,
+      teacherStatusListProvider.notifier,
     );
 
     final query = state.query;
-    final studentStatusList =
-        state.studentStatusList;
+    final teacherStatusList =
+        state.teacherStatusList;
 
     final width =
         MediaQuery.sizeOf(context).width;
@@ -61,8 +62,8 @@ class ReadStudentStatusPage extends ConsumerWidget {
             children: [
               const AppBreadcrumb(
                 items: [
-                  '학생 관리',
-                  '학생 상태 조회',
+                  '교사 관리',
+                  '교사 상태 조회',
                 ],
               ),
 
@@ -71,7 +72,7 @@ class ReadStudentStatusPage extends ConsumerWidget {
               ),
 
               Text(
-                '학생 상태 조회',
+                '교사 상태 조회',
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium,
@@ -82,7 +83,7 @@ class ReadStudentStatusPage extends ConsumerWidget {
               ),
 
               Text(
-                '학생의 재적, 졸업, 퇴학, 자퇴 명단을 조회합니다.',
+                '교사의 재적, 은퇴, 징계 명단을 조회합니다.',
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium,
@@ -93,23 +94,23 @@ class ReadStudentStatusPage extends ConsumerWidget {
               ),
 
               StatusQueryForm<
-                  Student,
-                  StudentRosterStatus>(
+                  Teacher,
+                  TeacherRosterStatus>(
                 academies: query.academies,
                 classes: query.classes,
-                academyMembers: query.students,
+                academyMembers: query.teachers,
                 statuses:
-                StudentRosterStatus.values,
+                TeacherRosterStatus.values,
                 selectedAcademy:
                 query.selectedAcademy,
                 selectedAcademyClass:
                 query.selectedAcademyClass,
                 selectedAcademyMember:
-                query.selectedStudent,
+                query.selectedTeacher,
                 selectedStatus:
                 query.selectedStatus,
-                memberLabel: '학생',
-                statusLabel: '학생 상태',
+                memberLabel: '교사',
+                statusLabel: '교사 상태',
                 isLoading:
                 state.isFilterLoading,
                 onAcademyChanged:
@@ -117,7 +118,7 @@ class ReadStudentStatusPage extends ConsumerWidget {
                 onClassChanged:
                 notifier.selectClass,
                 onAcademyMemberChanged:
-                notifier.selectStudent,
+                notifier.selectTeacher,
                 onStatusChanged:
                 notifier.selectStatus,
                 onReset:
@@ -131,42 +132,35 @@ class ReadStudentStatusPage extends ConsumerWidget {
               ),
 
               StatusSummary(
-                title: '학생 현황',
+                title: '교사 현황',
                 items: [
                   StatusSummaryData(
                     label: '전체',
                     count:
-                    studentStatusList.totalCount,
+                    teacherStatusList.totalCount,
                     icon:
                     Icons.people_outline,
                   ),
                   StatusSummaryData(
                     label: '재적',
                     count:
-                    studentStatusList.enrolledCount,
+                    teacherStatusList.enrolledCount,
                     icon:
                     Icons.school_outlined,
                   ),
                   StatusSummaryData(
-                    label: '졸업',
-                    count: studentStatusList
-                        .graduationCount,
-                    icon: Icons
-                        .workspace_premium_outlined,
+                    label: '은퇴',
+                    count: teacherStatusList
+                        .retirementCount,
+                    icon:
+                    Icons.person_off_outlined,
                   ),
                   StatusSummaryData(
-                    label: '퇴학',
-                    count: studentStatusList
-                        .expulsionCount,
+                    label: '징계',
+                    count: teacherStatusList
+                        .disciplinaryCount,
                     icon:
-                    Icons.person_remove_outlined,
-                  ),
-                  StatusSummaryData(
-                    label: '자퇴',
-                    count: studentStatusList
-                        .withdrawalCount,
-                    icon:
-                    Icons.logout_outlined,
+                    Icons.gavel_outlined,
                   ),
                 ],
               ),
@@ -182,22 +176,22 @@ class ReadStudentStatusPage extends ConsumerWidget {
                 )
               else
                 StatusTable<
-                    Student,
-                    StudentRosterStatus>(
+                    Teacher,
+                    TeacherRosterStatus>(
                   items:
-                  studentStatusList.items,
+                  teacherStatusList.items,
                   totalCount:
-                  studentStatusList.totalCount,
+                  teacherStatusList.totalCount,
                   currentPage:
-                  studentStatusList.currentPage,
+                  teacherStatusList.currentPage,
                   pageSize:
                   query.pageSize,
                   title:
-                  '학생 명단',
+                  '교사 명단',
                   memberColumnLabel:
-                  '학생명',
+                  '교사명',
                   emptyMessage:
-                  '조회된 학생이 없습니다.',
+                  '조회된 교사가 없습니다.',
                 ),
 
               const SizedBox(
@@ -206,9 +200,9 @@ class ReadStudentStatusPage extends ConsumerWidget {
 
               StatusPagination(
                 currentPage:
-                studentStatusList.currentPage,
+                teacherStatusList.currentPage,
                 totalPages:
-                studentStatusList.totalPages,
+                teacherStatusList.totalPages,
                 onPageChanged:
                 notifier.changePage,
               ),

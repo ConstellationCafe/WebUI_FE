@@ -4,13 +4,18 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
 
-class StudentStatusEmptyView extends StatelessWidget {
-  const StudentStatusEmptyView({
+class StatusEmptyView extends StatelessWidget {
+  final String message;
+
+  const StatusEmptyView({
     super.key,
+    required this.message,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Padding(
         padding: ConstPadding.largePaddingAll,
@@ -19,18 +24,14 @@ class StudentStatusEmptyView extends StatelessWidget {
             Icon(
               Icons.person_search_outlined,
               size: AcademyConstants.emptyIconSize,
-              color: Theme.of(context)
-                  .colorScheme
-                  .outline,
+              color: theme.colorScheme.outline,
             ),
             const SizedBox(
               height: ConstPadding.mediumPadding,
             ),
             Text(
-              '조회된 학생이 없습니다.',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge,
+              message,
+              style: theme.textTheme.bodyLarge,
             ),
           ],
         ),

@@ -4,12 +4,12 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
 
-class StudentStatusSummaryItem extends StatelessWidget {
+class StatusSummaryItem extends StatelessWidget {
   final String label;
   final int count;
   final IconData icon;
 
-  const StudentStatusSummaryItem({
+  const StatusSummaryItem({
     super.key,
     required this.label,
     required this.count,
@@ -21,7 +21,7 @@ class StudentStatusSummaryItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: AcademyConstants.studentStatusSummaryItemWidth,
+      width: AcademyConstants.statusSummaryItemWidth,
       padding: ConstPadding.mediumPaddingAll,
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
