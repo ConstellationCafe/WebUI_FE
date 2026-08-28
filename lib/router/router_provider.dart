@@ -37,6 +37,10 @@ GoRouter router(Ref ref) {
     loginCheckProvider,
     (_, __) => refreshNotifier.value++
   );
+  ref.listen(
+    guildListProvider,
+        (_, __) => refreshNotifier.value++,
+  );
   ref.onDispose(() {
     refreshNotifier.dispose();
   });
@@ -135,15 +139,13 @@ GoRouter router(Ref ref) {
       }
 
       if (loc == '/home') {
-        final guildId =
-        state.uri.queryParameters['guild_id'];
+        final guildId = state.uri.queryParameters['guild_id'];
 
         if (guildId == null || guildId.isEmpty) {
           return '/select';
         }
 
-        final guildListAsync =
-        ref.read(guildListProvider);
+        final guildListAsync = ref.read(guildListProvider);
 
         // 아직 길드 목록을 불러오는 중이면
         // redirect하지 않고 현재 상태 유지
