@@ -130,30 +130,28 @@ GoRouter router(Ref ref) {
         return loc == '/login' ? null : '/login';
       }
 
-      if (loc == '/') {
-        return '/select';
-      }
-
       if (loc == '/login') {
         return '/select';
       }
 
+      // /home 길드 ID 유효성 검사
       if (loc == '/home') {
-        final guildId = state.uri.queryParameters['guild_id'];
+        final guildId =
+        state.uri.queryParameters['guild_id'];
 
         if (guildId == null || guildId.isEmpty) {
           return '/select';
         }
 
-        final guildListAsync = ref.read(guildListProvider);
+        final guildListAsync =
+        ref.read(guildListProvider);
 
-        // 아직 길드 목록을 불러오는 중이면
-        // redirect하지 않고 현재 상태 유지
+        // 길드 목록을 아직 불러오는 중이면
+        // PageLoading이 있는 "/"로 이동
         if (guildListAsync.isLoading) {
-          return null;
+          return '/?guild_id=$guildId';
         }
 
-        // 목록 조회 자체가 실패한 경우
         if (guildListAsync.hasError) {
           return '/select';
         }
@@ -168,6 +166,47 @@ GoRouter router(Ref ref) {
         if (!isValidGuild) {
           return '/select';
         }
+
+        return null;
+      }
+
+      // 길드 검증을 위해 "/"에서 대기 중인 경우
+      if (loc == '/') {
+        final guildId =
+        state.uri.queryParameters['guild_id'];
+
+        // 일반적인 최초 "/" 접근
+        if (guildId == null || guildId.isEmpty) {
+          return '/select';
+        }
+
+        final guildListAsync =
+        ref.read(guildListProvider);
+
+        // 아직 검증 중이면 PageLoading 유지
+        if (guildListAsync.isLoading) {
+          return null;
+        }
+
+        // 길드 목록 조회 실패
+        if (guildListAsync.hasError) {
+          return '/select';
+        }
+
+        final guilds =
+            guildListAsync.value ?? [];
+
+        final isValidGuild = guilds.any(
+              (guild) => guild.id == guildId,
+        );
+
+        // 존재하지 않는 길드
+        if (!isValidGuild) {
+          return '/select';
+        }
+
+        // 유효한 길드
+        return '/home?guild_id=$guildId';
       }
 
       return null;
