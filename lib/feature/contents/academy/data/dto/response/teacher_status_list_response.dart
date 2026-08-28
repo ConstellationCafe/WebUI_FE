@@ -1,7 +1,6 @@
 import 'package:constellation_cafe/feature/contents/academy/domain/type/teacher_roster_status.dart';
 
 import '../../../domain/model/teacher.dart';
-import '../../../domain/model/teacher.dart';
 import 'status_item_response.dart';
 import 'status_pagination_response.dart';
 import 'teacher_status_summary_response.dart';
