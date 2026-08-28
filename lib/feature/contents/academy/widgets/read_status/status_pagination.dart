@@ -55,13 +55,23 @@ class StatusPagination extends StatelessWidget {
               height: AcademyConstants.statusPaginationButtonSize,
               child: page == currentPage
                   ? FilledButton(
-                onPressed: () {
-                  onPageChanged(page);
-                },
-                child: Text(
-                  '$page',
-                ),
-              )
+                      style: FilledButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize:
+                        MaterialTapTargetSize.shrinkWrap,
+                        shape: const CircleBorder(),
+                      ),
+                      onPressed: () {
+                        onPageChanged(page);
+                      },
+                      child: Center(
+                        child: Text(
+                          '$page',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
                   : TextButton(
                 onPressed: () {
                   onPageChanged(page);
