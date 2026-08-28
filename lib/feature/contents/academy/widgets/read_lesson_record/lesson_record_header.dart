@@ -16,7 +16,7 @@ class LessonRecordHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '수업 내용 기록',
+          '수업 내용 조회',
           style: textTheme.headlineMedium,
         ),
         const SizedBox(
