@@ -79,8 +79,7 @@ class TeacherStatusApi {
         path = '/ConstellationAPI/AcademyAPI/discipline_command';
         args = [
           form.teacherDiscordId,
-          form.academyName,
-          form.className,
+          form.reason
         ];
     }
 
