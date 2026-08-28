@@ -17,61 +17,47 @@ class DateField extends StatelessWidget {
     final colorScheme =
         Theme.of(context).colorScheme;
 
-    return Column(
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
-      children: [
-        Text(
-          '날짜',
-          style: Theme.of(context)
-              .textTheme
-              .labelLarge,
-        ),
-        const SizedBox(
-          height: ConstPadding.tinyPadding,
-        ),
-        InkWell(
-          onTap: () async {
-            final date = await showDatePicker(
-              context: context,
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2100),
-              initialDate:
-              selectedDate ?? DateTime.now(),
-              builder: (context, child) {
-                return Theme(
-                  data: Theme.of(context).copyWith(
-                    textButtonTheme:
-                    TextButtonThemeData(
-                      style: TextButton.styleFrom(
-                        foregroundColor:
-                        colorScheme.secondary,
-                      ),
-                    ),
+    return InkWell(
+      onTap: () async {
+        final date = await showDatePicker(
+          context: context,
+          firstDate: DateTime(2020),
+          lastDate: DateTime(2100),
+          initialDate:
+          selectedDate ?? DateTime.now(),
+          builder: (context, child) {
+            return Theme(
+              data: Theme.of(context).copyWith(
+                textButtonTheme:
+                TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor:
+                    colorScheme.secondary,
                   ),
-                  child: child!,
-                );
-              },
-            );
-
-            if (date != null) {
-              onChanged(date);
-            }
-          },
-          child: InputDecorator(
-            decoration: const InputDecoration(
-              suffixIcon: Icon(
-                Icons.calendar_today_outlined,
+                ),
               ),
-            ),
-            child: Text(
-              selectedDate == null
-                  ? '전체'
-                  : _formatDate(selectedDate!),
-            ),
+              child: child!,
+            );
+          },
+        );
+
+        if (date != null) {
+          onChanged(date);
+        }
+      },
+      child: InputDecorator(
+        decoration: const InputDecoration(
+          labelText: '날짜',
+          suffixIcon: Icon(
+            Icons.calendar_today_outlined,
           ),
         ),
-      ],
+        child: Text(
+          selectedDate == null
+              ? '전체'
+              : _formatDate(selectedDate!),
+        ),
+      ),
     );
   }
 
