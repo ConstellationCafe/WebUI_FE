@@ -5,14 +5,13 @@ import 'package:constellation_cafe/shared/widgets/loading/ButtonLoading.dart';
 
 import '../../constants/academy_constants.dart';
 
-class StudentStatusActions
-    extends StatelessWidget {
+class StatusActions extends StatelessWidget {
   final bool isProcessing;
 
   final VoidCallback onCancel;
   final VoidCallback onProcess;
 
-  const StudentStatusActions({
+  const StatusActions({
     super.key,
     required this.isProcessing,
     required this.onCancel,

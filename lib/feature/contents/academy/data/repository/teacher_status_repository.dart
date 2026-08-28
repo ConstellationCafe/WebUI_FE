@@ -1,21 +1,20 @@
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
+import '../../domain/model/teacher.dart';
+
+import '../../domain/model/teacher_status_form.dart';
+import '../../domain/model/teacher_status_list/teacher_status_list.dart';
 import '../../domain/model/status_view/status_view.dart';
-import '../../domain/model/student.dart';
-import '../../domain/model/subject.dart';
 
-import '../../domain/model/student_status_form.dart';
-import '../../domain/model/student_status_list/student_status_list.dart';
+import '../../domain/type/teacher_roster_status.dart';
 
-import '../../domain/type/student_roster_status.dart';
-
-import '../api/student_status_api.dart';
+import '../api/teacher_status_api.dart';
 import '../dto/request/status_query_request.dart';
 
-class StudentStatusRepository {
-  final StudentStatusApi api;
+class TeacherStatusRepository {
+  final TeacherStatusApi api;
 
-  const StudentStatusRepository({
+  const TeacherStatusRepository({
     required this.api,
   });
 
@@ -50,22 +49,7 @@ class StudentStatusRepository {
       .toList();
   }
 
-  Future<List<Subject>> getSubjects(int academyId) async {
-    final response = await api.getStatusOptions(
-      academyId: academyId,
-    );
-
-    return response.subjects
-      .map(
-        (subject) => Subject(
-          id: subject.id,
-          name: subject.name,
-        ),
-      )
-      .toList();
-  }
-
-  Future<List<Student>> getStudents(
+  Future<List<Teacher>> getTeachers(
       int academyId,
       int classId,
       ) async {
@@ -75,44 +59,43 @@ class StudentStatusRepository {
       classId: classId,
     );
 
-    return response.students
+    return response.teachers
       .map(
-        (student) => Student(
-          sk: student.sk,
+        (teacher) => Teacher(
+          sk: teacher.sk,
           discordID:
-          student.discordID,
-          name: student.name,
+          teacher.discordID,
+          name: teacher.name,
         ),
       )
       .toList();
   }
 
-  Future<StudentStatusList>
-  getStudentStatuses({
+  Future<TeacherStatusList> getTeacherStatuses({
     int? academyId,
     int? classId,
-    String? studentId,
-    StudentRosterStatus? status,
+    String? teacherId,
+    TeacherRosterStatus? status,
     int page = 1,
     int size = 20,
   }) async {
     final request = StatusQueryRequest(
       academyId: academyId,
       classId: classId,
-      academyMemberId: studentId,
+      academyMemberId: teacherId,
       status: status,
       page: page,
       size: size,
     );
 
-    final response = await api.getStudentStatuses(
+    final response = await api.getTeacherStatuses(
       request,
     );
 
-    return StudentStatusList(
+    return TeacherStatusList(
       items: response.items
-        .map<StatusView<Student, StudentRosterStatus>>(
-          (item) => StatusView<Student, StudentRosterStatus>(
+        .map(
+          (item) => StatusView(
             academyMember: item.academyMember,
             academy: item.academy,
             academyClass: item.academyClass,
@@ -124,15 +107,12 @@ class StudentStatusRepository {
         .toList(),
       totalCount: response.summary.totalCount,
       enrolledCount: response.summary.enrolledCount,
-      graduationCount: response.summary.graduationCount,
-      expulsionCount: response.summary.expulsionCount,
-      withdrawalCount: response.summary.withdrawalCount,
       currentPage: response.pagination.currentPage,
       totalPages: response.pagination.totalPages,
     );
   }
 
-  Future<void> process(StudentStatusForm form) async {
+  Future<void> process(TeacherStatusForm form) async {
     await api.process(form);
   }
 }

@@ -42,18 +42,6 @@ class StudentStatusBadge extends StatelessWidget {
             theme.colorScheme.surfaceContainerHighest;
         foregroundColor =
             theme.colorScheme.onSurfaceVariant;
-
-      case StudentRosterStatus.retirement:
-        backgroundColor =
-            theme.colorScheme.tertiaryContainer;
-        foregroundColor =
-            theme.colorScheme.onTertiaryContainer;
-
-      case StudentRosterStatus.disciplinary:
-        backgroundColor =
-            theme.colorScheme.errorContainer;
-        foregroundColor =
-            theme.colorScheme.onErrorContainer;
     }
 
     return Container(

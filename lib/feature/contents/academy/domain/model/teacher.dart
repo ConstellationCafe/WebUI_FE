@@ -1,14 +1,11 @@
-class Teacher {
-  final String sk;
-  final String discordID;
-  final String name;
-  final String? profileImageUrl;
+import 'academy_member.dart';
 
+class Teacher extends AcademyMember {
   const Teacher({
-    required this.sk,
-    required this.discordID,
-    required this.name,
-    this.profileImageUrl,
+    required super.sk,
+    required super.discordID,
+    required super.name,
+    super.profileImageUrl,
   });
 
   factory Teacher.fromJson(Map<String, dynamic> json) {

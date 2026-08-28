@@ -1,16 +1,18 @@
+import 'package:constellation_cafe/feature/contents/academy/domain/type/student_roster_status.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/utils/date_formatter.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../domain/model/student_status_view/student_status_view.dart';
+import '../../domain/model/status_view/status_view.dart';
 
+import '../../domain/model/student.dart';
 import 'student_status_badge.dart';
 import 'student_status_empty_view.dart';
 
 class StudentStatusTable extends StatelessWidget {
-  final List<StudentStatusView> items;
+  final List<StatusView<Student, StudentRosterStatus>> items;
   final int totalCount;
   final int currentPage;
   final int pageSize;
@@ -116,7 +118,7 @@ class StudentStatusTable extends StatelessWidget {
                             ),
                             DataCell(
                               Text(
-                                item.student.name,
+                                item.academyMember.name,
                               ),
                             ),
                             DataCell(

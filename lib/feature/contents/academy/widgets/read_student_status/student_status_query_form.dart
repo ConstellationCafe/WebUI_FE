@@ -258,30 +258,6 @@ class StudentStatusQueryForm extends StatelessWidget {
                     );
                   },
                 ),
-                ChoiceChip(
-                  label: const Text('은퇴'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.retirement,
-                  onSelected: isLoading
-                      ? null
-                      : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.retirement,
-                    );
-                  },
-                ),
-                ChoiceChip(
-                  label: const Text('징계'),
-                  selected: selectedStatus ==
-                      StudentRosterStatus.disciplinary,
-                  onSelected: isLoading
-                      ? null
-                      : (_) {
-                    onStatusChanged(
-                      StudentRosterStatus.disciplinary,
-                    );
-                  },
-                ),
               ],
             ),
 

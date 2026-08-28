@@ -1,20 +1,20 @@
-class StudentStatusPaginationResponse {
+class StatusPaginationResponse {
   final int currentPage;
   final int pageSize;
   final int totalPages;
   final int totalCount;
 
-  const StudentStatusPaginationResponse({
+  const StatusPaginationResponse({
     required this.currentPage,
     required this.pageSize,
     required this.totalPages,
     required this.totalCount,
   });
 
-  factory StudentStatusPaginationResponse.fromJson(
+  factory StatusPaginationResponse.fromJson(
       Map<String, dynamic> json,
       ) {
-    return StudentStatusPaginationResponse(
+    return StatusPaginationResponse(
       currentPage:
       (json['currentPage'] as num?)
           ?.toInt() ??

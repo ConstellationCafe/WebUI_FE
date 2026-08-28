@@ -1,3 +1,5 @@
+import 'package:constellation_cafe/feature/contents/academy/domain/type/teacher_status_type.dart';
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,14 +9,13 @@ import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../domain/type/student_status_type.dart';
-import '../../notifier/student_status_notifier/student_status_notifier.dart';
+import '../../notifier/teacher_status_notifier/teacher_status_notifier.dart';
 import '../../widgets/edit_status/status_actions.dart';
 import '../../widgets/edit_status/status_basic_info.dart';
 import '../../widgets/edit_status/status_process_form.dart';
 
-class StudentStatusPage extends ConsumerWidget {
-  const StudentStatusPage({
+class TeacherStatusPage extends ConsumerWidget {
+  const TeacherStatusPage({
     super.key,
   });
 
@@ -23,21 +24,21 @@ class StudentStatusPage extends ConsumerWidget {
       BuildContext context,
       WidgetRef ref,
       ) {
-    final state = ref.watch(studentStatusProvider);
+    final state = ref.watch(teacherStatusProvider);
 
     final notifier = ref.read(
-      studentStatusProvider.notifier,
+      teacherStatusProvider.notifier,
     );
 
     final width = MediaQuery.sizeOf(context).width;
 
     final isDesktop = ScreenWidth.isDesktop(width);
 
-    if (state.isLoading && state.studentStatus.academies.isEmpty) {
+    if (state.isLoading && state.teacherStatus.academies.isEmpty) {
       return const PageLoading();
     }
 
-    final studentStatus = state.studentStatus;
+    final teacherStatus = state.teacherStatus;
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
@@ -54,12 +55,12 @@ class StudentStatusPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _breadcrumb(context),
+              AppBreadcrumb(items: ['교사 관리', '교사 상태 처리']),
               const SizedBox(
                 height: ConstPadding.smallPadding,
               ),
               Text(
-                '학생 상태 처리',
+                '교사 상태 처리',
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium,
@@ -68,7 +69,7 @@ class StudentStatusPage extends ConsumerWidget {
                 height: ConstPadding.tinyPadding,
               ),
               Text(
-                '학생의 졸업, 퇴학, 자퇴 처리를 진행합니다.',
+                '교사의 은퇴, 징계 처리를 진행합니다.',
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium,
@@ -78,18 +79,18 @@ class StudentStatusPage extends ConsumerWidget {
               ),
               _sectionCard(
                 context,
-                title: '학생 정보',
+                title: '교사 정보',
                 icon: Icons.person_outline,
                 child: StatusBasicInfo(
-                  academies: studentStatus.academies,
-                  classes: studentStatus.classes,
-                  members: studentStatus.students,
-                  selectedAcademy: studentStatus.selectedAcademy,
-                  selectedAcademyClass: studentStatus.selectedAcademyClass,
-                  selectedMembers: studentStatus.selectedStudent,
+                  academies: teacherStatus.academies,
+                  classes: teacherStatus.classes,
+                  members: teacherStatus.teachers,
+                  selectedAcademy: teacherStatus.selectedAcademy,
+                  selectedAcademyClass: teacherStatus.selectedAcademyClass,
+                  selectedMembers: teacherStatus.selectedTeacher,
                   onAcademyChanged: notifier.selectAcademy,
                   onClassChanged: notifier.selectClass,
-                  onMemberChanged: notifier.selectStudent,
+                  onMemberChanged: notifier.selectTeacher,
                 ),
               ),
               const SizedBox(
@@ -99,21 +100,15 @@ class StudentStatusPage extends ConsumerWidget {
                 context,
                 title: '처리 정보',
                 icon: Icons.assignment_outlined,
-                child: StatusProcessForm<StudentStatusType>(
-                  statuses: StudentStatusType.values,
-                  subjects: studentStatus.subjects,
-                  selectedStatusType: studentStatus.selectedStatusType,
-                  selectedSubjects: studentStatus.selectedSubjects,
-                  reason: studentStatus.reason,
+                child: StatusProcessForm<TeacherStatusType>(
+                  statuses: TeacherStatusType.values,
+                  subjects: const [],
+                  selectedStatusType: teacherStatus.selectedStatusType,
+                  selectedSubjects: const [],
+                  reason: teacherStatus.reason,
                   onStatusChanged: notifier.selectStatus,
-                  onSubjectChanged: notifier.toggleSubject,
+                  onSubjectChanged: (_) {},
                   onReasonChanged: notifier.setReason,
-
-                  showSubjectsWhen: (status) =>
-                  status == StudentStatusType.graduation,
-
-                  subjectSectionTitle: '졸업 교과목',
-                  subjectHelperText: '교과목은 선택하지 않아도 됩니다.',
                 ),
               ),
               const SizedBox(
@@ -154,37 +149,6 @@ class StudentStatusPage extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _breadcrumb(
-      BuildContext context,
-      ) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Row(
-      children: [
-        Text(
-          '학생 관리',
-          style: textTheme.bodySmall,
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AcademyConstants
-                .breadcrumbIconHorizontalPadding,
-          ),
-          child: Icon(
-            Icons.chevron_right,
-            size: AcademyConstants.breadcrumbIconSize,
-          ),
-        ),
-        Text(
-          '학생 상태 처리',
-          style: textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
     );
   }
 

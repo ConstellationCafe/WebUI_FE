@@ -84,20 +84,6 @@ class StudentStatusSummary extends StatelessWidget {
                   icon:
                   Icons.logout_outlined,
                 ),
-                StudentStatusSummaryItem(
-                  label: '은퇴',
-                  count:
-                  studentStatusList.retirementCount,
-                  icon:
-                  Icons.person_off_outlined,
-                ),
-                StudentStatusSummaryItem(
-                  label: '징계',
-                  count: studentStatusList
-                      .disciplinaryCount,
-                  icon:
-                  Icons.gavel_outlined,
-                ),
               ],
             ),
           ],

@@ -1,11 +1,14 @@
-import 'student_status_item_response.dart';
-import 'student_status_pagination_response.dart';
+import 'package:constellation_cafe/feature/contents/academy/domain/type/student_roster_status.dart';
+
+import '../../../domain/model/student.dart';
+import 'status_item_response.dart';
+import 'status_pagination_response.dart';
 import 'student_status_summary_response.dart';
 
 class StudentStatusListResponse {
-  final List<StudentStatusItemResponse> items;
+  final List<StatusItemResponse<Student, StudentRosterStatus>> items;
   final StudentStatusSummaryResponse summary;
-  final StudentStatusPaginationResponse pagination;
+  final StatusPaginationResponse pagination;
 
   const StudentStatusListResponse({
     required this.items,
@@ -21,22 +24,20 @@ class StudentStatusListResponse {
 
     return StudentStatusListResponse(
       items: itemsJson
-          .map(
-            (item) =>
-            StudentStatusItemResponse.fromJson(
+        .map<StatusItemResponse<Student, StudentRosterStatus>>(
+          (item) => StatusItemResponse<Student, StudentRosterStatus>
+            .fromJson(
               item as Map<String, dynamic>,
+              Student.fromJson,
+              StudentRosterStatus.fromApiValue,
             ),
-      )
-          .toList(),
-      summary:
-      StudentStatusSummaryResponse.fromJson(
-        json['summary']
-        as Map<String, dynamic>,
+        )
+        .toList(),
+      summary: StudentStatusSummaryResponse.fromJson(
+        json['summary'] as Map<String, dynamic>,
       ),
-      pagination:
-      StudentStatusPaginationResponse.fromJson(
-        json['pagination']
-        as Map<String, dynamic>,
+      pagination: StatusPaginationResponse.fromJson(
+        json['pagination'] as Map<String, dynamic>,
       ),
     );
   }

@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../domain/model/subject.dart';
-import '../../domain/type/student_status_type.dart';
+import '../../domain/type/status_type.dart';
 
-class StudentStatusProcessForm extends StatelessWidget {
+class StatusProcessForm<T extends StatusType>
+    extends StatelessWidget {
+  final List<T> statuses;
+
   final List<Subject> subjects;
-  final StudentStatusType? selectedStatusType;
+  final T? selectedStatusType;
   final List<Subject> selectedSubjects;
   final String reason;
 
-  final ValueChanged<StudentStatusType> onStatusChanged;
+  final ValueChanged<T> onStatusChanged;
   final ValueChanged<Subject> onSubjectChanged;
   final ValueChanged<String> onReasonChanged;
 
-  const StudentStatusProcessForm({
+  final bool Function(T status)? showSubjectsWhen;
+  final String subjectSectionTitle;
+  final String subjectHelperText;
+
+  const StatusProcessForm({
     super.key,
+    required this.statuses,
     required this.subjects,
     required this.selectedStatusType,
     required this.selectedSubjects,
@@ -24,63 +32,52 @@ class StudentStatusProcessForm extends StatelessWidget {
     required this.onStatusChanged,
     required this.onSubjectChanged,
     required this.onReasonChanged,
+    this.showSubjectsWhen,
+    this.subjectSectionTitle = '교과목',
+    this.subjectHelperText = '교과목은 선택하지 않아도 됩니다.',
   });
 
   @override
   Widget build(BuildContext context) {
-    final isGraduation =
-        selectedStatusType == StudentStatusType.graduation;
+    final showSubjects =
+        selectedStatusType != null &&
+            showSubjectsWhen?.call(selectedStatusType as T) == true;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '처리 정보',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(
           height: ConstPadding.mediumPadding,
         ),
         Text(
           '처리 유형 *',
-          style: Theme.of(context)
-              .textTheme
-              .labelLarge,
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(
           height: ConstPadding.smallPadding,
         ),
         Wrap(
           spacing: ConstPadding.mediumPadding,
-          children: [
-            _statusRadio(
+          children: statuses
+              .map(
+                (status) => _statusRadio(
               context,
-              StudentStatusType.graduation,
-              '졸업',
+              status,
             ),
-            _statusRadio(
-              context,
-              StudentStatusType.expulsion,
-              '퇴학',
-            ),
-            _statusRadio(
-              context,
-              StudentStatusType.withdrawal,
-              '자퇴',
-            ),
-          ],
+          )
+              .toList(),
         ),
-        if (isGraduation) ...[
+        if (showSubjects) ...[
           const SizedBox(
             height: ConstPadding.mediumPadding,
           ),
           Text(
-            '졸업 교과목',
-            style: Theme.of(context)
-                .textTheme
-                .labelLarge,
+            subjectSectionTitle,
+            style: Theme.of(context).textTheme.labelLarge,
           ),
           const SizedBox(
             height: ConstPadding.smallPadding,
@@ -88,9 +85,7 @@ class StudentStatusProcessForm extends StatelessWidget {
           if (subjects.isEmpty)
             Text(
               '선택 가능한 교과목이 없습니다.',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall,
+              style: Theme.of(context).textTheme.bodySmall,
             )
           else
             Wrap(
@@ -117,10 +112,8 @@ class StudentStatusProcessForm extends StatelessWidget {
             height: ConstPadding.tinyPadding,
           ),
           Text(
-            '교과목은 선택하지 않아도 됩니다.',
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall,
+            subjectHelperText,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
         const SizedBox(
@@ -140,13 +133,12 @@ class StudentStatusProcessForm extends StatelessWidget {
 
   Widget _statusRadio(
       BuildContext context,
-      StudentStatusType value,
-      String label,
+      T value,
       ) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Radio<StudentStatusType>(
+        Radio<T>(
           value: value,
           groupValue: selectedStatusType,
           onChanged: (value) {
@@ -155,7 +147,7 @@ class StudentStatusProcessForm extends StatelessWidget {
             }
           },
         ),
-        Text(label),
+        Text(value.label),
       ],
     );
   }

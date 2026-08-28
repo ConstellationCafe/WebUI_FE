@@ -1,4 +1,4 @@
-import '../../../data/dto/response/student_option_response.dart';
+import '../../../data/dto/response/option_response.dart';
 
 import 'academy_option_response.dart';
 import 'class_option_response.dart';
@@ -7,7 +7,7 @@ import 'subject_option_response.dart';
 class StudentStatusResponse {
   final List<AcademyOptionResponse> academies;
   final List<ClassOptionResponse> classes;
-  final List<StudentOptionResponse> students;
+  final List<OptionResponse> students;
   final List<SubjectOptionResponse> subjects;
 
   const StudentStatusResponse({
@@ -40,7 +40,7 @@ class StudentStatusResponse {
       students:
       (json['students'] as List<dynamic>? ?? [])
           .map(
-            (e) => StudentOptionResponse.fromJson(
+            (e) => OptionResponse.fromJson(
           e as Map<String, dynamic>,
         ),
       )

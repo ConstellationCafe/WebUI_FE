@@ -4,8 +4,6 @@ class StudentStatusSummaryResponse {
   final int graduationCount;
   final int expulsionCount;
   final int withdrawalCount;
-  final int retirementCount;
-  final int disciplinaryCount;
 
   const StudentStatusSummaryResponse({
     required this.totalCount,
@@ -13,8 +11,6 @@ class StudentStatusSummaryResponse {
     required this.graduationCount,
     required this.expulsionCount,
     required this.withdrawalCount,
-    required this.retirementCount,
-    required this.disciplinaryCount,
   });
 
   factory StudentStatusSummaryResponse.fromJson(
@@ -38,14 +34,6 @@ class StudentStatusSummaryResponse {
           0,
       withdrawalCount:
       (json['withdrawalCount'] as num?)
-          ?.toInt() ??
-          0,
-      retirementCount:
-      (json['retirementCount'] as num?)
-          ?.toInt() ??
-          0,
-      disciplinaryCount:
-      (json['disciplinaryCount'] as num?)
           ?.toInt() ??
           0,
     );

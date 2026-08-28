@@ -32,8 +32,7 @@ class ReadStudentStatusPage extends ConsumerWidget {
     );
 
     final query = state.query;
-    final studentStatusList =
-        state.studentStatusList;
+    final studentStatusList = state.studentStatusList;
 
     final width =
         MediaQuery.sizeOf(context).width;
@@ -117,25 +116,18 @@ class ReadStudentStatusPage extends ConsumerWidget {
                 )
               else
                 StudentStatusTable(
-                  items:
-                  studentStatusList.items,
-                  totalCount:
-                  studentStatusList.totalCount,
-                  currentPage:
-                  studentStatusList.currentPage,
-                  pageSize:
-                  query.pageSize,
+                  items: studentStatusList.items,
+                  totalCount: studentStatusList.totalCount,
+                  currentPage: studentStatusList.currentPage,
+                  pageSize: query.pageSize,
                 ),
               const SizedBox(
                 height: ConstPadding.mediumPadding,
               ),
               StudentStatusPagination(
-                currentPage:
-                studentStatusList.currentPage,
-                totalPages:
-                studentStatusList.totalPages,
-                onPageChanged:
-                notifier.changePage,
+                currentPage: studentStatusList.currentPage,
+                totalPages: studentStatusList.totalPages,
+                onPageChanged: notifier.changePage,
               ),
             ],
           ),

@@ -4,32 +4,33 @@ import '../../../../../core/constants/const_padding.dart';
 
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
-import '../../domain/model/student.dart';
+import '../../domain/model/academy_member.dart';
 
-class StudentStatusBasicInfo extends StatelessWidget {
+class StatusBasicInfo<T extends AcademyMember>
+    extends StatelessWidget {
   final List<Academy> academies;
   final List<AcademyClass> classes;
-  final List<Student> students;
+  final List<T> members;
 
   final Academy? selectedAcademy;
   final AcademyClass? selectedAcademyClass;
-  final Student? selectedStudent;
+  final T? selectedMembers;
 
   final ValueChanged<Academy> onAcademyChanged;
   final ValueChanged<AcademyClass> onClassChanged;
-  final ValueChanged<Student> onStudentChanged;
+  final ValueChanged<T> onMemberChanged;
 
-  const StudentStatusBasicInfo({
+  const StatusBasicInfo({
     super.key,
     required this.academies,
     required this.classes,
-    required this.students,
+    required this.members,
     required this.selectedAcademy,
     required this.selectedAcademyClass,
-    required this.selectedStudent,
+    required this.selectedMembers,
     required this.onAcademyChanged,
     required this.onClassChanged,
-    required this.onStudentChanged,
+    required this.onMemberChanged,
   });
 
   @override
@@ -95,17 +96,17 @@ class StudentStatusBasicInfo extends StatelessWidget {
         const SizedBox(
           height: ConstPadding.mediumPadding,
         ),
-        DropdownButtonFormField<Student>(
-          value: selectedStudent,
+        DropdownButtonFormField<T>(
+          value: selectedMembers,
           decoration: const InputDecoration(
             labelText: '학생 *',
             hintText: '학생을 선택하세요',
           ),
-          items: students
-              .map(
-                (student) => DropdownMenuItem<Student>(
-              value: student,
-              child: Text(student.name),
+          items: members
+            .map(
+              (member) => DropdownMenuItem<T>(
+                value: member,
+                child: Text(member.name),
             ),
           )
               .toList(),
@@ -113,7 +114,7 @@ class StudentStatusBasicInfo extends StatelessWidget {
               ? null
               : (student) {
             if (student != null) {
-              onStudentChanged(student);
+              onMemberChanged(student);
             }
           },
         ),
