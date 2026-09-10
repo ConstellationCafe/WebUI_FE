@@ -204,9 +204,9 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
         className: status.selectedAcademyClass!.classNumber,
         studentDiscordId: status.selectedStudent!.discordID,
         statusType: status.selectedStatusType!,
-        subjectIds: status.selectedStatusType == StudentStatusType.graduation
+        subjectNames: status.selectedStatusType == StudentStatusType.graduation
             ? status.selectedSubjects.map(
-                (subject) => subject.id
+                (subject) => subject.name
             ).toList()
             : const [],
         reason: status.reason.trim(),

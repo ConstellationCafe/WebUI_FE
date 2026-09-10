@@ -10,7 +10,7 @@ class StudentStatusForm {
   final StudentStatusType statusType;
   /// 졸업인 경우에만 사용.
   /// 0개 이상 선택 가능.
-  final List<int> subjectIds;
+  final List<String> subjectNames;
   final String reason;
 
   const StudentStatusForm({
@@ -18,7 +18,7 @@ class StudentStatusForm {
     required this.className,
     required this.studentDiscordId,
     required this.statusType,
-    this.subjectIds = const [],
+    this.subjectNames = const [],
     this.reason = '',
   });
 }

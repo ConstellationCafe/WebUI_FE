@@ -73,7 +73,8 @@ class StudentStatusApi {
           form.studentDiscordId,
           form.academyName,
           form.className,
-          form.subjectIds,
+          form.subjectNames,
+          form.reason
         ];
 
       case StudentStatusType.expulsion:
@@ -88,8 +89,7 @@ class StudentStatusApi {
         path = '/ConstellationAPI/AcademyAPI/suspended_command';
         args = [
           form.studentDiscordId,
-          form.academyName,
-          form.className,
+          form.reason
         ];
     }
 
