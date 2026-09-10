@@ -35,9 +35,7 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
   /// 최초 진입 시 학원 목록 조회
   Future<void> _initialize() async {
     try {
-      final List<Academy> academies =
-      await repository.getAcademies();
-
+      final List<Academy> academies = await repository.getAcademies();
       state = state.copyWith(
         isLoading: false,
         studentStatus: state.studentStatus.copyWith(
@@ -71,8 +69,11 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
     );
 
     try {
-      final List<AcademyClass> classes = await repository.getClasses(academy.id);
-      final List<Subject> subjects = await repository.getSubjects(academy.id);
+      // 병렬 호출
+      final (classes, subjects) = await (
+        repository.getClasses(academy.id),
+        repository.getSubjects(academy.id),
+      ).wait;
       state = state.copyWith(
         isLoading: false,
         studentStatus: state.studentStatus.copyWith(
@@ -92,11 +93,6 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
   /// 분반 선택
   Future<void> selectClass(AcademyClass academyClass) async {
     final int academyId = state.studentStatus.selectedAcademy!.id;
-
-    if (academyId == null) {
-      return;
-    }
-
     state = state.copyWith(
       isLoading: true,
       studentStatus: state.studentStatus.copyWith(

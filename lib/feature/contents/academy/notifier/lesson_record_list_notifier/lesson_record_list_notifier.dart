@@ -37,11 +37,8 @@ class LessonRecordListNotifier
       errorMessage: null,
     );
 
-    final LessonRecordSelectionState lessonRecordSelectionState =
-    ref.read(lessonRecordSelectionProvider);
-
-    final LessonRecordSelection lessonRecordSelection =
-        lessonRecordSelectionState.queryForm;
+    final LessonRecordSelectionState lessonRecordSelectionState = ref.read(lessonRecordSelectionProvider);
+    final LessonRecordSelection lessonRecordSelection = lessonRecordSelectionState.queryForm;
 
     try {
       final records = await _repository.getLessonRecords(

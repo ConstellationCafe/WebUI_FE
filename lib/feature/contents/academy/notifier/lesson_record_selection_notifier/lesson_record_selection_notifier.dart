@@ -14,18 +14,13 @@ import '../../state/lesson_record_selection_state/lesson_record_selection_state.
 part 'lesson_record_selection_notifier.g.dart';
 
 @riverpod
-class LessonRecordSelectionNotifier
-    extends _$LessonRecordSelectionNotifier {
+class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
   late final LessonRecordRepository repository;
 
   @override
   LessonRecordSelectionState build() {
-    final AcademyApi academyApi =
-    ref.read(academyApiProvider);
-
-    final LessonRecordApi lessonRecordApi =
-    ref.read(lessonRecordApiProvider);
-
+    final AcademyApi academyApi = ref.read(academyApiProvider);
+    final LessonRecordApi lessonRecordApi = ref.read(lessonRecordApiProvider);
     repository = LessonRecordRepository(
       academyApi: academyApi,
       lessonRecordApi: lessonRecordApi,
@@ -40,9 +35,7 @@ class LessonRecordSelectionNotifier
 
   Future<void> _loadAcademies() async {
     try {
-      final List<Academy> academies =
-      await repository.getAcademies();
-
+      final List<Academy> academies = await repository.getAcademies();
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
@@ -75,17 +68,13 @@ class LessonRecordSelectionNotifier
       ),
       errorMessage: null,
     );
-
     try {
-      final List<AcademyClass> classes =
-      await repository.getClasses(academy.id);
-
-      final List<Subject> subjects =
-      await repository.getSubjects(academy.id);
-
-      final List<Teacher> teachers =
-      await repository.getTeachers(academy.id);
-
+      // 병렬 호출
+      final (classes, subjects, teachers) = await (
+        repository.getClasses(academy.id),
+        repository.getSubjects(academy.id),
+        repository.getTeachers(academy.id),
+      ).wait;
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
@@ -103,9 +92,7 @@ class LessonRecordSelectionNotifier
     }
   }
 
-  Future<void> selectClass(
-      AcademyClass selectedAcademyClass,
-      ) async {
+  Future<void> selectClass(AcademyClass selectedAcademyClass) async {
     state = state.copyWith(
       isLoading: true,
       queryForm: state.queryForm.copyWith(
@@ -115,16 +102,12 @@ class LessonRecordSelectionNotifier
       ),
       errorMessage: null,
     );
-
     try {
       final Academy selectedAcademy = state.queryForm.selectedAcademy!;
-
-      final List<Student> students =
-      await repository.getStudents(
+      final List<Student> students = await repository.getStudents(
         selectedAcademy.id,
         selectedAcademyClass.id,
       );
-
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
@@ -160,11 +143,9 @@ class LessonRecordSelectionNotifier
     final selectedCoTeachers = [
       ...state.queryForm.selectedCoTeachers,
     ];
-
     final exists = selectedCoTeachers.any(
           (element) => element.sk == teacher.sk,
     );
-
     if (exists) {
       selectedCoTeachers.removeWhere(
             (element) => element.sk == teacher.sk,
@@ -172,7 +153,6 @@ class LessonRecordSelectionNotifier
     } else {
       selectedCoTeachers.add(teacher);
     }
-
     state = state.copyWith(
       queryForm: state.queryForm.copyWith(
         selectedCoTeachers: selectedCoTeachers,
@@ -184,11 +164,9 @@ class LessonRecordSelectionNotifier
     final selectedStudents = [
       ...state.queryForm.selectedStudents,
     ];
-
     final exists = selectedStudents.any(
           (element) => element.sk == student.sk,
     );
-
     if (exists) {
       selectedStudents.removeWhere(
             (element) => element.sk == student.sk,
@@ -196,7 +174,6 @@ class LessonRecordSelectionNotifier
     } else {
       selectedStudents.add(student);
     }
-
     state = state.copyWith(
       queryForm: state.queryForm.copyWith(
         selectedStudents: selectedStudents,
