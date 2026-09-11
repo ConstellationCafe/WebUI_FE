@@ -1,6 +1,7 @@
 import 'package:constellation_cafe/feature/contents/academy/domain/model/subject.dart';
 import 'package:dio/dio.dart';
 
+import '../../domain/model/academy_permission.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
 import '../../domain/model/student.dart';
@@ -11,6 +12,18 @@ class AcademyApi {
   final Dio dio;
 
   AcademyApi({required this.dio});
+
+  Future<AcademyPermission> getMyPermissions() async {
+    final response = await dio.get(
+      '/api/academy/me/permissions',
+    );
+
+    final data = response.data;
+
+    return AcademyPermission.fromJson(
+      data['response'] as Map<String, dynamic>,
+    );
+  }
 
   Future<List<Academy>> getAcademies() async {
     final response = await dio.get('$base/api/academy');

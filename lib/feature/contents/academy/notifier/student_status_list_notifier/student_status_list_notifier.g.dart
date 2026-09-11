@@ -43,7 +43,7 @@ final class StudentStatusListNotifierProvider
 }
 
 String _$studentStatusListNotifierHash() =>
-    r'b96f37d76ef8cba9e648f4a2cd69ba348aadc97f';
+    r'73874f80148077bd4989af3dea6708030884d9d2';
 
 abstract class _$StudentStatusListNotifier
     extends $Notifier<StudentStatusListState> {

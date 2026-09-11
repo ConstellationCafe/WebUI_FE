@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../contents/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import '../state/current_user_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:constellation_cafe/di/ApiProvider.dart';
@@ -24,6 +25,9 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
         state = CurrentUserState.fromJson(me.response!);
         _isInitialized = true;
       }
+      await ref.read(
+        academyPermissionProvider.notifier,
+      ).initialize();
     }
   }
 
@@ -55,5 +59,8 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
   void clear() {
     state = CurrentUserState.initial();
     _isInitialized = false;
+    ref.read(
+      academyPermissionProvider.notifier,
+    ).clear();
   }
 }
