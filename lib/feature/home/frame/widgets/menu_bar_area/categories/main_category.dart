@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
-import 'user_category.dart';
-import 'admin_category.dart';
-import 'academy_category.dart';
+import '../../../../../auth/category/user_category.dart';
+import '../../../../../auth/category/admin_category.dart';
+import '../../../../../contents/academy/category/academy_category.dart';
 
 
 class MainCategory extends ConsumerStatefulWidget {

@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_size.dart';
-import 'container/menu_container.dart';
+import '../../../home/frame/widgets/menu_bar_area/categories/container/menu_container.dart';
+import '../notifier/permission_notifier/academy_permission_notifier.dart';
 
 class AcademyCategory extends ConsumerWidget {
   const AcademyCategory({super.key});
 
   @override
   Widget build(BuildContext build, WidgetRef ref) {
+    final permissionState = ref.watch(academyPermissionProvider);
+    final permission = permissionState.permission;
+
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
