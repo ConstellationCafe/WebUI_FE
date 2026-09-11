@@ -12,7 +12,6 @@ class AcademyCategory extends ConsumerWidget {
   Widget build(BuildContext build, WidgetRef ref) {
     final permissionState = ref.watch(academyPermissionProvider);
     final permission = permissionState.permission;
-
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
