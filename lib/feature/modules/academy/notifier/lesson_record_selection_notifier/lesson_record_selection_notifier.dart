@@ -134,23 +134,35 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
     try {
       final Academy selectedAcademy = state.queryForm.selectedAcademy!;
       final (teachers, students) = await (
-        repository.getTeachers(selectedAcademy.id),
+        repository.getTeachers(selectedAcademy.id, selectedAcademyClass.id),
         repository.getStudents(selectedAcademy.id, selectedAcademyClass.id)
       ).wait;
+      // teacher
+      final enrolledTeachers = teachers
+          .where(
+              (teacher) => teacher.state == "재적"
+          )
+          .toList();
       final canSelectTeachers = permission.isOwnerWithAcademy(selectedAcademy.id)
-          ? teachers
-          : teachers
+          ? enrolledTeachers
+          : enrolledTeachers
           .where(
             (teacher) =>
-              teacher.discordID == currentUser.userId,
+              teacher.discordID == currentUser.userId
+          )
+          .toList();
+      // student
+      final enrolledStudents = students
+          .where(
+            (student) => student.state == "재적"
           )
           .toList();
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
           teachers: canSelectTeachers,
-          coTeachers: teachers,
-          students: students,
+          coTeachers: enrolledTeachers,
+          students: enrolledStudents,
         ),
         errorMessage: null,
       );
