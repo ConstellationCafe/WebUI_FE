@@ -39,8 +39,7 @@ RUN flutter build web --release --target lib/main.dart \
 # ---- runtime stage ----
 FROM nginx:1.25-alpine AS runtime
 
-# Nginx listens on 1104
-RUN sed -i 's/listen       80;/listen       1104;/' /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build /app/build/web /usr/share/nginx/html
 

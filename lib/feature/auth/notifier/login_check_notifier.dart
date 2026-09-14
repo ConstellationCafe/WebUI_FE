@@ -45,7 +45,12 @@ class LoginCheckNotifier extends _$LoginCheckNotifier {
     if (refreshRes != true) return false;
 
     final checkRes = await jwt.check();
-    return checkRes.success == true && _parseIsLogin(checkRes);
+    if (checkRes.success == true && _parseIsLogin(checkRes)) {
+      return await _onLoginSuccess();
+    }
+    else {
+      return false;
+    }
   }
 
   bool _parseIsLogin(dynamic api) {

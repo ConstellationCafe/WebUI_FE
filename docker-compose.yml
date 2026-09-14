@@ -1,5 +1,5 @@
 services:
-  services:
+  webui-fe:
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,7 +10,7 @@ services:
         BACKEND_URI: ${BACKEND_URI}
 
     image: webui_fe
-    container_name: webui_fe
+    container_name: webui-fe
 
     ports:
       - "1104:1104"

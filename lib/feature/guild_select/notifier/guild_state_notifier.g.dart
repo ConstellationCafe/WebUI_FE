@@ -20,7 +20,7 @@ final class CurrentGuildStateNotifierProvider
         argument: null,
         retry: null,
         name: r'currentGuildStateProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -42,7 +42,7 @@ final class CurrentGuildStateNotifierProvider
 }
 
 String _$currentGuildStateNotifierHash() =>
-    r'fb2b42b7e4bbbce3f0241ae2c42cd0efcf857e05';
+    r'a8974911615bcf0020b6a7a18243ee393861a660';
 
 abstract class _$CurrentGuildStateNotifier
     extends $Notifier<CurrentGuildState> {

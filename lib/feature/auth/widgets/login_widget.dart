@@ -1,82 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/constants/const_padding.dart';
+import '../../../core/constants/screen_width.dart';
+import '../constants/auth_constants.dart';
 import 'discord_login_button.dart';
 
-class LoginWidget extends ConsumerWidget {
+class LoginWidget extends StatelessWidget {
   const LoginWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final screenW = MediaQuery.sizeOf(context).width;
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final outerMargin = screenWidth < ScreenWidth.mobileWidth
+        ? ConstPadding.mediumPaddingAll
+        : EdgeInsets.zero;
 
-    const cardHPadding = 36.0;
-    const cardVPadding = 28.0;
-
-    final outerMargin = screenW < 500 ? 16.0 : 0.0;
-    final maxCardWidth = 360.0;
-
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: maxCardWidth),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: cardHPadding,
-          vertical: cardVPadding,
+    return Container(
+      margin: outerMargin,
+      constraints: const BoxConstraints(
+        maxWidth: AuthConstants.loginCardMaxWidth,
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AuthConstants.loginCardHorizontalPadding,
+        vertical: AuthConstants.loginCardVerticalPadding,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary,
+        borderRadius: BorderRadius.circular(
+          AuthConstants.loginCardRadius,
         ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 6),
+        boxShadow: const [
+          BoxShadow(
+            color: AuthConstants.loginShadowColor,
+            blurRadius: AuthConstants.loginShadowBlurRadius,
+            offset: Offset(
+              0,
+              AuthConstants.loginShadowOffsetY,
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // 상단 사이트 정보 부분
-            // Row가 Column 폭과 동일하게 되도록 SizedBox 사용
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'assets/icons/main_icon.jpg',
-                    width: 52,
-                    height: 52,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.high,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  AuthConstants.loginLogoRadius,
+                ),
+                child: Image.asset(
+                  'assets/icons/main_icon.jpg',
+                  width: AuthConstants.loginLogoSize,
+                  height: AuthConstants.loginLogoSize,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+              const SizedBox(
+                width: ConstPadding.smallPadding,
+              ),
+              Expanded(
+                child: Text(
+                  'ERP Web Service',
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(
+                    fontSize: AuthConstants.loginTitleFontSize,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    "ERP Web Service",
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // 디스코드 로그인
-            const SizedBox(
-              width: double.infinity,
-              child: DiscordLoginButton(),
-            ),
-          ],
-        ),
-      )
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: ConstPadding.mediumPadding,
+          ),
+          const DiscordLoginButton(),
+        ],
+      ),
     );
   }
 }

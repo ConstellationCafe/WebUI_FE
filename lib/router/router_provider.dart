@@ -1,144 +1,317 @@
 // flutter
-import 'package:constellation_cafe/feature/user/profile/pages/view_point_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
-// auth
-import 'package:constellation_cafe/feature/auth/pages/login.dart';
-// home
-import 'package:constellation_cafe/feature/home/pages/home_page.dart';
-import 'package:constellation_cafe/feature/home/widgets/home_contents.dart';
-// user
-import 'package:constellation_cafe/feature/user/profile/pages/profile.dart';
-// contents
-import 'package:constellation_cafe/feature/contents/friendly_match/pages/friendly_match.dart';
-import 'package:constellation_cafe/feature/contents/learning/pages/learning_list.dart';
-import 'package:constellation_cafe/feature/contents/menu/pages/menu_list.dart';
-import 'package:constellation_cafe/feature/contents/music/pages/music_list.dart';
-import 'package:constellation_cafe/feature/contents/content/pages/content_list.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
+// auth
+import 'package:constellation_cafe/feature/auth/pages/login.dart';
+
+// home
+import 'package:constellation_cafe/feature/home/frame/pages/home_frame.dart';
+import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
+
+// user
+import 'package:constellation_cafe/feature/profile/pages/profile.dart';
+import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
+
+// contents
+import 'package:constellation_cafe/feature/contents/friendly_match/pages/friendly_match.dart';
+import 'package:constellation_cafe/feature/contents/academy/routes/academy_routes.dart';
+
 import '../feature/auth/notifier/login_check_notifier.dart';
+import '../feature/contents/chatbot/routes/chatbot_routes.dart';
 import '../feature/guild_select/page/guild_select.dart';
+import '../feature/guild_select/provider/guild_list_provider.dart';
+import 'no_aim_page.dart';
 
 part 'router_provider.g.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+final RouteObserver<ModalRoute<void>> routeObserver =
+RouteObserver<ModalRoute<void>>();
 
 @riverpod
 GoRouter router(Ref ref) {
-  final loginCheck = ref.watch(loginCheckProvider);
+  final refreshNotifier = ValueNotifier<int>(0);
+
+  ref.listen(
+    loginCheckProvider,
+        (_, __) => refreshNotifier.value++,
+  );
+
+  ref.listen(
+    guildListProvider,
+        (_, __) => refreshNotifier.value++,
+  );
+
+  ref.onDispose(() {
+    refreshNotifier.dispose();
+  });
 
   return GoRouter(
     initialLocation: '/',
-    observers: [routeObserver],
+    observers: [
+      routeObserver,
+    ],
     routes: [
       GoRoute(
-        path: "/login",
-        pageBuilder: (context, state) => _noAnim(state, const LoginPage()),
+        path: '/',
+        pageBuilder: (context, state) => noAnim(
+          state,
+          const PageLoading(),
+        ),
       ),
+
       GoRoute(
-        path: "/select",
-        pageBuilder: (context, state) => _noAnim(state, const GuildSelectPage()),
+        path: '/login',
+        pageBuilder: (context, state) => noAnim(
+          state,
+          const LoginPage(),
+        ),
       ),
+
+      GoRoute(
+        path: '/select',
+        pageBuilder: (context, state) => noAnim(
+          state,
+          const GuildSelectPage(),
+        ),
+      ),
+
+      // ShellRoute 밖에 위치
+      GoRoute(
+        path: '/loading',
+        pageBuilder: (context, state) => noAnim(
+          state,
+          const PageLoading(),
+        ),
+      ),
+
       ShellRoute(
-        pageBuilder: (context, state, child) => _noAnim(state, HomePage(child: child)),
+        pageBuilder: (context, state, child) => noAnim(
+          state,
+          HomeFrame(
+            child: child,
+          ),
+        ),
         routes: [
           GoRoute(
-            path: "/",
-            redirect: (context, state) => "/select",
+            path: '/home',
+            pageBuilder: (context, state) => noAnim(
+              state,
+              HomeContent(),
+            ),
           ),
+
           GoRoute(
-            path: "/home",
-            // redirect: (context, state) async {
-            //   final guildId = state.uri.queryParameters['guild_id'];
-            //   if (guildId == null) {
-            //     return "/select";
-            //   }
-            //   final isValid = await validateGuildId(guildId);
-            //   if (!isValid) {
-            //     return "/select";
-            //   }
-            //   return null; // 정상 진입
-            // },
-            pageBuilder: (context, state) => _noAnim(state, HomeContent()),
+            path: '/profile',
+            pageBuilder: (context, state) => noAnim(
+              state,
+              const Profile(),
+            ),
           ),
+
           GoRoute(
-            path: "/profile",
-            pageBuilder: (context, state) => _noAnim(state, const Profile()),
+            path: '/point_log',
+            pageBuilder: (context, state) => noAnim(
+              state,
+              const ViewPointLog(),
+            ),
           ),
+
           GoRoute(
-            path: "/friendly_match",
-            pageBuilder: (context, state) => _noAnim(state, const FriendlyMatch()),
+            path: '/friendly_match',
+            pageBuilder: (context, state) => noAnim(
+              state,
+              const FriendlyMatch(),
+            ),
           ),
-          GoRoute(
-            path: "/learning",
-            pageBuilder: (context, state) => _noAnim(state, const LearningList()),
-          ),
-          GoRoute(
-            path: "/menu",
-            pageBuilder: (context, state) => _noAnim(state, const MenuList()),
-          ),
-          GoRoute(
-            path: "/music",
-            pageBuilder: (context, state) => _noAnim(state, const MusicList()),
-          ),
-          GoRoute(
-            path: "/content",
-            pageBuilder: (context, state) => _noAnim(state, const ContentList()),
-          ),
-          // 이건 /profile 의 회원증에서 PointLogButton 눌러도 이동
-          GoRoute(
-            path: "/point_log",
-            pageBuilder: (context, state) => _noAnim(state, const ViewPointLog()),
-          ),
+
+          ...chatbotRoutes,
+          ...academyRoutes,
         ],
       ),
     ],
-    // GoRoute 에 없는 경로로 이동시 / 으로 리다이렉트
-    errorBuilder: (context, state) {
-      Future.microtask(() => context.go('/'));
-      return const PageLoading();
+
+    onException: (
+        context,
+        state,
+        router,
+        ) {
+      router.go('/');
     },
+
+    refreshListenable: refreshNotifier,
+
     redirect: (context, state) {
       final loc = state.matchedLocation;
-      final isAtLoginPage = loc == "/login";
 
-      print("===== GoRouter redirect =====");
-      print("location: $loc");
-      print("loginCheck loading: ${loginCheck.isLoading}");
-      print("loginCheck value: ${loginCheck.value}");
-      print("loginCheck error: ${loginCheck.error}");
+      final loginCheck =
+      ref.read(loginCheckProvider);
 
+      /*
+       * /home 직접 접근인데
+       * 로그인 상태 확인조차 끝나지 않았다면
+       * 절대로 ShellRoute에 진입시키지 않는다.
+       */
       if (loginCheck.isLoading) {
-        print("→ loading, redirect 없음");
+        if (loc == '/home') {
+          final guildId =
+          state.uri.queryParameters['guild_id'];
+
+          return Uri(
+            path: '/loading',
+            queryParameters: {
+              if (guildId != null)
+                'guild_id': guildId,
+            },
+          ).toString();
+        }
+
+        // 이미 /loading이면 그대로 대기
+        if (loc == '/loading') {
+          return null;
+        }
+
         return null;
       }
 
-      final isLoggedIn = loginCheck.value ?? false;
+      final isLoggedIn =
+          loginCheck.value ?? false;
 
+      /*
+       * 로그인하지 않은 경우
+       */
       if (!isLoggedIn) {
-        print("→ 로그인 안 됨 → /login");
-        return isAtLoginPage ? null : "/login";
+        return loc == '/login'
+            ? null
+            : '/login';
       }
 
-      if (isAtLoginPage) {
-        print("→ 로그인 상태에서 /login 접근 → /");
-        return "/";
+      /*
+       * 로그인 완료 후 기본 경로 처리
+       */
+      if (loc == '/') {
+        return '/select';
       }
 
-      print("→ redirect 없음");
+      if (loc == '/login') {
+        return '/select';
+      }
+
+      /*
+       * /home 진입
+       */
+      if (loc == '/home') {
+        final guildId =
+        state.uri.queryParameters['guild_id'];
+
+        // guild_id 자체가 없음
+        if (guildId == null ||
+            guildId.isEmpty) {
+          return '/select';
+        }
+
+        final guildListAsync =
+        ref.read(guildListProvider);
+
+        /*
+         * 길드 목록이 아직 준비되지 않았다면
+         * ShellRoute 밖의 /loading으로 이동
+         */
+        if (guildListAsync.isLoading) {
+          return Uri(
+            path: '/loading',
+            queryParameters: {
+              'guild_id': guildId,
+            },
+          ).toString();
+        }
+
+        // 길드 목록 API 실패
+        if (guildListAsync.hasError) {
+          return '/select';
+        }
+
+        final guilds =
+            guildListAsync.value ?? [];
+
+        final isValidGuild =
+        guilds.any(
+              (guild) =>
+          guild.id == guildId,
+        );
+
+        // 목록에 없는 길드
+        if (!isValidGuild) {
+          return '/select';
+        }
+
+        // 로그인 완료 + 길드 목록 완료 + 유효한 길드
+        // 이때만 HomeFrame 진입 허용
+        return null;
+      }
+
+      /*
+       * /home 검증 대기용 /loading
+       */
+      if (loc == '/loading') {
+        final guildId =
+        state.uri.queryParameters['guild_id'];
+
+        // guild_id 없이 /loading 직접 접근
+        if (guildId == null ||
+            guildId.isEmpty) {
+          return '/select';
+        }
+
+        final guildListAsync =
+        ref.read(guildListProvider);
+
+        /*
+         * 길드 목록 API가 아직 끝나지 않았으면
+         * PageLoading 유지
+         */
+        if (guildListAsync.isLoading) {
+          return null;
+        }
+
+        // 길드 목록 API 실패
+        if (guildListAsync.hasError) {
+          return '/select';
+        }
+
+        final guilds =
+            guildListAsync.value ?? [];
+
+        final isValidGuild =
+        guilds.any(
+              (guild) =>
+          guild.id == guildId,
+        );
+
+        /*
+         * 없는 guild_id
+         */
+        if (!isValidGuild) {
+          return '/select';
+        }
+
+        /*
+         * 검증 완료 + 정상 guild_id
+         * 이제서야 /home 진입
+         */
+        return Uri(
+          path: '/home',
+          queryParameters: {
+            'guild_id': guildId,
+          },
+        ).toString();
+      }
+
       return null;
     },
-  );
-}
-
-/// 애니메이션 없는 페이지 전환 헬퍼
-Page<void> _noAnim(GoRouterState state, Widget child) {
-  return NoTransitionPage<void>(
-    key: state.pageKey,
-    child: child,
   );
 }

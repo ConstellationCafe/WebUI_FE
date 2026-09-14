@@ -17,11 +17,11 @@ class Guild {
 
   factory Guild.fromJson(Map<String, dynamic> json) {
     return Guild(
-      id: (json['amount'] ?? '').toString(),
-      name: (json['at'] ?? '').toString(),
+      id: (json['id'] ?? '').toString(),
+      name: (json['name'] ?? '').toString(),
       // description: (json['description'] ?? '').toString(),
       iconUrl: (json['iconUrl'] ?? '').toString(),
-      memberCount: (json['memberCount'] ?? 0).toInt(),
+      memberCount: (json['memberCount'] ?? 0),
       // hasErpRole: (json['hasErpRole'] ?? false).toBoolean()
     );
   }

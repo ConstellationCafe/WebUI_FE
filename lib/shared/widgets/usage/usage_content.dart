@@ -1,3 +1,5 @@
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:flutter/material.dart';
 
 class UsageContent extends StatelessWidget {
@@ -18,53 +20,74 @@ class UsageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container( // 1. 전체를 Container로 감싸서 배경과 여백을 줍니다.
-      padding: const EdgeInsets.all(20),
+    return Container(
+      padding: ConstPadding.mediumPaddingAll,
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.8),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             message,
             textAlign: TextAlign.center,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
+            softWrap: true,
+            overflow: TextOverflow.visible,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: ConstSize.largeTextSize,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 16),
-
+          const SizedBox(
+            height: ConstSize.mediumSpacing,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // 이전 버튼 (첫 step이면 숨김)
               if (!isFirstStep)
                 GestureDetector(
                   onTap: onPrev,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: ConstPadding.mediumPadding,
+                      vertical: ConstPadding.smallPadding,
+                    ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: Colors.white.withValues(
+                        alpha: 0.15,
+                      ),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      border: Border.all(
+                        color: Colors.white.withValues(
+                          alpha: 0.3,
+                        ),
+                      ),
                     ),
                     child: const Text(
                       '이전',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-
-              if (!isFirstStep) const SizedBox(width: 12),
-
-              // 다음 / 확인 버튼
+              if (!isFirstStep)
+                const SizedBox(
+                  width: ConstSize.smallSpacing,
+                ),
               GestureDetector(
                 onTap: onNext,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: ConstPadding.mediumPadding,
+                    vertical: ConstPadding.smallPadding,
+                  ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.25),
+                    color: Colors.white.withValues(
+                      alpha: 0.25,
+                    ),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
