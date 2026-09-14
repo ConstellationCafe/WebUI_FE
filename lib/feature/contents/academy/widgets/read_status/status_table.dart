@@ -12,8 +12,8 @@ import '../../domain/type/roster_status.dart';
 
 
 class StatusTable<
-TMember extends AcademyMember,
-TStatus extends RosterStatus
+  TMember extends AcademyMember,
+  TStatus extends RosterStatus
 > extends StatelessWidget {
   final List<StatusView<TMember, TStatus>> items;
 
