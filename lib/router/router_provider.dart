@@ -18,13 +18,13 @@ import 'package:constellation_cafe/feature/profile/pages/profile.dart';
 import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
 
 // contents
-import 'package:constellation_cafe/feature/contents/friendly_match/pages/friendly_match.dart';
-import 'package:constellation_cafe/feature/contents/academy/routes/academy_routes.dart';
+import 'package:constellation_cafe/feature/modules/academy/routes/academy_routes.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
-import '../feature/contents/chatbot/routes/chatbot_routes.dart';
+import '../feature/modules/chatbot/routes/chatbot_routes.dart';
 import '../feature/guild_select/page/guild_select.dart';
 import '../feature/guild_select/provider/guild_list_provider.dart';
+import '../feature/modules/shadowverse/routes/shadowverse_routes.dart';
 import 'no_aim_page.dart';
 
 part 'router_provider.g.dart';
@@ -120,16 +120,8 @@ GoRouter router(Ref ref) {
               const ViewPointLog(),
             ),
           ),
-
-          GoRoute(
-            path: '/friendly_match',
-            pageBuilder: (context, state) => noAnim(
-              state,
-              const FriendlyMatch(),
-            ),
-          ),
-
           ...chatbotRoutes,
+          ...shadowverseRoutes,
           ...academyRoutes,
         ],
       ),
