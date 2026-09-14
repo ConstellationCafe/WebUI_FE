@@ -49,8 +49,8 @@ class AcademyApi {
         .toList();
   }
 
-  Future<List<Teacher>> getTeachers(int academyId) async {
-    final response = await dio.get('$base/api/academy/$academyId/teachers');
+  Future<List<Teacher>> getTeachers(int academyId, int classId) async {
+    final response = await dio.get('$base/api/academy/$academyId/classes/$classId/teachers');
     final List<dynamic> data = response.data['response'];
     return data
         .map((json) => Teacher.fromJson(json))

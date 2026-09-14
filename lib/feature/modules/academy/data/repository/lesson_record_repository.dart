@@ -36,8 +36,9 @@ class LessonRecordRepository {
 
   Future<List<Teacher>> getTeachers(
       int academyId,
+      int classId,
       ) async {
-    return await academyApi.getTeachers(academyId);
+    return await academyApi.getTeachers(academyId, classId);
   }
 
   Future<List<Student>> getStudents(
