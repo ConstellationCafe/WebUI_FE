@@ -20,7 +20,7 @@ class AdminCategory extends ConsumerWidget {
           SizedBox(height: ConstSize.tinyWidth),
           MenuContainer(
             iconImage: Image.asset(
-              "assets/icons/category/admin/point.png",
+              "assets/icons/admin/point.png",
               fit: BoxFit.contain,
               filterQuality: FilterQuality.high
             ),

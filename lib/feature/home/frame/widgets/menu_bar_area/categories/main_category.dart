@@ -1,12 +1,13 @@
+import 'package:constellation_cafe/feature/modules/chatbot/category/chatbot_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
-import '../../../../../auth/category/user_category.dart';
+import '../../../../../modules/shadowverse/category/shadowverse_category.dart';
 import '../../../../../auth/category/admin_category.dart';
-import '../../../../../contents/academy/category/academy_category.dart';
-import '../../../../../contents/academy/notifier/permission_notifier/academy_permission_notifier.dart';
+import '../../../../../modules/academy/category/academy_category.dart';
+import '../../../../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 
 
 class MainCategory extends ConsumerStatefulWidget {
@@ -24,7 +25,8 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          UserCategory(),
+          ChatBotCategory(),
+          ShadowverseCategory(),
           if (globalState.roles.contains(UserRole.ADMIN)) ... [
             AdminCategory(),
           ],
