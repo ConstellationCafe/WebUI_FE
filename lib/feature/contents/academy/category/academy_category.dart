@@ -12,71 +12,76 @@ class AcademyCategory extends ConsumerWidget {
   Widget build(BuildContext build, WidgetRef ref) {
     final permissionState = ref.watch(academyPermissionProvider);
     final permission = permissionState.permission;
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-              textAlign: TextAlign.left,
-              "아카데미 메뉴"
-          ),
-          SizedBox(height: ConstSize.tinyWidth),
-          // 메뉴 목록
-          MenuContainer(
-            iconImage: Image.asset(
-                "assets/icons/category/admin/point.png",
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high
+    if (permission?.isTeacherOrAbove() ?? false) {
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+                textAlign: TextAlign.left,
+                "아카데미 메뉴"
             ),
-            menuName: "수업 기록",
-            callbackUrl: "/academy/write_lesson_record",
-          ),
-          MenuContainer(
-            iconImage: Image.asset(
-                "assets/icons/category/admin/point.png",
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high
+            SizedBox(height: ConstSize.tinyWidth),
+            MenuContainer(
+              iconImage: Image.asset(
+                  "assets/icons/category/academy/lesson_record_write.svg",
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high
+              ),
+              menuName: "수업 기록",
+              callbackUrl: "/academy/write_lesson_record",
             ),
-            menuName: "수업 기록 조회",
-            callbackUrl: "/academy/read_lesson_record",
-          ),
-          MenuContainer(
-            iconImage: Image.asset(
-                "assets/icons/category/admin/point.png",
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high
+            MenuContainer(
+              iconImage: Image.asset(
+                  "assets/icons/category/academy/lesson_record_read.svg",
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high
+              ),
+              menuName: "수업 기록 조회",
+              callbackUrl: "/academy/read_lesson_record",
             ),
-            menuName: "교사 관리",
-            callbackUrl: "/academy/teacher_status",
-          ),
-          MenuContainer(
-            iconImage: Image.asset(
-                "assets/icons/category/admin/point.png",
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high
+            if (permission?.isOwner() ?? false) ... [
+              MenuContainer(
+                iconImage: Image.asset(
+                    "assets/icons/category/academy/teacher_hr.svg",
+                    fit: BoxFit.contain,
+                    filterQuality: FilterQuality.high
+                ),
+                menuName: "교사 관리",
+                callbackUrl: "/academy/teacher_status",
+              ),
+              MenuContainer(
+                iconImage: Image.asset(
+                    "assets/icons/category/academy/teacher_hr.svg",
+                    fit: BoxFit.contain,
+                    filterQuality: FilterQuality.high
+                ),
+                menuName: "교사 조회",
+                callbackUrl: "/academy/read_teacher_status",
+              ),
+            ],
+            MenuContainer(
+              iconImage: Image.asset(
+                  "assets/icons/category/academy/student_hr.svg",
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high
+              ),
+              menuName: "학생 관리",
+              callbackUrl: "/academy/student_status",
             ),
-            menuName: "학생 관리",
-            callbackUrl: "/academy/student_status",
-          ),
-          MenuContainer(
-            iconImage: Image.asset(
-                "assets/icons/category/admin/point.png",
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high
-            ),
-            menuName: "교사 조회",
-            callbackUrl: "/academy/read_teacher_status",
-          ),
-          MenuContainer(
-            iconImage: Image.asset(
-                "assets/icons/category/admin/point.png",
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high
-            ),
-            menuName: "학생 조회",
-            callbackUrl: "/academy/read_student_status",
-          ),
-        ]
-    );
+            MenuContainer(
+              iconImage: Image.asset(
+                  "assets/icons/category/academy/student_hr.svg",
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high
+              ),
+              menuName: "학생 조회",
+              callbackUrl: "/academy/read_student_status",
+            )
+          ]
+      );
+    } else {
+      return Column();
+    }
   }
 }

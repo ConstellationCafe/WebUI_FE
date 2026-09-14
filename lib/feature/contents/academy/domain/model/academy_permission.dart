@@ -39,6 +39,71 @@ class AcademyPermission {
           .toList(),
     };
   }
+
+  bool get isAdmin => admin;
+
+  bool isOwner() {
+    if (admin) {
+      return true;
+    }
+    return academies.any(
+        (academy) =>
+            academy.role == AcademyRole.academyOwner,
+    );
+  }
+
+  bool isOwnerWithAcademy(int academyId) {
+    if (admin) {
+      return true;
+    }
+
+    return academies.any(
+        (academy) =>
+          academy.academyId == academyId
+          && academy.role == AcademyRole.academyOwner,
+    );
+  }
+
+  bool isTeacherOrAbove() {
+    if (admin) {
+      return true;
+    }
+
+    return academies.any(
+          (academy) =>
+      academy.role == AcademyRole.academyOwner ||
+          academy.role == AcademyRole.teacher,
+    );
+  }
+
+  bool isTeacherOrAboveWithAcademy(int academyId) {
+    if (admin) {
+      return true;
+    }
+    return academies.any(
+          (academy) =>
+      academy.academyId == academyId &&
+          (
+              academy.role == AcademyRole.academyOwner ||
+                  academy.role == AcademyRole.teacher
+          ),
+    );
+  }
+
+  bool isTeacherOrAboveWithClass(int academyId, int classId) {
+    if (admin) {
+      return true;
+    }
+    if (isOwnerWithAcademy(academyId)) {
+      return true;
+    }
+    return academies.any(
+          (academy) =>
+            academy.academyId == academyId
+            && academy.role == AcademyRole.teacher
+            && academy.classIds.contains(classId),
+    );
+  }
 }
 
 class AcademyPermissionItem {

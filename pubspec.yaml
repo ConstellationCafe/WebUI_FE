@@ -87,6 +87,7 @@ flutter:
       - assets/icons/category/user/recommend_music.png
       - assets/icons/category/user/recommend_content.png
       - assets/icons/category/admin/point.png
+      - assets/icons/category/academy/
 
 flutter_launcher_icons:
   android: true
