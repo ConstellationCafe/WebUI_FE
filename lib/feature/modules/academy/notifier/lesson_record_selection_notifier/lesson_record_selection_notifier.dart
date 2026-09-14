@@ -88,10 +88,9 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
     );
     try {
       // 병렬 호출
-      final (classes, subjects, teachers) = await (
+      final (classes, subjects) = await (
         repository.getClasses(academy.id),
         repository.getSubjects(academy.id),
-        repository.getTeachers(academy.id),
       ).wait;
       final operatingClasses = classes
           .where((academyClass) => academyClass.state == "운영")
@@ -106,21 +105,11 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
                 ),
               )
               .toList();
-      final canSelectTeachers = permission.isOwnerWithAcademy(academy.id)
-          ? teachers
-          : teachers
-              .where(
-                (teacher) =>
-                teacher.discordID == currentUser.userId,
-              )
-              .toList();
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
           classes: allowedClasses,
           subjects: subjects,
-          teachers: canSelectTeachers,
-          coTeachers: teachers
         ),
         errorMessage: null,
       );
@@ -144,13 +133,23 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
     );
     try {
       final Academy selectedAcademy = state.queryForm.selectedAcademy!;
-      final List<Student> students = await repository.getStudents(
-        selectedAcademy.id,
-        selectedAcademyClass.id,
-      );
+      final (teachers, students) = await (
+        repository.getTeachers(selectedAcademy.id),
+        repository.getStudents(selectedAcademy.id, selectedAcademyClass.id)
+      ).wait;
+      final canSelectTeachers = permission.isOwnerWithAcademy(selectedAcademy.id)
+          ? teachers
+          : teachers
+          .where(
+            (teacher) =>
+              teacher.discordID == currentUser.userId,
+          )
+          .toList();
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
+          teachers: canSelectTeachers,
+          coTeachers: teachers,
           students: students,
         ),
         errorMessage: null,
