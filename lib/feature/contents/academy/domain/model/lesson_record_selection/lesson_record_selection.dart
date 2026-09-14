@@ -14,6 +14,7 @@ abstract class LessonRecordSelection with _$LessonRecordSelection {
     @Default([]) List<Academy> academies,
     @Default([]) List<AcademyClass> classes,
     @Default([]) List<Teacher> teachers,
+    @Default([]) List<Teacher> coTeachers,
     @Default([]) List<Student> students,
     @Default([]) List<Subject> subjects,
     Academy? selectedAcademy,

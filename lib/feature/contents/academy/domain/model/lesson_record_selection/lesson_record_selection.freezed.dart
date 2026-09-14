@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LessonRecordSelection {
 
- List<Academy> get academies; List<AcademyClass> get classes; List<Teacher> get teachers; List<Student> get students; List<Subject> get subjects; Academy? get selectedAcademy; AcademyClass? get selectedAcademyClass; Subject? get selectedSubject; Teacher? get mainTeacher; List<Teacher> get selectedCoTeachers; List<Student> get selectedStudents; DateTime? get educationDate; DateTime? get startTime; DateTime? get endTime;
+ List<Academy> get academies; List<AcademyClass> get classes; List<Teacher> get teachers; List<Teacher> get coTeachers; List<Student> get students; List<Subject> get subjects; Academy? get selectedAcademy; AcademyClass? get selectedAcademyClass; Subject? get selectedSubject; Teacher? get mainTeacher; List<Teacher> get selectedCoTeachers; List<Student> get selectedStudents; DateTime? get educationDate; DateTime? get startTime; DateTime? get endTime;
 /// Create a copy of LessonRecordSelection
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $LessonRecordSelectionCopyWith<LessonRecordSelection> get copyWith => _$LessonRe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonRecordSelection&&const DeepCollectionEquality().equals(other.academies, academies)&&const DeepCollectionEquality().equals(other.classes, classes)&&const DeepCollectionEquality().equals(other.teachers, teachers)&&const DeepCollectionEquality().equals(other.students, students)&&const DeepCollectionEquality().equals(other.subjects, subjects)&&(identical(other.selectedAcademy, selectedAcademy) || other.selectedAcademy == selectedAcademy)&&(identical(other.selectedAcademyClass, selectedAcademyClass) || other.selectedAcademyClass == selectedAcademyClass)&&(identical(other.selectedSubject, selectedSubject) || other.selectedSubject == selectedSubject)&&(identical(other.mainTeacher, mainTeacher) || other.mainTeacher == mainTeacher)&&const DeepCollectionEquality().equals(other.selectedCoTeachers, selectedCoTeachers)&&const DeepCollectionEquality().equals(other.selectedStudents, selectedStudents)&&(identical(other.educationDate, educationDate) || other.educationDate == educationDate)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonRecordSelection&&const DeepCollectionEquality().equals(other.academies, academies)&&const DeepCollectionEquality().equals(other.classes, classes)&&const DeepCollectionEquality().equals(other.teachers, teachers)&&const DeepCollectionEquality().equals(other.coTeachers, coTeachers)&&const DeepCollectionEquality().equals(other.students, students)&&const DeepCollectionEquality().equals(other.subjects, subjects)&&(identical(other.selectedAcademy, selectedAcademy) || other.selectedAcademy == selectedAcademy)&&(identical(other.selectedAcademyClass, selectedAcademyClass) || other.selectedAcademyClass == selectedAcademyClass)&&(identical(other.selectedSubject, selectedSubject) || other.selectedSubject == selectedSubject)&&(identical(other.mainTeacher, mainTeacher) || other.mainTeacher == mainTeacher)&&const DeepCollectionEquality().equals(other.selectedCoTeachers, selectedCoTeachers)&&const DeepCollectionEquality().equals(other.selectedStudents, selectedStudents)&&(identical(other.educationDate, educationDate) || other.educationDate == educationDate)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(academies),const DeepCollectionEquality().hash(classes),const DeepCollectionEquality().hash(teachers),const DeepCollectionEquality().hash(students),const DeepCollectionEquality().hash(subjects),selectedAcademy,selectedAcademyClass,selectedSubject,mainTeacher,const DeepCollectionEquality().hash(selectedCoTeachers),const DeepCollectionEquality().hash(selectedStudents),educationDate,startTime,endTime);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(academies),const DeepCollectionEquality().hash(classes),const DeepCollectionEquality().hash(teachers),const DeepCollectionEquality().hash(coTeachers),const DeepCollectionEquality().hash(students),const DeepCollectionEquality().hash(subjects),selectedAcademy,selectedAcademyClass,selectedSubject,mainTeacher,const DeepCollectionEquality().hash(selectedCoTeachers),const DeepCollectionEquality().hash(selectedStudents),educationDate,startTime,endTime);
 
 @override
 String toString() {
-  return 'LessonRecordSelection(academies: $academies, classes: $classes, teachers: $teachers, students: $students, subjects: $subjects, selectedAcademy: $selectedAcademy, selectedAcademyClass: $selectedAcademyClass, selectedSubject: $selectedSubject, mainTeacher: $mainTeacher, selectedCoTeachers: $selectedCoTeachers, selectedStudents: $selectedStudents, educationDate: $educationDate, startTime: $startTime, endTime: $endTime)';
+  return 'LessonRecordSelection(academies: $academies, classes: $classes, teachers: $teachers, coTeachers: $coTeachers, students: $students, subjects: $subjects, selectedAcademy: $selectedAcademy, selectedAcademyClass: $selectedAcademyClass, selectedSubject: $selectedSubject, mainTeacher: $mainTeacher, selectedCoTeachers: $selectedCoTeachers, selectedStudents: $selectedStudents, educationDate: $educationDate, startTime: $startTime, endTime: $endTime)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $LessonRecordSelectionCopyWith<$Res>  {
   factory $LessonRecordSelectionCopyWith(LessonRecordSelection value, $Res Function(LessonRecordSelection) _then) = _$LessonRecordSelectionCopyWithImpl;
 @useResult
 $Res call({
- List<Academy> academies, List<AcademyClass> classes, List<Teacher> teachers, List<Student> students, List<Subject> subjects, Academy? selectedAcademy, AcademyClass? selectedAcademyClass, Subject? selectedSubject, Teacher? mainTeacher, List<Teacher> selectedCoTeachers, List<Student> selectedStudents, DateTime? educationDate, DateTime? startTime, DateTime? endTime
+ List<Academy> academies, List<AcademyClass> classes, List<Teacher> teachers, List<Teacher> coTeachers, List<Student> students, List<Subject> subjects, Academy? selectedAcademy, AcademyClass? selectedAcademyClass, Subject? selectedSubject, Teacher? mainTeacher, List<Teacher> selectedCoTeachers, List<Student> selectedStudents, DateTime? educationDate, DateTime? startTime, DateTime? endTime
 });
 
 
@@ -62,11 +62,12 @@ class _$LessonRecordSelectionCopyWithImpl<$Res>
 
 /// Create a copy of LessonRecordSelection
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? academies = null,Object? classes = null,Object? teachers = null,Object? students = null,Object? subjects = null,Object? selectedAcademy = freezed,Object? selectedAcademyClass = freezed,Object? selectedSubject = freezed,Object? mainTeacher = freezed,Object? selectedCoTeachers = null,Object? selectedStudents = null,Object? educationDate = freezed,Object? startTime = freezed,Object? endTime = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? academies = null,Object? classes = null,Object? teachers = null,Object? coTeachers = null,Object? students = null,Object? subjects = null,Object? selectedAcademy = freezed,Object? selectedAcademyClass = freezed,Object? selectedSubject = freezed,Object? mainTeacher = freezed,Object? selectedCoTeachers = null,Object? selectedStudents = null,Object? educationDate = freezed,Object? startTime = freezed,Object? endTime = freezed,}) {
   return _then(_self.copyWith(
 academies: null == academies ? _self.academies : academies // ignore: cast_nullable_to_non_nullable
 as List<Academy>,classes: null == classes ? _self.classes : classes // ignore: cast_nullable_to_non_nullable
 as List<AcademyClass>,teachers: null == teachers ? _self.teachers : teachers // ignore: cast_nullable_to_non_nullable
+as List<Teacher>,coTeachers: null == coTeachers ? _self.coTeachers : coTeachers // ignore: cast_nullable_to_non_nullable
 as List<Teacher>,students: null == students ? _self.students : students // ignore: cast_nullable_to_non_nullable
 as List<Student>,subjects: null == subjects ? _self.subjects : subjects // ignore: cast_nullable_to_non_nullable
 as List<Subject>,selectedAcademy: freezed == selectedAcademy ? _self.selectedAcademy : selectedAcademy // ignore: cast_nullable_to_non_nullable
@@ -163,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Academy> academies,  List<AcademyClass> classes,  List<Teacher> teachers,  List<Student> students,  List<Subject> subjects,  Academy? selectedAcademy,  AcademyClass? selectedAcademyClass,  Subject? selectedSubject,  Teacher? mainTeacher,  List<Teacher> selectedCoTeachers,  List<Student> selectedStudents,  DateTime? educationDate,  DateTime? startTime,  DateTime? endTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Academy> academies,  List<AcademyClass> classes,  List<Teacher> teachers,  List<Teacher> coTeachers,  List<Student> students,  List<Subject> subjects,  Academy? selectedAcademy,  AcademyClass? selectedAcademyClass,  Subject? selectedSubject,  Teacher? mainTeacher,  List<Teacher> selectedCoTeachers,  List<Student> selectedStudents,  DateTime? educationDate,  DateTime? startTime,  DateTime? endTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LessonRecordSelection() when $default != null:
-return $default(_that.academies,_that.classes,_that.teachers,_that.students,_that.subjects,_that.selectedAcademy,_that.selectedAcademyClass,_that.selectedSubject,_that.mainTeacher,_that.selectedCoTeachers,_that.selectedStudents,_that.educationDate,_that.startTime,_that.endTime);case _:
+return $default(_that.academies,_that.classes,_that.teachers,_that.coTeachers,_that.students,_that.subjects,_that.selectedAcademy,_that.selectedAcademyClass,_that.selectedSubject,_that.mainTeacher,_that.selectedCoTeachers,_that.selectedStudents,_that.educationDate,_that.startTime,_that.endTime);case _:
   return orElse();
 
 }
@@ -184,10 +185,10 @@ return $default(_that.academies,_that.classes,_that.teachers,_that.students,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Academy> academies,  List<AcademyClass> classes,  List<Teacher> teachers,  List<Student> students,  List<Subject> subjects,  Academy? selectedAcademy,  AcademyClass? selectedAcademyClass,  Subject? selectedSubject,  Teacher? mainTeacher,  List<Teacher> selectedCoTeachers,  List<Student> selectedStudents,  DateTime? educationDate,  DateTime? startTime,  DateTime? endTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Academy> academies,  List<AcademyClass> classes,  List<Teacher> teachers,  List<Teacher> coTeachers,  List<Student> students,  List<Subject> subjects,  Academy? selectedAcademy,  AcademyClass? selectedAcademyClass,  Subject? selectedSubject,  Teacher? mainTeacher,  List<Teacher> selectedCoTeachers,  List<Student> selectedStudents,  DateTime? educationDate,  DateTime? startTime,  DateTime? endTime)  $default,) {final _that = this;
 switch (_that) {
 case _LessonRecordSelection():
-return $default(_that.academies,_that.classes,_that.teachers,_that.students,_that.subjects,_that.selectedAcademy,_that.selectedAcademyClass,_that.selectedSubject,_that.mainTeacher,_that.selectedCoTeachers,_that.selectedStudents,_that.educationDate,_that.startTime,_that.endTime);case _:
+return $default(_that.academies,_that.classes,_that.teachers,_that.coTeachers,_that.students,_that.subjects,_that.selectedAcademy,_that.selectedAcademyClass,_that.selectedSubject,_that.mainTeacher,_that.selectedCoTeachers,_that.selectedStudents,_that.educationDate,_that.startTime,_that.endTime);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +205,10 @@ return $default(_that.academies,_that.classes,_that.teachers,_that.students,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Academy> academies,  List<AcademyClass> classes,  List<Teacher> teachers,  List<Student> students,  List<Subject> subjects,  Academy? selectedAcademy,  AcademyClass? selectedAcademyClass,  Subject? selectedSubject,  Teacher? mainTeacher,  List<Teacher> selectedCoTeachers,  List<Student> selectedStudents,  DateTime? educationDate,  DateTime? startTime,  DateTime? endTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Academy> academies,  List<AcademyClass> classes,  List<Teacher> teachers,  List<Teacher> coTeachers,  List<Student> students,  List<Subject> subjects,  Academy? selectedAcademy,  AcademyClass? selectedAcademyClass,  Subject? selectedSubject,  Teacher? mainTeacher,  List<Teacher> selectedCoTeachers,  List<Student> selectedStudents,  DateTime? educationDate,  DateTime? startTime,  DateTime? endTime)?  $default,) {final _that = this;
 switch (_that) {
 case _LessonRecordSelection() when $default != null:
-return $default(_that.academies,_that.classes,_that.teachers,_that.students,_that.subjects,_that.selectedAcademy,_that.selectedAcademyClass,_that.selectedSubject,_that.mainTeacher,_that.selectedCoTeachers,_that.selectedStudents,_that.educationDate,_that.startTime,_that.endTime);case _:
+return $default(_that.academies,_that.classes,_that.teachers,_that.coTeachers,_that.students,_that.subjects,_that.selectedAcademy,_that.selectedAcademyClass,_that.selectedSubject,_that.mainTeacher,_that.selectedCoTeachers,_that.selectedStudents,_that.educationDate,_that.startTime,_that.endTime);case _:
   return null;
 
 }
@@ -219,7 +220,7 @@ return $default(_that.academies,_that.classes,_that.teachers,_that.students,_tha
 
 
 class _LessonRecordSelection implements LessonRecordSelection {
-  const _LessonRecordSelection({final  List<Academy> academies = const [], final  List<AcademyClass> classes = const [], final  List<Teacher> teachers = const [], final  List<Student> students = const [], final  List<Subject> subjects = const [], this.selectedAcademy, this.selectedAcademyClass, this.selectedSubject, this.mainTeacher, final  List<Teacher> selectedCoTeachers = const [], final  List<Student> selectedStudents = const [], this.educationDate, this.startTime, this.endTime}): _academies = academies,_classes = classes,_teachers = teachers,_students = students,_subjects = subjects,_selectedCoTeachers = selectedCoTeachers,_selectedStudents = selectedStudents;
+  const _LessonRecordSelection({final  List<Academy> academies = const [], final  List<AcademyClass> classes = const [], final  List<Teacher> teachers = const [], final  List<Teacher> coTeachers = const [], final  List<Student> students = const [], final  List<Subject> subjects = const [], this.selectedAcademy, this.selectedAcademyClass, this.selectedSubject, this.mainTeacher, final  List<Teacher> selectedCoTeachers = const [], final  List<Student> selectedStudents = const [], this.educationDate, this.startTime, this.endTime}): _academies = academies,_classes = classes,_teachers = teachers,_coTeachers = coTeachers,_students = students,_subjects = subjects,_selectedCoTeachers = selectedCoTeachers,_selectedStudents = selectedStudents;
   
 
  final  List<Academy> _academies;
@@ -241,6 +242,13 @@ class _LessonRecordSelection implements LessonRecordSelection {
   if (_teachers is EqualUnmodifiableListView) return _teachers;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_teachers);
+}
+
+ final  List<Teacher> _coTeachers;
+@override@JsonKey() List<Teacher> get coTeachers {
+  if (_coTeachers is EqualUnmodifiableListView) return _coTeachers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_coTeachers);
 }
 
  final  List<Student> _students;
@@ -289,16 +297,16 @@ _$LessonRecordSelectionCopyWith<_LessonRecordSelection> get copyWith => __$Lesso
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonRecordSelection&&const DeepCollectionEquality().equals(other._academies, _academies)&&const DeepCollectionEquality().equals(other._classes, _classes)&&const DeepCollectionEquality().equals(other._teachers, _teachers)&&const DeepCollectionEquality().equals(other._students, _students)&&const DeepCollectionEquality().equals(other._subjects, _subjects)&&(identical(other.selectedAcademy, selectedAcademy) || other.selectedAcademy == selectedAcademy)&&(identical(other.selectedAcademyClass, selectedAcademyClass) || other.selectedAcademyClass == selectedAcademyClass)&&(identical(other.selectedSubject, selectedSubject) || other.selectedSubject == selectedSubject)&&(identical(other.mainTeacher, mainTeacher) || other.mainTeacher == mainTeacher)&&const DeepCollectionEquality().equals(other._selectedCoTeachers, _selectedCoTeachers)&&const DeepCollectionEquality().equals(other._selectedStudents, _selectedStudents)&&(identical(other.educationDate, educationDate) || other.educationDate == educationDate)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonRecordSelection&&const DeepCollectionEquality().equals(other._academies, _academies)&&const DeepCollectionEquality().equals(other._classes, _classes)&&const DeepCollectionEquality().equals(other._teachers, _teachers)&&const DeepCollectionEquality().equals(other._coTeachers, _coTeachers)&&const DeepCollectionEquality().equals(other._students, _students)&&const DeepCollectionEquality().equals(other._subjects, _subjects)&&(identical(other.selectedAcademy, selectedAcademy) || other.selectedAcademy == selectedAcademy)&&(identical(other.selectedAcademyClass, selectedAcademyClass) || other.selectedAcademyClass == selectedAcademyClass)&&(identical(other.selectedSubject, selectedSubject) || other.selectedSubject == selectedSubject)&&(identical(other.mainTeacher, mainTeacher) || other.mainTeacher == mainTeacher)&&const DeepCollectionEquality().equals(other._selectedCoTeachers, _selectedCoTeachers)&&const DeepCollectionEquality().equals(other._selectedStudents, _selectedStudents)&&(identical(other.educationDate, educationDate) || other.educationDate == educationDate)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_academies),const DeepCollectionEquality().hash(_classes),const DeepCollectionEquality().hash(_teachers),const DeepCollectionEquality().hash(_students),const DeepCollectionEquality().hash(_subjects),selectedAcademy,selectedAcademyClass,selectedSubject,mainTeacher,const DeepCollectionEquality().hash(_selectedCoTeachers),const DeepCollectionEquality().hash(_selectedStudents),educationDate,startTime,endTime);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_academies),const DeepCollectionEquality().hash(_classes),const DeepCollectionEquality().hash(_teachers),const DeepCollectionEquality().hash(_coTeachers),const DeepCollectionEquality().hash(_students),const DeepCollectionEquality().hash(_subjects),selectedAcademy,selectedAcademyClass,selectedSubject,mainTeacher,const DeepCollectionEquality().hash(_selectedCoTeachers),const DeepCollectionEquality().hash(_selectedStudents),educationDate,startTime,endTime);
 
 @override
 String toString() {
-  return 'LessonRecordSelection(academies: $academies, classes: $classes, teachers: $teachers, students: $students, subjects: $subjects, selectedAcademy: $selectedAcademy, selectedAcademyClass: $selectedAcademyClass, selectedSubject: $selectedSubject, mainTeacher: $mainTeacher, selectedCoTeachers: $selectedCoTeachers, selectedStudents: $selectedStudents, educationDate: $educationDate, startTime: $startTime, endTime: $endTime)';
+  return 'LessonRecordSelection(academies: $academies, classes: $classes, teachers: $teachers, coTeachers: $coTeachers, students: $students, subjects: $subjects, selectedAcademy: $selectedAcademy, selectedAcademyClass: $selectedAcademyClass, selectedSubject: $selectedSubject, mainTeacher: $mainTeacher, selectedCoTeachers: $selectedCoTeachers, selectedStudents: $selectedStudents, educationDate: $educationDate, startTime: $startTime, endTime: $endTime)';
 }
 
 
@@ -309,7 +317,7 @@ abstract mixin class _$LessonRecordSelectionCopyWith<$Res> implements $LessonRec
   factory _$LessonRecordSelectionCopyWith(_LessonRecordSelection value, $Res Function(_LessonRecordSelection) _then) = __$LessonRecordSelectionCopyWithImpl;
 @override @useResult
 $Res call({
- List<Academy> academies, List<AcademyClass> classes, List<Teacher> teachers, List<Student> students, List<Subject> subjects, Academy? selectedAcademy, AcademyClass? selectedAcademyClass, Subject? selectedSubject, Teacher? mainTeacher, List<Teacher> selectedCoTeachers, List<Student> selectedStudents, DateTime? educationDate, DateTime? startTime, DateTime? endTime
+ List<Academy> academies, List<AcademyClass> classes, List<Teacher> teachers, List<Teacher> coTeachers, List<Student> students, List<Subject> subjects, Academy? selectedAcademy, AcademyClass? selectedAcademyClass, Subject? selectedSubject, Teacher? mainTeacher, List<Teacher> selectedCoTeachers, List<Student> selectedStudents, DateTime? educationDate, DateTime? startTime, DateTime? endTime
 });
 
 
@@ -326,11 +334,12 @@ class __$LessonRecordSelectionCopyWithImpl<$Res>
 
 /// Create a copy of LessonRecordSelection
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? academies = null,Object? classes = null,Object? teachers = null,Object? students = null,Object? subjects = null,Object? selectedAcademy = freezed,Object? selectedAcademyClass = freezed,Object? selectedSubject = freezed,Object? mainTeacher = freezed,Object? selectedCoTeachers = null,Object? selectedStudents = null,Object? educationDate = freezed,Object? startTime = freezed,Object? endTime = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? academies = null,Object? classes = null,Object? teachers = null,Object? coTeachers = null,Object? students = null,Object? subjects = null,Object? selectedAcademy = freezed,Object? selectedAcademyClass = freezed,Object? selectedSubject = freezed,Object? mainTeacher = freezed,Object? selectedCoTeachers = null,Object? selectedStudents = null,Object? educationDate = freezed,Object? startTime = freezed,Object? endTime = freezed,}) {
   return _then(_LessonRecordSelection(
 academies: null == academies ? _self._academies : academies // ignore: cast_nullable_to_non_nullable
 as List<Academy>,classes: null == classes ? _self._classes : classes // ignore: cast_nullable_to_non_nullable
 as List<AcademyClass>,teachers: null == teachers ? _self._teachers : teachers // ignore: cast_nullable_to_non_nullable
+as List<Teacher>,coTeachers: null == coTeachers ? _self._coTeachers : coTeachers // ignore: cast_nullable_to_non_nullable
 as List<Teacher>,students: null == students ? _self._students : students // ignore: cast_nullable_to_non_nullable
 as List<Student>,subjects: null == subjects ? _self._subjects : subjects // ignore: cast_nullable_to_non_nullable
 as List<Subject>,selectedAcademy: freezed == selectedAcademy ? _self.selectedAcademy : selectedAcademy // ignore: cast_nullable_to_non_nullable

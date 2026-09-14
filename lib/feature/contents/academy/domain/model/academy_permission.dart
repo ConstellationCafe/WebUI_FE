@@ -24,9 +24,9 @@ class AcademyPermission {
       academies: (json['academies'] as List<dynamic>? ?? [])
           .map(
             (item) => AcademyPermissionItem.fromJson(
-          item as Map<String, dynamic>,
-        ),
-      )
+              item as Map<String, dynamic>,
+            ),
+          )
           .toList(),
     );
   }

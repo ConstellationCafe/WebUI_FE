@@ -1,3 +1,6 @@
+import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
+import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
+import 'package:constellation_cafe/feature/contents/academy/domain/model/academy_permission.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/di/ApiProvider.dart';
@@ -10,17 +13,23 @@ import '../../domain/model/student.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/model/teacher.dart';
 import '../../state/lesson_record_selection_state/lesson_record_selection_state.dart';
+import '../permission_notifier/academy_permission_notifier.dart';
 
 part 'lesson_record_selection_notifier.g.dart';
 
 @riverpod
 class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
   late final LessonRecordRepository repository;
+  late final AcademyPermission permission;
+  late final CurrentUserState currentUser;
 
   @override
   LessonRecordSelectionState build() {
     final AcademyApi academyApi = ref.read(academyApiProvider);
     final LessonRecordApi lessonRecordApi = ref.read(lessonRecordApiProvider);
+    final permissionState = ref.watch(academyPermissionProvider);
+    permission = permissionState.permission!;
+    currentUser = ref.read(currentUserStateProvider);
     repository = LessonRecordRepository(
       academyApi: academyApi,
       lessonRecordApi: lessonRecordApi,
@@ -36,10 +45,19 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
   Future<void> _loadAcademies() async {
     try {
       final List<Academy> academies = await repository.getAcademies();
+      final allowedAcademies = permission.isAdmin
+        ? academies
+        : academies
+          .where(
+            (academy) => permission.academies.any(
+              (permissionAcademy) =>
+              permissionAcademy.academyId == academy.id
+            )
+          ).toList();
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
-          academies: academies,
+          academies: allowedAcademies,
         ),
         errorMessage: null,
       );
@@ -75,12 +93,33 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
         repository.getSubjects(academy.id),
         repository.getTeachers(academy.id),
       ).wait;
+      final operatingClasses = classes
+          .where((academyClass) => academyClass.state == "운영")
+          .toList();
+      final allowedClasses = permission.isOwnerWithAcademy(academy.id)
+          ? operatingClasses
+          : operatingClasses
+              .where(
+                (academyClass) => permission.isTeacherOrAboveWithClass(
+                  academy.id,
+                  academyClass.id,
+                ),
+              )
+              .toList();
+      final canSelectTeachers = permission.isOwnerWithAcademy(academy.id)
+          ? teachers
+          : teachers
+              .where(
+                (teacher) => teacher.discordID == currentUser.userId,
+              )
+              .toList();
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
-          classes: classes,
+          classes: allowedClasses,
           subjects: subjects,
-          teachers: teachers,
+          teachers: canSelectTeachers,
+          coTeachers: teachers
         ),
         errorMessage: null,
       );

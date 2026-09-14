@@ -6,15 +6,18 @@ import '../../data/api/student_status_api.dart';
 import '../../data/repository/student_status_repository.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
+import '../../domain/model/academy_permission.dart';
 import '../../domain/model/student.dart';
 import '../../domain/type/student_roster_status.dart';
 import '../../state/student_status_list_state/student_status_list_state.dart';
+import '../permission_notifier/academy_permission_notifier.dart';
 
 part 'student_status_list_notifier.g.dart';
 
 @riverpod
 class StudentStatusListNotifier extends _$StudentStatusListNotifier {
   late final StudentStatusRepository repository;
+  late final AcademyPermission permission;
 
   @override
   StudentStatusListState build() {
@@ -24,6 +27,8 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
     repository = StudentStatusRepository(
       api: api,
     );
+    final permissionState = ref.watch(academyPermissionProvider);
+    permission = permissionState.permission!;
 
     _loadAcademies();
 
@@ -35,10 +40,19 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
   Future<void> _loadAcademies() async {
     try {
       final List<Academy> academies = await repository.getAcademies();
+      final allowedAcademies = permission.isAdmin
+          ? academies
+          : academies
+          .where(
+              (academy) => permission.academies.any(
+                  (permissionAcademy) =>
+              permissionAcademy.academyId == academy.id
+          )
+      ).toList();
       state = state.copyWith(
         isFilterLoading: false,
         query: state.query.copyWith(
-          academies: academies,
+          academies: allowedAcademies,
         ),
         errorMessage: null,
       );
@@ -82,10 +96,20 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
       final List<AcademyClass> classes = await repository.getClasses(
         academy.id,
       );
+      final allowedClasses = permission.isOwnerWithAcademy(academy.id)
+          ? classes
+          : classes
+          .where(
+            (academyClass) => permission.isTeacherOrAboveWithClass(
+              academy.id,
+              academyClass.id,
+            ),
+          )
+          .toList();
       state = state.copyWith(
         isFilterLoading: false,
         query: state.query.copyWith(
-          classes: classes,
+          classes: allowedClasses,
         ),
         errorMessage: null,
       );
