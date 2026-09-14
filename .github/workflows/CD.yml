@@ -1,5 +1,4 @@
 name: WebUI_FE_CD
-
 on:
   push:
     branches: ["main"]
@@ -9,11 +8,11 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: "Checkout Github Repository"
-        uses: actions/checkout@v2
+      - name: Checkout Github Repository
+        uses: actions/checkout@v4
 
-      - name: "login and Copy project via SSH on Remote Server"
-        uses: appleboy/scp-action@master
+      - name: Copy project to Remote Server
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_ADDR }}
           username: ${{ secrets.SERVER_USERNAME }}
@@ -21,31 +20,25 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           source: "./*"
           target: "/home/${{ secrets.SERVER_USERNAME }}/workspace/dockers/WebUI_FE/service"
+          rm: true
 
-      - name: "Deploy docker via SSH on Remote Server"
-        uses: appleboy/ssh-action@master
+      - name: Deploy with docker compose
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
+          ROUTE_URI: ${{ secrets.ROUTE_URI }}
+          BACKEND_URI: ${{ secrets.BACKEND_URI }}
         with:
           host: ${{ secrets.SERVER_ADDR }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PWD }}
           port: ${{ secrets.SERVER_PORT }}
+          script_stop: true
+          command_timeout: 30m
+          envs: CLIENT_ID,REDIRECT_URI,ROUTE_URI,BACKEND_URI
           script: |
-            set -e
-
-            # Docker로 서비스 빌드 및 실행
+            set -euo pipefail
             cd /home/${{ secrets.SERVER_USERNAME }}/workspace/dockers/WebUI_FE/service
-
-            docker build -t docker:WebUI_FE_service \
-              --build-arg CLIENT_ID='${{ secrets.CLIENT_ID }}' \
-              --build-arg REDIRECT_URI='${{ secrets.REDIRECT_URI }}' \
-              --build-arg ROUTE_URI='${{ secrets.ROUTE_URI }}' \
-              --build-arg BACKEND_URI='${{ secrets.BACKEND_URI }}' \
-              .
-
-            docker stop WebUI_FE_service || true
-            docker rm WebUI_FE_service || true
-
-            docker run -d \
-              --name WebUI_FE_service \
-              -p 1104:1104 \
-              docker:WebUI_FE_service
+            docker compose down
+            docker compose up -d --build
