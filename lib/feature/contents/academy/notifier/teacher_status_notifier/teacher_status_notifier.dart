@@ -5,17 +5,20 @@ import '../../data/api/teacher_status_api.dart';
 import '../../data/repository/teacher_status_repository.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
+import '../../domain/model/academy_permission.dart';
 import '../../domain/model/teacher.dart';
 import '../../domain/model/teacher_status/teacher_status.dart';
 import '../../domain/model/teacher_status_form.dart';
 import '../../domain/type/teacher_status_type.dart';
 import '../../state/teacher_status_state/teacher_status_state.dart';
+import '../permission_notifier/academy_permission_notifier.dart';
 
 part 'teacher_status_notifier.g.dart';
 
 @riverpod
 class TeacherStatusNotifier extends _$TeacherStatusNotifier {
   late final TeacherStatusRepository repository;
+  late final AcademyPermission permission;
 
   @override
   TeacherStatusState build() {
@@ -25,6 +28,8 @@ class TeacherStatusNotifier extends _$TeacherStatusNotifier {
     repository = TeacherStatusRepository(
       api: api,
     );
+    final permissionState = ref.watch(academyPermissionProvider);
+    permission = permissionState.permission!;
     _initialize();
     return const TeacherStatusState(
       isLoading: false,
@@ -34,13 +39,20 @@ class TeacherStatusNotifier extends _$TeacherStatusNotifier {
   /// 최초 진입 시 학원 목록 조회
   Future<void> _initialize() async {
     try {
-      final List<Academy> academies =
-      await repository.getAcademies();
-
+      final List<Academy> academies = await repository.getAcademies();
+      final allowedAcademies = permission.isAdmin
+          ? academies
+          : academies
+          .where(
+              (academy) => permission.academies.any(
+                  (permissionAcademy) =>
+              permissionAcademy.academyId == academy.id
+          )
+      ).toList();
       state = state.copyWith(
         isLoading: false,
         teacherStatus: state.teacherStatus.copyWith(
-          academies: academies,
+          academies: allowedAcademies,
         ),
         errorMessage: null,
       );
@@ -69,10 +81,20 @@ class TeacherStatusNotifier extends _$TeacherStatusNotifier {
 
     try {
       final List<AcademyClass> classes = await repository.getClasses(academy.id);
+      final allowedClasses = permission.isOwnerWithAcademy(academy.id)
+          ? classes
+          : classes
+          .where(
+            (academyClass) => permission.isTeacherOrAboveWithClass(
+              academy.id,
+              academyClass.id,
+            ),
+          )
+          .toList();
       state = state.copyWith(
         isLoading: false,
         teacherStatus: state.teacherStatus.copyWith(
-          classes: classes,
+          classes: allowedClasses,
         ),
         errorMessage: null,
       );

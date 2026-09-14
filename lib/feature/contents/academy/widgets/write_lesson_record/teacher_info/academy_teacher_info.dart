@@ -9,6 +9,7 @@ import 'main_teacher_field.dart';
 
 class AcademyTeacherInfo extends StatelessWidget {
   final List<Teacher> teachers;
+  final List<Teacher> coTeachers;
   final Teacher? mainTeacher;
   final List<Teacher> selectedCoTeachers;
 
@@ -18,6 +19,7 @@ class AcademyTeacherInfo extends StatelessWidget {
   const AcademyTeacherInfo({
     super.key,
     required this.teachers,
+    required this.coTeachers,
     required this.mainTeacher,
     required this.selectedCoTeachers,
     required this.onMainTeacherChanged,
@@ -45,7 +47,7 @@ class AcademyTeacherInfo extends StatelessWidget {
             ),
             Expanded(
               child: CoTeacherField(
-                teachers: teachers,
+                teachers: coTeachers,
                 mainTeacher: mainTeacher,
                 selectedCoTeachers: selectedCoTeachers,
                 onChanged: onCoTeacherToggle,

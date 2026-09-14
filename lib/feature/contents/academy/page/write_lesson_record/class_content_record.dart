@@ -113,6 +113,7 @@ class LessonRecordPage extends ConsumerWidget {
               ),
               AcademyTeacherInfo(
                 teachers: queryState.queryForm.teachers,
+                coTeachers: queryState.queryForm.coTeachers,
                 mainTeacher: queryState.queryForm.mainTeacher,
                 selectedCoTeachers: queryState.queryForm.selectedCoTeachers,
                 onMainTeacherChanged: queryNotifier.selectMainTeacher,

@@ -5,18 +5,21 @@ import '../../data/api/student_status_api.dart';
 import '../../data/repository/student_status_repository.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
+import '../../domain/model/academy_permission.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/student_status/student_status.dart';
 import '../../domain/model/student_status_form.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/type/student_status_type.dart';
 import '../../state/student_status_state/student_status_state.dart';
+import '../permission_notifier/academy_permission_notifier.dart';
 
 part 'student_status_notifier.g.dart';
 
 @riverpod
 class StudentStatusNotifier extends _$StudentStatusNotifier {
   late final StudentStatusRepository repository;
+  late final AcademyPermission permission;
 
   @override
   StudentStatusState build() {
@@ -26,6 +29,8 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
     repository = StudentStatusRepository(
       api: api,
     );
+    final permissionState = ref.watch(academyPermissionProvider);
+    permission = permissionState.permission!;
     _initialize();
     return const StudentStatusState(
       isLoading: false,
@@ -36,10 +41,19 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
   Future<void> _initialize() async {
     try {
       final List<Academy> academies = await repository.getAcademies();
+      final allowedAcademies = permission.isAdmin
+          ? academies
+          : academies
+          .where(
+              (academy) => permission.academies.any(
+                  (permissionAcademy) =>
+              permissionAcademy.academyId == academy.id
+          )
+      ).toList();
       state = state.copyWith(
         isLoading: false,
         studentStatus: state.studentStatus.copyWith(
-          academies: academies,
+          academies: allowedAcademies,
         ),
         errorMessage: null,
       );
@@ -74,10 +88,20 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
         repository.getClasses(academy.id),
         repository.getSubjects(academy.id),
       ).wait;
+      final allowedClasses = permission.isOwnerWithAcademy(academy.id)
+          ? classes
+          : classes
+          .where(
+            (academyClass) => permission.isTeacherOrAboveWithClass(
+              academy.id,
+              academyClass.id,
+            ),
+          )
+          .toList();
       state = state.copyWith(
         isLoading: false,
         studentStatus: state.studentStatus.copyWith(
-          classes: classes,
+          classes: allowedClasses,
           subjects: subjects,
         ),
         errorMessage: null,
