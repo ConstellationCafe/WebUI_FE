@@ -1,2 +1,6 @@
 - Icons
-  - swords: https://www.flaticon.com/free-icon/swords_861891?term=sword&page=1&position=6&origin=search&related_id=861891
+  - [swords](https://www.flaticon.com/free-icon/swords_861891?term=sword&page=1&position=6&origin=search&related_id=861891)
+  - Academy
+    - [hr](https://www.flaticon.com/free-icon-font/hr_13794369?page=1&position=11&term=hr&origin=search&related_id=13794369)
+    - [write](https://www.flaticon.com/free-icon-font/file-edit_10469584?page=1&position=3&term=write&origin=search&related_id=10469584)
+    - [read](https://www.flaticon.com/free-icon-font/book-alt_3914149?page=1&position=1&term=read&origin=search&related_id=3914149)
