@@ -49,6 +49,7 @@ dependencies:
   dio_cookie_manager: ^3.0.0
   cookie_jar: ^4.0.0
   build_runner: ^2.13.1
+  flutter_svg: ^2.0.0
 
 
 dev_dependencies:

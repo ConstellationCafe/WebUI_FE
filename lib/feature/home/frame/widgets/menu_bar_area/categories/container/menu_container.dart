@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
 
 class MenuContainer extends ConsumerStatefulWidget {
-  final Image iconImage;
+  final Widget iconImage;
   final String menuName;
   final String callbackUrl;
 
