@@ -82,13 +82,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/icons/main_icon.jpg
-      - assets/icons/category/user/friendly_match.png
-      - assets/icons/category/user/learning.png
-      - assets/icons/category/user/recommend_menu.png
-      - assets/icons/category/user/recommend_music.png
-      - assets/icons/category/user/recommend_content.png
-      - assets/icons/category/admin/point.png
-      - assets/icons/category/academy/
+      - assets/icons/admin/
+      - assets/icons/modules/
 
 flutter_launcher_icons:
   android: true

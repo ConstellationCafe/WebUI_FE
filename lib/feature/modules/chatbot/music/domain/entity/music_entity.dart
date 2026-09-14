@@ -1,4 +1,4 @@
-import '../../../../../../shared/domain/entity/entity_interface.dart';
+import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
 class MusicEntity extends Entity {
   String videoId;
