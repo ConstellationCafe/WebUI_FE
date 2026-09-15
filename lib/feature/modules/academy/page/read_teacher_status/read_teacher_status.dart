@@ -142,21 +142,21 @@ class ReadTeacherStatusPage extends ConsumerWidget {
                     Icons.people_outline,
                   ),
                   StatusSummaryData(
-                    label: '재적',
+                    label: TeacherRosterStatus.enrolled.label,
                     count:
                     teacherStatusList.enrolledCount,
                     icon:
                     Icons.school_outlined,
                   ),
                   StatusSummaryData(
-                    label: '은퇴',
+                    label: TeacherRosterStatus.retirement.label,
                     count: teacherStatusList
                         .retirementCount,
                     icon:
                     Icons.person_off_outlined,
                   ),
                   StatusSummaryData(
-                    label: '징계',
+                    label: TeacherRosterStatus.disciplinary.label,
                     count: teacherStatusList
                         .disciplinaryCount,
                     icon:

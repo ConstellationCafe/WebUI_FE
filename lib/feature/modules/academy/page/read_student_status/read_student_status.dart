@@ -127,28 +127,28 @@ class ReadStudentStatusPage extends ConsumerWidget {
                     Icons.people_outline,
                   ),
                   StatusSummaryData(
-                    label: '재적',
+                    label: StudentRosterStatus.enrolled.label,
                     count:
                     studentStatusList.enrolledCount,
                     icon:
                     Icons.school_outlined,
                   ),
                   StatusSummaryData(
-                    label: '졸업',
+                    label: StudentRosterStatus.graduation.label,
                     count: studentStatusList
                         .graduationCount,
                     icon: Icons
                         .workspace_premium_outlined,
                   ),
                   StatusSummaryData(
-                    label: '퇴학',
+                    label: StudentRosterStatus.expulsion.label,
                     count: studentStatusList
                         .expulsionCount,
                     icon:
                     Icons.person_remove_outlined,
                   ),
                   StatusSummaryData(
-                    label: '자퇴',
+                    label: StudentRosterStatus.withdrawal.label,
                     count: studentStatusList
                         .withdrawalCount,
                     icon:
