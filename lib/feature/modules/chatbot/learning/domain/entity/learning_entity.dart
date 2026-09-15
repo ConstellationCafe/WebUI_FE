@@ -3,17 +3,20 @@ import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 class LearningEntity extends Entity {
   String lnKey;
   String lnValue;
+  String teacher;
 
   LearningEntity({
     required super.metadata,
     required this.lnKey,
-    required this.lnValue
+    required this.lnValue,
+    required this.teacher
   });
 
   @override
   Map<String, dynamic> toJson() => {
     'lnKey': lnKey,
-    'lnValue': lnValue
+    'lnValue': lnValue,
+    'teacher': teacher
   };
 
   factory LearningEntity.init(List<Map<String, dynamic>> metadata) {
@@ -21,6 +24,7 @@ class LearningEntity extends Entity {
       metadata: metadata,
       lnKey: '',
       lnValue: '',
+        teacher: ''
     );
   }
 
@@ -31,6 +35,7 @@ class LearningEntity extends Entity {
       metadata: metadata,
       lnKey: (json['lnKey'] ?? '').toString(),
       lnValue: (json['lnValue'] ?? '').toString(),
+      teacher: (json['teacher'] ?? '').toString(),
     );
   }
 }

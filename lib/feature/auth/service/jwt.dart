@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/shared/model/response/backend/ApiResponse.dart';
+import 'package:constellation_cafe/shared/data/dto/response/backend/ApiResponse.dart';
 import 'package:constellation_cafe/feature/auth/api/auth_Interface.dart';
 
 

@@ -2,6 +2,7 @@
 import 'package:constellation_cafe/feature/profile/domain/entity/point_entity.dart';
 import 'package:dio/dio.dart';
 import '../../../../shared/domain/repository/repository_interface.dart';
+import '../../../shared/domain/pagination/page_result.dart';
 
 
 class PointRepository implements RepositoryInterface<PointEntity> {
@@ -49,6 +50,75 @@ class PointRepository implements RepositoryInterface<PointEntity> {
       final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
       throw Exception('API error: $msg');
     }
+  }
+
+  @override
+  Future<PageResult<PointEntity>> findPage({
+    required int page,
+    required int size,
+    String? searchColumn,
+    String? searchValue,
+    String? sortColumn,
+    String? sortDirection,
+  }) async {
+    final response = await dio.get(
+      "$apiPath/list",
+      queryParameters: {
+        'page': page,
+        'size': size,
+        if (searchColumn != null && searchColumn.isNotEmpty)
+          'searchColumn': searchColumn,
+        if (searchValue != null && searchValue.isNotEmpty)
+          'searchValue': searchValue,
+        if (sortColumn != null && sortColumn.isNotEmpty)
+          'sortColumn': sortColumn,
+        if (sortDirection != null && sortDirection.isNotEmpty)
+          'sortDirection': sortDirection,
+      },
+    );
+    final res = response.data;
+
+    if (res['success'] != true) {
+      final err = res['error'];
+      final msg = (err is Map<String, dynamic>)
+          ? (err['message']?.toString() ?? 'unknown')
+          : 'unknown';
+
+      throw Exception('API error: $msg');
+    }
+    final body = res['response'];
+    final List rawMeta = (body['metadata'] as List?)?.toList()
+        ?? const [];
+    final List<Map<String, dynamic>> metadata = rawMeta
+        .map((e) => Map<String, dynamic>.from(e as Map))
+        .map((m) {
+          final col = m['colName'];
+          if (col == 'cn_value') {
+            m['colName'] = 'cnValue';
+          }
+          return m;
+        })
+        .toList();
+
+    final List rawEntities = (body['entities'] as List?)?.toList()
+        ?? const [];
+    final List<PointEntity> entities = rawEntities
+        .map(
+          (e) => PointEntity.fromJson(
+            metadata,
+            Map<String, dynamic>.from(e as Map),
+          ),
+        )
+        .toList();
+
+    return PageResult<PointEntity>(
+      items: entities,
+      page: (body['page'] as num?)?.toInt() ?? page,
+      size: (body['size'] as num?)?.toInt() ?? size,
+      totalElements: (body['totalElements'] as num?)?.toInt() ?? 0,
+      totalPages: (body['totalPages'] as num?)?.toInt() ?? 0,
+      hasNext: body['hasNext'] == true,
+    );
   }
 
   @override

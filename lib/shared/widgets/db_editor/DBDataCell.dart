@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/shared/model/db_editor/DBController.dart';
+import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
 
 
 class DBDataCell extends StatefulWidget {

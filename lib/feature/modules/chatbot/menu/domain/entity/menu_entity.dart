@@ -2,10 +2,12 @@ import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
 class MenuEntity extends Entity {
   String mnValue;
+  String recommender;
 
   MenuEntity({
     required super.metadata,
-    required this.mnValue
+    required this.mnValue,
+    required this.recommender
   });
 
   @override
@@ -17,6 +19,7 @@ class MenuEntity extends Entity {
     return MenuEntity(
       metadata: metadata,
       mnValue: '',
+      recommender: ''
     );
   }
 
@@ -26,6 +29,7 @@ class MenuEntity extends Entity {
     return MenuEntity(
       metadata: metadata,
       mnValue: (json['mnValue'] ?? '').toString(),
+      recommender: (json['recommender'] ?? '').toString(),
     );
   }
 }

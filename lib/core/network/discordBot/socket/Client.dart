@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:constellation_cafe/core/network/discordBot/socket/Interface.dart';
-import 'package:constellation_cafe/shared/model/request/SocketModel.dart';
+import 'package:constellation_cafe/shared/data/dto/request/SocketModel.dart';
 
 class SocketClient extends SocketInterface {
   static const String routerUrl = String.fromEnvironment('ROUTE_URI');

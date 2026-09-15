@@ -2,10 +2,12 @@ import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
 class MusicEntity extends Entity {
   String videoId;
+  String recommender;
 
   MusicEntity({
     required super.metadata,
-    required this.videoId
+    required this.videoId,
+    required this.recommender
   });
 
   @override
@@ -17,6 +19,7 @@ class MusicEntity extends Entity {
     return MusicEntity(
       metadata: metadata,
       videoId: '',
+      recommender: ''
     );
   }
 
@@ -26,6 +29,7 @@ class MusicEntity extends Entity {
     return MusicEntity(
       metadata: metadata,
       videoId: (json['videoId'] ?? '').toString(),
+      recommender: (json['recommender'] ?? '').toString(),
     );
   }
 }
