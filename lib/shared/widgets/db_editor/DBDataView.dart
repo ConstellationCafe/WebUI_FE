@@ -8,11 +8,13 @@ import 'DBDataCell.dart';
 class DBDataView extends StatefulWidget {
   final DBController controller;
   final Set<String> hiddenColumns;
+  final Set<String> readOnlyColumns;
 
   const DBDataView({
     super.key,
     required this.controller,
     this.hiddenColumns = const {},
+    this.readOnlyColumns = const {},
   });
 
   @override
@@ -110,10 +112,13 @@ class _DBDataState
             (colIndex) {
           final isRowSelected =
               rowIndex == selectedCell[1];
-
           final isCellSelected =
-              isRowSelected &&
-                  colIndex == selectedCell[0];
+              isRowSelected
+              && colIndex == selectedCell[0];
+          final columnName =
+              controller.model.columns[colIndex].toString();
+          final isEditable =
+              !widget.readOnlyColumns.contains(columnName);
 
           return DBDataCell(
             key: ValueKey(
@@ -128,6 +133,9 @@ class _DBDataState
             rowHeight: rowHeight,
             isSelected: isCellSelected,
             isEditMode: controller.isEditMode,
+            isEditable: !widget.readOnlyColumns.contains(
+              columnName,
+            ),
           );
         },
       ).toList(),

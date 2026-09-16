@@ -5,6 +5,8 @@ import 'DBColumn.dart';
 class DBModel {
   Map<String, List<String>> origin = {};
   Map<String, List<String>> table = {};
+  // 실제 값과 화면 표시값이 다른 컬럼만 저장
+  Map<String, List<String>> displayValues = {};
 
   List<DBColumn> columns = [];
 
@@ -22,6 +24,23 @@ class DBModel {
         table[colName]![rowIndex] = value;
       },
     );
+  }
+
+  String getDisplayValue(
+      int colIndex,
+      int rowIndex,
+      ) {
+    final colName = columns[colIndex].toString();
+
+    final displayColumn = displayValues[colName];
+
+    if (displayColumn != null &&
+        rowIndex >= 0 &&
+        rowIndex < displayColumn.length) {
+      return displayColumn[rowIndex];
+    }
+
+    return table[colName]![rowIndex];
   }
 
   int get colCount => columns.length;
@@ -59,15 +78,30 @@ class DBModel {
     _initializeColumns(metadata);
 
     final newTable = _createEmptyTable();
+    final newDisplayValues =
+    <String, List<String>>{};
 
     for (final entity in entities) {
       final json = entity.toJson();
+      final displayJson = entity.toDisplayJson();
 
       for (final column in columns) {
         final name = column.toString();
 
         newTable[name]!.add(
           (json[name] ?? '').toString(),
+        );
+      }
+
+      // 실제 값과 표시값이 다른 컬럼만 저장
+      for (final entry in displayJson.entries) {
+        newDisplayValues
+            .putIfAbsent(
+          entry.key,
+              () => <String>[],
+        )
+            .add(
+          (entry.value ?? '').toString(),
         );
       }
     }
@@ -77,9 +111,13 @@ class DBModel {
         entry.key:
         List<String>.from(entry.value),
     };
-
     origin = {
       for (final entry in newTable.entries)
+        entry.key:
+        List<String>.from(entry.value),
+    };
+    displayValues = {
+      for (final entry in newDisplayValues.entries)
         entry.key:
         List<String>.from(entry.value),
     };
@@ -102,15 +140,26 @@ class DBModel {
 
     for (final entity in entities) {
       final json = entity.toJson();
+      final displayJson = entity.toDisplayJson();
 
       for (final column in columns) {
         final name = column.toString();
-        final value = (json[name] ?? '').toString();
+        final value =
+        (json[name] ?? '').toString();
 
         table[name]!.add(value);
-
-        // save()의 변경사항 비교 기준도 같이 추가
         origin[name]!.add(value);
+      }
+
+      for (final entry in displayJson.entries) {
+        displayValues
+            .putIfAbsent(
+          entry.key,
+              () => <String>[],
+        )
+            .add(
+          (entry.value ?? '').toString(),
+        );
       }
     }
   }
@@ -177,6 +226,11 @@ class DBModel {
       table[column.toString()]!.add('');
     }
 
+    // 표시 전용 컬럼만 행 개수를 맞춰준다.
+    for (final values in displayValues.values) {
+      values.add('');
+    }
+
     if (rowCount > 0) {
       _selectedRow = rowCount - 1;
       _selectedCol = 0;
@@ -196,6 +250,12 @@ class DBModel {
       table[column.toString()]!.removeAt(
         _selectedRow,
       );
+    }
+
+    for (final values in displayValues.values) {
+      if (_selectedRow < values.length) {
+        values.removeAt(_selectedRow);
+      }
     }
 
     if (_selectedRow >= rowCount) {

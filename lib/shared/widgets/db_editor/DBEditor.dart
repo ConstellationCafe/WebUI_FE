@@ -17,12 +17,14 @@ class DBEditor extends StatefulWidget {
   final RepositoryInterface repository;
   final bool readonly;
   final Set<String> hiddenColumns;
+  final Set<String> readOnlyColumns;
 
   const DBEditor({
     super.key,
     required this.repository,
     this.readonly = false,
     this.hiddenColumns = const {},
+    this.readOnlyColumns = const {},
   });
 
   @override
@@ -188,6 +190,7 @@ class _DBEditorState extends State<DBEditor> {
                     key: viewKey,
                     controller: controller,
                     hiddenColumns: widget.hiddenColumns,
+                    readOnlyColumns: widget.readOnlyColumns,
                   ),
                 ),
                 if (controller.isLoading && controller.isInitialized)
