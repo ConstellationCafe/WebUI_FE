@@ -6,10 +6,12 @@ import '../../controller/db_editor/DBController.dart';
 
 class DBColumns extends StatelessWidget {
   final DBController controller;
+  final Set<String> hiddenColumns;
 
   const DBColumns({
     super.key,
     required this.controller,
+    this.hiddenColumns = const {},
   });
 
   Future<void> _sort(
@@ -62,19 +64,13 @@ class DBColumns extends StatelessWidget {
   }
 
   @override
-  Widget build(
-      BuildContext context,
-      ) {
+  Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: controller,
-      builder: (
-          context,
-          _,
-          ) {
+      builder: (context, _) {
         if (controller.countColumn == 0) {
           return const SizedBox();
         }
-
         return Table(
           border: TableBorder.all(
             width: 1,
@@ -82,55 +78,44 @@ class DBColumns extends StatelessWidget {
           ),
           children: [
             TableRow(
-              children:
-              controller.model.columns
+              children: controller.model.columns
+                  .where(
+                    (column) =>
+                    !hiddenColumns.contains(column.toString()),
+                  )
                   .map(
                     (column) {
-                  return InkWell(
-                    onTap:
-                    controller.isLoading
-                        ? null
-                        : () {
-                      _sort(
-                        context,
-                        column
-                            .toString(),
+                      return InkWell(
+                        onTap: controller.isLoading
+                            ? null
+                            : () {
+                                _sort(
+                                  context,
+                                  column.toString(),
+                                );
+                              },
+                        child: Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  column.toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 3),
+                              _sortIcon(column),
+                            ],
+                          ),
+                        ),
                       );
                     },
-                    child: Container(
-                      height: 40,
-                      alignment:
-                      Alignment.center,
-                      padding:
-                      const EdgeInsets
-                          .symmetric(
-                        horizontal: 4,
-                      ),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment
-                            .center,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              column
-                                  .toString(),
-                              overflow:
-                              TextOverflow
-                                  .ellipsis,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 3,
-                          ),
-                          _sortIcon(
-                            column,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
               ).toList(),
             ),
           ],

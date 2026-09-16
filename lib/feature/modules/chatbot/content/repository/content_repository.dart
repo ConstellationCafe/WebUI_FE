@@ -13,38 +13,38 @@ class ContentRepository implements RepositoryInterface<ContentEntity> {
     required this.dio
   });
 
-  @override
-  Future<List<ContentEntity>> findAll() async {
-    final response = await dio.get("$apiPath/list");
-    final res = response.data;
-
-    if (res['success'] == true) {
-      final List rawMeta = (res['response']?['metadata'] as List?)?.toList() ?? const [];
-      final List<Map<String, dynamic>> metadata = rawMeta
-          .map((e) => Map<String, dynamic>.from(e as Map))
-          .map((m) {
-            // 실제 DB 컬럼명을 DBModel 컬럼명으로 변환
-            final col = m['colName'];
-            if (col == 'cn_value') {
-              m['colName'] = 'cnValue';
-            }
-            return m;
-          }).toList();
-      final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
-      if (entities.isNotEmpty) {
-        return entities
-            .map((e) => ContentEntity.fromJson(metadata, e))
-            .toList();
-      } else {
-        return [ContentEntity.init(metadata)];
-      }
-
-    } else {
-      final err = res['error'];
-      final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
-      throw Exception('API error: $msg');
-    }
-  }
+  // @override
+  // Future<List<ContentEntity>> findAll() async {
+  //   final response = await dio.get("$apiPath/list");
+  //   final res = response.data;
+  //
+  //   if (res['success'] == true) {
+  //     final List rawMeta = (res['response']?['metadata'] as List?)?.toList() ?? const [];
+  //     final List<Map<String, dynamic>> metadata = rawMeta
+  //         .map((e) => Map<String, dynamic>.from(e as Map))
+  //         .map((m) {
+  //           // 실제 DB 컬럼명을 DBModel 컬럼명으로 변환
+  //           final col = m['colName'];
+  //           if (col == 'cn_value') {
+  //             m['colName'] = 'cnValue';
+  //           }
+  //           return m;
+  //         }).toList();
+  //     final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
+  //     if (entities.isNotEmpty) {
+  //       return entities
+  //           .map((e) => ContentEntity.fromJson(metadata, e))
+  //           .toList();
+  //     } else {
+  //       return [ContentEntity.init(metadata)];
+  //     }
+  //
+  //   } else {
+  //     final err = res['error'];
+  //     final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
+  //     throw Exception('API error: $msg');
+  //   }
+  // }
 
   @override
   Future<PageResult<ContentEntity>> findPage({
@@ -110,6 +110,7 @@ class ContentRepository implements RepositoryInterface<ContentEntity> {
 
     return PageResult<ContentEntity>(
       items: entities,
+      metadata: metadata,
       page: (body['page'] as num?)?.toInt() ?? page,
       size: (body['size'] as num?)?.toInt() ?? size,
       totalElements: (body['totalElements'] as num?)?.toInt() ?? 0,

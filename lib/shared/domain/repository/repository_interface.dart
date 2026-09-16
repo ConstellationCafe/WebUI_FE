@@ -3,7 +3,7 @@ import '../pagination/page_result.dart';
 
 
 abstract class RepositoryInterface<T extends Entity> {
-  Future<List<T>> findAll();
+  // Future<List<T>> findAll();
   Future<PageResult<T>> findPage({
     required int page,
     required int size,

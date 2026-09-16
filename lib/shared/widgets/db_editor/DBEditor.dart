@@ -16,11 +16,13 @@ import 'editor_usage.dart';
 class DBEditor extends StatefulWidget {
   final RepositoryInterface repository;
   final bool readonly;
+  final Set<String> hiddenColumns;
 
   const DBEditor({
     super.key,
     required this.repository,
     this.readonly = false,
+    this.hiddenColumns = const {},
   });
 
   @override
@@ -152,8 +154,7 @@ class _DBEditorState extends State<DBEditor> {
                 ),
               ],
             ),
-            padding:
-            const EdgeInsets.all(
+            padding: const EdgeInsets.all(
               ConstSize.mediumWidth,
             ),
             child: Column(
@@ -165,6 +166,7 @@ class _DBEditorState extends State<DBEditor> {
                 // 검색 UI 추가
                 DBSearch(
                   controller: controller,
+                  hiddenColumns: widget.hiddenColumns,
                 ),
 
                 SizedBox(
@@ -175,30 +177,22 @@ class _DBEditorState extends State<DBEditor> {
 
                 DBColumns(
                   key: columnKey,
-                  controller:
-                  controller,
+                  controller: controller,
+                  hiddenColumns: widget.hiddenColumns,
                 ),
-
                 SizedBox(
-                  height:
-                  ConstSize
-                      .mediumHeight,
+                  height: ConstSize.mediumHeight,
                 ),
-
                 Expanded(
                   child: DBDataView(
                     key: viewKey,
-                    controller:
-                    controller,
+                    controller: controller,
+                    hiddenColumns: widget.hiddenColumns,
                   ),
                 ),
-
-                if (controller.isLoading &&
-                    controller
-                        .isInitialized)
+                if (controller.isLoading && controller.isInitialized)
                   const Padding(
-                    padding:
-                    EdgeInsets.only(
+                    padding: EdgeInsets.only(
                       top: 8,
                     ),
                     child: Center(

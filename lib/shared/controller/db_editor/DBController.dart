@@ -4,7 +4,7 @@ import 'package:constellation_cafe/shared/domain/repository/repository_interface
 import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
 import '../../model/db_editor/DBModel.dart';
-import '../../model/db_editor/DBColumn.dart';
+
 
 class DBController extends ChangeNotifier {
   final RepositoryInterface repository;
@@ -66,10 +66,7 @@ class DBController extends ChangeNotifier {
     if (isLoading) {
       return;
     }
-
-    isLoading = true;
-    notifyListeners();
-
+    isLoading = true; notifyListeners();
     try {
       final result = await repository.findPage(
         page: 1,
@@ -79,9 +76,9 @@ class DBController extends ChangeNotifier {
         sortColumn: sortColumn,
         sortDirection: sortDirection,
       );
-
       model.replace(
         List<Entity>.from(result.items),
+        result.metadata,
       );
 
       currentPage = result.page;

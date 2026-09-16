@@ -1,5 +1,6 @@
 class PageResult<T> {
   final List<T> items;
+  final List<Map<String, dynamic>> metadata;
   final int page;
   final int size;
   final int totalElements;
@@ -8,6 +9,7 @@ class PageResult<T> {
 
   const PageResult({
     required this.items,
+    this.metadata = const [],
     required this.page,
     required this.size,
     required this.totalElements,

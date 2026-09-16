@@ -13,41 +13,41 @@ class LearningRepository implements RepositoryInterface<LearningEntity> {
     required this.dio
   });
 
-  @override
-  Future<List<LearningEntity>> findAll() async {
-    final response = await dio.get("$apiPath/list");
-    final res = response.data;
-
-    if (res['success'] == true) {
-      final List rawMeta = (res['response']?['metadata'] as List?)?.toList() ?? const [];
-      final List<Map<String, dynamic>> metadata = rawMeta
-          .map((e) => Map<String, dynamic>.from(e as Map))
-          .map((m) {
-            final dbName = m['colName'].toString();
-            // 실제 DB 컬럼명 보존
-            m['dbName'] = dbName;
-            // Entity / DBModel에서 사용하는 이름
-            if (dbName == 'ln_key') {
-              m['colName'] = 'lnKey';
-            } else if (dbName == 'ln_value') {
-              m['colName'] = 'lnValue';
-            }
-            return m;
-          }).toList();
-      final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
-      if (entities.isNotEmpty) {
-        return entities
-            .map((e) => LearningEntity.fromJson(metadata, e))
-            .toList();
-      } else {
-        return [LearningEntity.init(metadata)];
-      }
-    } else {
-      final err = res['error'];
-      final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
-      throw Exception('API error: $msg');
-    }
-  }
+  // @override
+  // Future<List<LearningEntity>> findAll() async {
+  //   final response = await dio.get("$apiPath/list");
+  //   final res = response.data;
+  //
+  //   if (res['success'] == true) {
+  //     final List rawMeta = (res['response']?['metadata'] as List?)?.toList() ?? const [];
+  //     final List<Map<String, dynamic>> metadata = rawMeta
+  //         .map((e) => Map<String, dynamic>.from(e as Map))
+  //         .map((m) {
+  //           final dbName = m['colName'].toString();
+  //           // 실제 DB 컬럼명 보존
+  //           m['dbName'] = dbName;
+  //           // Entity / DBModel에서 사용하는 이름
+  //           if (dbName == 'ln_key') {
+  //             m['colName'] = 'lnKey';
+  //           } else if (dbName == 'ln_value') {
+  //             m['colName'] = 'lnValue';
+  //           }
+  //           return m;
+  //         }).toList();
+  //     final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
+  //     if (entities.isNotEmpty) {
+  //       return entities
+  //           .map((e) => LearningEntity.fromJson(metadata, e))
+  //           .toList();
+  //     } else {
+  //       return [LearningEntity.init(metadata)];
+  //     }
+  //   } else {
+  //     final err = res['error'];
+  //     final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
+  //     throw Exception('API error: $msg');
+  //   }
+  // }
 
   @override
   Future<PageResult<LearningEntity>> findPage({
@@ -89,12 +89,17 @@ class LearningRepository implements RepositoryInterface<LearningEntity> {
     final List<Map<String, dynamic>> metadata = rawMeta
         .map((e) => Map<String, dynamic>.from(e as Map))
         .map((m) {
-      final col = m['colName'];
-      if (col == 'cn_value') {
-        m['colName'] = 'cnValue';
-      }
-      return m;
-    })
+          final dbName = m['colName'].toString();
+          // 실제 DB 컬럼명 보존
+          m['dbName'] = dbName;
+          // Entity / DBModel에서 사용하는 이름
+          if (dbName == 'ln_key') {
+            m['colName'] = 'lnKey';
+          } else if (dbName == 'ln_value') {
+            m['colName'] = 'lnValue';
+          }
+          return m;
+        })
         .toList();
 
     final List rawEntities = (body['entities'] as List?)?.toList()
@@ -110,6 +115,7 @@ class LearningRepository implements RepositoryInterface<LearningEntity> {
 
     return PageResult<LearningEntity>(
       items: entities,
+      metadata: metadata,
       page: (body['page'] as num?)?.toInt() ?? page,
       size: (body['size'] as num?)?.toInt() ?? size,
       totalElements: (body['totalElements'] as num?)?.toInt() ?? 0,

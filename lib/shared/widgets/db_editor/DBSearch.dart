@@ -4,10 +4,12 @@ import '../../controller/db_editor/DBController.dart';
 
 class DBSearch extends StatefulWidget {
   final DBController controller;
+  final Set<String> hiddenColumns;
 
   const DBSearch({
     super.key,
     required this.controller,
+    this.hiddenColumns = const {},
   });
 
   @override
@@ -32,8 +34,13 @@ class _DBSearchState
   }
 
   void _initializeColumn() {
-    final columns =
-    widget.controller.getColumns();
+    final columns = widget.controller
+        .getColumns()
+        .where(
+          (column) =>
+          !widget.hiddenColumns.contains(column),
+        )
+        .toList();
 
     if (columns.isNotEmpty) {
       _selectedColumn =
@@ -177,14 +184,14 @@ class _DBSearchState
      */
     return AnimatedBuilder(
       animation: widget.controller,
-      builder: (
-          context,
-          _,
-          ) {
-        final columns =
-        widget.controller
-            .getColumns();
-
+      builder: (context, _) {
+        final columns = widget.controller
+            .getColumns()
+            .where(
+              (column) =>
+              !widget.hiddenColumns.contains(column),
+            )
+            .toList();
         /*
          * 최초 조회 이후 컬럼 자동 선택
          */
@@ -193,7 +200,6 @@ class _DBSearchState
           _selectedColumn =
               columns.first;
         }
-
         /*
          * Repository 변경 등으로
          * 기존 선택 컬럼이 사라진 경우

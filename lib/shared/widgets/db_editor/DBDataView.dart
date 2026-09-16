@@ -7,10 +7,12 @@ import 'DBDataCell.dart';
 
 class DBDataView extends StatefulWidget {
   final DBController controller;
+  final Set<String> hiddenColumns;
 
   const DBDataView({
     super.key,
     required this.controller,
+    this.hiddenColumns = const {},
   });
 
   @override
@@ -93,20 +95,25 @@ class _DBDataState
     final List<int> selectedCell =
     controller.getSelectedCell();
 
+    final visibleColumnIndexes =
+    List.generate(
+      controller.model.columns.length,
+          (index) => index,
+    ).where(
+          (index) => !widget.hiddenColumns.contains(
+        controller.model.columns[index].toString(),
+      ),
+    ).toList();
+
     return TableRow(
-      children: List.generate(
-        controller
-            .getColumns()
-            .length,
+      children: visibleColumnIndexes.map(
             (colIndex) {
           final isRowSelected =
-              rowIndex ==
-                  selectedCell[1];
+              rowIndex == selectedCell[1];
 
           final isCellSelected =
               isRowSelected &&
-                  colIndex ==
-                      selectedCell[0];
+                  colIndex == selectedCell[0];
 
           return DBDataCell(
             key: ValueKey(
@@ -114,15 +121,16 @@ class _DBDataState
             ),
             controller: controller,
             rowIndex: rowIndex,
+
+            // DBModel의 원래 index
             colIndex: colIndex,
+
             rowHeight: rowHeight,
-            isSelected:
-            isCellSelected,
-            isEditMode:
-            controller.isEditMode,
+            isSelected: isCellSelected,
+            isEditMode: controller.isEditMode,
           );
         },
-      ),
+      ).toList(),
     );
   }
 

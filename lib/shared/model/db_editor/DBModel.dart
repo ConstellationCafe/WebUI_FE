@@ -50,13 +50,13 @@ class DBModel {
   }
 
   /// 첫 페이지 / 검색 / 정렬 결과
-  void replace(List<Entity> entities) {
-    if (entities.isEmpty) {
-      _clearRows();
-      return;
-    }
-
-    _initializeColumns(entities.first);
+  void replace(
+      List<Entity> entities,
+      List<Map<String, dynamic>> metadata,
+      ) {
+    // 데이터 존재 여부와 관계없이
+    // metadata를 이용해서 컬럼부터 초기화
+    _initializeColumns(metadata);
 
     final newTable = _createEmptyTable();
 
@@ -74,12 +74,14 @@ class DBModel {
 
     table = {
       for (final entry in newTable.entries)
-        entry.key: List<String>.from(entry.value),
+        entry.key:
+        List<String>.from(entry.value),
     };
 
     origin = {
       for (final entry in newTable.entries)
-        entry.key: List<String>.from(entry.value),
+        entry.key:
+        List<String>.from(entry.value),
     };
 
     _selectedCol = 0;
@@ -91,10 +93,11 @@ class DBModel {
     if (entities.isEmpty) {
       return;
     }
-
+    // append 전에 columns가 없는 것은 정상적인 상태가 아님
     if (columns.isEmpty) {
-      replace(entities);
-      return;
+      throw StateError(
+        'DBModel이 초기화되지 않은 상태에서 append할 수 없습니다.',
+      );
     }
 
     for (final entity in entities) {
@@ -112,32 +115,24 @@ class DBModel {
     }
   }
 
-  void _initializeColumns(Entity entity) {
+  void _initializeColumns(
+      List<Map<String, dynamic>> metadata,
+      ) {
     if (columns.isNotEmpty) {
       return;
     }
 
-    final metadata = entity.metadata;
-
-    final metaByName = <String, Map<String, dynamic>>{
-      for (final m in metadata)
-        (m['colName'] as String): m,
-    };
-
-    columns = entity.toJson().keys.map((name) {
-      final meta = metaByName[name];
-
-      return DBColumn(
-        name: name,
-        dbName:
-        (meta?['dbName'] ?? meta?['colName'] ?? name)
-            .toString(),
-        isPrimary:
-        (meta?['isPrimary'] as num?)?.toInt() ?? 0,
-        isNullable:
-        (meta?['isNullable'] as num?)?.toInt() ?? 1,
-      );
-    }).toList();
+    columns = metadata.map(
+      (meta) {
+        final name = meta['colName'].toString();
+        return DBColumn(
+          name: name,
+          dbName: (meta['dbName'] ?? name).toString(),
+          isPrimary: (meta['isPrimary'] as num?)?.toInt() ?? 0,
+          isNullable: (meta['isNullable'] as num?)?.toInt() ?? 1,
+        );
+      },
+    ).toList();
   }
 
   Map<String, List<String>> _createEmptyTable() {
