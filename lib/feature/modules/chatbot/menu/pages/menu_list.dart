@@ -32,6 +32,9 @@ class MenuList extends ConsumerWidget {
                 hiddenColumns: isAdmin
                     ? const {}
                     : const {'recommender'},
+                readOnlyColumns: isAdmin
+                    ? const {'recommender'}
+                    : const {}
               ),
             ),
           ),

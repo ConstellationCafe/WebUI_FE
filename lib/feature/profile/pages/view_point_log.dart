@@ -11,9 +11,22 @@ class ViewPointLog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pointRepository = ref.read(pointRepositoryProvider);
-    return DBEditor(
-        repository: pointRepository,
-        readonly: true
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: Center(
+              child: DBEditor(
+                  repository: pointRepository,
+                  readonly: true
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

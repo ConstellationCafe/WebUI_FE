@@ -33,8 +33,8 @@ class LearningList extends ConsumerWidget {
                     ? const {}
                     : const {'teacher'},
                 readOnlyColumns: isAdmin
-                    ? const {}
-                    : const {'teacher'},
+                    ? const {'teacher'}
+                    : const {}
               ),
             ),
           ),
