@@ -65,62 +65,68 @@ class DBColumns extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, _) {
-        if (controller.countColumn == 0) {
-          return const SizedBox();
-        }
-        return Table(
-          border: TableBorder.all(
-            width: 1,
-            color: Colors.grey,
-          ),
-          children: [
-            TableRow(
-              children: controller.model.columns
-                  .where(
-                    (column) =>
-                    !hiddenColumns.contains(column.toString()),
-                  )
-                  .map(
-                    (column) {
-                      return InkWell(
-                        onTap: controller.isLoading
-                            ? null
-                            : () {
-                                _sort(
-                                  context,
-                                  column.toString(),
-                                );
-                              },
-                        child: Container(
-                          height: 40,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  column.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(width: 3),
-                              _sortIcon(column),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-              ).toList(),
+    return SizedBox(
+      width: double.infinity,
+      height: 40,
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, _) {
+          if (controller.countColumn == 0) {
+            return const SizedBox();
+          }
+
+          return Table(
+            border: TableBorder.all(
+              width: 1,
+              color: Colors.grey,
             ),
-          ],
-        );
-      },
+            children: [
+              TableRow(
+                children: controller.model.columns
+                    .where(
+                      (column) =>
+                  !hiddenColumns.contains(column.toString()),
+                )
+                    .map(
+                      (column) {
+                    return InkWell(
+                      onTap: controller.isLoading
+                          ? null
+                          : () {
+                        _sort(
+                          context,
+                          column.toString(),
+                        );
+                      },
+                      child: Container(
+                        height: 40,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                column.toString(),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 3),
+                            _sortIcon(column),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )
+                    .toList(),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
