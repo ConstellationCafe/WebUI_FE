@@ -16,7 +16,6 @@ class ShadowverseCategory extends ConsumerWidget {
           Text(
             "섀도우버스 메뉴",
             textAlign: TextAlign.left,
-            style: Theme.of(build).textTheme.titleMedium,
           ),
           SizedBox(height: ConstSize.smallSpacing),
           MenuContainer(
