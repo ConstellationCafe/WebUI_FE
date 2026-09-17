@@ -1,50 +1,17 @@
-
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 import '../../../../../shared/domain/pagination/page_result.dart';
 import '../domain/entity/music_entity.dart';
 import 'package:dio/dio.dart';
 
-
-class MusicRepository implements RepositoryInterface<MusicEntity> {
+class MusicRepository
+    implements RepositoryInterface<MusicEntity> {
   static String apiPath = "/api/repository/music";
+
   final Dio dio;
 
   MusicRepository({
-    required this.dio
+    required this.dio,
   });
-
-  // @override
-  // Future<List<MusicEntity>> findAll() async {
-  //   final response = await dio.get("$apiPath/list");
-  //   final res = response.data;
-  //
-  //   if (res['success'] == true) {
-  //     final List rawMeta = (res['response']?['metadata'] as List?)?.toList() ?? const [];
-  //     final List<Map<String, dynamic>> metadata = rawMeta
-  //         .map((e) => Map<String, dynamic>.from(e as Map))
-  //         .map((m) {
-  //           // 실제 DB 컬럼명을 DBModel 컬럼명으로 변환
-  //           final col = m['colName'];
-  //           if (col == 'video_id') {
-  //             m['colName'] = 'videoId';
-  //           }
-  //           return m;
-  //         }).toList();
-  //     final List entities = (res['response']['entities'] as List?)?.toList() ?? const [];
-  //     if (entities.isNotEmpty) {
-  //       return entities
-  //           .map((e) => MusicEntity.fromJson(metadata, e))
-  //           .toList();
-  //     } else {
-  //       return [MusicEntity.init(metadata)];
-  //     }
-  //
-  //   } else {
-  //     final err = res['error'];
-  //     final msg = (err is Map<String, dynamic>) ? (err['message']?.toString() ?? 'unknown') : 'unknown';
-  //     throw Exception('API error: $msg');
-  //   }
-  // }
 
   @override
   Future<PageResult<MusicEntity>> findPage({
@@ -61,15 +28,16 @@ class MusicRepository implements RepositoryInterface<MusicEntity> {
         'page': page,
         'size': size,
         if (searchColumn != null && searchColumn.isNotEmpty)
-          'searchColumn': searchColumn,
+          'searchColumn': _toApiColumnName(searchColumn),
         if (searchValue != null && searchValue.isNotEmpty)
           'searchValue': searchValue,
         if (sortColumn != null && sortColumn.isNotEmpty)
-          'sortColumn': sortColumn,
+          'sortColumn': _toApiColumnName(sortColumn),
         if (sortDirection != null && sortDirection.isNotEmpty)
           'sortDirection': sortDirection,
       },
     );
+
     final res = response.data;
 
     if (res['success'] != true) {
@@ -80,32 +48,39 @@ class MusicRepository implements RepositoryInterface<MusicEntity> {
 
       throw Exception('API error: $msg');
     }
+
     final body = res['response'];
-    final List rawMeta = (body['metadata'] as List?)?.toList()
-        ?? const [];
+
+    final List rawMeta =
+        (body['metadata'] as List?)?.toList() ?? const [];
+
     final List<Map<String, dynamic>> metadata = rawMeta
         .map((e) => Map<String, dynamic>.from(e as Map))
         .map((m) {
-          final dbName = m['colName'].toString();
-          // 실제 DB 컬럼명 보존
-          m['dbName'] = dbName;
-          // Entity / DBModel에서 사용하는 이름
-          if (dbName == 'video_id') {
-            m['colName'] = 'videoId';
-          }
-          return m;
-        })
+      final dbName = m['colName'].toString();
+
+      m['dbName'] = dbName;
+
+      if (dbName == 'video_id') {
+        m['colName'] = 'videoId';
+      } else if (dbName == 'recommender') {
+        m['colName'] = 'discordId';
+      }
+
+      return m;
+    })
         .toList();
 
-    final List rawEntities = (body['entities'] as List?)?.toList()
-        ?? const [];
+    final List rawEntities =
+        (body['entities'] as List?)?.toList() ?? const [];
+
     final List<MusicEntity> entities = rawEntities
         .map(
           (e) => MusicEntity.fromJson(
-            metadata,
-            Map<String, dynamic>.from(e as Map),
-          ),
-        )
+        metadata,
+        Map<String, dynamic>.from(e as Map),
+      ),
+    )
         .toList();
 
     return PageResult<MusicEntity>(
@@ -113,27 +88,62 @@ class MusicRepository implements RepositoryInterface<MusicEntity> {
       metadata: metadata,
       page: (body['page'] as num?)?.toInt() ?? page,
       size: (body['size'] as num?)?.toInt() ?? size,
-      totalElements: (body['totalElements'] as num?)?.toInt() ?? 0,
-      totalPages: (body['totalPages'] as num?)?.toInt() ?? 0,
+      totalElements:
+      (body['totalElements'] as num?)?.toInt() ?? 0,
+      totalPages:
+      (body['totalPages'] as num?)?.toInt() ?? 0,
       hasNext: body['hasNext'] == true,
     );
   }
 
   @override
   Future<dynamic> save(MusicEntity entity) async {
-    final res = await dio.post("$apiPath/save", data: [entity.toJson()]);
+    final res = await dio.post(
+      "$apiPath/save",
+      data: [
+        _toApiJson(entity.toJson()),
+      ],
+    );
+
     return res.data;
   }
 
   @override
-  Future<dynamic> saveAll(List<Map<String, String>> model) async {
-    final res = await dio.post("$apiPath/save_all", data: model);
+  Future<dynamic> saveAll(
+      List<Map<String, String>> model,
+      ) async {
+    final res = await dio.post(
+      "$apiPath/save_all",
+      data: model.map(_toApiJson).toList(),
+    );
+
     return res.data;
   }
 
   @override
-  Future<dynamic> deleteAll(List<Map<String, String>> model) async {
-    final res = await dio.post("$apiPath/delete_all", data: model);
+  Future<dynamic> deleteAll(
+      List<Map<String, String>> model,
+      ) async {
+    final res = await dio.post(
+      "$apiPath/delete_all",
+      data: model.map(_toApiJson).toList(),
+    );
+
     return res.data;
+  }
+
+  String _toApiColumnName(String column) {
+    if (column == 'discordId') {
+      return 'recommender';
+    }
+
+    return column;
+  }
+
+  Map<String, dynamic> _toApiJson(Map<String, dynamic> json) {
+    return {
+      'videoId': json['videoId'] ?? '',
+      'recommender': json['discordId'] ?? '',
+    };
   }
 }

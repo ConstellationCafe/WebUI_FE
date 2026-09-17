@@ -5,8 +5,6 @@ import 'DBColumn.dart';
 class DBModel {
   Map<String, List<String>> origin = {};
   Map<String, List<String>> table = {};
-  // 실제 값과 화면 표시값이 다른 컬럼만 저장
-  Map<String, List<String>> displayValues = {};
 
   List<DBColumn> columns = [];
 
@@ -31,14 +29,6 @@ class DBModel {
       int rowIndex,
       ) {
     final colName = columns[colIndex].toString();
-
-    final displayColumn = displayValues[colName];
-
-    if (displayColumn != null &&
-        rowIndex >= 0 &&
-        rowIndex < displayColumn.length) {
-      return displayColumn[rowIndex];
-    }
 
     return table[colName]![rowIndex];
   }
@@ -73,53 +63,29 @@ class DBModel {
       List<Entity> entities,
       List<Map<String, dynamic>> metadata,
       ) {
-    // 데이터 존재 여부와 관계없이
-    // metadata를 이용해서 컬럼부터 초기화
     _initializeColumns(metadata);
 
     final newTable = _createEmptyTable();
-    final newDisplayValues =
-    <String, List<String>>{};
 
     for (final entity in entities) {
-      final json = entity.toJson();
-      final displayJson = entity.toDisplayJson();
-
-      for (final column in columns) {
-        final name = column.toString();
-
-        newTable[name]!.add(
-          (json[name] ?? '').toString(),
-        );
-      }
-
-      // 실제 값과 표시값이 다른 컬럼만 저장
-      for (final entry in displayJson.entries) {
-        newDisplayValues
-            .putIfAbsent(
-          entry.key,
-              () => <String>[],
-        )
-            .add(
-          (entry.value ?? '').toString(),
-        );
-      }
+      _appendEntityToTable(
+        newTable,
+        entity,
+      );
     }
 
     table = {
       for (final entry in newTable.entries)
-        entry.key:
-        List<String>.from(entry.value),
+        entry.key: List<String>.from(
+          entry.value,
+        ),
     };
+
     origin = {
       for (final entry in newTable.entries)
-        entry.key:
-        List<String>.from(entry.value),
-    };
-    displayValues = {
-      for (final entry in newDisplayValues.entries)
-        entry.key:
-        List<String>.from(entry.value),
+        entry.key: List<String>.from(
+          entry.value,
+        ),
     };
 
     _selectedCol = 0;
@@ -127,11 +93,13 @@ class DBModel {
   }
 
   /// 무한스크롤로 다음 페이지 추가
-  void append(List<Entity> entities) {
+  void append(
+      List<Entity> entities,
+      ) {
     if (entities.isEmpty) {
       return;
     }
-    // append 전에 columns가 없는 것은 정상적인 상태가 아님
+
     if (columns.isEmpty) {
       throw StateError(
         'DBModel이 초기화되지 않은 상태에서 append할 수 없습니다.',
@@ -143,25 +111,80 @@ class DBModel {
       final displayJson = entity.toDisplayJson();
 
       for (final column in columns) {
-        final name = column.toString();
-        final value =
-        (json[name] ?? '').toString();
+        final colName = column.toString();
+        final dbName = column.dbName;
 
-        table[name]!.add(value);
-        origin[name]!.add(value);
-      }
-
-      for (final entry in displayJson.entries) {
-        displayValues
-            .putIfAbsent(
-          entry.key,
-              () => <String>[],
-        )
-            .add(
-          (entry.value ?? '').toString(),
+        final value = _resolveValue(
+          colName: colName,
+          dbName: dbName,
+          json: json,
+          displayJson: displayJson,
         );
+
+        table[colName]!.add(value);
+        origin[colName]!.add(value);
       }
     }
+  }
+
+  /// Entity를 DBEditor의 column 구조로 변환
+  void _appendEntityToTable(
+      Map<String, List<String>> target,
+      Entity entity,
+      ) {
+    final json = entity.toJson();
+    final displayJson = entity.toDisplayJson();
+
+    for (final column in columns) {
+      final colName = column.toString();
+      final dbName = column.dbName;
+
+      final value = _resolveValue(
+        colName: colName,
+        dbName: dbName,
+        json: json,
+        displayJson: displayJson,
+      );
+
+      target[colName]!.add(value);
+    }
+  }
+
+  /// DBEditor에서 실제로 사용할 값을 결정한다.
+  ///
+  /// 우선순위:
+  ///
+  /// 1. toDisplayJson()[colName]
+  /// 2. toJson()[colName]
+  /// 3. toJson()[dbName]
+  /// 4. ''
+  ///
+  /// 예:
+  ///
+  /// colName = discordId
+  /// dbName  = teacher
+  ///
+  /// displayJson['discordId']
+  /// -> Discord ID
+  String _resolveValue({
+    required String colName,
+    required String dbName,
+    required Map<String, dynamic> json,
+    required Map<String, dynamic> displayJson,
+  }) {
+    if (displayJson.containsKey(colName)) {
+      return (displayJson[colName] ?? '').toString();
+    }
+
+    if (json.containsKey(colName)) {
+      return (json[colName] ?? '').toString();
+    }
+
+    if (json.containsKey(dbName)) {
+      return (json[dbName] ?? '').toString();
+    }
+
+    return '';
   }
 
   void _initializeColumns(
@@ -172,13 +195,22 @@ class DBModel {
     }
 
     columns = metadata.map(
-      (meta) {
-        final name = meta['colName'].toString();
+          (meta) {
+        final name =
+        meta['colName'].toString();
+
         return DBColumn(
           name: name,
-          dbName: (meta['dbName'] ?? name).toString(),
-          isPrimary: (meta['isPrimary'] as num?)?.toInt() ?? 0,
-          isNullable: (meta['isNullable'] as num?)?.toInt() ?? 1,
+          dbName:
+          (meta['dbName'] ?? name).toString(),
+          isPrimary:
+          (meta['isPrimary'] as num?)
+              ?.toInt() ??
+              0,
+          isNullable:
+          (meta['isNullable'] as num?)
+              ?.toInt() ??
+              1,
         );
       },
     ).toList();
@@ -213,7 +245,8 @@ class DBModel {
         for (final column in columns) {
           final name = column.toString();
 
-          row[name] = table[name]![rowIndex];
+          row[name] =
+          table[name]![rowIndex];
         }
 
         return row;
@@ -224,11 +257,6 @@ class DBModel {
   void addRow() {
     for (final column in columns) {
       table[column.toString()]!.add('');
-    }
-
-    // 표시 전용 컬럼만 행 개수를 맞춰준다.
-    for (final values in displayValues.values) {
-      values.add('');
     }
 
     if (rowCount > 0) {
@@ -242,7 +270,8 @@ class DBModel {
       return;
     }
 
-    if (_selectedRow < 0 || _selectedRow >= rowCount) {
+    if (_selectedRow < 0 ||
+        _selectedRow >= rowCount) {
       return;
     }
 
@@ -250,12 +279,6 @@ class DBModel {
       table[column.toString()]!.removeAt(
         _selectedRow,
       );
-    }
-
-    for (final values in displayValues.values) {
-      if (_selectedRow < values.length) {
-        values.removeAt(_selectedRow);
-      }
     }
 
     if (_selectedRow >= rowCount) {
@@ -281,7 +304,10 @@ class DBModel {
 }
 
 class ColumnView {
-  final String Function(int rowIndex) getter;
+  final String Function(
+      int rowIndex,
+      ) getter;
+
   final void Function(
       int rowIndex,
       String value,

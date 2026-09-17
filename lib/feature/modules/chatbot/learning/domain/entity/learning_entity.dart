@@ -32,15 +32,15 @@ class LearningEntity extends Entity {
       lnKey: (json['lnKey'] ?? '').toString(),
       lnValue: (json['lnValue'] ?? '').toString(),
 
-      // BE: teacher
-      // FE: discordId
-      discordId: (json['teacher'] ?? '').toString(),
+      // BE teacher에는 Discord ID가 담겨있다.
+      discordId:
+      (json['teacher'] ?? '').toString(),
     );
   }
 
+  /// API 기준 JSON
   @override
   Map<String, dynamic> toJson() {
-    // BE API 전송용
     return {
       'lnKey': lnKey,
       'lnValue': lnValue,
@@ -48,9 +48,9 @@ class LearningEntity extends Entity {
     };
   }
 
+  /// DBEditor 표시 기준 JSON
   @override
   Map<String, dynamic> toDisplayJson() {
-    // DBEditor 표시용
     return {
       'lnKey': lnKey,
       'lnValue': lnValue,

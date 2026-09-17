@@ -31,10 +31,7 @@ class ContentList extends ConsumerWidget {
                 repository: contentRepository,
                 hiddenColumns: isAdmin
                     ? const {}
-                    : const {'recommender'},
-                readOnlyColumns: isAdmin
-                    ? const {'recommender'}
-                    : const {}
+                    : const {'discordId'}
               ),
             ),
           ),

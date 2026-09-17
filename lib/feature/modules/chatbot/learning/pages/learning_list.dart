@@ -45,18 +45,9 @@ class LearningList extends ConsumerWidget {
               child: DBEditor(
                 repository:
                 learningRepository,
-
-                // 일반 사용자에게는
-                // Discord ID를 보여주지 않는다.
                 hiddenColumns: isAdmin
                     ? const {}
-                    : const {
-                  'discordId',
-                },
-
-                // 관리자도 Discord ID 수정 가능
-                readOnlyColumns:
-                const {},
+                    : const {'discordId'},
               ),
             ),
           ),

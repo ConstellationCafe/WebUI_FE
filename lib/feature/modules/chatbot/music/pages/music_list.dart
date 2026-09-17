@@ -31,10 +31,7 @@ class MusicList extends ConsumerWidget {
                 repository: musicRepository,
                 hiddenColumns: isAdmin
                     ? const {}
-                    : const {'recommender'},
-                readOnlyColumns: isAdmin
-                    ? const {'recommender'}
-                    : const {}
+                    : const {'discordId'},
               ),
             ),
           ),

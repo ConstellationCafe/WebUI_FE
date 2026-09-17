@@ -2,33 +2,33 @@ import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
 class MusicEntity extends Entity {
   String videoId;
-  String recommender;
-  String recommenderDiscordId;
+  String discordId;
 
   MusicEntity({
     required super.metadata,
     required this.videoId,
-    required this.recommender,
-    required this.recommenderDiscordId,
+    required this.discordId,
   });
 
   @override
   Map<String, dynamic> toJson() => {
     'videoId': videoId,
-    'recommender': recommender,
+    'discordId': discordId,
   };
 
   @override
   Map<String, dynamic> toDisplayJson() => {
-    'recommender': recommenderDiscordId,
+    'videoId': videoId,
+    'discordId': discordId,
   };
 
-  factory MusicEntity.init(List<Map<String, dynamic>> metadata) {
+  factory MusicEntity.init(
+      List<Map<String, dynamic>> metadata,
+      ) {
     return MusicEntity(
       metadata: metadata,
       videoId: '',
-      recommender: '',
-      recommenderDiscordId: '',
+      discordId: '',
     );
   }
 
@@ -39,9 +39,7 @@ class MusicEntity extends Entity {
     return MusicEntity(
       metadata: metadata,
       videoId: (json['videoId'] ?? '').toString(),
-      recommender: (json['recommender'] ?? '').toString(),
-      recommenderDiscordId:
-      (json['recommenderDiscordId'] ?? '').toString(),
+      discordId: (json['recommender'] ?? '').toString(),
     );
   }
 }

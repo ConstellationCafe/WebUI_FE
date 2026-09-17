@@ -31,10 +31,7 @@ class MenuList extends ConsumerWidget {
                 repository: menuRepository,
                 hiddenColumns: isAdmin
                     ? const {}
-                    : const {'recommender'},
-                readOnlyColumns: isAdmin
-                    ? const {'recommender'}
-                    : const {}
+                    : const {'discordId'},
               ),
             ),
           ),

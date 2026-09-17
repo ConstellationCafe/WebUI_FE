@@ -2,33 +2,33 @@ import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
 class ContentEntity extends Entity {
   String cnValue;
-  String recommender;
-  String recommenderDiscordId;
+  String discordId;
 
   ContentEntity({
     required super.metadata,
     required this.cnValue,
-    required this.recommender,
-    required this.recommenderDiscordId,
+    required this.discordId,
   });
 
   @override
   Map<String, dynamic> toJson() => {
     'cnValue': cnValue,
-    'recommender': recommender,
+    'discordId': discordId,
   };
 
   @override
   Map<String, dynamic> toDisplayJson() => {
-    'recommender': recommenderDiscordId,
+    'cnValue': cnValue,
+    'discordId': discordId,
   };
 
-  factory ContentEntity.init(List<Map<String, dynamic>> metadata) {
+  factory ContentEntity.init(
+      List<Map<String, dynamic>> metadata,
+      ) {
     return ContentEntity(
       metadata: metadata,
       cnValue: '',
-      recommender: '',
-      recommenderDiscordId: '',
+      discordId: '',
     );
   }
 
@@ -39,9 +39,7 @@ class ContentEntity extends Entity {
     return ContentEntity(
       metadata: metadata,
       cnValue: (json['cnValue'] ?? '').toString(),
-      recommender: (json['recommender'] ?? '').toString(),
-      recommenderDiscordId:
-      (json['recommenderDiscordId'] ?? '').toString(),
+      discordId: (json['recommender'] ?? '').toString(),
     );
   }
 }
