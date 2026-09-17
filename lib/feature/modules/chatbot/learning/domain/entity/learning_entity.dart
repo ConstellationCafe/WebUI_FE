@@ -3,29 +3,14 @@ import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 class LearningEntity extends Entity {
   String lnKey;
   String lnValue;
-  String teacher;
-  // 화면 표시용 (실제 DB엔 X)
-  String teacherDiscordId;
+  String discordId;
 
   LearningEntity({
     required super.metadata,
     required this.lnKey,
     required this.lnValue,
-    required this.teacher,
-    required this.teacherDiscordId,
+    required this.discordId,
   });
-
-  @override
-  Map<String, dynamic> toJson() => {
-    'lnKey': lnKey,
-    'lnValue': lnValue,
-    'teacher': teacher,
-  };
-
-  @override
-  Map<String, dynamic> toDisplayJson() => {
-    'teacher': teacherDiscordId,
-  };
 
   factory LearningEntity.init(
       List<Map<String, dynamic>> metadata,
@@ -34,8 +19,7 @@ class LearningEntity extends Entity {
       metadata: metadata,
       lnKey: '',
       lnValue: '',
-      teacher: '',
-      teacherDiscordId: '',
+      discordId: '',
     );
   }
 
@@ -47,8 +31,30 @@ class LearningEntity extends Entity {
       metadata: metadata,
       lnKey: (json['lnKey'] ?? '').toString(),
       lnValue: (json['lnValue'] ?? '').toString(),
-      teacher: (json['teacher'] ?? '').toString(),
-      teacherDiscordId: (json['teacherDiscordId'] ?? '').toString(),
+
+      // BE: teacher
+      // FE: discordId
+      discordId: (json['teacher'] ?? '').toString(),
     );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    // BE API 전송용
+    return {
+      'lnKey': lnKey,
+      'lnValue': lnValue,
+      'teacher': discordId,
+    };
+  }
+
+  @override
+  Map<String, dynamic> toDisplayJson() {
+    // DBEditor 표시용
+    return {
+      'lnKey': lnKey,
+      'lnValue': lnValue,
+      'discordId': discordId,
+    };
   }
 }

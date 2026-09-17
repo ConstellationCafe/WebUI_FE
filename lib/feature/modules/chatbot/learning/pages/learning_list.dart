@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,34 +6,57 @@ import 'package:constellation_cafe/shared/widgets/db_editor/DBEditor.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
-
 class LearningList extends ConsumerWidget {
-  const LearningList({super.key});
+  const LearningList({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final learningRepository = ref.read(learningRepositoryProvider);
+  Widget build(
+      BuildContext context,
+      WidgetRef ref,
+      ) {
+    final learningRepository =
+    ref.read(
+      learningRepositoryProvider,
+    );
+
     final isAdmin = ref.watch(
       currentUserStateProvider.select(
-            (state) => state.roles.contains(UserRole.ADMIN),
+            (state) =>
+            state.roles.contains(
+              UserRole.ADMIN,
+            ),
       ),
     );
+
     return LayoutBuilder(
-      builder: (context, constraints) {
+      builder: (
+          context,
+          constraints,
+          ) {
         return SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
+              minHeight:
+              constraints.maxHeight,
             ),
             child: Center(
               child: DBEditor(
-                repository: learningRepository,
+                repository:
+                learningRepository,
+
+                // 일반 사용자에게는
+                // Discord ID를 보여주지 않는다.
                 hiddenColumns: isAdmin
                     ? const {}
-                    : const {'teacher'},
-                readOnlyColumns: isAdmin
-                    ? const {'teacher'}
-                    : const {}
+                    : const {
+                  'discordId',
+                },
+
+                // 관리자도 Discord ID 수정 가능
+                readOnlyColumns:
+                const {},
               ),
             ),
           ),
