@@ -103,7 +103,7 @@ class StatusBasicInfo<T extends AcademyMember>
           value: selectedMembers,
           decoration: InputDecoration(
             labelText: '$memberLabel *',
-            hintText: '$memberLabel을 선택하세요',
+            hintText: '$memberLabel(을/를) 선택하세요',
           ),
           items: members
             .map(

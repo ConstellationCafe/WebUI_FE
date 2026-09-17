@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-import 'package:constellation_cafe/shared/model/db_editor/DBController.dart';
+import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
 
 
 class DBDataCell extends StatefulWidget {
@@ -10,6 +11,7 @@ class DBDataCell extends StatefulWidget {
   final double rowHeight;
   final bool isSelected;
   final bool isEditMode;
+  final bool isEditable;
 
   const DBDataCell({
     super.key,
@@ -19,6 +21,7 @@ class DBDataCell extends StatefulWidget {
     required this.rowHeight,
     required this.isSelected,
     required this.isEditMode,
+    this.isEditable = true,
   });
 
   @override
@@ -49,8 +52,29 @@ class _EditableCellState extends State<DBDataCell> {
 
   @override
   void dispose() {
+    BrowserContextMenu.enableContextMenu();
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _copyToClipboard() async {
+    final value =
+    widget.controller.model.getDisplayValue(
+      widget.colIndex,
+      widget.rowIndex,
+    );
+
+    await Clipboard.setData(
+      ClipboardData(text: value),
+    );
+  }
+
+  Future<void> _disableContextMenu() async {
+    await BrowserContextMenu.disableContextMenu();
+  }
+
+  Future<void> _enableContextMenu() async {
+    await BrowserContextMenu.enableContextMenu();
   }
 
   @override
@@ -59,7 +83,9 @@ class _EditableCellState extends State<DBDataCell> {
         ? Colors.grey.withOpacity(0.3)
         : Colors.transparent;
 
-    if (widget.isSelected && widget.isEditMode) {
+    if (widget.isSelected &&
+        widget.isEditMode &&
+        widget.isEditable) {
       return Container(
         height: widget.rowHeight,
         color: bgColor,
@@ -86,20 +112,38 @@ class _EditableCellState extends State<DBDataCell> {
       );
     } else {
       final value =
-          widget.controller.model[widget.colIndex][widget.rowIndex].toString() ?? '';
-      return GestureDetector(
-        onTap: () {
-          widget.controller.setSelectedCell(widget.colIndex, widget.rowIndex);
+        widget.controller.model.getDisplayValue(
+          widget.colIndex,
+          widget.rowIndex,
+        );
+      return MouseRegion(
+        onEnter: (_) {
+          _disableContextMenu();
         },
-        child: Container(
-          height: widget.rowHeight,
-          color: bgColor,
-          padding: const EdgeInsets.all(8.0),
-          child: Align(
+        onExit: (_) {
+          _enableContextMenu();
+        },
+        child: GestureDetector(
+          onTap: () {
+            widget.controller.setSelectedCell(
+              widget.colIndex,
+              widget.rowIndex,
+            );
+          },
+          onSecondaryTap: () {
+            _copyToClipboard();
+          },
+          child: Container(
+            height: widget.rowHeight,
+            color: bgColor,
+            padding: const EdgeInsets.all(4.0),
             alignment: Alignment.centerLeft,
-            child: Text(value),
+            child: Text(
+              value,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        )
+        ),
       );
     }
   }

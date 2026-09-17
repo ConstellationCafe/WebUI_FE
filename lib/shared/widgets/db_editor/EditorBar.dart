@@ -1,5 +1,5 @@
 
-import 'package:constellation_cafe/shared/model/db_editor/DBController.dart';
+import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
 import 'edit_tool/AddButton.dart';
 import 'edit_tool/SaveButton.dart';
 import 'edit_tool/DeleteButton.dart';

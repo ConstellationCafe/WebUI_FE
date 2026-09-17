@@ -5,4 +5,5 @@ abstract class Entity {
   const Entity({required this.metadata});
 
   Map<String, dynamic> toJson();
+  Map<String, dynamic> toDisplayJson() => {};
 }

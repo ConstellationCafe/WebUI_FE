@@ -1,6 +1,7 @@
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/type/student_roster_status.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/di/ApiProvider.dart';
@@ -12,6 +13,7 @@ import '../../domain/model/academy_class.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/model/teacher.dart';
+import '../../domain/type/teacher_roster_status.dart';
 import '../../state/lesson_record_selection_state/lesson_record_selection_state.dart';
 import '../permission_notifier/academy_permission_notifier.dart';
 
@@ -140,7 +142,8 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
       // teacher
       final enrolledTeachers = teachers
           .where(
-              (teacher) => teacher.state == "재적"
+              (teacher) =>
+              teacher.state == TeacherRosterStatus.enrolled.label  // 재적
           )
           .toList();
       final canSelectTeachers = permission.isOwnerWithAcademy(selectedAcademy.id)
@@ -154,7 +157,8 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
       // student
       final enrolledStudents = students
           .where(
-            (student) => student.state == "재적"
+            (student) =>
+            student.state == StudentRosterStatus.enrolled.label  // 재적
           )
           .toList();
       state = state.copyWith(

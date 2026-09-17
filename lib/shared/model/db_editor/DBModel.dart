@@ -1,205 +1,334 @@
 import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
+
 import 'DBColumn.dart';
 
 class DBModel {
   Map<String, List<String>> origin = {};
   Map<String, List<String>> table = {};
+
   List<DBColumn> columns = [];
+
   int _selectedRow = 0;
   int _selectedCol = 0;
 
-  DBModel(List<Entity> entities) {
-    // 실제로는 entities가 비어있지 않다는 것이 보장됨
-    // if (entities.isEmpty) {
-    //   print("entities must not be empty");
-    //   throw ArgumentError('entities must not be empty');
-    // }
-    // columns 초기화
-    final metadata = entities[0].metadata;
-    final metaByName = <String, Map<String, dynamic>>{
-      for (final m in metadata)
-        (m['colName'] as String): m,
-    };
-    columns = entities[0].toJson().keys.map((k) {
-      final m = metaByName[k];
-      final isPrimary = m?['isPrimary'];
-      final isNullable = m?['isNullable'];
-      return DBColumn(
-        name: k,
-        isPrimary: isPrimary,
-        isNullable: isNullable,
-      );
-    }).toList();
-    // 테이블 초기화
-    for (var col in columns) {
-      String colName = col.toString();
-      table[colName] = [];
-      origin[colName] = [];
-    }
-    // 값 복사
-    for (var entity in entities) {
-      final json = entity.toJson();
-      for (var col in columns) {
-        String colName = col.toString();
-        table[colName]!.add(json[col.toString()]);
-        origin[colName]!.add(json[col.toString()]);
-      }
-    }
-  }
+  DBModel();
 
-  /// Operator
   ColumnView operator [](int colIndex) {
-    if (colIndex < 0 || colIndex >= columns.length) {
-      throw RangeError.index(colIndex, columns, 'colIndex');
-    }
-    return ColumnView(this, colIndex);
+    final colName = columns[colIndex].toString();
+
+    return ColumnView(
+      getter: (rowIndex) => table[colName]![rowIndex],
+      setter: (rowIndex, value) {
+        table[colName]![rowIndex] = value;
+      },
+    );
   }
 
-  void operator []=(int colIndex, List<String> newValues) {
-    if (colIndex < 0 || colIndex >= columns.length) {
-      throw RangeError.index(colIndex, columns, 'colIndex');
-    }
-    final expectedCount = rowCount;  // 중복 호출 방지
-    if ((expectedCount!=0) && (newValues.length!=expectedCount)) {
-      throw ArgumentError.value(
-        newValues.length,
-        'newValues.length',
-        'Column length mismatch: expected $expectedCount (rowCount), got ${newValues.length}',
-      );
-    }
-    String name = columns[colIndex].toString();
-    table[name] = [...newValues];
+  String getDisplayValue(
+      int colIndex,
+      int rowIndex,
+      ) {
+    final colName = columns[colIndex].toString();
+
+    return table[colName]![rowIndex];
   }
 
   int get colCount => columns.length;
-  int get rowCount => table.isEmpty ? 0 : table.values.first.length;
 
-  /// Select
-  List<int> getSelectedCell() {
-    return [_selectedCol, _selectedRow];
+  int get rowCount {
+    if (table.isEmpty) {
+      return 0;
+    }
+
+    return table.values.first.length;
   }
 
-  void setSelectedCell(int colIndex, int rowIndex) {
+  List<int> getSelectedCell() {
+    return [
+      _selectedCol,
+      _selectedRow,
+    ];
+  }
+
+  void setSelectedCell(
+      int colIndex,
+      int rowIndex,
+      ) {
     _selectedCol = colIndex;
     _selectedRow = rowIndex;
   }
 
-  /// Sort
-  void sort(String name, { bool isAscending=true }) {
-    final rows = getRows();
-    rows.sort((a, b) {
-      final aVal = a[name]?.toString() ?? '';
-      final bVal = b[name]?.toString() ?? '';
-      final cmp = aVal.compareTo(bVal);
-      return isAscending ? cmp : -cmp;
-    });
-    _update(rows);
+  /// 첫 페이지 / 검색 / 정렬 결과
+  void replace(
+      List<Entity> entities,
+      List<Map<String, dynamic>> metadata,
+      ) {
+    _initializeColumns(metadata);
+
+    final newTable = _createEmptyTable();
+
+    for (final entity in entities) {
+      _appendEntityToTable(
+        newTable,
+        entity,
+      );
+    }
+
+    table = {
+      for (final entry in newTable.entries)
+        entry.key: List<String>.from(
+          entry.value,
+        ),
+    };
+
+    origin = {
+      for (final entry in newTable.entries)
+        entry.key: List<String>.from(
+          entry.value,
+        ),
+    };
+
+    _selectedCol = 0;
+    _selectedRow = 0;
   }
 
-  /// Filter
-  // void filter(String name, String value) {
-  //   List<Map<String, String>> rows = getRows();
-  //   List<Map<String, String>> filteredRows = rows.where((row) => row[name] == value).toList();
-  //   _update(filteredRows);
-  // }
+  /// 무한스크롤로 다음 페이지 추가
+  void append(
+      List<Entity> entities,
+      ) {
+    if (entities.isEmpty) {
+      return;
+    }
 
-  /// Row
-  List<Map<String, String>> getRows() {
-    return List.generate(rowCount, (i) {
-      final row = <String, String>{};
-      for (var col in columns) {
-        row[col.toString()] = table[col.toString()]![i];
+    if (columns.isEmpty) {
+      throw StateError(
+        'DBModel이 초기화되지 않은 상태에서 append할 수 없습니다.',
+      );
+    }
+
+    for (final entity in entities) {
+      final json = entity.toJson();
+      final displayJson = entity.toDisplayJson();
+
+      for (final column in columns) {
+        final colName = column.toString();
+        final dbName = column.dbName;
+
+        final value = _resolveValue(
+          colName: colName,
+          dbName: dbName,
+          json: json,
+          displayJson: displayJson,
+        );
+
+        table[colName]!.add(value);
+        origin[colName]!.add(value);
       }
-      return row;
-    });
+    }
+  }
+
+  /// Entity를 DBEditor의 column 구조로 변환
+  void _appendEntityToTable(
+      Map<String, List<String>> target,
+      Entity entity,
+      ) {
+    final json = entity.toJson();
+    final displayJson = entity.toDisplayJson();
+
+    for (final column in columns) {
+      final colName = column.toString();
+      final dbName = column.dbName;
+
+      final value = _resolveValue(
+        colName: colName,
+        dbName: dbName,
+        json: json,
+        displayJson: displayJson,
+      );
+
+      target[colName]!.add(value);
+    }
+  }
+
+  /// DBEditor에서 실제로 사용할 값을 결정한다.
+  ///
+  /// 우선순위:
+  ///
+  /// 1. toDisplayJson()[colName]
+  /// 2. toJson()[colName]
+  /// 3. toJson()[dbName]
+  /// 4. ''
+  ///
+  /// 예:
+  ///
+  /// colName = discordId
+  /// dbName  = teacher
+  ///
+  /// displayJson['discordId']
+  /// -> Discord ID
+  String _resolveValue({
+    required String colName,
+    required String dbName,
+    required Map<String, dynamic> json,
+    required Map<String, dynamic> displayJson,
+  }) {
+    if (displayJson.containsKey(colName)) {
+      return (displayJson[colName] ?? '').toString();
+    }
+
+    if (json.containsKey(colName)) {
+      return (json[colName] ?? '').toString();
+    }
+
+    if (json.containsKey(dbName)) {
+      return (json[dbName] ?? '').toString();
+    }
+
+    return '';
+  }
+
+  void _initializeColumns(
+      List<Map<String, dynamic>> metadata,
+      ) {
+    if (columns.isNotEmpty) {
+      return;
+    }
+
+    columns = metadata.map(
+          (meta) {
+        final name =
+        meta['colName'].toString();
+
+        return DBColumn(
+          name: name,
+          dbName:
+          (meta['dbName'] ?? name).toString(),
+          isPrimary:
+          (meta['isPrimary'] as num?)
+              ?.toInt() ??
+              0,
+          isNullable:
+          (meta['isNullable'] as num?)
+              ?.toInt() ??
+              1,
+        );
+      },
+    ).toList();
+  }
+
+  Map<String, List<String>> _createEmptyTable() {
+    return {
+      for (final column in columns)
+        column.toString(): <String>[],
+    };
+  }
+
+  void _clearRows() {
+    table = _createEmptyTable();
+
+    origin = _createEmptyTable();
+
+    _selectedCol = 0;
+    _selectedRow = 0;
+  }
+
+  List<Map<String, String>> getRows() {
+    if (table.isEmpty) {
+      return [];
+    }
+
+    return List.generate(
+      rowCount,
+          (rowIndex) {
+        final row = <String, String>{};
+
+        for (final column in columns) {
+          final name = column.toString();
+
+          row[name] =
+          table[name]![rowIndex];
+        }
+
+        return row;
+      },
+    );
   }
 
   void addRow() {
-    // 모든 컬럼에 빈 값 추가
-    for (var col in columns) {
-      table[col.toString()]!.add("");
+    for (final column in columns) {
+      table[column.toString()]!.add('');
     }
 
-    // 새로 추가된 행 번호
-    _selectedRow = rowCount - 1;
-    _selectedCol = 0;
+    if (rowCount > 0) {
+      _selectedRow = rowCount - 1;
+      _selectedCol = 0;
+    }
   }
 
   void deleteRow() {
-    int rowToDelete = _selectedRow;
-    for (var col in columns) {
-      if (rowToDelete < table[col.toString()]!.length) {
-        table[col.toString()]!.removeAt(rowToDelete);
-      }
+    if (rowCount == 0) {
+      return;
     }
 
-    if (_selectedRow >= rowCount) {  // 마지막 행을 삭제했다면
-      _selectedRow = rowCount - 1; // 그 직전 행을 마지막 행으로
+    if (_selectedRow < 0 ||
+        _selectedRow >= rowCount) {
+      return;
     }
-    else if (_selectedRow < 0) {  // 첫번째 행을 삭제했다면
-      _selectedRow = 0;  // 그 다음 행으로 첫번째 행으로
-    }
-  }
 
-  void _update(List<Map<String, String>> rows) {
-    final updated = <String, List<String>>{};
-
-    for (final col in columns) {
-      String colName = col.toString();
-      updated[colName] = List<String>.generate(
-        rows.length,
-        (i) => rows[i][colName] ?? '',
-        growable: true,
+    for (final column in columns) {
+      table[column.toString()]!.removeAt(
+        _selectedRow,
       );
     }
-    table = updated;
-  }
 
-  /// Export
-  List<Map<String, String>> toJsons() {
-    if (table.isEmpty) return [];
-
-    final List<Map<String, String>> entities = [];
-    for (var i = 0; i < rowCount; i++) {
-      final row = <String, String>{};
-      for (var col in columns) {
-        row[col.toString()] = table[col.toString()]![i];
-      }
-      entities.add(row);
+    if (_selectedRow >= rowCount) {
+      _selectedRow = rowCount - 1;
     }
-    return entities;
+
+    if (_selectedRow < 0) {
+      _selectedRow = 0;
+    }
   }
 
-  /// Status
   void reset() {
     _selectedCol = 0;
     _selectedRow = 0;
+
     table = {
-      for (final e in origin.entries) e.key: List<String>.from(e.value)
+      for (final entry in origin.entries)
+        entry.key: List<String>.from(
+          entry.value,
+        ),
     };
   }
 }
 
-
 class ColumnView {
-  final DBModel _model;
-  final int _colIndex;
+  final String Function(
+      int rowIndex,
+      ) getter;
 
-  ColumnView(this._model, this._colIndex);
+  final void Function(
+      int rowIndex,
+      String value,
+      ) setter;
+
+  ColumnView({
+    required this.getter,
+    required this.setter,
+  });
 
   String operator [](int rowIndex) {
-    if (rowIndex < 0 || rowIndex >= _model.rowCount) {
-      throw RangeError.range(rowIndex, 0, _model.rowCount - 1, 'rowIndex');
-    }
-    final name = _model.columns[_colIndex];
-    return _model.table[name.toString()]![rowIndex];
+    return getter(rowIndex);
   }
 
-  void operator []=(int rowIndex, String cell) {
-    if (rowIndex < 0 || rowIndex >= _model.rowCount) {
-      throw RangeError.range(rowIndex, 0, _model.rowCount - 1, 'rowIndex');
-    }
-    final name = _model.columns[_colIndex];
-    _model.table[name.toString()]![rowIndex] = cell;
+  void operator []=(
+      int rowIndex,
+      String value,
+      ) {
+    setter(
+      rowIndex,
+      value,
+    );
   }
 }
