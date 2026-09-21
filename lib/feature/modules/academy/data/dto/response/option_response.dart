@@ -8,15 +8,15 @@ class OptionResponse {
     required this.sk,
     required this.discordID,
     required this.name,
-    required this.state
+    this.state = '',
   });
 
   factory OptionResponse.fromJson(Map<String, dynamic> json) {
     return OptionResponse(
-      sk: json['sk'].toString(),
-      discordID: json['discordID'].toString(),
-      name: json['name'] as String,
-      state: json['state'] as String
+      sk: json['sk']?.toString() ?? '',
+      discordID: json['discordID']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      state: json['state']?.toString() ?? '',
     );
   }
 }
