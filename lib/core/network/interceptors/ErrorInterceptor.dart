@@ -10,10 +10,9 @@ class ErrorInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final path = err.requestOptions.path;
     final isSilentAuthError =
-        err.response?.statusCode == 401 &&
-        (path.endsWith('/auth/check') ||
-            path.endsWith('/auth/refresh') ||
-            path.endsWith('/auth/me'));
+        (err.response?.statusCode == 401 ||
+            err.response?.statusCode == 403) &&
+        path.contains('/auth/');
 
     if (!isSilentAuthError) {
       _showErrorSnackBar(_getErrorMessage(err));
