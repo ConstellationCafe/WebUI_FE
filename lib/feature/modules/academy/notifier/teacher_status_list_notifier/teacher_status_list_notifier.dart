@@ -134,6 +134,7 @@ class TeacherStatusListNotifier
       ) async {
     if (academyClass == null) {
       state = state.copyWith(
+        isFilterLoading: true,
         query: state.query.copyWith(
           selectedAcademyClass: null,
           selectedAcademyMember: null,
@@ -142,33 +143,32 @@ class TeacherStatusListNotifier
         ),
         errorMessage: null,
       );
-
-      return;
+    } else {
+      state = state.copyWith(
+        isFilterLoading: true,
+        query: state.query.copyWith(
+          selectedAcademyClass: academyClass,
+          selectedAcademyMember: null,
+          academyMembers: [],
+          page: 1,
+        ),
+        errorMessage: null,
+      );
     }
 
-    final Academy? academy =
-        state.query.selectedAcademy;
+    final Academy? academy = state.query.selectedAcademy;
 
     if (academy == null) {
+      state = state.copyWith(
+        isFilterLoading: false,
+      );
       return;
     }
 
-    state = state.copyWith(
-      isFilterLoading: true,
-      query: state.query.copyWith(
-        selectedAcademyClass: academyClass,
-        selectedAcademyMember: null,
-        academyMembers: [],
-        page: 1,
-      ),
-      errorMessage: null,
-    );
-
     try {
-      final List<Teacher> teachers =
-      await repository.getTeachers(
+      final List<Teacher> teachers = await repository.getTeachers(
         academy.id,
-        academyClass.id,
+        academyClass?.id,
       );
 
       state = state.copyWith(
