@@ -8,10 +8,18 @@ class ErrorInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    if (!_isAuthenticationError(err)) {
+    final path = err.requestOptions.path;
+    final isSilentAuthError =
+        err.response?.statusCode == 401 &&
+        (path.endsWith('/auth/check') ||
+            path.endsWith('/auth/refresh') ||
+            path.endsWith('/auth/me'));
+
+    if (!isSilentAuthError) {
       _showErrorSnackBar(_getErrorMessage(err));
     }
-    handler.next(err);
+
+    super.onError(err, handler);
   }
 
   bool _isAuthenticationError(DioException err) =>
