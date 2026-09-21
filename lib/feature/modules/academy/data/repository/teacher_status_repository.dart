@@ -54,7 +54,7 @@ class TeacherStatusRepository {
 
   Future<List<Teacher>> getTeachers(
       int academyId,
-      int classId,
+      int? classId,
       ) async {
     final response =
     await api.getStatusOptions(
