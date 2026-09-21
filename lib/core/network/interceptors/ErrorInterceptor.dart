@@ -8,12 +8,17 @@ class ErrorInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    String message = _getErrorMessage(err);
-    
-    // 스낵바 표시
-    _showErrorSnackBar(message);
-    
-    // 원래 에러를 계속 전달
+    final path = err.requestOptions.path;
+    final isSilentAuthError =
+        err.response?.statusCode == 401 &&
+        (path.endsWith('/auth/check') ||
+            path.endsWith('/auth/refresh') ||
+            path.endsWith('/auth/me'));
+
+    if (!isSilentAuthError) {
+      _showErrorSnackBar(_getErrorMessage(err));
+    }
+
     super.onError(err, handler);
   }
 
