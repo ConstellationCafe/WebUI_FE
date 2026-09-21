@@ -113,7 +113,7 @@ class StatusBasicInfo<T extends AcademyMember>
             ),
           )
               .toList(),
-          onChanged: selectedAcademyClass == null
+          onChanged: members.isEmpty
               ? null
               : (student) {
             if (student != null) {
