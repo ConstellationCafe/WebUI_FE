@@ -22,6 +22,9 @@ class ErrorInterceptor extends Interceptor {
     super.onError(err, handler);
   }
 
+  bool _isAuthenticationError(DioException err) =>
+      err.response?.statusCode == 401 || err.response?.statusCode == 403;
+
   String _getErrorMessage(DioException err) {
     switch (err.type) {
       case DioExceptionType.connectionTimeout:
@@ -45,10 +48,6 @@ class ErrorInterceptor extends Interceptor {
     switch (statusCode) {
       case 400:
         return '잘못된 요청입니다';
-      case 401:
-        return '로그인이 필요합니다';
-      case 403:
-        return '접근 권한이 없습니다';
       case 404:
         return '요청한 리소스를 찾을 수 없습니다';
       case 409:
@@ -64,7 +63,7 @@ class ErrorInterceptor extends Interceptor {
       case 503:
         return '서비스가 일시적으로 중단되었습니다';
       default:
-        return '서버 오류가 발생했습니다 (HTTP $statusCode)';
+        return '서버 오류가 발생했습니다';
     }
   }
 
@@ -73,30 +72,23 @@ class ErrorInterceptor extends Interceptor {
       SnackBar(
         content: Row(
           children: [
-            Icon(
-              Icons.error_outline,
-              color: Colors.white,
-              size: 20,
-            ),
-            SizedBox(width: 8),
+            const Icon(Icons.error_outline, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 message,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                ),
+                style: const TextStyle(color: Colors.white, fontSize: 14),
               ),
             ),
           ],
         ),
         backgroundColor: Colors.red.shade600,
-        duration: Duration(seconds: 4),
+        duration: const Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        margin: EdgeInsets.all(16),
+        margin: const EdgeInsets.all(16),
       ),
     );
   }
