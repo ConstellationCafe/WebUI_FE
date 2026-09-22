@@ -16,7 +16,7 @@ class ApiResponse {
 
   factory ApiResponse.fromHttpResponse(Http.Response res) {
     final Map<String, dynamic> json =
-    jsonDecode(res.body) as Map<String, dynamic>;
+        jsonDecode(res.body) as Map<String, dynamic>;
 
     return ApiResponse(
       success: json['success'] == true,
@@ -28,8 +28,7 @@ class ApiResponse {
   }
 
   factory ApiResponse.fromDioResponse(Dio.Response res) {
-    final Map<String, dynamic> json =
-    res.data is String
+    final Map<String, dynamic> json = res.data is String
         ? jsonDecode(res.data)
         : res.data as Map<String, dynamic>;
 

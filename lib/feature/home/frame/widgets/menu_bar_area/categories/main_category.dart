@@ -9,7 +9,6 @@ import '../../../../../auth/category/admin_category.dart';
 import '../../../../../modules/academy/category/academy_category.dart';
 import '../../../../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 
-
 class MainCategory extends ConsumerStatefulWidget {
   const MainCategory({super.key});
 
@@ -23,17 +22,15 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
     final globalState = ref.watch(currentUserStateProvider);
     final permissionState = ref.watch(academyPermissionProvider);
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ChatBotCategory(),
-          ShadowverseCategory(),
-          if (globalState.roles.contains(UserRole.ADMIN)) ... [
-            AdminCategory(),
-          ],
-          if (!permissionState.isLoading && permissionState.isInitialized) ... [
-            AcademyCategory()
-          ],
-        ]
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ChatBotCategory(),
+        ShadowverseCategory(),
+        if (globalState.roles.contains(UserRole.ADMIN)) ...[AdminCategory()],
+        if (!permissionState.isLoading && permissionState.isInitialized) ...[
+          AcademyCategory(),
+        ],
+      ],
     );
   }
 }

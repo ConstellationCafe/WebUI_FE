@@ -20,11 +20,7 @@ class SocketModel {
       "auth_id": 731001,
       "src": src,
       "dst": dst,
-      "payload": {
-        "sub": sub,
-        "target_func": targetFunc,
-        "args": args
-      }
+      "payload": {"sub": sub, "target_func": targetFunc, "args": args},
     };
   }
 }

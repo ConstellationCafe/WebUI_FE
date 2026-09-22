@@ -43,10 +43,10 @@ class AcademySelectionFields extends StatelessWidget {
             items: academies
                 .map(
                   (academy) => DropdownMenuItem<Academy>(
-                value: academy,
-                child: Text(academy.name),
-              ),
-            )
+                    value: academy,
+                    child: Text(academy.name),
+                  ),
+                )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -65,12 +65,10 @@ class AcademySelectionFields extends StatelessWidget {
             items: classes
                 .map(
                   (academyClass) => DropdownMenuItem<AcademyClass>(
-                value: academyClass,
-                child: Text(
-                  '${academyClass.classNumber}분반',
-                ),
-              ),
-            )
+                    value: academyClass,
+                    child: Text('${academyClass.classNumber}분반'),
+                  ),
+                )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -89,10 +87,10 @@ class AcademySelectionFields extends StatelessWidget {
             items: subjects
                 .map(
                   (subject) => DropdownMenuItem<Subject>(
-                value: subject,
-                child: Text(subject.name),
-              ),
-            )
+                    value: subject,
+                    child: Text(subject.name),
+                  ),
+                )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -106,21 +104,17 @@ class AcademySelectionFields extends StatelessWidget {
   }
 
   Widget _dropdown<T>(
-      BuildContext context, {
-        required String label,
-        required String hint,
-        required T? value,
-        required List<DropdownMenuItem<T>> items,
-        required ValueChanged<T?> onChanged,
-      }) {
+    BuildContext context, {
+    required String label,
+    required String hint,
+    required T? value,
+    required List<DropdownMenuItem<T>> items,
+    required ValueChanged<T?> onChanged,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(
-          context,
-          label,
-          required: true,
-        ),
+        _label(context, label, required: true),
         const SizedBox(height: 6),
         DropdownButtonFormField<T>(
           value: value,
@@ -133,11 +127,7 @@ class AcademySelectionFields extends StatelessWidget {
     );
   }
 
-  Widget _label(
-      BuildContext context,
-      String text, {
-        bool required = false,
-      }) {
+  Widget _label(BuildContext context, String text, {bool required = false}) {
     return RichText(
       text: TextSpan(
         style: Theme.of(context).textTheme.labelLarge,
@@ -146,9 +136,7 @@ class AcademySelectionFields extends StatelessWidget {
           if (required)
             const TextSpan(
               text: ' *',
-              style: TextStyle(
-                color: Colors.red,
-              ),
+              style: TextStyle(color: Colors.red),
             ),
         ],
       ),

@@ -6,7 +6,7 @@ import 'package:constellation_cafe/di/ApiProvider.dart';
 
 part 'current_user_state_notifier.g.dart';
 
-@Riverpod(keepAlive: true)  // 새로고침해도 유지되게
+@Riverpod(keepAlive: true) // 새로고침해도 유지되게
 class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
   bool _isInitialized = false;
 
@@ -25,9 +25,7 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
         state = CurrentUserState.fromJson(me.response!);
         _isInitialized = true;
       }
-      await ref.read(
-        academyPermissionProvider.notifier,
-      ).initialize();
+      await ref.read(academyPermissionProvider.notifier).initialize();
     }
   }
 
@@ -59,8 +57,6 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
   void clear() {
     state = CurrentUserState.initial();
     _isInitialized = false;
-    ref.read(
-      academyPermissionProvider.notifier,
-    ).clear();
+    ref.read(academyPermissionProvider.notifier).clear();
   }
 }

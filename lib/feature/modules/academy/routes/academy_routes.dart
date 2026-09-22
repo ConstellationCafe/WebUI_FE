@@ -7,12 +7,10 @@ import '../page/edit_teacher_status/teacher_status_page.dart';
 import '../page/read_teacher_status/read_teacher_status.dart';
 import '../page/write_lesson_record/class_content_record.dart';
 
-
 final academyRoutes = <GoRoute>[
   GoRoute(
     path: '/academy/write_lesson_record',
-    pageBuilder: (context, state) =>
-        noAnim(state, const LessonRecordPage()),
+    pageBuilder: (context, state) => noAnim(state, const LessonRecordPage()),
   ),
   GoRoute(
     path: '/academy/read_lesson_record',
@@ -21,13 +19,11 @@ final academyRoutes = <GoRoute>[
   ),
   GoRoute(
     path: '/academy/student_status',
-    pageBuilder: (context, state) =>
-        noAnim(state, const StudentStatusPage()),
+    pageBuilder: (context, state) => noAnim(state, const StudentStatusPage()),
   ),
   GoRoute(
     path: '/academy/teacher_status',
-    pageBuilder: (context, state) =>
-        noAnim(state, const TeacherStatusPage()),
+    pageBuilder: (context, state) => noAnim(state, const TeacherStatusPage()),
   ),
   GoRoute(
     path: '/academy/read_student_status',
@@ -38,5 +34,5 @@ final academyRoutes = <GoRoute>[
     path: '/academy/read_teacher_status',
     pageBuilder: (context, state) =>
         noAnim(state, const ReadTeacherStatusPage()),
-  )
+  ),
 ];

@@ -5,8 +5,7 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/type/status_type.dart';
 
-class StatusProcessForm<T extends StatusType>
-    extends StatelessWidget {
+class StatusProcessForm<T extends StatusType> extends StatelessWidget {
   final List<T> statuses;
 
   final List<Subject> subjects;
@@ -41,47 +40,28 @@ class StatusProcessForm<T extends StatusType>
   Widget build(BuildContext context) {
     final showSubjects =
         selectedStatusType != null &&
-            showSubjectsWhen?.call(selectedStatusType as T) == true;
+        showSubjectsWhen?.call(selectedStatusType as T) == true;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '처리 정보',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(
-          height: ConstPadding.mediumPadding,
-        ),
-        Text(
-          '처리 유형 *',
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
-        const SizedBox(
-          height: ConstPadding.smallPadding,
-        ),
+        Text('처리 정보', style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: ConstPadding.mediumPadding),
+        Text('처리 유형 *', style: Theme.of(context).textTheme.labelLarge),
+        const SizedBox(height: ConstPadding.smallPadding),
         Wrap(
           spacing: ConstPadding.mediumPadding,
           children: statuses
-              .map(
-                (status) => _statusRadio(
-              context,
-              status,
-            ),
-          )
+              .map((status) => _statusRadio(context, status))
               .toList(),
         ),
         if (showSubjects) ...[
-          const SizedBox(
-            height: ConstPadding.mediumPadding,
-          ),
+          const SizedBox(height: ConstPadding.mediumPadding),
           Text(
             subjectSectionTitle,
             style: Theme.of(context).textTheme.labelLarge,
           ),
-          const SizedBox(
-            height: ConstPadding.smallPadding,
-          ),
+          const SizedBox(height: ConstPadding.smallPadding),
           if (subjects.isEmpty)
             Text(
               '선택 가능한 교과목이 없습니다.',
@@ -91,34 +71,24 @@ class StatusProcessForm<T extends StatusType>
             Wrap(
               spacing: ConstPadding.smallPadding,
               runSpacing: ConstPadding.smallPadding,
-              children: subjects.map(
-                    (subject) {
-                  final selected = selectedSubjects.any(
-                        (selectedSubject) =>
-                    selectedSubject.id == subject.id,
-                  );
+              children: subjects.map((subject) {
+                final selected = selectedSubjects.any(
+                  (selectedSubject) => selectedSubject.id == subject.id,
+                );
 
-                  return FilterChip(
-                    selected: selected,
-                    label: Text(subject.name),
-                    onSelected: (_) {
-                      onSubjectChanged(subject);
-                    },
-                  );
-                },
-              ).toList(),
+                return FilterChip(
+                  selected: selected,
+                  label: Text(subject.name),
+                  onSelected: (_) {
+                    onSubjectChanged(subject);
+                  },
+                );
+              }).toList(),
             ),
-          const SizedBox(
-            height: ConstPadding.tinyPadding,
-          ),
-          Text(
-            subjectHelperText,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          const SizedBox(height: ConstPadding.tinyPadding),
+          Text(subjectHelperText, style: Theme.of(context).textTheme.bodySmall),
         ],
-        const SizedBox(
-          height: ConstPadding.mediumPadding,
-        ),
+        const SizedBox(height: ConstPadding.mediumPadding),
         TextField(
           onChanged: onReasonChanged,
           maxLines: 4,
@@ -131,18 +101,14 @@ class StatusProcessForm<T extends StatusType>
     );
   }
 
-  Widget _statusRadio(
-      BuildContext context,
-      T value,
-      ) {
+  Widget _statusRadio(BuildContext context, T value) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Radio<T>(
           value: value,
           groupValue: selectedStatusType,
-          activeColor:
-          Theme.of(context).colorScheme.secondary,
+          activeColor: Theme.of(context).colorScheme.secondary,
           onChanged: (value) {
             if (value != null) {
               onStatusChanged(value);

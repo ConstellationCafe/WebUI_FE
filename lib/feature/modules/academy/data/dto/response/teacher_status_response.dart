@@ -15,34 +15,17 @@ class TeacherStatusResponse {
     this.teachers = const [],
   });
 
-  factory TeacherStatusResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory TeacherStatusResponse.fromJson(Map<String, dynamic> json) {
     return TeacherStatusResponse(
-      academies:
-        (json['academies'] as List<dynamic>? ?? [])
-        .map(
-          (e) => AcademyOptionResponse.fromJson(
-              e as Map<String, dynamic>,
-            ),
-          )
+      academies: (json['academies'] as List<dynamic>? ?? [])
+          .map((e) => AcademyOptionResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
-      classes:
-        (json['classes'] as List<dynamic>? ?? [])
-        .map(
-          (e) => ClassOptionResponse.fromJson(
-            e as Map<String, dynamic>,
-          ),
-        )
-        .toList(),
-      teachers:
-        (json['teachers'] as List<dynamic>? ?? [])
-        .map(
-          (e) => OptionResponse.fromJson(
-            e as Map<String, dynamic>,
-          ),
-        )
-        .toList(),
+      classes: (json['classes'] as List<dynamic>? ?? [])
+          .map((e) => ClassOptionResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      teachers: (json['teachers'] as List<dynamic>? ?? [])
+          .map((e) => OptionResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 }

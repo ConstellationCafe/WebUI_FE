@@ -15,79 +15,57 @@ import '../dto/request/status_query_request.dart';
 class StudentStatusRepository {
   final StudentStatusApi api;
 
-  const StudentStatusRepository({
-    required this.api,
-  });
+  const StudentStatusRepository({required this.api});
 
   Future<List<Academy>> getAcademies() async {
-    final response =
-    await api.getStatusOptions();
+    final response = await api.getStatusOptions();
 
     return response.academies
-      .map(
-        (academy) => Academy(
-          id: academy.id,
-          name: academy.name,
-        ),
-      )
-      .toList();
+        .map((academy) => Academy(id: academy.id, name: academy.name))
+        .toList();
   }
 
   Future<List<AcademyClass>> getClasses(int academyId) async {
-    final response = await api.getStatusOptions(
-      academyId: academyId,
-    );
+    final response = await api.getStatusOptions(academyId: academyId);
 
     return response.classes
-      .map(
-        (academyClass) => AcademyClass(
-          id: academyClass.id,
-          classNumber:
-          academyClass.classNumber,
-          state: academyClass.state,
-        ),
-      )
-      .toList();
+        .map(
+          (academyClass) => AcademyClass(
+            id: academyClass.id,
+            classNumber: academyClass.classNumber,
+            state: academyClass.state,
+          ),
+        )
+        .toList();
   }
 
   Future<List<Subject>> getSubjects(int academyId) async {
-    final response = await api.getStatusOptions(
-      academyId: academyId,
-    );
+    final response = await api.getStatusOptions(academyId: academyId);
 
     return response.subjects
-      .map(
-        (subject) => Subject(
-          id: subject.id,
-          name: subject.name,
-        ),
-      )
-      .toList();
+        .map((subject) => Subject(id: subject.id, name: subject.name))
+        .toList();
   }
 
-  Future<List<Student>> getStudents(
-      int academyId,
-      int classId,
-      ) async {
+  Future<List<Student>> getStudents(int academyId, int classId) async {
     final response = await api.getStatusOptions(
       academyId: academyId,
       classId: classId,
     );
 
     return response.students
-      .map(
-        (student) => Student(
-          sk: student.sk,
-          discordID: student.discordID,
-          name: student.name,
-          state: student.state
-        ),
-      )
-      .toList();
+        .map(
+          (student) => Student(
+            sk: student.sk,
+            discordID: student.discordID,
+            name: student.name,
+            state: student.state,
+          ),
+        )
+        .toList();
   }
 
-  Future<StudentStatusList>
-  getStudentStatuses({
+  Future<StudentStatusList> getStudentStatuses({
     int? academyId,
     int? classId,
     String? academyMemberId,
@@ -104,23 +82,21 @@ class StudentStatusRepository {
       size: size,
     );
 
-    final response = await api.getStudentStatuses(
-      request,
-    );
+    final response = await api.getStudentStatuses(request);
 
     return StudentStatusList(
       items: response.items
-        .map<StatusView<Student, StudentRosterStatus>>(
-          (item) => StatusView<Student, StudentRosterStatus>(
-            academyMember: item.academyMember,
-            academy: item.academy,
-            academyClass: item.academyClass,
-            status: item.status,
-            statusChangedAt: item.statusChangedAt,
-            reason: item.reason,
-          ),
-        )
-        .toList(),
+          .map<StatusView<Student, StudentRosterStatus>>(
+            (item) => StatusView<Student, StudentRosterStatus>(
+              academyMember: item.academyMember,
+              academy: item.academy,
+              academyClass: item.academyClass,
+              status: item.status,
+              statusChangedAt: item.statusChangedAt,
+              reason: item.reason,
+            ),
+          )
+          .toList(),
       totalCount: response.summary.totalCount,
       enrolledCount: response.summary.enrolledCount,
       graduationCount: response.summary.graduationCount,

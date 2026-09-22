@@ -16,11 +16,7 @@ class AcademyDateField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(
-          context,
-          '교육 일시',
-          required: true,
-        ),
+        _label(context, '교육 일시', required: true),
         const SizedBox(height: 6),
         InkWell(
           onTap: () async {
@@ -42,33 +38,24 @@ class AcademyDateField extends StatelessWidget {
                   child: child!,
                 );
               },
-            );;
+            );
+            ;
             if (selectedDate != null) {
               onChanged(selectedDate);
             }
           },
           child: InputDecorator(
             decoration: const InputDecoration(
-              suffixIcon: Icon(
-                Icons.calendar_today_outlined,
-              ),
+              suffixIcon: Icon(Icons.calendar_today_outlined),
             ),
-            child: Text(
-              date == null
-                  ? '날짜를 선택하세요'
-                  : _formatDate(date!),
-            ),
+            child: Text(date == null ? '날짜를 선택하세요' : _formatDate(date!)),
           ),
         ),
       ],
     );
   }
 
-  Widget _label(
-      BuildContext context,
-      String text, {
-        bool required = false,
-      }) {
+  Widget _label(BuildContext context, String text, {bool required = false}) {
     return RichText(
       text: TextSpan(
         style: Theme.of(context).textTheme.labelLarge,
@@ -77,9 +64,7 @@ class AcademyDateField extends StatelessWidget {
           if (required)
             const TextSpan(
               text: ' *',
-              style: TextStyle(
-                color: Colors.red,
-              ),
+              style: TextStyle(color: Colors.red),
             ),
         ],
       ),

@@ -43,9 +43,7 @@ class MembershipNotifier extends _$MembershipNotifier {
       final membershipApi = ref.read(membershipApiProvider);
       final globalState = ref.read(currentUserStateProvider);
 
-      final data = await membershipApi.createCard([
-        globalState.userId,
-      ]);
+      final data = await membershipApi.createCard([globalState.userId]);
       final payload = data['payload'];
       final raw = payload?['result'];
 
@@ -55,9 +53,7 @@ class MembershipNotifier extends _$MembershipNotifier {
       final avatar = globalState.avatarUrl;
       result.add(avatar);
 
-      state = MembershipState.fromList(result).copyWith(
-        isLoading: false,
-      );
+      state = MembershipState.fromList(result).copyWith(isLoading: false);
       _initialUid1 = state.uid1;
       _initialUid2 = state.uid2;
       _initialGuild = state.guild;
@@ -70,35 +66,19 @@ class MembershipNotifier extends _$MembershipNotifier {
     }
   }
 
-  void update({
-    String? uid1,
-    String? uid2,
-    String? guild,
-  }) {
+  void update({String? uid1, String? uid2, String? guild}) {
     state = state.copyWith(
-      uid1: _resolveField(
-        uid1,
-        state.uid1,
-        _initialUid1,
-      ),
-      uid2: _resolveField(
-        uid2,
-        state.uid2,
-        _initialUid2,
-      ),
-      guild: _resolveField(
-        guild,
-        state.guild,
-        _initialGuild,
-      ),
+      uid1: _resolveField(uid1, state.uid1, _initialUid1),
+      uid2: _resolveField(uid2, state.uid2, _initialUid2),
+      guild: _resolveField(guild, state.guild, _initialGuild),
     );
   }
 
   String? _resolveField(
-      String? newValue,
-      String? currentValue,
-      String? initialValue,
-      ) {
+    String? newValue,
+    String? currentValue,
+    String? initialValue,
+  ) {
     if (newValue == null) {
       return currentValue;
     }
@@ -115,22 +95,14 @@ class MembershipNotifier extends _$MembershipNotifier {
     final results = <String>[];
 
     if (uid1Changed && (state.uid1?.isNotEmpty ?? false)) {
-      final result = await _saveUID(
-        membershipApi,
-        state.uid1!,
-        state.username,
-      );
+      final result = await _saveUID(membershipApi, state.uid1!, state.username);
 
       results.add(result);
       _initialUid1 = state.uid1;
     }
 
     if (uid2Changed && (state.uid2?.isNotEmpty ?? false)) {
-      final result = await _saveUID(
-        membershipApi,
-        state.uid2!,
-        state.username,
-      );
+      final result = await _saveUID(membershipApi, state.uid2!, state.username);
 
       results.add(result);
       _initialUid2 = state.uid2;
@@ -150,32 +122,14 @@ class MembershipNotifier extends _$MembershipNotifier {
     return results;
   }
 
-  Future<String> _saveUID(
-      dynamic api,
-      String uid,
-      String username,
-      ) async {
+  Future<String> _saveUID(dynamic api, String uid, String username) async {
     final version = uid.length == 9 ? 's1' : 's2';
 
-    return api.updateUID([
-      _membershipID,
-      version,
-      uid,
-      username,
-    ]);
+    return api.updateUID([_membershipID, version, uid, username]);
   }
 
-  Future<String> _saveGuild(
-      dynamic api,
-      String guild,
-      String username,
-      ) async {
-    return api.updateGuild([
-      _membershipID,
-      's2',
-      guild,
-      username,
-    ]);
+  Future<String> _saveGuild(dynamic api, String guild, String username) async {
+    return api.updateGuild([_membershipID, 's2', guild, username]);
   }
 
   void clear() {

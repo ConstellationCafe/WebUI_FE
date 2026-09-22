@@ -29,8 +29,7 @@ class LoginCheckNotifier extends _$LoginCheckNotifier {
       // 권한 없음(401, 403) 처리
       else if (_isUnauthorized(res)) {
         return await _tryJwtRefresh();
-      }
-      else {
+      } else {
         return false;
       }
     } catch (_) {
@@ -47,8 +46,7 @@ class LoginCheckNotifier extends _$LoginCheckNotifier {
     final checkRes = await jwt.check();
     if (checkRes.success == true && _parseIsLogin(checkRes)) {
       return await _onLoginSuccess();
-    }
-    else {
+    } else {
       return false;
     }
   }

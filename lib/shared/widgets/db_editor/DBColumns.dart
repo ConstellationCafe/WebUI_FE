@@ -14,52 +14,32 @@ class DBColumns extends StatelessWidget {
     this.hiddenColumns = const {},
   });
 
-  Future<void> _sort(
-      BuildContext context,
-      String columnName,
-      ) async {
+  Future<void> _sort(BuildContext context, String columnName) async {
     try {
-      await controller.sort(
-        columnName,
-      );
+      await controller.sort(columnName);
     } catch (e) {
       if (!context.mounted) {
         return;
       }
 
-      final message = e is StateError
-          ? e.message.toString()
-          : e.toString();
+      final message = e is StateError ? e.message.toString() : e.toString();
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
-  Widget _sortIcon(
-      DBColumn column,
-      ) {
+  Widget _sortIcon(DBColumn column) {
     switch (column.sortDir) {
       case Toggle.asc:
-        return const Icon(
-          Icons.arrow_upward,
-          size: 14,
-        );
+        return const Icon(Icons.arrow_upward, size: 14);
 
       case Toggle.desc:
-        return const Icon(
-          Icons.arrow_downward,
-          size: 14,
-        );
+        return const Icon(Icons.arrow_downward, size: 14);
 
       case Toggle.none:
-        return const SizedBox(
-          width: 14,
-        );
+        return const SizedBox(width: 14);
     }
   }
 
@@ -76,51 +56,40 @@ class DBColumns extends StatelessWidget {
           }
 
           return Table(
-            border: TableBorder.all(
-              width: 1,
-              color: Colors.grey,
-            ),
+            border: TableBorder.all(width: 1, color: Colors.grey),
             children: [
               TableRow(
                 children: controller.model.columns
                     .where(
-                      (column) =>
-                  !hiddenColumns.contains(column.toString()),
-                )
-                    .map(
-                      (column) {
-                    return InkWell(
-                      onTap: controller.isLoading
-                          ? null
-                          : () {
-                        _sort(
-                          context,
-                          column.toString(),
-                        );
-                      },
-                      child: Container(
-                        height: 40,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                column.toString(),
-                                overflow: TextOverflow.ellipsis,
+                      (column) => !hiddenColumns.contains(column.toString()),
+                    )
+                    .map((column) {
+                      return InkWell(
+                        onTap: controller.isLoading
+                            ? null
+                            : () {
+                                _sort(context, column.toString());
+                              },
+                        child: Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  column.toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 3),
-                            _sortIcon(column),
-                          ],
+                              const SizedBox(width: 3),
+                              _sortIcon(column),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                )
+                      );
+                    })
                     .toList(),
               ),
             ],

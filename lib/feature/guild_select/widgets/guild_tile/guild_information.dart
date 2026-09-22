@@ -6,10 +6,7 @@ import '../../domain/guild.dart';
 class GuildInformation extends StatelessWidget {
   final Guild guild;
 
-  const GuildInformation({
-    super.key,
-    required this.guild,
-  });
+  const GuildInformation({super.key, required this.guild});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +21,7 @@ class GuildInformation extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.titleLarge,
         ),
-        const SizedBox(
-          height: GuildConstants.informationSpacing,
-        ),
+        const SizedBox(height: GuildConstants.informationSpacing),
         Row(
           children: [
             Icon(
@@ -34,13 +29,8 @@ class GuildInformation extends StatelessWidget {
               size: GuildConstants.memberIconSize,
               color: theme.colorScheme.onSurfaceVariant,
             ),
-            const SizedBox(
-              width: GuildConstants.memberTextSpacing,
-            ),
-            Text(
-              '${guild.memberCount}명',
-              style: theme.textTheme.bodySmall,
-            ),
+            const SizedBox(width: GuildConstants.memberTextSpacing),
+            Text('${guild.memberCount}명', style: theme.textTheme.bodySmall),
           ],
         ),
       ],

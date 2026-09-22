@@ -1,4 +1,3 @@
-
 import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
 
 class MembershipAPI {

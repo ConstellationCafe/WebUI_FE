@@ -11,10 +11,7 @@ class ContentEntity extends Entity {
   });
 
   @override
-  Map<String, dynamic> toJson() => {
-    'cnValue': cnValue,
-    'discordId': discordId,
-  };
+  Map<String, dynamic> toJson() => {'cnValue': cnValue, 'discordId': discordId};
 
   @override
   Map<String, dynamic> toDisplayJson() => {
@@ -22,20 +19,14 @@ class ContentEntity extends Entity {
     'discordId': discordId,
   };
 
-  factory ContentEntity.init(
-      List<Map<String, dynamic>> metadata,
-      ) {
-    return ContentEntity(
-      metadata: metadata,
-      cnValue: '',
-      discordId: '',
-    );
+  factory ContentEntity.init(List<Map<String, dynamic>> metadata) {
+    return ContentEntity(metadata: metadata, cnValue: '', discordId: '');
   }
 
   factory ContentEntity.fromJson(
-      List<Map<String, dynamic>> metadata,
-      Map<String, dynamic> json,
-      ) {
+    List<Map<String, dynamic>> metadata,
+    Map<String, dynamic> json,
+  ) {
     return ContentEntity(
       metadata: metadata,
       cnValue: (json['cnValue'] ?? '').toString(),

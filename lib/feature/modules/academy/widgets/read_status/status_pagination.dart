@@ -20,10 +20,7 @@ class StatusPagination extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final pages = List.generate(
-      totalPages,
-          (index) => index + 1,
-    );
+    final pages = List.generate(totalPages, (index) => index + 1);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -34,21 +31,16 @@ class StatusPagination extends StatelessWidget {
           child: IconButton(
             onPressed: currentPage > 1
                 ? () {
-              onPageChanged(
-                currentPage - 1,
-              );
-            }
+                    onPageChanged(currentPage - 1);
+                  }
                 : null,
-            icon: const Icon(
-              Icons.chevron_left,
-            ),
+            icon: const Icon(Icons.chevron_left),
           ),
         ),
         ...pages.map(
-              (page) => Padding(
+          (page) => Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal:
-              AcademyConstants.statusPaginationSpacing,
+              horizontal: AcademyConstants.statusPaginationSpacing,
             ),
             child: SizedBox(
               width: AcademyConstants.statusPaginationButtonSize,
@@ -58,28 +50,22 @@ class StatusPagination extends StatelessWidget {
                       style: FilledButton.styleFrom(
                         padding: EdgeInsets.zero,
                         minimumSize: Size.zero,
-                        tapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         shape: const CircleBorder(),
                       ),
                       onPressed: () {
                         onPageChanged(page);
                       },
                       child: Center(
-                        child: Text(
-                          '$page',
-                          textAlign: TextAlign.center,
-                        ),
+                        child: Text('$page', textAlign: TextAlign.center),
                       ),
                     )
                   : TextButton(
-                onPressed: () {
-                  onPageChanged(page);
-                },
-                child: Text(
-                  '$page',
-                ),
-              ),
+                      onPressed: () {
+                        onPageChanged(page);
+                      },
+                      child: Text('$page'),
+                    ),
             ),
           ),
         ),
@@ -89,14 +75,10 @@ class StatusPagination extends StatelessWidget {
           child: IconButton(
             onPressed: currentPage < totalPages
                 ? () {
-              onPageChanged(
-                currentPage + 1,
-              );
-            }
+                    onPageChanged(currentPage + 1);
+                  }
                 : null,
-            icon: const Icon(
-              Icons.chevron_right,
-            ),
+            icon: const Icon(Icons.chevron_right),
           ),
         ),
       ],

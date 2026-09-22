@@ -17,12 +17,12 @@ abstract class TeacherStatus with _$TeacherStatus {
     AcademyClass? selectedAcademyClass,
     Teacher? selectedTeacher,
     TeacherStatusType? selectedStatusType,
-    @Default('') String reason,k
+    @Default('') String reason,
+    k,
   }) = _TeacherStatus;
 }
 
-extension TeacherStatusValidation
-on TeacherStatus {
+extension TeacherStatusValidation on TeacherStatus {
   bool get isValid {
     if (selectedAcademy == null) {
       return false;

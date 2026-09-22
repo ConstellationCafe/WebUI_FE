@@ -17,11 +17,8 @@ import '../../widgets/write_lesson_record/lesson_record_header.dart';
 import '../../widgets/write_lesson_record/member_selector.dart';
 import '../../widgets/write_lesson_record/teacher_info/academy_teacher_info.dart';
 
-
 class LessonRecordPage extends ConsumerWidget {
-  const LessonRecordPage({
-    super.key,
-  });
+  const LessonRecordPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,21 +41,17 @@ class LessonRecordPage extends ConsumerWidget {
       }
 
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('수업 기록이 저장되었습니다.'),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('수업 기록이 저장되었습니다.')));
 
         context.pop();
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('필수 항목을 확인해주세요.'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('필수 항목을 확인해주세요.')));
     }
 
     void cancel() {
@@ -81,16 +74,9 @@ class LessonRecordPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBreadcrumb(
-                items: [
-                  '수업 관리',
-                  '수업 내용 기록',
-                ],
-              ),
+              AppBreadcrumb(items: ['수업 관리', '수업 내용 기록']),
               const SizedBox(height: ConstPadding.smallPadding),
-              LessonRecordHeader(
-                isDesktop: isDesktop,
-              ),
+              LessonRecordHeader(isDesktop: isDesktop),
               const SizedBox(height: ConstPadding.mediumPadding),
               AcademyBasicInfo(
                 // model
@@ -125,7 +111,9 @@ class LessonRecordPage extends ConsumerWidget {
                 onStudentToggle: queryNotifier.toggleStudent,
                 onSelectAll: queryNotifier.selectAllStudents,
               ),
-              LessonDescription(description: formState.lessonRecordForm.description),
+              LessonDescription(
+                description: formState.lessonRecordForm.description,
+              ),
               const SizedBox(height: ConstPadding.mediumPadding),
               LessonRecordBottom(
                 isSaving: formState.isSaving,

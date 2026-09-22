@@ -10,17 +10,12 @@ enum TeacherStatusType implements StatusType {
   @override
   final String apiValue;
 
-  const TeacherStatusType(
-      this.label,
-      this.apiValue,
-      );
+  const TeacherStatusType(this.label, this.apiValue);
 
   static TeacherStatusType fromApiValue(String value) {
     return TeacherStatusType.values.firstWhere(
-          (status) => status.apiValue == value,
-      orElse: () => throw ArgumentError(
-        '지원하지 않는 교사 상태 처리 유형입니다: $value',
-      ),
+      (status) => status.apiValue == value,
+      orElse: () => throw ArgumentError('지원하지 않는 교사 상태 처리 유형입니다: $value'),
     );
   }
 }

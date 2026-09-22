@@ -68,8 +68,7 @@ class LessonRecordFilter extends StatelessWidget {
               width: AcademyConstants.filterFieldWidth,
               child: AcademyDropdown(
                 academies: academies,
-                selectedAcademyId:
-                selectedAcademyId,
+                selectedAcademyId: selectedAcademyId,
                 isLoading: isLoading,
                 onChanged: onAcademyChanged,
               ),
@@ -78,8 +77,7 @@ class LessonRecordFilter extends StatelessWidget {
               width: AcademyConstants.filterFieldWidth,
               child: ClassDropdown(
                 classes: classes,
-                selectedClassId:
-                selectedClassId,
+                selectedClassId: selectedClassId,
                 onChanged: onClassChanged,
               ),
             ),
@@ -87,8 +85,7 @@ class LessonRecordFilter extends StatelessWidget {
               width: AcademyConstants.filterFieldWidth,
               child: SubjectDropdown(
                 subjects: subjects,
-                selectedSubjectId:
-                selectedSubjectId,
+                selectedSubjectId: selectedSubjectId,
                 onChanged: onSubjectChanged,
               ),
             ),
@@ -109,31 +106,21 @@ class LessonRecordFilter extends StatelessWidget {
           ],
         ),
 
-        const SizedBox(
-          height: ConstPadding.mediumPadding,
-        ),
+        const SizedBox(height: ConstPadding.mediumPadding),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(
-              onPressed:
-              isLoading ? null : onReset,
-              child: const Text(
-                '초기화',
-              ),
+              onPressed: isLoading ? null : onReset,
+              child: const Text('초기화'),
             ),
 
-            const SizedBox(
-              width: ConstPadding.smallPadding,
-            ),
+            const SizedBox(width: ConstPadding.smallPadding),
 
             ElevatedButton(
-              onPressed:
-              isLoading ? null : onSearch,
-              child: const Text(
-                '조회',
-              ),
+              onPressed: isLoading ? null : onSearch,
+              child: const Text('조회'),
             ),
           ],
         ),

@@ -9,30 +9,18 @@ import '../content/pages/content_list.dart';
 final chatbotRoutes = <GoRoute>[
   GoRoute(
     path: '/learning',
-    pageBuilder: (context, state) => noAnim(
-      state,
-      const LearningList(),
-    ),
+    pageBuilder: (context, state) => noAnim(state, const LearningList()),
   ),
   GoRoute(
     path: '/menu',
-    pageBuilder: (context, state) => noAnim(
-      state,
-      const MenuList(),
-    ),
+    pageBuilder: (context, state) => noAnim(state, const MenuList()),
   ),
   GoRoute(
     path: '/music',
-    pageBuilder: (context, state) => noAnim(
-      state,
-      const MusicList(),
-    ),
+    pageBuilder: (context, state) => noAnim(state, const MusicList()),
   ),
   GoRoute(
     path: '/content',
-    pageBuilder: (context, state) => noAnim(
-      state,
-      const ContentList(),
-    ),
-  )
+    pageBuilder: (context, state) => noAnim(state, const ContentList()),
+  ),
 ];

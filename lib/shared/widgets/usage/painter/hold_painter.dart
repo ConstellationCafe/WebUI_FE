@@ -7,11 +7,9 @@ class HolePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final backgroundPaint = Paint()
-      ..color = Colors.black.withOpacity(0.7);
+    final backgroundPaint = Paint()..color = Colors.black.withOpacity(0.7);
 
-    final clearPaint = Paint()
-      ..blendMode = BlendMode.clear;
+    final clearPaint = Paint()..blendMode = BlendMode.clear;
 
     final layer = Rect.fromLTWH(0, 0, size.width, size.height);
 

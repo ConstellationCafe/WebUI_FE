@@ -4,15 +4,12 @@ import 'package:constellation_cafe/shared/domain/repository/repository_interface
 
 import '../domain/entity/content_entity.dart';
 
-class ContentRepository
-    implements RepositoryInterface<ContentEntity> {
+class ContentRepository implements RepositoryInterface<ContentEntity> {
   static String apiPath = "/api/repository/content";
 
   final Dio dio;
 
-  ContentRepository({
-    required this.dio,
-  });
+  ContentRepository({required this.dio});
 
   @override
   Future<PageResult<ContentEntity>> findPage({
@@ -52,36 +49,34 @@ class ContentRepository
 
     final body = res['response'];
 
-    final List rawMeta =
-        (body['metadata'] as List?)?.toList() ?? const [];
+    final List rawMeta = (body['metadata'] as List?)?.toList() ?? const [];
 
     final List<Map<String, dynamic>> metadata = rawMeta
         .map((e) => Map<String, dynamic>.from(e as Map))
         .map((m) {
-      final dbName = m['colName'].toString();
+          final dbName = m['colName'].toString();
 
-      m['dbName'] = dbName;
+          m['dbName'] = dbName;
 
-      if (dbName == 'cn_value') {
-        m['colName'] = 'cnValue';
-      } else if (dbName == 'recommender') {
-        m['colName'] = 'discordId';
-      }
+          if (dbName == 'cn_value') {
+            m['colName'] = 'cnValue';
+          } else if (dbName == 'recommender') {
+            m['colName'] = 'discordId';
+          }
 
-      return m;
-    })
+          return m;
+        })
         .toList();
 
-    final List rawEntities =
-        (body['entities'] as List?)?.toList() ?? const [];
+    final List rawEntities = (body['entities'] as List?)?.toList() ?? const [];
 
     final List<ContentEntity> entities = rawEntities
         .map(
           (e) => ContentEntity.fromJson(
-        metadata,
-        Map<String, dynamic>.from(e as Map),
-      ),
-    )
+            metadata,
+            Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
 
     return PageResult<ContentEntity>(
@@ -89,10 +84,8 @@ class ContentRepository
       metadata: metadata,
       page: (body['page'] as num?)?.toInt() ?? page,
       size: (body['size'] as num?)?.toInt() ?? size,
-      totalElements:
-      (body['totalElements'] as num?)?.toInt() ?? 0,
-      totalPages:
-      (body['totalPages'] as num?)?.toInt() ?? 0,
+      totalElements: (body['totalElements'] as num?)?.toInt() ?? 0,
+      totalPages: (body['totalPages'] as num?)?.toInt() ?? 0,
       hasNext: body['hasNext'] == true,
     );
   }
@@ -101,18 +94,14 @@ class ContentRepository
   Future<dynamic> save(ContentEntity entity) async {
     final res = await dio.post(
       "$apiPath/save",
-      data: [
-        _toApiJson(entity.toJson()),
-      ],
+      data: [_toApiJson(entity.toJson())],
     );
 
     return res.data;
   }
 
   @override
-  Future<dynamic> saveAll(
-      List<Map<String, String>> model,
-      ) async {
+  Future<dynamic> saveAll(List<Map<String, String>> model) async {
     final res = await dio.post(
       "$apiPath/save_all",
       data: model.map(_toApiJson).toList(),
@@ -122,9 +111,7 @@ class ContentRepository
   }
 
   @override
-  Future<dynamic> deleteAll(
-      List<Map<String, String>> model,
-      ) async {
+  Future<dynamic> deleteAll(List<Map<String, String>> model) async {
     final res = await dio.post(
       "$apiPath/delete_all",
       data: model.map(_toApiJson).toList(),

@@ -55,18 +55,14 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
           padding: EdgeInsets.symmetric(horizontal: ConstSize.mediumSpacing),
           child: Row(
             children: [
-              SizedBox(
-                width: 20,
-                height: 20,
-                child: widget.iconImage,
-              ),
+              SizedBox(width: 20, height: 20, child: widget.iconImage),
               SizedBox(width: ConstSize.smallSpacing),
               Text(
                 widget.menuName,
                 style: theme.textTheme.labelLarge?.copyWith(
-                  color: isSelected 
-                    ? theme.colorScheme.onPrimaryContainer
-                    : theme.colorScheme.onSurface,
+                  color: isSelected
+                      ? theme.colorScheme.onPrimaryContainer
+                      : theme.colorScheme.onSurface,
                 ),
               ),
             ],

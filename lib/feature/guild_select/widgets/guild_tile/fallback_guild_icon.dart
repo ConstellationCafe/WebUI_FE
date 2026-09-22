@@ -8,9 +8,7 @@ import '../../constants/guild_constants.dart';
 /// - 길드 아이콘 이미지 로딩에 실패한 경우
 /// 기본 Discord 아이콘을 대신 표시한다.
 class FallbackGuildIcon extends StatelessWidget {
-  const FallbackGuildIcon({
-    super.key,
-  });
+  const FallbackGuildIcon({super.key});
 
   @override
   Widget build(BuildContext context) {

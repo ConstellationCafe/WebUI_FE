@@ -11,17 +11,12 @@ enum TeacherRosterStatus implements RosterStatus {
   @override
   final String apiValue;
 
-  const TeacherRosterStatus(
-      this.label,
-      this.apiValue,
-      );
+  const TeacherRosterStatus(this.label, this.apiValue);
 
   static TeacherRosterStatus fromApiValue(String value) {
     return TeacherRosterStatus.values.firstWhere(
-          (status) => status.apiValue == value,
-      orElse: () => throw ArgumentError(
-        '지원하지 않는 교사 상태입니다: $value',
-      ),
+      (status) => status.apiValue == value,
+      orElse: () => throw ArgumentError('지원하지 않는 교사 상태입니다: $value'),
     );
   }
 }

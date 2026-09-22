@@ -1,17 +1,13 @@
-
 import 'package:constellation_cafe/feature/profile/domain/entity/point_entity.dart';
 import 'package:dio/dio.dart';
 import '../../../../shared/domain/repository/repository_interface.dart';
 import '../../../shared/domain/pagination/page_result.dart';
 
-
 class PointRepository implements RepositoryInterface<PointEntity> {
   static String apiPath = "/api/repository/membership";
   final Dio dio;
 
-  PointRepository({
-    required this.dio
-  });
+  PointRepository({required this.dio});
 
   // @override
   // Future<List<PointEntity>> findAll() async {
@@ -63,10 +59,7 @@ class PointRepository implements RepositoryInterface<PointEntity> {
   }) async {
     final response = await dio.get(
       "$apiPath/point_log",
-      queryParameters: {
-        'page': page,
-        'size': size,
-      },
+      queryParameters: {'page': page, 'size': size},
     );
     final res = response.data;
 
@@ -79,8 +72,7 @@ class PointRepository implements RepositoryInterface<PointEntity> {
     }
 
     final body = res['response'];
-    final List rawMeta =
-        (body['metadata'] as List?)?.toList() ?? const [];
+    final List rawMeta = (body['metadata'] as List?)?.toList() ?? const [];
     final List<Map<String, dynamic>> metadata = rawMeta
         .map((e) => Map<String, dynamic>.from(e as Map))
         .map((m) {
@@ -96,8 +88,7 @@ class PointRepository implements RepositoryInterface<PointEntity> {
         })
         .toList();
 
-    final List rawEntities =
-        (body['entities'] as List?)?.toList() ?? const [];
+    final List rawEntities = (body['entities'] as List?)?.toList() ?? const [];
 
     final List<PointEntity> entities = rawEntities
         .map(

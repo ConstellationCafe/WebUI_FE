@@ -42,9 +42,7 @@ class AcademyTeacherInfo extends StatelessWidget {
                 onChanged: onMainTeacherChanged,
               ),
             ),
-            const SizedBox(
-              width: ConstPadding.mediumPadding,
-            ),
+            const SizedBox(width: ConstPadding.mediumPadding),
             Expanded(
               child: CoTeacherField(
                 teachers: coTeachers,

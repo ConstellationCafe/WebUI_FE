@@ -15,32 +15,20 @@ import '../../widgets/read_status/status_summary.dart';
 import '../../widgets/read_status/status_table.dart';
 
 class ReadStudentStatusPage extends ConsumerWidget {
-  const ReadStudentStatusPage({
-    super.key,
-  });
+  const ReadStudentStatusPage({super.key});
 
   @override
-  Widget build(
-      BuildContext context,
-      WidgetRef ref,
-      ) {
-    final state = ref.watch(
-      studentStatusListProvider,
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(studentStatusListProvider);
 
-    final notifier = ref.read(
-      studentStatusListProvider.notifier,
-    );
+    final notifier = ref.read(studentStatusListProvider.notifier);
 
     final query = state.query;
-    final studentStatusList =
-        state.studentStatusList;
+    final studentStatusList = state.studentStatusList;
 
-    final width =
-        MediaQuery.sizeOf(context).width;
+    final width = MediaQuery.sizeOf(context).width;
 
-    final isDesktop =
-    ScreenWidth.isDesktop(width);
+    final isDesktop = ScreenWidth.isDesktop(width);
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
@@ -52,45 +40,28 @@ class ReadStudentStatusPage extends ConsumerWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxWidth:
-            AcademyConstants.contentMaxWidth,
+            maxWidth: AcademyConstants.contentMaxWidth,
           ),
           child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppBreadcrumb(
-                items: [
-                  '학생 관리',
-                  '학생 상태 조회',
-                ],
-              ),
+              const AppBreadcrumb(items: ['학생 관리', '학생 상태 조회']),
 
-              const SizedBox(
-                height: ConstPadding.smallPadding,
-              ),
+              const SizedBox(height: ConstPadding.smallPadding),
 
               Text(
                 '학생 상태 조회',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
 
-              const SizedBox(
-                height: ConstPadding.tinyPadding,
-              ),
+              const SizedBox(height: ConstPadding.tinyPadding),
 
               Text(
                 '학생의 재적, 졸업, 퇴학, 자퇴 명단을 조회합니다.',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
 
-              const SizedBox(
-                height: ConstPadding.largePadding,
-              ),
+              const SizedBox(height: ConstPadding.largePadding),
 
               StatusQueryForm<Student, StudentRosterStatus>(
                 academies: query.academies,
@@ -112,91 +83,60 @@ class ReadStudentStatusPage extends ConsumerWidget {
                 onSearch: notifier.search,
               ),
 
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
 
               StatusSummary(
                 title: '학생 현황',
                 items: [
                   StatusSummaryData(
                     label: '전체',
-                    count:
-                    studentStatusList.totalCount,
-                    icon:
-                    Icons.people_outline,
+                    count: studentStatusList.totalCount,
+                    icon: Icons.people_outline,
                   ),
                   StatusSummaryData(
                     label: StudentRosterStatus.enrolled.label,
-                    count:
-                    studentStatusList.enrolledCount,
-                    icon:
-                    Icons.school_outlined,
+                    count: studentStatusList.enrolledCount,
+                    icon: Icons.school_outlined,
                   ),
                   StatusSummaryData(
                     label: StudentRosterStatus.graduation.label,
-                    count: studentStatusList
-                        .graduationCount,
-                    icon: Icons
-                        .workspace_premium_outlined,
+                    count: studentStatusList.graduationCount,
+                    icon: Icons.workspace_premium_outlined,
                   ),
                   StatusSummaryData(
                     label: StudentRosterStatus.expulsion.label,
-                    count: studentStatusList
-                        .expulsionCount,
-                    icon:
-                    Icons.person_remove_outlined,
+                    count: studentStatusList.expulsionCount,
+                    icon: Icons.person_remove_outlined,
                   ),
                   StatusSummaryData(
                     label: StudentRosterStatus.withdrawal.label,
-                    count: studentStatusList
-                        .withdrawalCount,
-                    icon:
-                    Icons.logout_outlined,
+                    count: studentStatusList.withdrawalCount,
+                    icon: Icons.logout_outlined,
                   ),
                 ],
               ),
 
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
 
               if (state.isLoading)
-                const Center(
-                  child:
-                  CircularProgressIndicator(),
-                )
+                const Center(child: CircularProgressIndicator())
               else
-                StatusTable<
-                    Student,
-                    StudentRosterStatus>(
-                  items:
-                  studentStatusList.items,
-                  totalCount:
-                  studentStatusList.totalCount,
-                  currentPage:
-                  studentStatusList.currentPage,
-                  pageSize:
-                  query.pageSize,
-                  title:
-                  '학생 명단',
-                  memberColumnLabel:
-                  '학생명',
-                  emptyMessage:
-                  '조회된 학생이 없습니다.',
+                StatusTable<Student, StudentRosterStatus>(
+                  items: studentStatusList.items,
+                  totalCount: studentStatusList.totalCount,
+                  currentPage: studentStatusList.currentPage,
+                  pageSize: query.pageSize,
+                  title: '학생 명단',
+                  memberColumnLabel: '학생명',
+                  emptyMessage: '조회된 학생이 없습니다.',
                 ),
 
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
 
               StatusPagination(
-                currentPage:
-                studentStatusList.currentPage,
-                totalPages:
-                studentStatusList.totalPages,
-                onPageChanged:
-                notifier.changePage,
+                currentPage: studentStatusList.currentPage,
+                totalPages: studentStatusList.totalPages,
+                onPageChanged: notifier.changePage,
               ),
             ],
           ),

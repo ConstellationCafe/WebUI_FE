@@ -1,6 +1,5 @@
 import '../type/teacher_status_type.dart';
 
-
 class TeacherStatusForm {
   final String academyName;
   final String className;

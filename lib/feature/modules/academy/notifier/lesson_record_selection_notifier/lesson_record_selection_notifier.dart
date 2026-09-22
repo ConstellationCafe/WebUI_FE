@@ -39,35 +39,29 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
 
     _loadAcademies();
 
-    return LessonRecordSelectionState(
-      isLoading: true,
-    );
+    return LessonRecordSelectionState(isLoading: true);
   }
 
   Future<void> _loadAcademies() async {
     try {
       final List<Academy> academies = await repository.getAcademies();
       final allowedAcademies = permission.isAdmin
-        ? academies
-        : academies
-          .where(
-            (academy) => permission.academies.any(
-              (permissionAcademy) =>
-              permissionAcademy.academyId == academy.id
-            )
-          ).toList();
+          ? academies
+          : academies
+                .where(
+                  (academy) => permission.academies.any(
+                    (permissionAcademy) =>
+                        permissionAcademy.academyId == academy.id,
+                  ),
+                )
+                .toList();
       state = state.copyWith(
         isLoading: false,
-        queryForm: state.queryForm.copyWith(
-          academies: allowedAcademies,
-        ),
+        queryForm: state.queryForm.copyWith(academies: allowedAcademies),
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
@@ -100,13 +94,13 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
       final allowedClasses = permission.isOwnerWithAcademy(academy.id)
           ? operatingClasses
           : operatingClasses
-              .where(
-                (academyClass) => permission.isTeacherOrAboveWithClass(
-                  academy.id,
-                  academyClass.id,
-                ),
-              )
-              .toList();
+                .where(
+                  (academyClass) => permission.isTeacherOrAboveWithClass(
+                    academy.id,
+                    academyClass.id,
+                  ),
+                )
+                .toList();
       state = state.copyWith(
         isLoading: false,
         queryForm: state.queryForm.copyWith(
@@ -116,10 +110,7 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
@@ -137,28 +128,26 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
       final Academy selectedAcademy = state.queryForm.selectedAcademy!;
       final (teachers, students) = await (
         repository.getTeachers(selectedAcademy.id, selectedAcademyClass.id),
-        repository.getStudents(selectedAcademy.id, selectedAcademyClass.id)
+        repository.getStudents(selectedAcademy.id, selectedAcademyClass.id),
       ).wait;
       // teacher
       final enrolledTeachers = teachers
           .where(
-              (teacher) =>
-              teacher.state == TeacherRosterStatus.enrolled.label  // 재적
+            (teacher) =>
+                teacher.state == TeacherRosterStatus.enrolled.label, // 재적
           )
           .toList();
-      final canSelectTeachers = permission.isOwnerWithAcademy(selectedAcademy.id)
+      final canSelectTeachers =
+          permission.isOwnerWithAcademy(selectedAcademy.id)
           ? enrolledTeachers
           : enrolledTeachers
-          .where(
-            (teacher) =>
-              teacher.discordID == currentUser.userId
-          )
-          .toList();
+                .where((teacher) => teacher.discordID == currentUser.userId)
+                .toList();
       // student
       final enrolledStudents = students
           .where(
             (student) =>
-            student.state == StudentRosterStatus.enrolled.label  // 재적
+                student.state == StudentRosterStatus.enrolled.label, // 재적
           )
           .toList();
       state = state.copyWith(
@@ -171,40 +160,29 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
   void selectSubject(Subject selectedSubject) {
     state = state.copyWith(
-      queryForm: state.queryForm.copyWith(
-        selectedSubject: selectedSubject,
-      ),
+      queryForm: state.queryForm.copyWith(selectedSubject: selectedSubject),
     );
   }
 
   void selectMainTeacher(Teacher mainTeacher) {
     state = state.copyWith(
-      queryForm: state.queryForm.copyWith(
-        mainTeacher: mainTeacher,
-      ),
+      queryForm: state.queryForm.copyWith(mainTeacher: mainTeacher),
     );
   }
 
   void toggleCoTeacher(Teacher teacher) {
-    final selectedCoTeachers = [
-      ...state.queryForm.selectedCoTeachers,
-    ];
+    final selectedCoTeachers = [...state.queryForm.selectedCoTeachers];
     final exists = selectedCoTeachers.any(
-          (element) => element.sk == teacher.sk,
+      (element) => element.sk == teacher.sk,
     );
     if (exists) {
-      selectedCoTeachers.removeWhere(
-            (element) => element.sk == teacher.sk,
-      );
+      selectedCoTeachers.removeWhere((element) => element.sk == teacher.sk);
     } else {
       selectedCoTeachers.add(teacher);
     }
@@ -216,23 +194,15 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
   }
 
   void toggleStudent(Student student) {
-    final selectedStudents = [
-      ...state.queryForm.selectedStudents,
-    ];
-    final exists = selectedStudents.any(
-          (element) => element.sk == student.sk,
-    );
+    final selectedStudents = [...state.queryForm.selectedStudents];
+    final exists = selectedStudents.any((element) => element.sk == student.sk);
     if (exists) {
-      selectedStudents.removeWhere(
-            (element) => element.sk == student.sk,
-      );
+      selectedStudents.removeWhere((element) => element.sk == student.sk);
     } else {
       selectedStudents.add(student);
     }
     state = state.copyWith(
-      queryForm: state.queryForm.copyWith(
-        selectedStudents: selectedStudents,
-      ),
+      queryForm: state.queryForm.copyWith(selectedStudents: selectedStudents),
     );
   }
 
@@ -246,26 +216,18 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
 
   void setEducationDate(DateTime date) {
     state = state.copyWith(
-      queryForm: state.queryForm.copyWith(
-        educationDate: date,
-      ),
+      queryForm: state.queryForm.copyWith(educationDate: date),
     );
   }
 
   void setStartTime(DateTime time) {
     state = state.copyWith(
-      queryForm: state.queryForm.copyWith(
-        startTime: time,
-      ),
+      queryForm: state.queryForm.copyWith(startTime: time),
     );
   }
 
   void setEndTime(DateTime time) {
-    state = state.copyWith(
-      queryForm: state.queryForm.copyWith(
-        endTime: time,
-      ),
-    );
+    state = state.copyWith(queryForm: state.queryForm.copyWith(endTime: time));
   }
 
   Future<void> resetFilters() async {

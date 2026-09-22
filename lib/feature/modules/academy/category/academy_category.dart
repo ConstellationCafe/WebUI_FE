@@ -15,65 +15,62 @@ class AcademyCategory extends ConsumerWidget {
     final permission = permissionState.permission;
     if (permission?.isTeacherOrAbove() ?? false) {
       return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-                textAlign: TextAlign.left,
-                "아카데미 메뉴"
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(textAlign: TextAlign.left, "아카데미 메뉴"),
+          SizedBox(height: ConstSize.tinyWidth),
+          MenuContainer(
+            iconImage: SvgPicture.asset(
+              "assets/icons/modules/academy/lesson_record_write.svg",
+              fit: BoxFit.contain,
             ),
-            SizedBox(height: ConstSize.tinyWidth),
+            menuName: "수업 기록",
+            callbackUrl: "/academy/write_lesson_record",
+          ),
+          MenuContainer(
+            iconImage: SvgPicture.asset(
+              "assets/icons/modules/academy/lesson_record_read.svg",
+              fit: BoxFit.contain,
+            ),
+            menuName: "수업 기록 조회",
+            callbackUrl: "/academy/read_lesson_record",
+          ),
+          if (permission?.isOwner() ?? false) ...[
             MenuContainer(
               iconImage: SvgPicture.asset(
-                  "assets/icons/modules/academy/lesson_record_write.svg",
-                  fit: BoxFit.contain
+                "assets/icons/modules/academy/teacher_hr.svg",
+                fit: BoxFit.contain,
               ),
-              menuName: "수업 기록",
-              callbackUrl: "/academy/write_lesson_record",
-            ),
-            MenuContainer(
-              iconImage: SvgPicture.asset(
-                  "assets/icons/modules/academy/lesson_record_read.svg",
-                  fit: BoxFit.contain
-              ),
-              menuName: "수업 기록 조회",
-              callbackUrl: "/academy/read_lesson_record",
-            ),
-            if (permission?.isOwner() ?? false) ... [
-              MenuContainer(
-                iconImage: SvgPicture.asset(
-                    "assets/icons/modules/academy/teacher_hr.svg",
-                    fit: BoxFit.contain
-                ),
-                menuName: "교사 관리",
-                callbackUrl: "/academy/teacher_status",
-              ),
-              MenuContainer(
-                iconImage: SvgPicture.asset(
-                    "assets/icons/modules/academy/teacher_hr.svg",
-                    fit: BoxFit.contain
-                ),
-                menuName: "교사 조회",
-                callbackUrl: "/academy/read_teacher_status",
-              ),
-            ],
-            MenuContainer(
-              iconImage: SvgPicture.asset(
-                  "assets/icons/modules/academy/student_hr.svg",
-                  fit: BoxFit.contain
-              ),
-              menuName: "학생 관리",
-              callbackUrl: "/academy/student_status",
+              menuName: "교사 관리",
+              callbackUrl: "/academy/teacher_status",
             ),
             MenuContainer(
               iconImage: SvgPicture.asset(
-                  "assets/icons/modules/academy/student_hr.svg",
-                  fit: BoxFit.contain
+                "assets/icons/modules/academy/teacher_hr.svg",
+                fit: BoxFit.contain,
               ),
-              menuName: "학생 조회",
-              callbackUrl: "/academy/read_student_status",
-            )
-          ]
+              menuName: "교사 조회",
+              callbackUrl: "/academy/read_teacher_status",
+            ),
+          ],
+          MenuContainer(
+            iconImage: SvgPicture.asset(
+              "assets/icons/modules/academy/student_hr.svg",
+              fit: BoxFit.contain,
+            ),
+            menuName: "학생 관리",
+            callbackUrl: "/academy/student_status",
+          ),
+          MenuContainer(
+            iconImage: SvgPicture.asset(
+              "assets/icons/modules/academy/student_hr.svg",
+              fit: BoxFit.contain,
+            ),
+            menuName: "학생 조회",
+            callbackUrl: "/academy/read_student_status",
+          ),
+        ],
       );
     } else {
       return Column();

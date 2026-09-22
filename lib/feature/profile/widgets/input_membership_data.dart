@@ -13,10 +13,7 @@ import 'save_membership_button.dart';
 class InputMembershipData extends ConsumerStatefulWidget {
   final double width;
 
-  const InputMembershipData({
-    super.key,
-    required this.width,
-  });
+  const InputMembershipData({super.key, required this.width});
 
   @override
   ConsumerState<InputMembershipData> createState() =>
@@ -61,12 +58,9 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
     } catch (e) {
       if (!mounted) return; // 저장하는 동안 페이지가 닫혔다면 여기서 종료
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SaveResultBar.build(
-          context,
-          '저장 중 오류 발생: $e',
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SaveResultBar.build(context, '저장 중 오류 발생: $e'));
     } finally {
       if (mounted) {
         setState(() {
@@ -82,20 +76,14 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
     final theme = Theme.of(context);
 
     return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: widget.width,
-      ),
+      constraints: BoxConstraints(maxWidth: widget.width),
       child: Container(
         width: double.infinity,
         padding: ConstPadding.largePaddingAll,
         decoration: BoxDecoration(
           color: theme.colorScheme.primary,
-          borderRadius: BorderRadius.circular(
-            ProfileConstants.cardRadius,
-          ),
-          boxShadow: const [
-            ConstShadow.card,
-          ],
+          borderRadius: BorderRadius.circular(ProfileConstants.cardRadius),
+          boxShadow: const [ConstShadow.card],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -103,50 +91,29 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
           children: [
             TextFormField(
               controller: _uid1Controller,
-              decoration: const InputDecoration(
-                labelText: 'UID1',
-              ),
+              decoration: const InputDecoration(labelText: 'UID1'),
               onChanged: (value) {
-                notifier.update(
-                  uid1: value,
-                );
+                notifier.update(uid1: value);
               },
             ),
-            const SizedBox(
-              height: ConstSize.mediumSpacing,
-            ),
+            const SizedBox(height: ConstSize.mediumSpacing),
             TextFormField(
               controller: _uid2Controller,
-              decoration: const InputDecoration(
-                labelText: 'UID2',
-              ),
+              decoration: const InputDecoration(labelText: 'UID2'),
               onChanged: (value) {
-                notifier.update(
-                  uid2: value,
-                );
+                notifier.update(uid2: value);
               },
             ),
-            const SizedBox(
-              height: ConstSize.mediumSpacing,
-            ),
+            const SizedBox(height: ConstSize.mediumSpacing),
             TextFormField(
               controller: _guildController,
-              decoration: const InputDecoration(
-                labelText: 'Guild',
-              ),
+              decoration: const InputDecoration(labelText: 'Guild'),
               onChanged: (value) {
-                notifier.update(
-                  guild: value,
-                );
+                notifier.update(guild: value);
               },
             ),
-            const SizedBox(
-              height: ConstSize.mediumSpacing,
-            ),
-            SaveMembershipButton(
-              isLoading: _isLoading,
-              onPressed: _onPressed,
-            ),
+            const SizedBox(height: ConstSize.mediumSpacing),
+            SaveMembershipButton(isLoading: _isLoading, onPressed: _onPressed),
           ],
         ),
       ),

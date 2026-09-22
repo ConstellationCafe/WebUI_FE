@@ -7,30 +7,21 @@ import '../teacher.dart';
 part 'teacher_status_list.freezed.dart';
 
 @freezed
-abstract class TeacherStatusList
-    with _$TeacherStatusList {
+abstract class TeacherStatusList with _$TeacherStatusList {
   const factory TeacherStatusList({
-    @Default(
-      <StatusView<Teacher, TeacherRosterStatus>>[],
-    )
+    @Default(<StatusView<Teacher, TeacherRosterStatus>>[])
     List<StatusView<Teacher, TeacherRosterStatus>> items,
 
-    @Default(0)
-    int totalCount,
+    @Default(0) int totalCount,
 
-    @Default(0)
-    int enrolledCount,
+    @Default(0) int enrolledCount,
 
-    @Default(0)
-    int retirementCount,
+    @Default(0) int retirementCount,
 
-    @Default(0)
-    int disciplinaryCount,
+    @Default(0) int disciplinaryCount,
 
-    @Default(1)
-    int currentPage,
+    @Default(1) int currentPage,
 
-    @Default(1)
-    int totalPages,
+    @Default(1) int totalPages,
   }) = _TeacherStatusList;
 }

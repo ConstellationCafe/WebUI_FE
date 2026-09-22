@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
 
-
 class EditButton extends StatelessWidget {
   final DBController controller;
 
@@ -12,16 +11,16 @@ class EditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: ConstSize.bigHeight,
-        child: ElevatedButton(
-          onPressed: () => controller.toggleEditMode(),
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(0, 30),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: const Text("수정"),
-        )
+      height: ConstSize.bigHeight,
+      child: ElevatedButton(
+        onPressed: () => controller.toggleEditMode(),
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(0, 30),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        child: const Text("수정"),
+      ),
     );
   }
 }

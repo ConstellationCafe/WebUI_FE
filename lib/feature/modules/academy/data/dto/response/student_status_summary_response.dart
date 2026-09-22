@@ -13,29 +13,13 @@ class StudentStatusSummaryResponse {
     required this.withdrawalCount,
   });
 
-  factory StudentStatusSummaryResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory StudentStatusSummaryResponse.fromJson(Map<String, dynamic> json) {
     return StudentStatusSummaryResponse(
-      totalCount:
-      (json['totalCount'] as num?)?.toInt() ??
-          0,
-      enrolledCount:
-      (json['enrolledCount'] as num?)
-          ?.toInt() ??
-          0,
-      graduationCount:
-      (json['graduationCount'] as num?)
-          ?.toInt() ??
-          0,
-      expulsionCount:
-      (json['expulsionCount'] as num?)
-          ?.toInt() ??
-          0,
-      withdrawalCount:
-      (json['withdrawalCount'] as num?)
-          ?.toInt() ??
-          0,
+      totalCount: (json['totalCount'] as num?)?.toInt() ?? 0,
+      enrolledCount: (json['enrolledCount'] as num?)?.toInt() ?? 0,
+      graduationCount: (json['graduationCount'] as num?)?.toInt() ?? 0,
+      expulsionCount: (json['expulsionCount'] as num?)?.toInt() ?? 0,
+      withdrawalCount: (json['withdrawalCount'] as num?)?.toInt() ?? 0,
     );
   }
 }

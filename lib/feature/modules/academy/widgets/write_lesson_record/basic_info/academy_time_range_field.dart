@@ -23,11 +23,7 @@ class AcademyTimeRangeField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(
-          context,
-          '교육 시간',
-          required: true,
-        ),
+        _label(context, '교육 시간', required: true),
         const SizedBox(height: 6),
         Row(
           children: [
@@ -40,52 +36,42 @@ class AcademyTimeRangeField extends StatelessWidget {
                     context: context,
                     initialTime: startTime != null
                         ? TimeOfDay.fromDateTime(startTime!)
-                        : const TimeOfDay(
-                      hour: 10,
-                      minute: 0,
-                    ),
-                      builder: (context, child) {
-                        return Theme(
-                          data: Theme.of(context).copyWith(
-                            textButtonTheme: TextButtonThemeData(
-                              style: TextButton.styleFrom(
-                                foregroundColor: colorScheme.secondary,
-                              ),
-                            ),
-                            timePickerTheme: TimePickerThemeData(
-                              backgroundColor:
-                              colorScheme.surface,
-
-                              dialBackgroundColor:
-                              Colors.grey.shade200,
-
-                              dayPeriodColor:
-                              WidgetStateColor.resolveWith(
-                                (states) {
-                                  if (states.contains(
-                                    WidgetState.selected,
-                                  )) {
-                                    return colorScheme.secondary;
-                                  }
-                                  return Colors.transparent;
-                                },
-                              ),
-                              dayPeriodTextColor: WidgetStateColor.resolveWith(
-                                (states) {
-                                  if (states.contains(
-                                    WidgetState.selected,
-                                  )) {
-                                    return AcademyConstants
-                                        .timePickerSelectedTextColor;
-                                  }
-                                  return Colors.black;
-                                },
-                              ),
+                        : const TimeOfDay(hour: 10, minute: 0),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: colorScheme.secondary,
                             ),
                           ),
-                          child: child!,
-                        );
-                      },
+                          timePickerTheme: TimePickerThemeData(
+                            backgroundColor: colorScheme.surface,
+
+                            dialBackgroundColor: Colors.grey.shade200,
+
+                            dayPeriodColor: WidgetStateColor.resolveWith((
+                              states,
+                            ) {
+                              if (states.contains(WidgetState.selected)) {
+                                return colorScheme.secondary;
+                              }
+                              return Colors.transparent;
+                            }),
+                            dayPeriodTextColor: WidgetStateColor.resolveWith((
+                              states,
+                            ) {
+                              if (states.contains(WidgetState.selected)) {
+                                return AcademyConstants
+                                    .timePickerSelectedTextColor;
+                              }
+                              return Colors.black;
+                            }),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
                   );
                   if (time != null) {
                     final now = DateTime.now();
@@ -103,9 +89,7 @@ class AcademyTimeRangeField extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 8,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 8),
               child: Text('~'),
             ),
             Expanded(
@@ -117,56 +101,45 @@ class AcademyTimeRangeField extends StatelessWidget {
                     context: context,
                     initialTime: endTime != null
                         ? TimeOfDay.fromDateTime(endTime!)
-                        : const TimeOfDay(
-                      hour: 12,
-                      minute: 0,
-                    ),
-                      builder: (context, child) {
-                        return Theme(
-                          data: Theme.of(context).copyWith(
-                            textButtonTheme: TextButtonThemeData(
-                              style: TextButton.styleFrom(
-                                foregroundColor: colorScheme.secondary,
-                              ),
-                            ),
-                            timePickerTheme: TimePickerThemeData(
-                              backgroundColor:
-                              colorScheme.surface,
-
-                              dialBackgroundColor:
-                              Colors.grey.shade200,
-
-                              dayPeriodColor:
-                              WidgetStateColor.resolveWith(
-                                    (states) {
-                                  if (states.contains(
-                                    WidgetState.selected,
-                                  )) {
-                                    return colorScheme.secondary;
-                                  }
-
-                                  return Colors.transparent;
-                                },
-                              ),
-
-                              dayPeriodTextColor:
-                              WidgetStateColor.resolveWith(
-                                    (states) {
-                                  if (states.contains(
-                                    WidgetState.selected,
-                                  )) {
-                                    return AcademyConstants
-                                        .timePickerSelectedTextColor;
-                                  }
-
-                                  return Colors.black;
-                                },
-                              ),
+                        : const TimeOfDay(hour: 12, minute: 0),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: colorScheme.secondary,
                             ),
                           ),
-                          child: child!,
-                        );
-                      },
+                          timePickerTheme: TimePickerThemeData(
+                            backgroundColor: colorScheme.surface,
+
+                            dialBackgroundColor: Colors.grey.shade200,
+
+                            dayPeriodColor: WidgetStateColor.resolveWith((
+                              states,
+                            ) {
+                              if (states.contains(WidgetState.selected)) {
+                                return colorScheme.secondary;
+                              }
+
+                              return Colors.transparent;
+                            }),
+
+                            dayPeriodTextColor: WidgetStateColor.resolveWith((
+                              states,
+                            ) {
+                              if (states.contains(WidgetState.selected)) {
+                                return AcademyConstants
+                                    .timePickerSelectedTextColor;
+                              }
+
+                              return Colors.black;
+                            }),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
                   );
 
                   if (time != null) {
@@ -192,33 +165,25 @@ class AcademyTimeRangeField extends StatelessWidget {
   }
 
   Widget _timeButton(
-      BuildContext context, {
-        required DateTime? value,
-        required VoidCallback onPressed,
-      }) {
+    BuildContext context, {
+    required DateTime? value,
+    required VoidCallback onPressed,
+  }) {
     return InkWell(
       onTap: onPressed,
       child: InputDecorator(
-        decoration: const InputDecoration(
-          suffixIcon: Icon(
-            Icons.access_time,
-          ),
-        ),
+        decoration: const InputDecoration(suffixIcon: Icon(Icons.access_time)),
         child: Text(
           value == null
               ? '--:--'
               : '${value.hour.toString().padLeft(2, '0')}:'
-              '${value.minute.toString().padLeft(2, '0')}',
+                    '${value.minute.toString().padLeft(2, '0')}',
         ),
       ),
     );
   }
 
-  Widget _label(
-      BuildContext context,
-      String text, {
-        bool required = false,
-      }) {
+  Widget _label(BuildContext context, String text, {bool required = false}) {
     return RichText(
       text: TextSpan(
         style: Theme.of(context).textTheme.labelLarge,
@@ -227,9 +192,7 @@ class AcademyTimeRangeField extends StatelessWidget {
           if (required)
             const TextSpan(
               text: ' *',
-              style: TextStyle(
-                color: Colors.red,
-              ),
+              style: TextStyle(color: Colors.red),
             ),
         ],
       ),

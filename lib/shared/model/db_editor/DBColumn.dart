@@ -1,8 +1,4 @@
-enum Toggle {
-  none,
-  asc,
-  desc,
-}
+enum Toggle { none, asc, desc }
 
 class DBColumn {
   final int _isPrimary;
@@ -21,10 +17,10 @@ class DBColumn {
     required int isNullable,
     required String name,
     required String dbName,
-  })  : _isPrimary = isPrimary,
-        _isNullable = isNullable,
-        _name = name,
-        _dbName = dbName;
+  }) : _isPrimary = isPrimary,
+       _isNullable = isNullable,
+       _name = name,
+       _dbName = dbName;
 
   bool isPrimary() => _isPrimary == 1;
 

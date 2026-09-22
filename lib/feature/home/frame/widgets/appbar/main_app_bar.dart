@@ -1,4 +1,3 @@
-
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,10 +8,7 @@ import '../../../constants/home_constants.dart';
 class MainAppBar extends ConsumerWidget {
   final bool showMenuButton;
 
-  const MainAppBar({
-    super.key,
-    this.showMenuButton = false,
-  });
+  const MainAppBar({super.key, this.showMenuButton = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,9 +40,7 @@ class MainAppBar extends ConsumerWidget {
                 context.go(
                   Uri(
                     path: '/home',
-                    queryParameters: {
-                      'guild_id': guild.guildId,
-                    },
+                    queryParameters: {'guild_id': guild.guildId},
                   ).toString(),
                 );
               },

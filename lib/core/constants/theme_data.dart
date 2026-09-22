@@ -10,7 +10,7 @@ class CustomTheme {
 
   static ThemeData themeData = ThemeData(
     fontFamily: "Noto Sans KR",
-    
+
     // 색상 체계
     colorScheme: ColorScheme(
       brightness: Brightness.light,
@@ -74,7 +74,7 @@ class CustomTheme {
         fontWeight: FontWeight.w600,
         color: secondaryColor,
       ),
-      
+
       // Titles
       titleLarge: TextStyle(
         fontSize: 20.0,
@@ -91,7 +91,7 @@ class CustomTheme {
         fontWeight: FontWeight.w500,
         color: secondaryColor,
       ),
-      
+
       // Body text
       bodyLarge: TextStyle(
         fontSize: 16.0,
@@ -108,7 +108,7 @@ class CustomTheme {
         fontWeight: FontWeight.normal,
         color: tertiaryColor,
       ),
-      
+
       // Labels
       labelLarge: TextStyle(
         fontSize: 14.0,
@@ -176,9 +176,7 @@ class CustomTheme {
       color: primaryColor,
       shadowColor: Colors.black26,
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: EdgeInsets.all(8),
     ),
 

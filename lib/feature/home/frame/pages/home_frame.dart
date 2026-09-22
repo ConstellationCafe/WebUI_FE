@@ -12,10 +12,7 @@ import '../widgets/drawer/home_drawer.dart';
 class HomeFrame extends ConsumerWidget {
   final Widget? child;
 
-  const HomeFrame({
-    super.key,
-    this.child,
-  });
+  const HomeFrame({super.key, this.child});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,9 +22,7 @@ class HomeFrame extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      drawer: isDesktop
-          ? null
-          : const HomeDrawer(),
+      drawer: isDesktop ? null : const HomeDrawer(),
       body: Container(
         padding: const EdgeInsets.fromLTRB(
           ConstPadding.largePadding,
@@ -39,41 +34,25 @@ class HomeFrame extends ConsumerWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              ConstColor.gradientStart,
-              ConstColor.gradientEnd,
-            ],
+            colors: [ConstColor.gradientStart, ConstColor.gradientEnd],
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HomeHeader(isDesktop: isDesktop),
-            const SizedBox(
-              height: ConstPadding.tinyPadding,
-            ),
-            Divider(
-              thickness: 1,
-              color: theme.colorScheme.outline,
-            ),
-            const SizedBox(
-              height: ConstPadding.tinyPadding,
-            ),
+            const SizedBox(height: ConstPadding.tinyPadding),
+            Divider(thickness: 1, color: theme.colorScheme.outline),
+            const SizedBox(height: ConstPadding.tinyPadding),
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (isDesktop) ...[
                     MainMenuBar(),
-                    const SizedBox(
-                      width: ConstPadding.smallPadding,
-                    ),
+                    const SizedBox(width: ConstPadding.smallPadding),
                   ],
-                  Expanded(
-                    child: Center(
-                      child: child!,
-                    ),
-                  )
+                  Expanded(child: Center(child: child!)),
                 ],
               ),
             ),

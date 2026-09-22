@@ -12,8 +12,7 @@ import '../../state/lesson_record_form_state/lesson_record_form_state.dart';
 part 'lesson_record_form_notifier.g.dart';
 
 @riverpod
-class LessonRecordFormNotifier
-    extends _$LessonRecordFormNotifier {
+class LessonRecordFormNotifier extends _$LessonRecordFormNotifier {
   late final LessonRecordRepository repository;
 
   @override
@@ -23,9 +22,7 @@ class LessonRecordFormNotifier
       lessonRecordApi: ref.read(lessonRecordApiProvider),
     );
 
-    return LessonRecordFormState(
-      isLoading: false,
-    );
+    return LessonRecordFormState(isLoading: false);
   }
 
   void setDescription(String description) {
@@ -37,8 +34,8 @@ class LessonRecordFormNotifier
   }
 
   Future<bool> saveLessonRecord() async {
-    final LessonRecordSelectionState lessonRecordLessonSelectionState =
-    ref.read(lessonRecordSelectionProvider);
+    final LessonRecordSelectionState lessonRecordLessonSelectionState = ref
+        .read(lessonRecordSelectionProvider);
 
     final LessonRecordSelection lessonRecordLessonSelection =
         lessonRecordLessonSelectionState.queryForm;
@@ -47,38 +44,27 @@ class LessonRecordFormNotifier
       return false;
     }
 
-    state = state.copyWith(
-      isSaving: true,
-      errorMessage: null,
-    );
+    state = state.copyWith(isSaving: true, errorMessage: null);
 
     try {
-      final LessonRecordForm lessonRecordForm =
-          state.lessonRecordForm;
+      final LessonRecordForm lessonRecordForm = state.lessonRecordForm;
 
-      final selectedAcademy =
-      lessonRecordLessonSelection.selectedAcademy!;
+      final selectedAcademy = lessonRecordLessonSelection.selectedAcademy!;
 
       final selectedAcademyClass =
-      lessonRecordLessonSelection.selectedAcademyClass!;
+          lessonRecordLessonSelection.selectedAcademyClass!;
 
-      final selectedSubject =
-      lessonRecordLessonSelection.selectedSubject!;
+      final selectedSubject = lessonRecordLessonSelection.selectedSubject!;
 
-      final educationDate =
-      lessonRecordLessonSelection.educationDate!;
+      final educationDate = lessonRecordLessonSelection.educationDate!;
 
-      final startTime =
-      lessonRecordLessonSelection.startTime!;
+      final startTime = lessonRecordLessonSelection.startTime!;
 
-      final endTime =
-      lessonRecordLessonSelection.endTime!;
+      final endTime = lessonRecordLessonSelection.endTime!;
 
-      final mainTeacher =
-      lessonRecordLessonSelection.mainTeacher!;
+      final mainTeacher = lessonRecordLessonSelection.mainTeacher!;
 
-      final duration =
-      endTime.difference(startTime);
+      final duration = endTime.difference(startTime);
 
       final LessonRecord record = LessonRecord(
         academyId: selectedAcademy.id,
@@ -98,17 +84,11 @@ class LessonRecordFormNotifier
 
       await repository.createLessonRecord(record);
 
-      state = state.copyWith(
-        isSaving: false,
-        errorMessage: null,
-      );
+      state = state.copyWith(isSaving: false, errorMessage: null);
 
       return true;
     } catch (e) {
-      state = state.copyWith(
-        isSaving: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isSaving: false, errorMessage: e.toString());
 
       return false;
     }

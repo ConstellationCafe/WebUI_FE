@@ -20,16 +20,11 @@ class AcademyDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<int?>(
       initialValue: selectedAcademyId,
-      decoration: const InputDecoration(
-        labelText: '아카데미',
-      ),
+      decoration: const InputDecoration(labelText: '아카데미'),
       items: [
-        const DropdownMenuItem<int?>(
-          value: null,
-          child: Text('전체'),
-        ),
+        const DropdownMenuItem<int?>(value: null, child: Text('전체')),
         ...academies.map(
-              (academy) => DropdownMenuItem<int?>(
+          (academy) => DropdownMenuItem<int?>(
             value: academy.id,
             child: Text(academy.name),
           ),
@@ -38,16 +33,16 @@ class AcademyDropdown extends StatelessWidget {
       onChanged: isLoading
           ? null
           : (academyId) {
-        if (academyId == null) {
-          return;
-        }
+              if (academyId == null) {
+                return;
+              }
 
-        final academy = academies.firstWhere(
-              (academy) => academy.id == academyId,
-        );
+              final academy = academies.firstWhere(
+                (academy) => academy.id == academyId,
+              );
 
-        onChanged(academy);
-      },
+              onChanged(academy);
+            },
     );
   }
 }
