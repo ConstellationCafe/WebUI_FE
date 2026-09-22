@@ -8,14 +8,11 @@ import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
 
 void main() {
   group('loading widgets', () {
-    testWidgets('ButtonLoading renders a compact white progress indicator',
-        (tester) async {
+    testWidgets('ButtonLoading renders a compact white progress indicator', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: ButtonLoading(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: ButtonLoading())),
       );
 
       final progress = tester.widget<CircularProgressIndicator>(
@@ -26,14 +23,11 @@ void main() {
       expect(progress.color, Colors.white);
     });
 
-    testWidgets('PageLoading expands and centers its progress indicator',
-        (tester) async {
+    testWidgets('PageLoading expands and centers its progress indicator', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: PageLoading(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: PageLoading())),
       );
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -42,8 +36,9 @@ void main() {
     });
   });
 
-  testWidgets('CustomPadding preserves its child and applies padding',
-      (tester) async {
+  testWidgets('CustomPadding preserves its child and applies padding', (
+    tester,
+  ) async {
     const childKey = Key('padded-child');
 
     await tester.pumpWidget(
@@ -62,8 +57,9 @@ void main() {
     expect(padding.padding, isNot(EdgeInsets.zero));
   });
 
-  testWidgets('SaveResultBar creates an error snackbar with an action',
-      (tester) async {
+  testWidgets('SaveResultBar creates an error snackbar with an action', (
+    tester,
+  ) async {
     final actionKey = GlobalKey();
     var actionPressed = false;
 
@@ -101,8 +97,9 @@ void main() {
     expect(actionPressed, isTrue);
   });
 
-  testWidgets('loading snackbar remains visible for a long duration',
-      (tester) async {
+  testWidgets('loading snackbar remains visible for a long duration', (
+    tester,
+  ) async {
     late SnackBar snackbar;
 
     await tester.pumpWidget(

@@ -42,7 +42,7 @@ class _FriendlyMatchState extends ConsumerState<FriendlyMatch> {
             );
           },
         ),
-      )
+      ),
     );
   }
 

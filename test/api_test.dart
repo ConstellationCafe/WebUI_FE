@@ -59,10 +59,7 @@ void main() {
           jsonEncode({
             'success': false,
             'response': null,
-            'error': {
-              'status': 400,
-              'message': '잘못된 요청입니다',
-            },
+            'error': {'status': 400, 'message': '잘못된 요청입니다'},
           }),
           400,
         ),
@@ -77,10 +74,7 @@ void main() {
 
   group('DateFormatter', () {
     test('formats a date with zero-padded month and day', () {
-      expect(
-        DateFormatter.toYyyyMmDd(DateTime(2026, 9, 3)),
-        '2026-09-03',
-      );
+      expect(DateFormatter.toYyyyMmDd(DateTime(2026, 9, 3)), '2026-09-03');
     });
 
     test('uses the fallback for a missing date', () {
