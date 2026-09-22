@@ -57,7 +57,7 @@ class _ProfileState extends ConsumerState<Profile> {
             );
           },
         ),
-      )
+      ),
     );
   }
 
