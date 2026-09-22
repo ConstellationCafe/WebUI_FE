@@ -40,7 +40,8 @@ jobs:
         run: flutter analyze --no-fatal-warnings --no-fatal-infos
 
       - name: Run tests
-        run: flutter test --coverage
+        # Web coverage collection is not supported reliably by the current Flutter toolchain.
+        run: flutter test --platform chrome
 
       - name: Build web
         run: flutter build web
