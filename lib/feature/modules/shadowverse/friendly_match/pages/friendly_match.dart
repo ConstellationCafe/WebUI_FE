@@ -23,24 +23,26 @@ class _FriendlyMatchState extends ConsumerState<FriendlyMatch> {
 
   @override
   Widget build(BuildContext context) {
-    return Usage(
-      usageKey: FriendlyMatchUsage.key,
-      steps: FriendlyMatchUsage.steps(
-        submitKey: submitKey,
-        inputDataKey: inputDataKey,
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final isDesktop = ScreenWidth.isDesktop(constraints.maxWidth);
+    return Center(
+      child: Usage(
+        usageKey: FriendlyMatchUsage.key,
+        steps: FriendlyMatchUsage.steps(
+          submitKey: submitKey,
+          inputDataKey: inputDataKey,
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isDesktop = ScreenWidth.isDesktop(constraints.maxWidth);
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(ConstSize.mediumSpacing),
-            child: isDesktop
-                ? _buildDesktop(constraints)
-                : _buildMobile(constraints),
-          );
-        },
-      ),
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(ConstSize.mediumSpacing),
+              child: isDesktop
+                  ? _buildDesktop(constraints)
+                  : _buildMobile(constraints),
+            );
+          },
+        ),
+      )
     );
   }
 
