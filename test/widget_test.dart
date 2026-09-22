@@ -6,9 +6,7 @@ import 'package:constellation_cafe/main.dart' as application;
 void main() {
   testWidgets('renders the application shell', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const ProviderScope(
-        child: application.MyApp(),
-      ),
+      const ProviderScope(child: application.MyApp()),
     );
 
     expect(find.byType(application.MyApp), findsOneWidget);
