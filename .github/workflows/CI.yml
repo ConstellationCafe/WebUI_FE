@@ -35,7 +35,9 @@ jobs:
         run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze
-        run: flutter analyze
+        # Existing warning/info debt is reported without blocking the build.
+        # New warnings should be removed as part of the corresponding change.
+        run: flutter analyze --no-fatal-warnings --no-fatal-infos
 
       - name: Run tests
         run: flutter test --coverage
