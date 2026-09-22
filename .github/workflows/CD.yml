@@ -40,5 +40,6 @@ jobs:
           script: |
             set -euo pipefail
             cd /home/${{ secrets.SERVER_USERNAME }}/workspace/dockers/WebUI_FE/service
-            docker compose down
-            docker compose up -d --build
+            docker compose -p webui-fe down
+            docker compose -p webui-fe up -d --build
+            docker compose -p webui-fe ps
