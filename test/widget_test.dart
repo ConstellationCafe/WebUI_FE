@@ -18,8 +18,7 @@ void main() {
         ),
       );
 
-      final progress =
-          tester.widget<CircularProgressIndicator>(
+      final progress = tester.widget<CircularProgressIndicator>(
         find.byType(CircularProgressIndicator),
       );
 
