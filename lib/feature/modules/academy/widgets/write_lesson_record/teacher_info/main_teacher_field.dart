@@ -19,11 +19,7 @@ class MainTeacherField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(
-          context,
-          '담당 교사 (나)',
-          required: true,
-        ),
+        _label(context, '담당 교사 (나)', required: true),
         const SizedBox(height: 6),
         DropdownButtonFormField<Teacher>(
           value: selectedTeacher,
@@ -31,10 +27,10 @@ class MainTeacherField extends StatelessWidget {
           items: teachers
               .map(
                 (teacher) => DropdownMenuItem<Teacher>(
-              value: teacher,
-              child: Text(teacher.name),
-            ),
-          )
+                  value: teacher,
+                  child: Text(teacher.name),
+                ),
+              )
               .toList(),
           onChanged: (teacher) {
             if (teacher == null) return;
@@ -46,11 +42,7 @@ class MainTeacherField extends StatelessWidget {
     );
   }
 
-  Widget _label(
-      BuildContext context,
-      String text, {
-        required bool required,
-      }) {
+  Widget _label(BuildContext context, String text, {required bool required}) {
     return RichText(
       text: TextSpan(
         style: Theme.of(context).textTheme.labelLarge,
@@ -59,9 +51,7 @@ class MainTeacherField extends StatelessWidget {
           if (required)
             const TextSpan(
               text: ' *',
-              style: TextStyle(
-                color: Colors.red,
-              ),
+              style: TextStyle(color: Colors.red),
             ),
         ],
       ),

@@ -12,9 +12,7 @@ class LearningEntity extends Entity {
     required this.discordId,
   });
 
-  factory LearningEntity.init(
-      List<Map<String, dynamic>> metadata,
-      ) {
+  factory LearningEntity.init(List<Map<String, dynamic>> metadata) {
     return LearningEntity(
       metadata: metadata,
       lnKey: '',
@@ -24,37 +22,28 @@ class LearningEntity extends Entity {
   }
 
   factory LearningEntity.fromJson(
-      List<Map<String, dynamic>> metadata,
-      Map<String, dynamic> json,
-      ) {
+    List<Map<String, dynamic>> metadata,
+    Map<String, dynamic> json,
+  ) {
     return LearningEntity(
       metadata: metadata,
       lnKey: (json['lnKey'] ?? '').toString(),
       lnValue: (json['lnValue'] ?? '').toString(),
 
       // BE teacher에는 Discord ID가 담겨있다.
-      discordId:
-      (json['teacher'] ?? '').toString(),
+      discordId: (json['teacher'] ?? '').toString(),
     );
   }
 
   /// API 기준 JSON
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'lnKey': lnKey,
-      'lnValue': lnValue,
-      'teacher': discordId,
-    };
+    return {'lnKey': lnKey, 'lnValue': lnValue, 'teacher': discordId};
   }
 
   /// DBEditor 표시 기준 JSON
   @override
   Map<String, dynamic> toDisplayJson() {
-    return {
-      'lnKey': lnKey,
-      'lnValue': lnValue,
-      'discordId': discordId,
-    };
+    return {'lnKey': lnKey, 'lnValue': lnValue, 'discordId': discordId};
   }
 }

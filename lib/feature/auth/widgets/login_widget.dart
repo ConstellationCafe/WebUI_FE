@@ -26,17 +26,12 @@ class LoginWidget extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(
-          AuthConstants.loginCardRadius,
-        ),
+        borderRadius: BorderRadius.circular(AuthConstants.loginCardRadius),
         boxShadow: const [
           BoxShadow(
             color: AuthConstants.loginShadowColor,
             blurRadius: AuthConstants.loginShadowBlurRadius,
-            offset: Offset(
-              0,
-              AuthConstants.loginShadowOffsetY,
-            ),
+            offset: Offset(0, AuthConstants.loginShadowOffsetY),
           ),
         ],
       ),
@@ -58,28 +53,21 @@ class LoginWidget extends StatelessWidget {
                   filterQuality: FilterQuality.high,
                 ),
               ),
-              const SizedBox(
-                width: ConstPadding.smallPadding,
-              ),
+              const SizedBox(width: ConstPadding.smallPadding),
               Expanded(
                 child: Text(
                   'ERP Web Service',
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall
-                      ?.copyWith(
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontSize: AuthConstants.loginTitleFontSize,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: ConstPadding.mediumPadding,
-          ),
+          const SizedBox(height: ConstPadding.mediumPadding),
           const DiscordLoginButton(),
         ],
       ),

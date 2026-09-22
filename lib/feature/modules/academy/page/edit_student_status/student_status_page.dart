@@ -14,20 +14,13 @@ import '../../widgets/edit_status/status_basic_info.dart';
 import '../../widgets/edit_status/status_process_form.dart';
 
 class StudentStatusPage extends ConsumerWidget {
-  const StudentStatusPage({
-    super.key,
-  });
+  const StudentStatusPage({super.key});
 
   @override
-  Widget build(
-      BuildContext context,
-      WidgetRef ref,
-      ) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(studentStatusProvider);
 
-    final notifier = ref.read(
-      studentStatusProvider.notifier,
-    );
+    final notifier = ref.read(studentStatusProvider.notifier);
 
     final width = MediaQuery.sizeOf(context).width;
 
@@ -55,27 +48,17 @@ class StudentStatusPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _breadcrumb(context),
-              const SizedBox(
-                height: ConstPadding.smallPadding,
-              ),
+              const SizedBox(height: ConstPadding.smallPadding),
               Text(
                 '학생 상태 처리',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(
-                height: ConstPadding.tinyPadding,
-              ),
+              const SizedBox(height: ConstPadding.tinyPadding),
               Text(
                 '학생의 졸업, 퇴학, 자퇴 처리를 진행합니다.',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(
-                height: ConstPadding.largePadding,
-              ),
+              const SizedBox(height: ConstPadding.largePadding),
               _sectionCard(
                 context,
                 title: '학생 정보',
@@ -93,9 +76,7 @@ class StudentStatusPage extends ConsumerWidget {
                   onMemberChanged: notifier.selectStudent,
                 ),
               ),
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
               _sectionCard(
                 context,
                 title: '처리 정보',
@@ -111,15 +92,13 @@ class StudentStatusPage extends ConsumerWidget {
                   onReasonChanged: notifier.setReason,
 
                   showSubjectsWhen: (status) =>
-                  status == StudentStatusType.graduation,
+                      status == StudentStatusType.graduation,
 
                   subjectSectionTitle: '졸업 교과목',
                   subjectHelperText: '교과목은 선택하지 않아도 됩니다.',
                 ),
               ),
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
               StatusActions(
                 isProcessing: state.isProcessing,
                 onCancel: context.pop,
@@ -132,21 +111,13 @@ class StudentStatusPage extends ConsumerWidget {
 
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          '학생 상태 처리가 완료되었습니다.',
-                        ),
-                      ),
+                      const SnackBar(content: Text('학생 상태 처리가 완료되었습니다.')),
                     );
 
                     context.pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          '필수 항목을 확인해주세요.',
-                        ),
-                      ),
+                      const SnackBar(content: Text('필수 항목을 확인해주세요.')),
                     );
                   }
                 },
@@ -158,21 +129,15 @@ class StudentStatusPage extends ConsumerWidget {
     );
   }
 
-  Widget _breadcrumb(
-      BuildContext context,
-      ) {
+  Widget _breadcrumb(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return Row(
       children: [
-        Text(
-          '학생 관리',
-          style: textTheme.bodySmall,
-        ),
+        Text('학생 관리', style: textTheme.bodySmall),
         const Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: AcademyConstants
-                .breadcrumbIconHorizontalPadding,
+            horizontal: AcademyConstants.breadcrumbIconHorizontalPadding,
           ),
           child: Icon(
             Icons.chevron_right,
@@ -181,20 +146,18 @@ class StudentStatusPage extends ConsumerWidget {
         ),
         Text(
           '학생 상태 처리',
-          style: textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
         ),
       ],
     );
   }
 
   Widget _sectionCard(
-      BuildContext context, {
-        required String title,
-        required IconData icon,
-        required Widget child,
-      }) {
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required Widget child,
+  }) {
     return Card(
       child: Padding(
         padding: ConstPadding.largePaddingAll,
@@ -204,20 +167,11 @@ class StudentStatusPage extends ConsumerWidget {
             Row(
               children: [
                 Icon(icon),
-                const SizedBox(
-                  width: ConstPadding.smallPadding,
-                ),
-                Text(
-                  title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge,
-                ),
+                const SizedBox(width: ConstPadding.smallPadding),
+                Text(title, style: Theme.of(context).textTheme.titleLarge),
               ],
             ),
-            const SizedBox(
-              height: ConstPadding.mediumPadding,
-            ),
+            const SizedBox(height: ConstPadding.mediumPadding),
             child,
           ],
         ),

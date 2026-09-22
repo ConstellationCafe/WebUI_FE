@@ -9,9 +9,7 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
 
   final Dio dio;
 
-  MenuRepository({
-    required this.dio,
-  });
+  MenuRepository({required this.dio});
 
   @override
   Future<PageResult<MenuEntity>> findPage({
@@ -51,36 +49,34 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
 
     final body = res['response'];
 
-    final List rawMeta =
-        (body['metadata'] as List?)?.toList() ?? const [];
+    final List rawMeta = (body['metadata'] as List?)?.toList() ?? const [];
 
     final List<Map<String, dynamic>> metadata = rawMeta
         .map((e) => Map<String, dynamic>.from(e as Map))
         .map((m) {
-      final dbName = m['colName'].toString();
+          final dbName = m['colName'].toString();
 
-      m['dbName'] = dbName;
+          m['dbName'] = dbName;
 
-      if (dbName == 'mn_value') {
-        m['colName'] = 'mnValue';
-      } else if (dbName == 'recommender') {
-        m['colName'] = 'discordId';
-      }
+          if (dbName == 'mn_value') {
+            m['colName'] = 'mnValue';
+          } else if (dbName == 'recommender') {
+            m['colName'] = 'discordId';
+          }
 
-      return m;
-    })
+          return m;
+        })
         .toList();
 
-    final List rawEntities =
-        (body['entities'] as List?)?.toList() ?? const [];
+    final List rawEntities = (body['entities'] as List?)?.toList() ?? const [];
 
     final List<MenuEntity> entities = rawEntities
         .map(
           (e) => MenuEntity.fromJson(
-        metadata,
-        Map<String, dynamic>.from(e as Map),
-      ),
-    )
+            metadata,
+            Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
 
     return PageResult<MenuEntity>(
@@ -88,10 +84,8 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
       metadata: metadata,
       page: (body['page'] as num?)?.toInt() ?? page,
       size: (body['size'] as num?)?.toInt() ?? size,
-      totalElements:
-      (body['totalElements'] as num?)?.toInt() ?? 0,
-      totalPages:
-      (body['totalPages'] as num?)?.toInt() ?? 0,
+      totalElements: (body['totalElements'] as num?)?.toInt() ?? 0,
+      totalPages: (body['totalPages'] as num?)?.toInt() ?? 0,
       hasNext: body['hasNext'] == true,
     );
   }
@@ -100,18 +94,14 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
   Future<dynamic> save(MenuEntity entity) async {
     final res = await dio.post(
       "$apiPath/save",
-      data: [
-        _toApiJson(entity.toJson()),
-      ],
+      data: [_toApiJson(entity.toJson())],
     );
 
     return res.data;
   }
 
   @override
-  Future<dynamic> saveAll(
-      List<Map<String, String>> model,
-      ) async {
+  Future<dynamic> saveAll(List<Map<String, String>> model) async {
     final res = await dio.post(
       "$apiPath/save_all",
       data: model.map(_toApiJson).toList(),
@@ -121,9 +111,7 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
   }
 
   @override
-  Future<dynamic> deleteAll(
-      List<Map<String, String>> model,
-      ) async {
+  Future<dynamic> deleteAll(List<Map<String, String>> model) async {
     final res = await dio.post(
       "$apiPath/delete_all",
       data: model.map(_toApiJson).toList(),

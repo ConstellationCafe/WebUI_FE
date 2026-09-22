@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,14 +14,9 @@ class ViewPointLog extends ConsumerWidget {
       builder: (context, constraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: Center(
-              child: DBEditor(
-                  repository: pointRepository,
-                  readonly: true
-              ),
+              child: DBEditor(repository: pointRepository, readonly: true),
             ),
           ),
         );

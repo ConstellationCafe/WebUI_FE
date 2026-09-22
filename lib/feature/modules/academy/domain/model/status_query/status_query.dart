@@ -12,18 +12,16 @@ part 'status_query.freezed.dart';
 abstract class StatusQuery<
   TMember extends AcademyMember,
   TStatus extends RosterStatus
-> with _$StatusQuery<TMember, TStatus> {
+>
+    with _$StatusQuery<TMember, TStatus> {
   const StatusQuery._();
 
   const factory StatusQuery({
-    @Default([])
-    List<Academy> academies,
+    @Default([]) List<Academy> academies,
 
-    @Default([])
-    List<AcademyClass> classes,
+    @Default([]) List<AcademyClass> classes,
 
-    @Default([])
-    List<TMember> academyMembers,
+    @Default([]) List<TMember> academyMembers,
 
     Academy? selectedAcademy,
 
@@ -33,10 +31,8 @@ abstract class StatusQuery<
 
     TStatus? selectedStatus,
 
-    @Default(1)
-    int page,
+    @Default(1) int page,
 
-    @Default(20)
-    int pageSize,
+    @Default(20) int pageSize,
   }) = _StatusQuery<TMember, TStatus>;
 }

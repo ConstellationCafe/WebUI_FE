@@ -73,9 +73,9 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
     if (linkCode == null || expired) return;
     await Clipboard.setData(ClipboardData(text: linkCode!));
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('연동 키를 복사했어요.')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('연동 키를 복사했어요.')));
   }
 
   @override
@@ -96,20 +96,20 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
                   padding: const EdgeInsets.all(24),
                   child: isWide
                       ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(flex: 8, child: _Left(cs)),
-                      const SizedBox(width: 24),
-                      Expanded(flex: 4, child: _Right(cs)),
-                    ],
-                  )
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 8, child: _Left(cs)),
+                            const SizedBox(width: 24),
+                            Expanded(flex: 4, child: _Right(cs)),
+                          ],
+                        )
                       : Column(
-                    children: [
-                      _Left(cs),
-                      const SizedBox(height: 16),
-                      _Right(cs),
-                    ],
-                  ),
+                          children: [
+                            _Left(cs),
+                            const SizedBox(height: 16),
+                            _Right(cs),
+                          ],
+                        ),
                 ),
               ),
             );
@@ -224,7 +224,9 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
                       height: 52,
                       child: ElevatedButton(
                         onPressed: _issueKey,
-                        child: Text(hasCode && !expired ? '새 키 발급(덮어쓰기)' : '키 발급'),
+                        child: Text(
+                          hasCode && !expired ? '새 키 발급(덮어쓰기)' : '키 발급',
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -232,7 +234,9 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
                       child: ElevatedButton(
                         onPressed: null, // TODO: 쿨다운 정책이 있으면 여기서 활성화 제어
                         child: Text(
-                          hasCode && !expired ? '재발급(${_fmt(remaining)} 후)' : '재발급',
+                          hasCode && !expired
+                              ? '재발급(${_fmt(remaining)} 후)'
+                              : '재발급',
                         ),
                       ),
                     ),
@@ -295,7 +299,10 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
             const SizedBox(height: 18),
             Text(
               'QR로 입력하기(선택)',
-              style: TextStyle(color: cs.secondary, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                color: cs.secondary,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 10),
             AspectRatio(
@@ -304,7 +311,9 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
                 decoration: BoxDecoration(
                   color: cs.surface,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: cs.outlineVariant.withOpacity(0.15)),
+                  border: Border.all(
+                    color: cs.outlineVariant.withOpacity(0.15),
+                  ),
                 ),
                 child: Center(
                   child: Text(
@@ -317,7 +326,10 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
             const SizedBox(height: 18),
             Text(
               '카카오톡에서 이렇게 입력',
-              style: TextStyle(color: cs.secondary, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                color: cs.secondary,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 10),
             Container(
@@ -370,11 +382,13 @@ class _LinkKeyPageState extends State<LinkKeyPage> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text(title,
-                      style: TextStyle(
-                        color: cs.secondary,
-                        fontWeight: FontWeight.w900,
-                      )),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: cs.secondary,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),

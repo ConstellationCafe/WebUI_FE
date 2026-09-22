@@ -12,8 +12,7 @@ class DateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme =
-        Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return InkWell(
       onTap: () async {
@@ -21,16 +20,13 @@ class DateField extends StatelessWidget {
           context: context,
           firstDate: DateTime(2020),
           lastDate: DateTime(2100),
-          initialDate:
-          selectedDate ?? DateTime.now(),
+          initialDate: selectedDate ?? DateTime.now(),
           builder: (context, child) {
             return Theme(
               data: Theme.of(context).copyWith(
-                textButtonTheme:
-                TextButtonThemeData(
+                textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(
-                    foregroundColor:
-                    colorScheme.secondary,
+                    foregroundColor: colorScheme.secondary,
                   ),
                 ),
               ),
@@ -46,15 +42,9 @@ class DateField extends StatelessWidget {
       child: InputDecorator(
         decoration: const InputDecoration(
           labelText: '날짜',
-          suffixIcon: Icon(
-            Icons.calendar_today_outlined,
-          ),
+          suffixIcon: Icon(Icons.calendar_today_outlined),
         ),
-        child: Text(
-          selectedDate == null
-              ? '전체'
-              : _formatDate(selectedDate!),
-        ),
+        child: Text(selectedDate == null ? '전체' : _formatDate(selectedDate!)),
       ),
     );
   }

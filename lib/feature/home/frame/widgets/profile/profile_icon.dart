@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,10 +27,7 @@ class ProfileIcon extends ConsumerWidget {
           width: 40,
           height: 40,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => const Icon(
-            Icons.person,
-            size: 30,
-          ),
+          errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 30),
         ),
       ),
     );

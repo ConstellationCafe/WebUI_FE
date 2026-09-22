@@ -6,14 +6,14 @@ class AcademyClass {
   const AcademyClass({
     required this.id,
     required this.classNumber,
-    required this.state
+    required this.state,
   });
 
   factory AcademyClass.fromJson(Map<String, dynamic> json) {
     return AcademyClass(
       id: json['id'],
       classNumber: json['classNumber'],
-      state: json['state']
+      state: json['state'],
     );
   }
 }

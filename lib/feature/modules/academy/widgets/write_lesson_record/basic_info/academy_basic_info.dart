@@ -68,9 +68,7 @@ class AcademyBasicInfo extends StatelessWidget {
             onClassChanged: onClassChanged,
             onSubjectChanged: onSubjectChanged,
           ),
-          const SizedBox(
-            height: ConstPadding.mediumPadding,
-          ),
+          const SizedBox(height: ConstPadding.mediumPadding),
           Row(
             children: [
               Expanded(
@@ -79,9 +77,7 @@ class AcademyBasicInfo extends StatelessWidget {
                   onChanged: onEducationDateChanged,
                 ),
               ),
-              const SizedBox(
-                width: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(width: ConstPadding.mediumPadding),
               Expanded(
                 child: AcademyTimeRangeField(
                   startTime: startTime,

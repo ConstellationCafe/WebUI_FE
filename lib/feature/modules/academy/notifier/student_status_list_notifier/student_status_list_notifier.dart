@@ -21,20 +21,14 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
 
   @override
   StudentStatusListState build() {
-    final StudentStatusApi api = ref.read(
-      studentStatusApiProvider,
-    );
-    repository = StudentStatusRepository(
-      api: api,
-    );
+    final StudentStatusApi api = ref.read(studentStatusApiProvider);
+    repository = StudentStatusRepository(api: api);
     final permissionState = ref.watch(academyPermissionProvider);
     permission = permissionState.permission!;
 
     _loadAcademies();
 
-    return const StudentStatusListState(
-      isFilterLoading: true,
-    );
+    return const StudentStatusListState(isFilterLoading: true);
   }
 
   Future<void> _loadAcademies() async {
@@ -43,17 +37,16 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
       final allowedAcademies = permission.isAdmin
           ? academies
           : academies
-          .where(
-              (academy) => permission.academies.any(
-                  (permissionAcademy) =>
-              permissionAcademy.academyId == academy.id
-          )
-      ).toList();
+                .where(
+                  (academy) => permission.academies.any(
+                    (permissionAcademy) =>
+                        permissionAcademy.academyId == academy.id,
+                  ),
+                )
+                .toList();
       state = state.copyWith(
         isFilterLoading: false,
-        query: state.query.copyWith(
-          academies: allowedAcademies,
-        ),
+        query: state.query.copyWith(academies: allowedAcademies),
         errorMessage: null,
       );
     } catch (e) {
@@ -99,18 +92,16 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
       final allowedClasses = permission.isOwnerWithAcademy(academy.id)
           ? classes
           : classes
-          .where(
-            (academyClass) => permission.isTeacherOrAboveWithClass(
-              academy.id,
-              academyClass.id,
-            ),
-          )
-          .toList();
+                .where(
+                  (academyClass) => permission.isTeacherOrAboveWithClass(
+                    academy.id,
+                    academyClass.id,
+                  ),
+                )
+                .toList();
       state = state.copyWith(
         isFilterLoading: false,
-        query: state.query.copyWith(
-          classes: allowedClasses,
-        ),
+        query: state.query.copyWith(classes: allowedClasses),
         errorMessage: null,
       );
     } catch (e) {
@@ -157,9 +148,7 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
       );
       state = state.copyWith(
         isFilterLoading: false,
-        query: state.query.copyWith(
-          academyMembers: students,
-        ),
+        query: state.query.copyWith(academyMembers: students),
         errorMessage: null,
       );
     } catch (e) {
@@ -172,58 +161,40 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
 
   void selectStudent(Student? student) {
     state = state.copyWith(
-      query: state.query.copyWith(
-        selectedAcademyMember: student,
-        page: 1,
-      ),
+      query: state.query.copyWith(selectedAcademyMember: student, page: 1),
       errorMessage: null,
     );
   }
 
   void selectStatus(StudentRosterStatus? status) {
     state = state.copyWith(
-      query: state.query.copyWith(
-        selectedStatus: status,
-        page: 1,
-      ),
+      query: state.query.copyWith(selectedStatus: status, page: 1),
       errorMessage: null,
     );
   }
 
   Future<void> search() async {
-    await _loadStudentStatuses(
-      page: 1,
-    );
+    await _loadStudentStatuses(page: 1);
   }
 
   Future<void> changePage(int page) async {
-    if (page < 1 ||
-        page > state
-                .studentStatusList
-                .totalPages) {
+    if (page < 1 || page > state.studentStatusList.totalPages) {
       return;
     }
-    await _loadStudentStatuses(
-      page: page,
-    );
+    await _loadStudentStatuses(page: page);
   }
 
-  Future<void> _loadStudentStatuses({ required int page }) async {
+  Future<void> _loadStudentStatuses({required int page}) async {
     state = state.copyWith(
       isLoading: true,
-      query: state.query.copyWith(
-        page: page,
-      ),
+      query: state.query.copyWith(page: page),
       errorMessage: null,
     );
     try {
       final result = await repository.getStudentStatuses(
-        academyId: state.query.selectedAcademy
-                    ?.id,
-        classId: state.query.selectedAcademyClass
-                    ?.id,
-        academyMemberId: state.query.selectedAcademyMember
-                    ?.sk,
+        academyId: state.query.selectedAcademy?.id,
+        classId: state.query.selectedAcademyClass?.id,
+        academyMemberId: state.query.selectedAcademyMember?.sk,
         status: state.query.selectedStatus,
         page: page,
         size: state.query.pageSize,
@@ -234,10 +205,7 @@ class StudentStatusListNotifier extends _$StudentStatusListNotifier {
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 

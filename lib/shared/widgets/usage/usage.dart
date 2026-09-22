@@ -24,8 +24,7 @@ class Usage extends StatefulWidget {
   State<Usage> createState() => _UsageState();
 }
 
-class _UsageState extends State<Usage>
-    with RouteAware, WidgetsBindingObserver {
+class _UsageState extends State<Usage> with RouteAware, WidgetsBindingObserver {
   OverlayEntry? _overlayEntry;
   int currentStep = 0;
 
@@ -182,15 +181,11 @@ class _UsageState extends State<Usage>
       return;
     }
 
-    final overlay = Overlay.of(
-      context,
-      rootOverlay: true,
-    );
+    final overlay = Overlay.of(context, rootOverlay: true);
 
     final overlayRenderObject = overlay.context.findRenderObject();
 
-    if (overlayRenderObject is! RenderBox ||
-        !overlayRenderObject.hasSize) {
+    if (overlayRenderObject is! RenderBox || !overlayRenderObject.hasSize) {
       _scheduleShowStep();
       return;
     }
@@ -213,19 +208,16 @@ class _UsageState extends State<Usage>
       bottomPadding: padding.bottom,
     );
 
-    final deviceType = ScreenWidth.widthChecker(
-      screenSize.width,
-    );
+    final deviceType = ScreenWidth.widthChecker(screenSize.width);
 
     final isMobile = deviceType == ScreenWidth.mobile;
 
     final width = isMobile
-        ? screenSize.width -
-        (UsageConstants.screenHorizontalPadding * 2)
+        ? screenSize.width - (UsageConstants.screenHorizontalPadding * 2)
         : size.width.clamp(
-      UsageConstants.minContentWidth,
-      UsageConstants.maxContentWidth,
-    );
+            UsageConstants.minContentWidth,
+            UsageConstants.maxContentWidth,
+          );
 
     final left = _calculateLeft(
       offset: offset,
@@ -263,8 +255,7 @@ class _UsageState extends State<Usage>
                   message: step.message,
                   onNext: _nextStep,
                   onPrev: _prevStep,
-                  isLastStep:
-                  currentStep == widget.steps.length - 1,
+                  isLastStep: currentStep == widget.steps.length - 1,
                   isFirstStep: currentStep == 0,
                 ),
               ),
@@ -277,14 +268,11 @@ class _UsageState extends State<Usage>
     overlay.insert(_overlayEntry!);
   }
 
-  Future<void> _ensureTargetVisible(
-      BuildContext targetContext,
-      ) async {
+  Future<void> _ensureTargetVisible(BuildContext targetContext) async {
     await Scrollable.ensureVisible(
       targetContext,
       duration: const Duration(
-        milliseconds:
-        UsageConstants.scrollDurationMilliseconds,
+        milliseconds: UsageConstants.scrollDurationMilliseconds,
       ),
       alignment: 0.5,
       curve: Curves.easeInOut,
@@ -297,14 +285,11 @@ class _UsageState extends State<Usage>
     required double topPadding,
     required double bottomPadding,
   }) {
-    double top =
-        offset.dy + UsageConstants.contentGap;
+    double top = offset.dy + UsageConstants.contentGap;
 
-    if (top + UsageConstants.contentHeight >
-        screenHeight - bottomPadding) {
-      top = offset.dy -
-          UsageConstants.contentHeight -
-          UsageConstants.contentGap;
+    if (top + UsageConstants.contentHeight > screenHeight - bottomPadding) {
+      top =
+          offset.dy - UsageConstants.contentHeight - UsageConstants.contentGap;
     }
 
     return top.clamp(
@@ -323,9 +308,7 @@ class _UsageState extends State<Usage>
   }) {
     return offset.dx.clamp(
       UsageConstants.screenHorizontalPadding,
-      screenWidth -
-          contentWidth -
-          UsageConstants.screenHorizontalPadding,
+      screenWidth - contentWidth - UsageConstants.screenHorizontalPadding,
     );
   }
 

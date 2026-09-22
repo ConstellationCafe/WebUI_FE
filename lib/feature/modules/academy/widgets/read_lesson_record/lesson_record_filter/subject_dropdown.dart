@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../domain/model/subject.dart';
 
-
-
 class SubjectDropdown extends StatelessWidget {
   final List<Subject> subjects;
   final int? selectedSubjectId;
@@ -20,16 +18,11 @@ class SubjectDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<int?>(
       initialValue: selectedSubjectId,
-      decoration: const InputDecoration(
-        labelText: '과목',
-      ),
+      decoration: const InputDecoration(labelText: '과목'),
       items: [
-        const DropdownMenuItem<int?>(
-          value: null,
-          child: Text('전체'),
-        ),
+        const DropdownMenuItem<int?>(value: null, child: Text('전체')),
         ...subjects.map(
-              (subject) => DropdownMenuItem<int?>(
+          (subject) => DropdownMenuItem<int?>(
             value: subject.id,
             child: Text(subject.name),
           ),
@@ -38,17 +31,16 @@ class SubjectDropdown extends StatelessWidget {
       onChanged: subjects.isEmpty
           ? null
           : (subjectId) {
-        if (subjectId == null) {
-          return;
-        }
+              if (subjectId == null) {
+                return;
+              }
 
-        final subject = subjects.firstWhere(
-              (subject) =>
-          subject.id.toString() == subjectId,
-        );
+              final subject = subjects.firstWhere(
+                (subject) => subject.id.toString() == subjectId,
+              );
 
-        onChanged(subject);
-      },
+              onChanged(subject);
+            },
     );
   }
 }

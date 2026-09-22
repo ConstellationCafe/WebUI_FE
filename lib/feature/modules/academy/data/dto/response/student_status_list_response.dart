@@ -16,23 +16,19 @@ class StudentStatusListResponse {
     required this.pagination,
   });
 
-  factory StudentStatusListResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
-    final itemsJson =
-        json['items'] as List<dynamic>? ?? [];
+  factory StudentStatusListResponse.fromJson(Map<String, dynamic> json) {
+    final itemsJson = json['items'] as List<dynamic>? ?? [];
 
     return StudentStatusListResponse(
       items: itemsJson
-        .map<StatusItemResponse<Student, StudentRosterStatus>>(
-          (item) => StatusItemResponse<Student, StudentRosterStatus>
-            .fromJson(
+          .map<StatusItemResponse<Student, StudentRosterStatus>>(
+            (item) => StatusItemResponse<Student, StudentRosterStatus>.fromJson(
               item as Map<String, dynamic>,
               Student.fromJson,
               StudentRosterStatus.fromApiValue,
             ),
-        )
-        .toList(),
+          )
+          .toList(),
       summary: StudentStatusSummaryResponse.fromJson(
         json['summary'] as Map<String, dynamic>,
       ),

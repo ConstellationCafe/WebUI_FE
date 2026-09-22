@@ -10,8 +10,6 @@ abstract class CurrentGuildState with _$CurrentGuildState {
     String? guildIcon,
   }) = _CurrentGuildState;
 
-  factory CurrentGuildState.initial() => const CurrentGuildState(
-    guildId: '',
-    guildName: ''
-  );
+  factory CurrentGuildState.initial() =>
+      const CurrentGuildState(guildId: '', guildName: '');
 }

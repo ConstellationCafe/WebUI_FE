@@ -22,14 +22,11 @@ class AcademyMemberSelector extends StatefulWidget {
   });
 
   @override
-  State<AcademyMemberSelector> createState() =>
-      _AcademyMemberSelectorState();
+  State<AcademyMemberSelector> createState() => _AcademyMemberSelectorState();
 }
 
-class _AcademyMemberSelectorState
-    extends State<AcademyMemberSelector> {
-  final TextEditingController _searchController =
-  TextEditingController();
+class _AcademyMemberSelectorState extends State<AcademyMemberSelector> {
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void dispose() {
@@ -42,16 +39,14 @@ class _AcademyMemberSelectorState
     final keyword = _searchController.text.trim().toLowerCase();
 
     final filteredStudents = widget.students.where(
-          (student) => student.name.toLowerCase().contains(keyword),
+      (student) => student.name.toLowerCase().contains(keyword),
     );
 
     return AcademySectionCard(
       title: '참여 학생',
       icon: Icons.people_outline_rounded,
       trailing: ElevatedButton(
-        onPressed: widget.students.isEmpty
-            ? null
-            : widget.onSelectAll,
+        onPressed: widget.students.isEmpty ? null : widget.onSelectAll,
         child: const Text('전체 선택'),
       ),
       child: Column(
@@ -62,20 +57,16 @@ class _AcademyMemberSelectorState
             onChanged: (_) => setState(() {}),
             decoration: const InputDecoration(
               hintText: '멤버 이름을 검색하세요',
-              prefixIcon: Icon(
-                Icons.search,
-              ),
+              prefixIcon: Icon(Icons.search),
             ),
           ),
-          const SizedBox(
-            height: ConstPadding.smallPadding,
-          ),
+          const SizedBox(height: ConstPadding.smallPadding),
           Wrap(
             spacing: AcademyConstants.memberChipSpacing,
             runSpacing: AcademyConstants.memberChipRunSpacing,
             children: filteredStudents.map((student) {
               final selected = widget.selectedStudents.any(
-                    (element) => element.sk == student.sk,
+                (element) => element.sk == student.sk,
               );
 
               return FilterChip(
@@ -87,9 +78,7 @@ class _AcademyMemberSelectorState
               );
             }).toList(),
           ),
-          const SizedBox(
-            height: ConstPadding.smallPadding,
-          ),
+          const SizedBox(height: ConstPadding.smallPadding),
           Text(
             '총 ${widget.selectedStudents.length}명 선택됨',
             style: Theme.of(context).textTheme.bodySmall,

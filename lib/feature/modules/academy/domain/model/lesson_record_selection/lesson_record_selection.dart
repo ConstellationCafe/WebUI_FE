@@ -29,8 +29,7 @@ abstract class LessonRecordSelection with _$LessonRecordSelection {
   }) = _LessonRecordSelection;
 }
 
-extension LessonRecordSelectionValidation
-on LessonRecordSelection {
+extension LessonRecordSelectionValidation on LessonRecordSelection {
   bool get isValid {
     if (selectedAcademy == null) return false;
     if (selectedAcademyClass == null) return false;

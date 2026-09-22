@@ -20,29 +20,23 @@ class CoTeacherField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final availableTeachers = teachers
-        .where(
-          (teacher) => teacher.sk != mainTeacher?.sk,
-    )
+        .where((teacher) => teacher.sk != mainTeacher?.sk)
         .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(
-          context,
-          '함께 가르친 교사',
-          required: false,
-        ),
+        _label(context, '함께 가르친 교사', required: false),
         const SizedBox(height: 6),
         DropdownButtonFormField<Teacher>(
           hint: const Text('교사 이름을 선택하세요'),
           items: availableTeachers
               .map(
                 (teacher) => DropdownMenuItem<Teacher>(
-              value: teacher,
-              child: Text(teacher.name),
-            ),
-          )
+                  value: teacher,
+                  child: Text(teacher.name),
+                ),
+              )
               .toList(),
           onChanged: (teacher) {
             if (teacher == null) return;
@@ -57,23 +51,19 @@ class CoTeacherField extends StatelessWidget {
           children: selectedCoTeachers
               .map(
                 (teacher) => Chip(
-              label: Text(teacher.name),
-              onDeleted: () {
-                onChanged(teacher);
-              },
-            ),
-          )
+                  label: Text(teacher.name),
+                  onDeleted: () {
+                    onChanged(teacher);
+                  },
+                ),
+              )
               .toList(),
         ),
       ],
     );
   }
 
-  Widget _label(
-      BuildContext context,
-      String text, {
-        required bool required,
-      }) {
+  Widget _label(BuildContext context, String text, {required bool required}) {
     return RichText(
       text: TextSpan(
         style: Theme.of(context).textTheme.labelLarge,
@@ -82,9 +72,7 @@ class CoTeacherField extends StatelessWidget {
           if (required)
             const TextSpan(
               text: ' *',
-              style: TextStyle(
-                color: Colors.red,
-              ),
+              style: TextStyle(color: Colors.red),
             ),
         ],
       ),

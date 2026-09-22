@@ -1,4 +1,3 @@
-
 abstract class Entity {
   final List<Map<String, dynamic>> metadata;
 

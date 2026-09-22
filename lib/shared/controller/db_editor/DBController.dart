@@ -5,7 +5,6 @@ import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
 import '../../model/db_editor/DBModel.dart';
 
-
 class DBController extends ChangeNotifier {
   final RepositoryInterface repository;
 
@@ -29,10 +28,7 @@ class DBController extends ChangeNotifier {
   String? sortColumn;
   String? sortDirection;
 
-  DBController({
-    required this.repository,
-    this.pageSize = 20,
-  });
+  DBController({required this.repository, this.pageSize = 20});
 
   // ============================================================
   // Getter
@@ -49,9 +45,7 @@ class DBController extends ChangeNotifier {
   bool get hasUnsavedChanges => _hasUnsavedChanges();
 
   List<String> getColumns() {
-    return model.columns
-        .map((column) => column.toString())
-        .toList();
+    return model.columns.map((column) => column.toString()).toList();
   }
 
   // ============================================================
@@ -66,7 +60,8 @@ class DBController extends ChangeNotifier {
     if (isLoading) {
       return;
     }
-    isLoading = true; notifyListeners();
+    isLoading = true;
+    notifyListeners();
     try {
       final result = await repository.findPage(
         page: 1,
@@ -76,10 +71,7 @@ class DBController extends ChangeNotifier {
         sortColumn: sortColumn,
         sortDirection: sortDirection,
       );
-      model.replace(
-        List<Entity>.from(result.items),
-        result.metadata,
-      );
+      model.replace(List<Entity>.from(result.items), result.metadata);
 
       currentPage = result.page;
       hasNext = result.hasNext;
@@ -113,9 +105,7 @@ class DBController extends ChangeNotifier {
         sortDirection: sortDirection,
       );
 
-      model.append(
-        List<Entity>.from(result.items),
-      );
+      model.append(List<Entity>.from(result.items));
 
       currentPage = result.page;
       hasNext = result.hasNext;
@@ -151,14 +141,8 @@ class DBController extends ChangeNotifier {
     return model.getSelectedCell();
   }
 
-  void setSelectedCell(
-      int colIndex,
-      int rowIndex,
-      ) {
-    model.setSelectedCell(
-      colIndex,
-      rowIndex,
-    );
+  void setSelectedCell(int colIndex, int rowIndex) {
+    model.setSelectedCell(colIndex, rowIndex);
 
     notifyListeners();
   }
@@ -167,14 +151,11 @@ class DBController extends ChangeNotifier {
   // Search
   // ============================================================
 
-  Future<void> search(
-      String columnName,
-      String value,
-      ) async {
+  Future<void> search(String columnName, String value) async {
     if (_hasUnsavedChanges()) {
       throw StateError(
         '저장하지 않은 변경사항이 있습니다. '
-            '저장하거나 변경사항을 취소한 후 검색해주세요.',
+        '저장하거나 변경사항을 취소한 후 검색해주세요.',
       );
     }
 
@@ -186,8 +167,7 @@ class DBController extends ChangeNotifier {
     }
 
     final column = model.columns.firstWhere(
-          (column) =>
-      column.toString() == columnName,
+      (column) => column.toString() == columnName,
     );
 
     /*
@@ -215,7 +195,7 @@ class DBController extends ChangeNotifier {
     if (_hasUnsavedChanges()) {
       throw StateError(
         '저장하지 않은 변경사항이 있습니다. '
-            '저장하거나 변경사항을 취소한 후 검색을 초기화해주세요.',
+        '저장하거나 변경사항을 취소한 후 검색을 초기화해주세요.',
       );
     }
 
@@ -236,13 +216,12 @@ class DBController extends ChangeNotifier {
     if (_hasUnsavedChanges()) {
       throw StateError(
         '저장하지 않은 변경사항이 있습니다. '
-            '저장하거나 변경사항을 취소한 후 정렬해주세요.',
+        '저장하거나 변경사항을 취소한 후 정렬해주세요.',
       );
     }
 
     final column = model.columns.firstWhere(
-          (column) =>
-      column.toString() == colName,
+      (column) => column.toString() == colName,
     );
 
     /*
@@ -269,8 +248,7 @@ class DBController extends ChangeNotifier {
      */
     sortColumn = column.dbName;
 
-    sortDirection =
-    isAscending ? 'ASC' : 'DESC';
+    sortDirection = isAscending ? 'ASC' : 'DESC';
 
     currentPage = 0;
     hasNext = true;
@@ -310,8 +288,7 @@ class DBController extends ChangeNotifier {
     /*
      * 컬럼 수가 다르면 변경
      */
-    if (current.keys.length !=
-        origin.keys.length) {
+    if (current.keys.length != origin.keys.length) {
       return true;
     }
 
@@ -319,29 +296,22 @@ class DBController extends ChangeNotifier {
       final currentValues = current[key];
       final originValues = origin[key];
 
-      if (currentValues == null ||
-          originValues == null) {
+      if (currentValues == null || originValues == null) {
         return true;
       }
 
       /*
        * Add / Delete 발생
        */
-      if (currentValues.length !=
-          originValues.length) {
+      if (currentValues.length != originValues.length) {
         return true;
       }
 
       /*
        * Cell 수정 발생
        */
-      for (
-      int i = 0;
-      i < originValues.length;
-      i++
-      ) {
-        if (currentValues[i] !=
-            originValues[i]) {
+      for (int i = 0; i < originValues.length; i++) {
+        if (currentValues[i] != originValues[i]) {
           return true;
         }
       }
@@ -354,24 +324,14 @@ class DBController extends ChangeNotifier {
   // Primary Key
   // ============================================================
 
-  List<String> _extractPkColumns(
-      Map<String, String> row,
-      ) {
+  List<String> _extractPkColumns(Map<String, String> row) {
     final List<String> pkColumns = [];
 
     final columns = model.columns;
 
-    for (
-    int i = 0;
-    i < columns.length;
-    i++
-    ) {
+    for (int i = 0; i < columns.length; i++) {
       if (columns[i].isPrimary()) {
-        pkColumns.add(
-          row[
-          columns[i].toString()
-          ]!,
-        );
+        pkColumns.add(row[columns[i].toString()]!);
       }
     }
 
@@ -384,49 +344,33 @@ class DBController extends ChangeNotifier {
 
   Future<List<String>> save() async {
     bool isBlank(String? value) {
-      return value == null ||
-          value.trim().isEmpty;
+      return value == null || value.trim().isEmpty;
     }
 
-    String pkKey(
-        Map<String, String> row,
-        ) {
-      final pkValues =
-      _extractPkColumns(row);
+    String pkKey(Map<String, String> row) {
+      final pkValues = _extractPkColumns(row);
 
       if (pkValues.isEmpty) {
-        throw StateError(
-          '채우지 않은 데이터가 있습니다',
-        );
+        throw StateError('채우지 않은 데이터가 있습니다');
       }
 
       for (final value in pkValues) {
         if (isBlank(value)) {
-          throw StateError(
-            '채우지 않은 데이터가 있습니다',
-          );
+          throw StateError('채우지 않은 데이터가 있습니다');
         }
       }
 
       /*
        * 복합 PK 지원
        */
-      return pkValues
-          .map(
-            (value) => value.trim(),
-      )
-          .join('¦');
+      return pkValues.map((value) => value.trim()).join('¦');
     }
 
-    bool rowsEqual(
-        Map<String, String> a,
-        Map<String, String> b,
-        ) {
+    bool rowsEqual(Map<String, String> a, Map<String, String> b) {
       for (final column in model.columns) {
         final key = column.toString();
 
-        if ((a[key] ?? '') !=
-            (b[key] ?? '')) {
+        if ((a[key] ?? '') != (b[key] ?? '')) {
           return false;
         }
       }
@@ -438,8 +382,7 @@ class DBController extends ChangeNotifier {
     // 현재 데이터
     // ----------------------------------------------------------
 
-    final currentRows =
-    model.getRows();
+    final currentRows = model.getRows();
 
     // ----------------------------------------------------------
     // 원본 데이터
@@ -450,54 +393,34 @@ class DBController extends ChangeNotifier {
         return <Map<String, String>>[];
       }
 
-      final columns = model.columns
-          .map(
-            (column) =>
-            column.toString(),
-      )
-          .toList();
+      final columns = model.columns.map((column) => column.toString()).toList();
 
-      final rowCount =
-      model.origin.values.isEmpty
+      final rowCount = model.origin.values.isEmpty
           ? 0
-          : model
-          .origin
-          .values
-          .first
-          .length;
+          : model.origin.values.first.length;
 
-      return List<
-          Map<String, String>
-      >.generate(
-        rowCount,
-            (index) {
-          final row =
-          <String, String>{};
+      return List<Map<String, String>>.generate(rowCount, (index) {
+        final row = <String, String>{};
 
-          for (final column in columns) {
-            row[column] =
-            model.origin[column]![index];
-          }
+        for (final column in columns) {
+          row[column] = model.origin[column]![index];
+        }
 
-          return row;
-        },
-      );
+        return row;
+      });
     })();
 
     // ----------------------------------------------------------
     // 현재 행 PK Map
     // ----------------------------------------------------------
 
-    final currentByPk =
-    <String, Map<String, String>>{};
+    final currentByPk = <String, Map<String, String>>{};
 
     for (final row in currentRows) {
       final key = pkKey(row);
 
       if (currentByPk.containsKey(key)) {
-        throw StateError(
-          '중복된 키값 $key으로는 학습할 수 없습니다',
-        );
+        throw StateError('중복된 키값 $key으로는 학습할 수 없습니다');
       }
 
       currentByPk[key] = row;
@@ -507,16 +430,13 @@ class DBController extends ChangeNotifier {
     // 원본 행 PK Map
     // ----------------------------------------------------------
 
-    final originByPk =
-    <String, Map<String, String>>{};
+    final originByPk = <String, Map<String, String>>{};
 
     for (final row in originRows) {
       final key = pkKey(row);
 
       if (originByPk.containsKey(key)) {
-        throw StateError(
-          '중복된 키값 $key으로는 학습할 수 없습니다',
-        );
+        throw StateError('중복된 키값 $key으로는 학습할 수 없습니다');
       }
 
       originByPk[key] = row;
@@ -526,25 +446,16 @@ class DBController extends ChangeNotifier {
     // 추가 + 수정
     // ----------------------------------------------------------
 
-    final toSave =
-    <Map<String, String>>[];
+    final toSave = <Map<String, String>>[];
 
-    for (final entry
-    in currentByPk.entries) {
+    for (final entry in currentByPk.entries) {
       final key = entry.key;
       final currentRow = entry.value;
 
-      final originRow =
-      originByPk[key];
+      final originRow = originByPk[key];
 
-      if (originRow == null ||
-          !rowsEqual(
-            currentRow,
-            originRow,
-          )) {
-        toSave.add(
-          currentRow,
-        );
+      if (originRow == null || !rowsEqual(currentRow, originRow)) {
+        toSave.add(currentRow);
       }
     }
 
@@ -552,17 +463,11 @@ class DBController extends ChangeNotifier {
     // 삭제
     // ----------------------------------------------------------
 
-    final toDelete =
-    <Map<String, String>>[];
+    final toDelete = <Map<String, String>>[];
 
-    for (final entry
-    in originByPk.entries) {
-      if (!currentByPk.containsKey(
-        entry.key,
-      )) {
-        toDelete.add(
-          entry.value,
-        );
+    for (final entry in originByPk.entries) {
+      if (!currentByPk.containsKey(entry.key)) {
+        toDelete.add(entry.value);
       }
     }
 
@@ -573,50 +478,33 @@ class DBController extends ChangeNotifier {
     final List<String> messages = [];
 
     if (toSave.isNotEmpty) {
-      final saveResult =
-      await repository.saveAll(
-        toSave,
-      );
+      final saveResult = await repository.saveAll(toSave);
 
       if (saveResult['success'] == true) {
-        final response =
-        saveResult['response'];
+        final response = saveResult['response'];
 
         if (response is List) {
-          messages.addAll(
-            response
-                .map(
-                  (e) => e.toString(),
-            )
-                .toList(),
-          );
+          messages.addAll(response.map((e) => e.toString()).toList());
         }
       } else {
         messages.add(
           "저장 실패: "
-              "${saveResult['error']['message']}",
+          "${saveResult['error']['message']}",
         );
       }
     }
 
     if (toDelete.isNotEmpty) {
-      final deleteResult =
-      await repository.deleteAll(
-        toDelete,
-      );
+      final deleteResult = await repository.deleteAll(toDelete);
 
-      if (deleteResult['success'] ==
-          true) {
-        final response =
-        deleteResult['response'];
+      if (deleteResult['success'] == true) {
+        final response = deleteResult['response'];
 
-        messages.add(
-          response.toString(),
-        );
+        messages.add(response.toString());
       } else {
         messages.add(
           "삭제 실패: "
-              "${deleteResult['error']['message']}",
+          "${deleteResult['error']['message']}",
         );
       }
     }
@@ -626,8 +514,7 @@ class DBController extends ChangeNotifier {
      *
      * 검색/정렬 조건은 유지한다.
      */
-    if (toSave.isNotEmpty ||
-        toDelete.isNotEmpty) {
+    if (toSave.isNotEmpty || toDelete.isNotEmpty) {
       isEditMode = false;
 
       currentPage = 0;

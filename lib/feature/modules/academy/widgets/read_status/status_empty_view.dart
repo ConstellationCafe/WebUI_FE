@@ -7,10 +7,7 @@ import '../../constants/academy_constants.dart';
 class StatusEmptyView extends StatelessWidget {
   final String message;
 
-  const StatusEmptyView({
-    super.key,
-    required this.message,
-  });
+  const StatusEmptyView({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +23,8 @@ class StatusEmptyView extends StatelessWidget {
               size: AcademyConstants.emptyIconSize,
               color: theme.colorScheme.outline,
             ),
-            const SizedBox(
-              height: ConstPadding.mediumPadding,
-            ),
-            Text(
-              message,
-              style: theme.textTheme.bodyLarge,
-            ),
+            const SizedBox(height: ConstPadding.mediumPadding),
+            Text(message, style: theme.textTheme.bodyLarge),
           ],
         ),
       ),

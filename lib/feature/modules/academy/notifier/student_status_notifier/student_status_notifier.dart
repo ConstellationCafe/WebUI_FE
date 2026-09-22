@@ -23,18 +23,12 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
 
   @override
   StudentStatusState build() {
-    final StudentStatusApi api = ref.read(
-      studentStatusApiProvider,
-    );
-    repository = StudentStatusRepository(
-      api: api,
-    );
+    final StudentStatusApi api = ref.read(studentStatusApiProvider);
+    repository = StudentStatusRepository(api: api);
     final permissionState = ref.watch(academyPermissionProvider);
     permission = permissionState.permission!;
     _initialize();
-    return const StudentStatusState(
-      isLoading: false,
-    );
+    return const StudentStatusState(isLoading: false);
   }
 
   /// 최초 진입 시 학원 목록 조회
@@ -44,12 +38,13 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
       final allowedAcademies = permission.isAdmin
           ? academies
           : academies
-          .where(
-              (academy) => permission.academies.any(
-                  (permissionAcademy) =>
-              permissionAcademy.academyId == academy.id
-          )
-      ).toList();
+                .where(
+                  (academy) => permission.academies.any(
+                    (permissionAcademy) =>
+                        permissionAcademy.academyId == academy.id,
+                  ),
+                )
+                .toList();
       state = state.copyWith(
         isLoading: false,
         studentStatus: state.studentStatus.copyWith(
@@ -58,10 +53,7 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
@@ -91,13 +83,13 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
       final allowedClasses = permission.isOwnerWithAcademy(academy.id)
           ? classes
           : classes
-          .where(
-            (academyClass) => permission.isTeacherOrAboveWithClass(
-              academy.id,
-              academyClass.id,
-            ),
-          )
-          .toList();
+                .where(
+                  (academyClass) => permission.isTeacherOrAboveWithClass(
+                    academy.id,
+                    academyClass.id,
+                  ),
+                )
+                .toList();
       state = state.copyWith(
         isLoading: false,
         studentStatus: state.studentStatus.copyWith(
@@ -107,10 +99,7 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
@@ -128,39 +117,29 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
     );
 
     try {
-      final List<Student> students = await repository
-          .getStudents(
-            academyId,
-            academyClass.id,
-          );
+      final List<Student> students = await repository.getStudents(
+        academyId,
+        academyClass.id,
+      );
       state = state.copyWith(
         isLoading: false,
-        studentStatus: state.studentStatus.copyWith(
-          students: students,
-        ),
+        studentStatus: state.studentStatus.copyWith(students: students),
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
   /// 학생 선택
   void selectStudent(Student student) {
     state = state.copyWith(
-      studentStatus: state.studentStatus.copyWith(
-        selectedStudent: student,
-      ),
+      studentStatus: state.studentStatus.copyWith(selectedStudent: student),
     );
   }
 
   /// 처리 상태 선택
-  void selectStatus(
-      StudentStatusType status,
-      ) {
+  void selectStatus(StudentStatusType status) {
     state = state.copyWith(
       studentStatus: state.studentStatus.copyWith(
         selectedStatusType: status,
@@ -177,9 +156,7 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
       return;
     }
 
-    final selectedSubjects = [
-      ...state.studentStatus.selectedSubjects,
-    ];
+    final selectedSubjects = [...state.studentStatus.selectedSubjects];
 
     if (selectedSubjects.contains(subject)) {
       selectedSubjects.remove(subject);
@@ -195,13 +172,9 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
   }
 
   /// 처리 사유 입력
-  void setReason(
-      String reason,
-      ) {
+  void setReason(String reason) {
     state = state.copyWith(
-      studentStatus: state.studentStatus.copyWith(
-        reason: reason,
-      ),
+      studentStatus: state.studentStatus.copyWith(reason: reason),
     );
   }
 
@@ -211,10 +184,7 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
       return false;
     }
 
-    state = state.copyWith(
-      isProcessing: true,
-      errorMessage: null,
-    );
+    state = state.copyWith(isProcessing: true, errorMessage: null);
 
     try {
       final StudentStatus status = state.studentStatus;
@@ -225,26 +195,18 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
         studentDiscordId: status.selectedStudent!.discordID,
         statusType: status.selectedStatusType!,
         subjectNames: status.selectedStatusType == StudentStatusType.graduation
-            ? status.selectedSubjects.map(
-                (subject) => subject.name
-            ).toList()
+            ? status.selectedSubjects.map((subject) => subject.name).toList()
             : const [],
         reason: status.reason.trim(),
       );
 
       await repository.process(form);
 
-      state = state.copyWith(
-        isProcessing: false,
-        errorMessage: null,
-      );
+      state = state.copyWith(isProcessing: false, errorMessage: null);
 
       return true;
     } catch (e) {
-      state = state.copyWith(
-        isProcessing: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isProcessing: false, errorMessage: e.toString());
 
       return false;
     }

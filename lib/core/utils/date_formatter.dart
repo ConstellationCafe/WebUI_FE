@@ -1,10 +1,7 @@
 class DateFormatter {
   const DateFormatter._();
 
-  static String toYyyyMmDd(
-      DateTime? date, {
-        String fallback = '-',
-      }) {
+  static String toYyyyMmDd(DateTime? date, {String fallback = '-'}) {
     if (date == null) {
       return fallback;
     }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,22 +15,18 @@ class ContentList extends ConsumerWidget {
     final contentRepository = ref.read(contentRepositoryProvider);
     final isAdmin = ref.watch(
       currentUserStateProvider.select(
-            (state) => state.roles.contains(UserRole.ADMIN),
+        (state) => state.roles.contains(UserRole.ADMIN),
       ),
     );
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: Center(
               child: DBEditor(
                 repository: contentRepository,
-                hiddenColumns: isAdmin
-                    ? const {}
-                    : const {'discordId'}
+                hiddenColumns: isAdmin ? const {} : const {'discordId'},
               ),
             ),
           ),

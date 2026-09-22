@@ -13,11 +13,8 @@ import '../../widgets/read_lesson_record/lesson_record_filter/lesson_record_filt
 import '../../widgets/read_lesson_record/lesson_record_header.dart';
 import '../../widgets/read_lesson_record/lesson_record_list.dart';
 
-class LessonRecordListPage
-    extends ConsumerWidget {
-  const LessonRecordListPage({
-    super.key,
-  });
+class LessonRecordListPage extends ConsumerWidget {
+  const LessonRecordListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,17 +40,13 @@ class LessonRecordListPage
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxWidth:
-            AcademyConstants.contentMaxWidth,
+            maxWidth: AcademyConstants.contentMaxWidth,
           ),
           child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               LessonRecordHeader(),
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
               LessonRecordFilter(
                 isLoading: queryState.isLoading,
                 // model
@@ -74,12 +67,8 @@ class LessonRecordListPage
                 onSearch: listNotifier.search,
                 onReset: queryNotifier.resetFilters,
               ),
-              const SizedBox(
-                height: ConstPadding.largePadding,
-              ),
-              LessonRecordList(
-                records: listState.lessonRecordList.records,
-              ),
+              const SizedBox(height: ConstPadding.largePadding),
+              LessonRecordList(records: listState.lessonRecordList.records),
             ],
           ),
         ),

@@ -4,28 +4,19 @@ class AcademyPermission {
   final bool admin;
   final List<AcademyPermissionItem> academies;
 
-  const AcademyPermission({
-    required this.admin,
-    required this.academies,
-  });
+  const AcademyPermission({required this.admin, required this.academies});
 
   factory AcademyPermission.initial() {
-    return const AcademyPermission(
-      admin: false,
-      academies: [],
-    );
+    return const AcademyPermission(admin: false, academies: []);
   }
 
-  factory AcademyPermission.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory AcademyPermission.fromJson(Map<String, dynamic> json) {
     return AcademyPermission(
       admin: json['admin'] as bool? ?? false,
       academies: (json['academies'] as List<dynamic>? ?? [])
           .map(
-            (item) => AcademyPermissionItem.fromJson(
-              item as Map<String, dynamic>,
-            ),
+            (item) =>
+                AcademyPermissionItem.fromJson(item as Map<String, dynamic>),
           )
           .toList(),
     );
@@ -34,9 +25,7 @@ class AcademyPermission {
   Map<String, dynamic> toJson() {
     return {
       'admin': admin,
-      'academies': academies
-          .map((item) => item.toJson())
-          .toList(),
+      'academies': academies.map((item) => item.toJson()).toList(),
     };
   }
 
@@ -46,10 +35,7 @@ class AcademyPermission {
     if (admin) {
       return true;
     }
-    return academies.any(
-        (academy) =>
-            academy.role == AcademyRole.academyOwner,
-    );
+    return academies.any((academy) => academy.role == AcademyRole.academyOwner);
   }
 
   bool isOwnerWithAcademy(int academyId) {
@@ -58,9 +44,9 @@ class AcademyPermission {
     }
 
     return academies.any(
-        (academy) =>
-          academy.academyId == academyId
-          && academy.role == AcademyRole.academyOwner,
+      (academy) =>
+          academy.academyId == academyId &&
+          academy.role == AcademyRole.academyOwner,
     );
   }
 
@@ -70,8 +56,8 @@ class AcademyPermission {
     }
 
     return academies.any(
-          (academy) =>
-      academy.role == AcademyRole.academyOwner ||
+      (academy) =>
+          academy.role == AcademyRole.academyOwner ||
           academy.role == AcademyRole.teacher,
     );
   }
@@ -81,12 +67,10 @@ class AcademyPermission {
       return true;
     }
     return academies.any(
-          (academy) =>
-      academy.academyId == academyId &&
-          (
-              academy.role == AcademyRole.academyOwner ||
-                  academy.role == AcademyRole.teacher
-          ),
+      (academy) =>
+          academy.academyId == academyId &&
+          (academy.role == AcademyRole.academyOwner ||
+              academy.role == AcademyRole.teacher),
     );
   }
 
@@ -98,10 +82,10 @@ class AcademyPermission {
       return true;
     }
     return academies.any(
-          (academy) =>
-            academy.academyId == academyId
-            && academy.role == AcademyRole.teacher
-            && academy.classIds.contains(classId),
+      (academy) =>
+          academy.academyId == academyId &&
+          academy.role == AcademyRole.teacher &&
+          academy.classIds.contains(classId),
     );
   }
 }
@@ -117,14 +101,10 @@ class AcademyPermissionItem {
     required this.classIds,
   });
 
-  factory AcademyPermissionItem.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory AcademyPermissionItem.fromJson(Map<String, dynamic> json) {
     return AcademyPermissionItem(
       academyId: json['academyId'] as int,
-      role: AcademyRole.fromApiValue(
-        json['role'] as String,
-      ),
+      role: AcademyRole.fromApiValue(json['role'] as String),
       classIds: (json['classIds'] as List<dynamic>? ?? [])
           .map((id) => id as int)
           .toList(),

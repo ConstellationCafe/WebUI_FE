@@ -19,17 +19,14 @@ class StatusQueryRequest<T extends RosterStatus> {
 
   Map<String, dynamic> toJson() {
     return {
-      if (academyId != null)
-        'academyId': academyId,
+      if (academyId != null) 'academyId': academyId,
 
-      if (classId != null)
-        'classId': classId,
+      if (classId != null) 'classId': classId,
 
       if (academyMemberId != null && academyMemberId!.isNotEmpty)
         'academyMemberId': academyMemberId,
 
-      if (status != null)
-        'status': status!.apiValue,
+      if (status != null) 'status': status!.apiValue,
 
       'page': page,
       'size': size,

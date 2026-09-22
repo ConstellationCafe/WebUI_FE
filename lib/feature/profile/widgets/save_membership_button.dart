@@ -23,8 +23,7 @@ class SaveMembershipButton extends StatelessWidget {
               width: ProfileConstants.loadingIndicatorSize,
               height: ProfileConstants.loadingIndicatorSize,
               child: CircularProgressIndicator(
-                strokeWidth:
-                ProfileConstants.loadingIndicatorStrokeWidth,
+                strokeWidth: ProfileConstants.loadingIndicatorStrokeWidth,
                 color: theme.colorScheme.onPrimary,
               ),
             )

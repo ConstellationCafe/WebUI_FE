@@ -11,18 +11,18 @@ class SocketClient extends SocketInterface {
   Future<Map<String, dynamic>> send(SocketModel model) async {
     try {
       final url = Uri.parse(routerUrl);
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: json.encode(model.toJson()),
-      ).timeout(
-        Duration(seconds: _timeout),
-        onTimeout: () {
-          throw Exception('요청 시간이 초과되었습니다.');
-        },
-      );
+      final response = await http
+          .post(
+            url,
+            headers: {'Content-type': 'application/json'},
+            body: json.encode(model.toJson()),
+          )
+          .timeout(
+            Duration(seconds: _timeout),
+            onTimeout: () {
+              throw Exception('요청 시간이 초과되었습니다.');
+            },
+          );
 
       // HTTP 상태 코드 확인
       if (response.statusCode == 200) {
@@ -33,7 +33,8 @@ class SocketClient extends SocketInterface {
         final Map<String, dynamic> errorData = json.decode(response.body);
         return {
           'status_code': false,
-          'message': errorData['message'] ?? '서버 오류가 발생했습니다. (${response.statusCode})'
+          'message':
+              errorData['message'] ?? '서버 오류가 발생했습니다. (${response.statusCode})',
         };
       }
     } on http.ClientException catch (e) {
@@ -43,7 +44,10 @@ class SocketClient extends SocketInterface {
     } on Exception catch (e) {
       return {'status_code': false, 'message': e.toString()};
     } catch (e) {
-      return {'status_code': false, 'message': '알 수 없는 오류가 발생했습니다: ${e.toString()}'};
+      return {
+        'status_code': false,
+        'message': '알 수 없는 오류가 발생했습니다: ${e.toString()}',
+      };
     }
   }
 }

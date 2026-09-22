@@ -15,10 +15,7 @@ class StudentStatusApi {
   final APITranslator translator;
   final Dio dio;
 
-  StudentStatusApi({
-    required this.translator,
-    required this.dio,
-  });
+  StudentStatusApi({required this.translator, required this.dio});
 
   Future<StudentStatusResponse> getStatusOptions({
     int? academyId,
@@ -27,39 +24,31 @@ class StudentStatusApi {
     final response = await dio.get(
       '$base/api/academy/student-status/options',
       queryParameters: {
-        if (academyId != null)
-          'academyId': academyId,
-        if (classId != null)
-          'classId': classId,
+        if (academyId != null) 'academyId': academyId,
+        if (classId != null) 'classId': classId,
       },
     );
 
     return StudentStatusResponse.fromJson(
-      response.data['response']
-      as Map<String, dynamic>,
+      response.data['response'] as Map<String, dynamic>,
     );
   }
 
   Future<StudentStatusListResponse> getStudentStatuses(
-      StatusQueryRequest request,
-      ) async {
+    StatusQueryRequest request,
+  ) async {
     final response = await dio.get(
       '$base/api/academy/student-status',
       queryParameters: request.toJson(),
     );
 
-    final data =
-    response.data['response'];
+    final data = response.data['response'];
 
     if (data is! Map<String, dynamic>) {
-      throw Exception(
-        '학생 상태 조회 응답 형식이 올바르지 않습니다.',
-      );
+      throw Exception('학생 상태 조회 응답 형식이 올바르지 않습니다.');
     }
 
-    return StudentStatusListResponse.fromJson(
-      data,
-    );
+    return StudentStatusListResponse.fromJson(data);
   }
 
   Future<void> process(StudentStatusForm form) async {
@@ -74,23 +63,16 @@ class StudentStatusApi {
           form.academyName,
           form.className,
           form.subjectNames,
-          form.reason
+          form.reason,
         ];
 
       case StudentStatusType.expulsion:
         path = '/ConstellationAPI/AcademyAPI/dropout_student';
-        args = [
-          form.studentDiscordId,
-          form.academyName,
-          form.className,
-        ];
+        args = [form.studentDiscordId, form.academyName, form.className];
 
       case StudentStatusType.withdrawal:
         path = '/ConstellationAPI/AcademyAPI/suspended_command';
-        args = [
-          form.studentDiscordId,
-          form.reason
-        ];
+        args = [form.studentDiscordId, form.reason];
     }
 
     await translator.request(path, args);

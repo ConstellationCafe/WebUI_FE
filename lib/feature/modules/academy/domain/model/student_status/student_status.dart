@@ -24,8 +24,7 @@ abstract class StudentStatus with _$StudentStatus {
   }) = _StudentStatus;
 }
 
-extension StudentStatusValidation
-on StudentStatus {
+extension StudentStatusValidation on StudentStatus {
   bool get isValid {
     if (selectedAcademy == null) {
       return false;

@@ -7,8 +7,7 @@ import '../../type/roster_status.dart';
 part 'status_view.freezed.dart';
 
 @freezed
-abstract class StatusView<T, K extends RosterStatus>
-    with _$StatusView<T, K> {
+abstract class StatusView<T, K extends RosterStatus> with _$StatusView<T, K> {
   const factory StatusView({
     required T academyMember,
     required Academy academy,

@@ -11,7 +11,9 @@ class FriendlyMatchNotifier extends _$FriendlyMatchNotifier {
   @override
   FriendlyMatchState build() {
     // globalStateProvider에서 이름을 감시하여 초기 sender 설정
-    final globalName = ref.watch(currentUserStateProvider.select((s) => s.globalName));
+    final globalName = ref.watch(
+      currentUserStateProvider.select((s) => s.globalName),
+    );
 
     return FriendlyMatchState.initial().copyWith(sender: globalName);
   }

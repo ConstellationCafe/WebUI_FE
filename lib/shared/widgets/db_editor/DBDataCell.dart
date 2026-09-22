@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
 
-
 class DBDataCell extends StatefulWidget {
   final DBController controller;
   final int rowIndex;
@@ -35,10 +34,12 @@ class _EditableCellState extends State<DBDataCell> {
   void initState() {
     super.initState();
     _controller = TextEditingController(
-      text: widget.controller.model[widget.colIndex][widget.rowIndex].toString() ?? '',
+      text:
+          widget.controller.model[widget.colIndex][widget.rowIndex]
+              .toString() ??
+          '',
     );
   }
-
 
   @override
   void didUpdateWidget(covariant DBDataCell oldWidget) {
@@ -46,7 +47,9 @@ class _EditableCellState extends State<DBDataCell> {
     // 선택된 셀이 바뀌면 초기값 업데이트
     if (widget.isSelected && !oldWidget.isSelected) {
       _controller.text =
-          widget.controller.model[widget.colIndex][widget.rowIndex].toString() ?? '';
+          widget.controller.model[widget.colIndex][widget.rowIndex]
+              .toString() ??
+          '';
     }
   }
 
@@ -58,15 +61,12 @@ class _EditableCellState extends State<DBDataCell> {
   }
 
   Future<void> _copyToClipboard() async {
-    final value =
-    widget.controller.model.getDisplayValue(
+    final value = widget.controller.model.getDisplayValue(
       widget.colIndex,
       widget.rowIndex,
     );
 
-    await Clipboard.setData(
-      ClipboardData(text: value),
-    );
+    await Clipboard.setData(ClipboardData(text: value));
   }
 
   Future<void> _disableContextMenu() async {
@@ -83,9 +83,7 @@ class _EditableCellState extends State<DBDataCell> {
         ? Colors.grey.withOpacity(0.3)
         : Colors.transparent;
 
-    if (widget.isSelected &&
-        widget.isEditMode &&
-        widget.isEditable) {
+    if (widget.isSelected && widget.isEditMode && widget.isEditable) {
       return Container(
         height: widget.rowHeight,
         color: bgColor,
@@ -107,15 +105,14 @@ class _EditableCellState extends State<DBDataCell> {
             onChanged: (value) {
               widget.controller.model[widget.colIndex][widget.rowIndex] = value;
             },
-          )
+          ),
         ),
       );
     } else {
-      final value =
-        widget.controller.model.getDisplayValue(
-          widget.colIndex,
-          widget.rowIndex,
-        );
+      final value = widget.controller.model.getDisplayValue(
+        widget.colIndex,
+        widget.rowIndex,
+      );
       return MouseRegion(
         onEnter: (_) {
           _disableContextMenu();
@@ -125,10 +122,7 @@ class _EditableCellState extends State<DBDataCell> {
         },
         child: GestureDetector(
           onTap: () {
-            widget.controller.setSelectedCell(
-              widget.colIndex,
-              widget.rowIndex,
-            );
+            widget.controller.setSelectedCell(widget.colIndex, widget.rowIndex);
           },
           onSecondaryTap: () {
             _copyToClipboard();
@@ -138,10 +132,7 @@ class _EditableCellState extends State<DBDataCell> {
             color: bgColor,
             padding: const EdgeInsets.all(4.0),
             alignment: Alignment.centerLeft,
-            child: Text(
-              value,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: Text(value, overflow: TextOverflow.ellipsis),
           ),
         ),
       );

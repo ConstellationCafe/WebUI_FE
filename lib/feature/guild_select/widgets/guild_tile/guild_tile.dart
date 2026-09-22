@@ -9,11 +9,7 @@ class GuildTile extends StatefulWidget {
   final Guild guild;
   final VoidCallback? onTap;
 
-  const GuildTile({
-    super.key,
-    required this.guild,
-    this.onTap,
-  });
+  const GuildTile({super.key, required this.guild, this.onTap});
 
   @override
   State<GuildTile> createState() => _GuildTileState();
@@ -59,18 +55,14 @@ class _GuildTileState extends State<GuildTile> {
         ),
         child: Material(
           color: theme.colorScheme.primary,
-          borderRadius: BorderRadius.circular(
-            GuildConstants.tileRadius,
-          ),
+          borderRadius: BorderRadius.circular(GuildConstants.tileRadius),
           elevation: _isHovered
               ? GuildConstants.tileHoverElevation
               : GuildConstants.tileElevation,
           shadowColor: GuildConstants.tileShadowColor,
           child: InkWell(
             onTap: widget.onTap,
-            borderRadius: BorderRadius.circular(
-              GuildConstants.tileRadius,
-            ),
+            borderRadius: BorderRadius.circular(GuildConstants.tileRadius),
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: GuildConstants.tileHorizontalPadding,
@@ -79,17 +71,9 @@ class _GuildTileState extends State<GuildTile> {
               child: Row(
                 children: [
                   GuildIcon(guild: widget.guild),
-                  const SizedBox(
-                    width: GuildConstants.iconInformationSpacing,
-                  ),
-                  Expanded(
-                    child: GuildInformation(
-                      guild: widget.guild,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: GuildConstants.informationArrowSpacing,
-                  ),
+                  const SizedBox(width: GuildConstants.iconInformationSpacing),
+                  Expanded(child: GuildInformation(guild: widget.guild)),
+                  const SizedBox(width: GuildConstants.informationArrowSpacing),
                   Icon(
                     Icons.chevron_right_rounded,
                     size: GuildConstants.arrowIconSize,

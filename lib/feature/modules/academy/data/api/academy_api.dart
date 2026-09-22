@@ -14,54 +14,44 @@ class AcademyApi {
   AcademyApi({required this.dio});
 
   Future<AcademyPermission> getMyPermissions() async {
-    final response = await dio.get(
-      '/api/academy/me/permissions',
-    );
+    final response = await dio.get('/api/academy/me/permissions');
 
     final data = response.data;
 
-    return AcademyPermission.fromJson(
-      data['response'] as Map<String, dynamic>,
-    );
+    return AcademyPermission.fromJson(data['response'] as Map<String, dynamic>);
   }
 
   Future<List<Academy>> getAcademies() async {
     final response = await dio.get('$base/api/academy');
     final List<dynamic> data = response.data['response'];
-    return data
-        .map((json) => Academy.fromJson(json))
-        .toList();
+    return data.map((json) => Academy.fromJson(json)).toList();
   }
 
   Future<List<AcademyClass>> getClasses(int academyId) async {
     final response = await dio.get('$base/api/academy/$academyId/classes');
     final List<dynamic> data = response.data['response'];
-    return data
-        .map((json) => AcademyClass.fromJson(json))
-        .toList();
+    return data.map((json) => AcademyClass.fromJson(json)).toList();
   }
 
   Future<List<Subject>> getSubjects(int academyId) async {
     final response = await dio.get('$base/api/academy/$academyId/subjects');
     final List<dynamic> data = response.data['response'];
-    return data
-        .map((json) => Subject.fromJson(json))
-        .toList();
+    return data.map((json) => Subject.fromJson(json)).toList();
   }
 
   Future<List<Teacher>> getTeachers(int academyId, int classId) async {
-    final response = await dio.get('$base/api/academy/$academyId/classes/$classId/teachers');
+    final response = await dio.get(
+      '$base/api/academy/$academyId/classes/$classId/teachers',
+    );
     final List<dynamic> data = response.data['response'];
-    return data
-        .map((json) => Teacher.fromJson(json))
-        .toList();
+    return data.map((json) => Teacher.fromJson(json)).toList();
   }
 
   Future<List<Student>> getStudents(int academyId, int classId) async {
-    final response = await dio.get('$base/api/academy/$academyId/classes/$classId/students');
+    final response = await dio.get(
+      '$base/api/academy/$academyId/classes/$classId/students',
+    );
     final List<dynamic> data = response.data['response'];
-    return data
-        .map((json) => Student.fromJson(json))
-        .toList();
+    return data.map((json) => Student.fromJson(json)).toList();
   }
 }

@@ -40,9 +40,7 @@ class UsageContent extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(
-            height: ConstSize.mediumSpacing,
-          ),
+          const SizedBox(height: ConstSize.mediumSpacing),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -55,28 +53,19 @@ class UsageContent extends StatelessWidget {
                       vertical: ConstPadding.smallPadding,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(
-                        alpha: 0.15,
-                      ),
+                      color: Colors.white.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: Colors.white.withValues(
-                          alpha: 0.3,
-                        ),
+                        color: Colors.white.withValues(alpha: 0.3),
                       ),
                     ),
                     child: const Text(
                       '이전',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
-              if (!isFirstStep)
-                const SizedBox(
-                  width: ConstSize.smallSpacing,
-                ),
+              if (!isFirstStep) const SizedBox(width: ConstSize.smallSpacing),
               GestureDetector(
                 onTap: onNext,
                 child: Container(
@@ -85,9 +74,7 @@ class UsageContent extends StatelessWidget {
                     vertical: ConstPadding.smallPadding,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(
-                      alpha: 0.25,
-                    ),
+                    color: Colors.white.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(

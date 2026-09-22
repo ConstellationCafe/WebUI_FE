@@ -24,10 +24,7 @@ class DBModel {
     );
   }
 
-  String getDisplayValue(
-      int colIndex,
-      int rowIndex,
-      ) {
+  String getDisplayValue(int colIndex, int rowIndex) {
     final colName = columns[colIndex].toString();
 
     return table[colName]![rowIndex];
@@ -44,48 +41,32 @@ class DBModel {
   }
 
   List<int> getSelectedCell() {
-    return [
-      _selectedCol,
-      _selectedRow,
-    ];
+    return [_selectedCol, _selectedRow];
   }
 
-  void setSelectedCell(
-      int colIndex,
-      int rowIndex,
-      ) {
+  void setSelectedCell(int colIndex, int rowIndex) {
     _selectedCol = colIndex;
     _selectedRow = rowIndex;
   }
 
   /// 첫 페이지 / 검색 / 정렬 결과
-  void replace(
-      List<Entity> entities,
-      List<Map<String, dynamic>> metadata,
-      ) {
+  void replace(List<Entity> entities, List<Map<String, dynamic>> metadata) {
     _initializeColumns(metadata);
 
     final newTable = _createEmptyTable();
 
     for (final entity in entities) {
-      _appendEntityToTable(
-        newTable,
-        entity,
-      );
+      _appendEntityToTable(newTable, entity);
     }
 
     table = {
       for (final entry in newTable.entries)
-        entry.key: List<String>.from(
-          entry.value,
-        ),
+        entry.key: List<String>.from(entry.value),
     };
 
     origin = {
       for (final entry in newTable.entries)
-        entry.key: List<String>.from(
-          entry.value,
-        ),
+        entry.key: List<String>.from(entry.value),
     };
 
     _selectedCol = 0;
@@ -93,17 +74,13 @@ class DBModel {
   }
 
   /// 무한스크롤로 다음 페이지 추가
-  void append(
-      List<Entity> entities,
-      ) {
+  void append(List<Entity> entities) {
     if (entities.isEmpty) {
       return;
     }
 
     if (columns.isEmpty) {
-      throw StateError(
-        'DBModel이 초기화되지 않은 상태에서 append할 수 없습니다.',
-      );
+      throw StateError('DBModel이 초기화되지 않은 상태에서 append할 수 없습니다.');
     }
 
     for (final entity in entities) {
@@ -128,10 +105,7 @@ class DBModel {
   }
 
   /// Entity를 DBEditor의 column 구조로 변환
-  void _appendEntityToTable(
-      Map<String, List<String>> target,
-      Entity entity,
-      ) {
+  void _appendEntityToTable(Map<String, List<String>> target, Entity entity) {
     final json = entity.toJson();
     final displayJson = entity.toDisplayJson();
 
@@ -187,40 +161,25 @@ class DBModel {
     return '';
   }
 
-  void _initializeColumns(
-      List<Map<String, dynamic>> metadata,
-      ) {
+  void _initializeColumns(List<Map<String, dynamic>> metadata) {
     if (columns.isNotEmpty) {
       return;
     }
 
-    columns = metadata.map(
-          (meta) {
-        final name =
-        meta['colName'].toString();
+    columns = metadata.map((meta) {
+      final name = meta['colName'].toString();
 
-        return DBColumn(
-          name: name,
-          dbName:
-          (meta['dbName'] ?? name).toString(),
-          isPrimary:
-          (meta['isPrimary'] as num?)
-              ?.toInt() ??
-              0,
-          isNullable:
-          (meta['isNullable'] as num?)
-              ?.toInt() ??
-              1,
-        );
-      },
-    ).toList();
+      return DBColumn(
+        name: name,
+        dbName: (meta['dbName'] ?? name).toString(),
+        isPrimary: (meta['isPrimary'] as num?)?.toInt() ?? 0,
+        isNullable: (meta['isNullable'] as num?)?.toInt() ?? 1,
+      );
+    }).toList();
   }
 
   Map<String, List<String>> _createEmptyTable() {
-    return {
-      for (final column in columns)
-        column.toString(): <String>[],
-    };
+    return {for (final column in columns) column.toString(): <String>[]};
   }
 
   void _clearRows() {
@@ -237,21 +196,17 @@ class DBModel {
       return [];
     }
 
-    return List.generate(
-      rowCount,
-          (rowIndex) {
-        final row = <String, String>{};
+    return List.generate(rowCount, (rowIndex) {
+      final row = <String, String>{};
 
-        for (final column in columns) {
-          final name = column.toString();
+      for (final column in columns) {
+        final name = column.toString();
 
-          row[name] =
-          table[name]![rowIndex];
-        }
+        row[name] = table[name]![rowIndex];
+      }
 
-        return row;
-      },
-    );
+      return row;
+    });
   }
 
   void addRow() {
@@ -270,15 +225,12 @@ class DBModel {
       return;
     }
 
-    if (_selectedRow < 0 ||
-        _selectedRow >= rowCount) {
+    if (_selectedRow < 0 || _selectedRow >= rowCount) {
       return;
     }
 
     for (final column in columns) {
-      table[column.toString()]!.removeAt(
-        _selectedRow,
-      );
+      table[column.toString()]!.removeAt(_selectedRow);
     }
 
     if (_selectedRow >= rowCount) {
@@ -296,39 +248,23 @@ class DBModel {
 
     table = {
       for (final entry in origin.entries)
-        entry.key: List<String>.from(
-          entry.value,
-        ),
+        entry.key: List<String>.from(entry.value),
     };
   }
 }
 
 class ColumnView {
-  final String Function(
-      int rowIndex,
-      ) getter;
+  final String Function(int rowIndex) getter;
 
-  final void Function(
-      int rowIndex,
-      String value,
-      ) setter;
+  final void Function(int rowIndex, String value) setter;
 
-  ColumnView({
-    required this.getter,
-    required this.setter,
-  });
+  ColumnView({required this.getter, required this.setter});
 
   String operator [](int rowIndex) {
     return getter(rowIndex);
   }
 
-  void operator []=(
-      int rowIndex,
-      String value,
-      ) {
-    setter(
-      rowIndex,
-      value,
-    );
+  void operator []=(int rowIndex, String value) {
+    setter(rowIndex, value);
   }
 }

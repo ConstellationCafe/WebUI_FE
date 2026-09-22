@@ -1,5 +1,3 @@
-
-
 import '../type/student_status_type.dart';
 
 class StudentStatusForm {
@@ -8,6 +6,7 @@ class StudentStatusForm {
   final String studentDiscordId;
 
   final StudentStatusType statusType;
+
   /// 졸업인 경우에만 사용.
   /// 0개 이상 선택 가능.
   final List<String> subjectNames;

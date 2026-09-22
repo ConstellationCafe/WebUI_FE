@@ -5,12 +5,10 @@ enum FriendlyMatchS1ModeType implements FriendlyMatchModeType {
   unlimited("언리미티드"),
   two_pick("투픽");
 
-
   @override
   final String name;
 
   const FriendlyMatchS1ModeType(this.name);
-
 
   static FriendlyMatchS1ModeType stringToType(String value) {
     switch (value) {
