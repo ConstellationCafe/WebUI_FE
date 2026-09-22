@@ -19,14 +19,14 @@ class MainCategory extends ConsumerStatefulWidget {
 class _MainCategoryState extends ConsumerState<MainCategory> {
   @override
   Widget build(BuildContext build) {
-    final globalState = ref.watch(currentUserStateProvider);
+    // final globalState = ref.watch(currentUserStateProvider);
     final permissionState = ref.watch(academyPermissionProvider);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         ChatBotCategory(),
         ShadowverseCategory(),
-        if (globalState.roles.contains(UserRole.ADMIN)) ...[AdminCategory()],
+        // if (globalState.roles.contains(UserRole.ADMIN)) ...[AdminCategory()],
         if (!permissionState.isLoading && permissionState.isInitialized) ...[
           AcademyCategory(),
         ],
