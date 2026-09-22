@@ -85,10 +85,7 @@ void main() {
 
     test('uses the fallback for a missing date', () {
       expect(DateFormatter.toYyyyMmDd(null), '-');
-      expect(
-        DateFormatter.toYyyyMmDd(null, fallback: '날짜 없음'),
-        '날짜 없음',
-      );
+      expect(DateFormatter.toYyyyMmDd(null, fallback: '날짜 없음'), '날짜 없음');
     });
   });
 }
