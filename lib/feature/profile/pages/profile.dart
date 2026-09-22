@@ -41,20 +41,22 @@ class _ProfileState extends ConsumerState<Profile> {
       return const PageLoading();
     }
 
-    return Usage(
-      usageKey: ProfileUsage.key,
-      steps: ProfileUsage.steps(
-        pointLogButtonKey: pointLogButtonKey,
-        inputDataKey: inputDataKey,
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final isDesktop = ScreenWidth.isDesktop(constraints.maxWidth);
+    return Center(
+      child: Usage(
+        usageKey: ProfileUsage.key,
+        steps: ProfileUsage.steps(
+          pointLogButtonKey: pointLogButtonKey,
+          inputDataKey: inputDataKey,
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isDesktop = ScreenWidth.isDesktop(constraints.maxWidth);
 
-          return SingleChildScrollView(
-            child: isDesktop ? _buildDesktop() : _buildMobile(),
-          );
-        },
+            return SingleChildScrollView(
+              child: isDesktop ? _buildDesktop() : _buildMobile(),
+            );
+          },
+        ),
       ),
     );
   }
