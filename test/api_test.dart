@@ -1,45 +1,94 @@
-// import 'package:test/test.dart';
-// import 'package:constellation_cafe/Api/Socket/Client.dart';
-// import 'package:constellation_cafe/Api/Socket/Model.dart';
-//
-//
-// void main() {
-//   group('request 함수 테스트', () {
-//     test('정상 응답 테스트', () async {
-//       final socketModel = SocketModel(
-//           dst: "ConstellationAPI",
-//           sub: "CompetitionAPI",
-//           targetFunc: "competition_list",
-//           args: []
-//       );
-//       final testResponse = await ApiClient.send(socketModel);
-//       // 결과 확인 - 실제 API 응답 형식에 맞게 수정 필요
-//       expect(testResponse, isA<Map<String, dynamic>>());
-//       print('정상 응답 테스트');
-//       print(testResponse);
-//     });
-//
-//   //   test('허용되지 않은 API 요청 테스트', () async {
-//   //     final testPath = "/ChatBotAPI/menu/recommend_menu";
-//   //     final Map<String, dynamic> testBody = {
-//   //
-//   //     };
-//   //     final Map<String, dynamic> testResponse = await request(testPath, testBody);
-//   //
-//   //     // 결과 확인 - 실제 API 응답 형식에 맞게 수정 필요
-//   //     expect(testResponse, isA<Map<String, dynamic>>());
-//   //     print('허용되지 않은 API 요청 테스트');
-//   //     print(testResponse);
-//   //   });
-//   //
-//   //   test('잘못된 요청 시 에러 메시지 테스트', () async {
-//   //     final testPath = "/invalid/path/target_func";
-//   //     final Map<String, dynamic> testBody = {
-//   //       "bad": "data"
-//   //     };
-//   //     final Map<String, dynamic> testResponse = await request(testPath, testBody);
-//   //     print('잘못된 요청 시 에러 메시지 테스트');
-//   //     print(testResponse);
-//   //   });
-//   });
-// }
+import 'dart:convert';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:constellation_cafe/core/utils/date_formatter.dart';
+import 'package:constellation_cafe/shared/data/dto/request/SocketModel.dart';
+import 'package:constellation_cafe/shared/data/dto/response/backend/ApiResponse.dart';
+
+void main() {
+  group('SocketModel request contract', () {
+    test('serializes the required envelope and payload fields', () {
+      final request = SocketModel(
+        dst: 'ConstellationAPI',
+        sub: 'CompetitionAPI',
+        targetFunc: 'competition_list',
+        args: const [
+          {'page': 1},
+        ],
+      );
+
+      expect(request.toJson(), {
+        'pri': 1,
+        'auth_id': 731001,
+        'src': 'WebUI',
+        'dst': 'ConstellationAPI',
+        'payload': {
+          'sub': 'CompetitionAPI',
+          'target_func': 'competition_list',
+          'args': const [
+            {'page': 1},
+          ],
+        },
+      });
+    });
+  });
+
+  group('ApiResponse contract', () {
+    test('parses a successful HTTP response without an error', () {
+      final response = ApiResponse.fromHttpResponse(
+        http.Response(
+          jsonEncode({
+            'success': true,
+            'response': {'items': []},
+            'error': null,
+          }),
+          200,
+        ),
+      );
+
+      expect(response.success, isTrue);
+      expect(response.response, {'items': []});
+      expect(response.error, isNull);
+    });
+
+    test('parses an error payload and preserves its status and message', () {
+      final response = ApiResponse.fromHttpResponse(
+        http.Response(
+          jsonEncode({
+            'success': false,
+            'response': null,
+            'error': {
+              'status': 400,
+              'message': '잘못된 요청입니다',
+            },
+          }),
+          400,
+        ),
+      );
+
+      expect(response.success, isFalse);
+      expect(response.response, isNull);
+      expect(response.error?.status, 400);
+      expect(response.error?.message, '잘못된 요청입니다');
+    });
+  });
+
+  group('DateFormatter', () {
+    test('formats a date with zero-padded month and day', () {
+      expect(
+        DateFormatter.toYyyyMmDd(DateTime(2026, 9, 3)),
+        '2026-09-03',
+      );
+    });
+
+    test('uses the fallback for a missing date', () {
+      expect(DateFormatter.toYyyyMmDd(null), '-');
+      expect(
+        DateFormatter.toYyyyMmDd(null, fallback: '날짜 없음'),
+        '날짜 없음',
+      );
+    });
+  });
+}
