@@ -42,6 +42,7 @@ class MembershipNotifier extends _$MembershipNotifier {
     try {
       final membershipApi = ref.read(membershipApiProvider);
       final globalState = ref.read(currentUserStateProvider);
+      _membershipID = globalState.userId;
 
       final data = await membershipApi.createCard([globalState.userId]);
       final payload = data['payload'];
