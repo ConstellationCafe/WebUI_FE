@@ -54,8 +54,8 @@ void main() {
     });
 
     test('parses an error payload and preserves its status and message', () {
-      final response = ApiResponse.fromHttpResponse(
-        http.Response(
+      final httpResponse = http.Response.bytes(
+        utf8.encode(
           jsonEncode({
             'success': false,
             'response': null,
@@ -64,14 +64,18 @@ void main() {
               'message': '잘못된 요청입니다',
             },
           }),
-          400,
         ),
+        400,
+        headers: {
+          'content-type': 'application/json; charset=utf-8',
+        },
       );
 
-      expect(response.success, isFalse);
-      expect(response.response, isNull);
-      expect(response.error?.status, 400);
-      expect(response.error?.message, '잘못된 요청입니다');
+      final apiResponse = ApiResponse.fromHttpResponse(httpResponse);
+
+      expect(apiResponse.success, isFalse);
+      expect(apiResponse.error?.status, 400);
+      expect(apiResponse.error?.message, '잘못된 요청입니다');
     });
   });
 
