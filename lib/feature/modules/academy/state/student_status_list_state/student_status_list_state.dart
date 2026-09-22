@@ -8,22 +8,16 @@ import '../../domain/type/student_roster_status.dart';
 part 'student_status_list_state.freezed.dart';
 
 @freezed
-abstract class StudentStatusListState
-    with _$StudentStatusListState {
+abstract class StudentStatusListState with _$StudentStatusListState {
   const factory StudentStatusListState({
-    @Default(false)
-    bool isLoading,
+    @Default(false) bool isLoading,
 
-    @Default(false)
-    bool isFilterLoading,
+    @Default(false) bool isFilterLoading,
 
-    @Default(
-      StatusQuery<Student, StudentRosterStatus>(),
-    )
+    @Default(StatusQuery<Student, StudentRosterStatus>())
     StatusQuery<Student, StudentRosterStatus> query,
 
-    @Default(StudentStatusList())
-    StudentStatusList studentStatusList,
+    @Default(StudentStatusList()) StudentStatusList studentStatusList,
 
     String? errorMessage,
   }) = _StudentStatusListState;

@@ -1,4 +1,3 @@
-
 class HomeConstants {
   // Main AppBar
   static const double mainAppBarWidth = 155.0;

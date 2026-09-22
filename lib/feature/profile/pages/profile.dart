@@ -49,14 +49,10 @@ class _ProfileState extends ConsumerState<Profile> {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isDesktop = ScreenWidth.isDesktop(
-            constraints.maxWidth,
-          );
+          final isDesktop = ScreenWidth.isDesktop(constraints.maxWidth);
 
           return SingleChildScrollView(
-            child: isDesktop
-                ? _buildDesktop()
-                : _buildMobile(),
+            child: isDesktop ? _buildDesktop() : _buildMobile(),
           );
         },
       ),
@@ -73,9 +69,7 @@ class _ProfileState extends ConsumerState<Profile> {
           width: ProfileConstants.childWidgetWidth,
           pointLogButtonKey: pointLogButtonKey,
         ),
-        const SizedBox(
-          width: ConstSize.mediumSpacing,
-        ),
+        const SizedBox(width: ConstSize.mediumSpacing),
         InputMembershipData(
           key: inputDataKey,
           width: ProfileConstants.childWidgetWidth,
@@ -93,9 +87,7 @@ class _ProfileState extends ConsumerState<Profile> {
           width: ProfileConstants.childWidgetWidth,
           pointLogButtonKey: pointLogButtonKey,
         ),
-        const SizedBox(
-          height: ConstSize.mediumSpacing,
-        ),
+        const SizedBox(height: ConstSize.mediumSpacing),
         InputMembershipData(
           key: inputDataKey,
           width: ProfileConstants.childWidgetWidth,

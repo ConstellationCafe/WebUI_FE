@@ -10,8 +10,7 @@ class ErrorInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final path = err.requestOptions.path;
     final isSilentAuthError =
-        (err.response?.statusCode == 401 ||
-            err.response?.statusCode == 403) &&
+        (err.response?.statusCode == 401 || err.response?.statusCode == 403) &&
         path.contains('/auth/');
 
     if (!isSilentAuthError) {
@@ -84,9 +83,7 @@ class ErrorInterceptor extends Interceptor {
         backgroundColor: Colors.red.shade600,
         duration: const Duration(seconds: 4),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         margin: const EdgeInsets.all(16),
       ),
     );

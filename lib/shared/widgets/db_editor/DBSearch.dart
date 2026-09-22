@@ -13,16 +13,11 @@ class DBSearch extends StatefulWidget {
   });
 
   @override
-  State<DBSearch> createState() =>
-      _DBSearchState();
+  State<DBSearch> createState() => _DBSearchState();
 }
 
-class _DBSearchState
-    extends State<DBSearch> {
-
-  final TextEditingController
-  _valueController =
-  TextEditingController();
+class _DBSearchState extends State<DBSearch> {
+  final TextEditingController _valueController = TextEditingController();
 
   String? _selectedColumn;
 
@@ -36,15 +31,11 @@ class _DBSearchState
   void _initializeColumn() {
     final columns = widget.controller
         .getColumns()
-        .where(
-          (column) =>
-          !widget.hiddenColumns.contains(column),
-        )
+        .where((column) => !widget.hiddenColumns.contains(column))
         .toList();
 
     if (columns.isNotEmpty) {
-      _selectedColumn =
-          columns.first;
+      _selectedColumn = columns.first;
     }
   }
 
@@ -56,9 +47,7 @@ class _DBSearchState
    * 첫 번째 컬럼을 자동 선택한다.
    */
   @override
-  void didUpdateWidget(
-      covariant DBSearch oldWidget,
-      ) {
+  void didUpdateWidget(covariant DBSearch oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (_selectedColumn == null) {
@@ -67,48 +56,36 @@ class _DBSearchState
   }
 
   Future<void> _search() async {
-    final column =
-        _selectedColumn;
+    final column = _selectedColumn;
 
-    final value =
-    _valueController.text.trim();
+    final value = _valueController.text.trim();
 
     if (column == null) {
-      _showMessage(
-        '검색할 컬럼을 선택해주세요.',
-      );
+      _showMessage('검색할 컬럼을 선택해주세요.');
 
       return;
     }
 
     if (value.isEmpty) {
-      _showMessage(
-        '검색할 값을 입력해주세요.',
-      );
+      _showMessage('검색할 값을 입력해주세요.');
 
       return;
     }
 
     try {
-      await widget.controller.search(
-        column,
-        value,
-      );
+      await widget.controller.search(column, value);
     } catch (e) {
       if (!mounted) {
         return;
       }
 
-      _showMessage(
-        _errorMessage(e),
-      );
+      _showMessage(_errorMessage(e));
     }
   }
 
   Future<void> _reset() async {
     try {
-      await widget.controller
-          .clearSearch();
+      await widget.controller.clearSearch();
 
       _valueController.clear();
 
@@ -122,15 +99,11 @@ class _DBSearchState
         return;
       }
 
-      _showMessage(
-        _errorMessage(e),
-      );
+      _showMessage(_errorMessage(e));
     }
   }
 
-  String _errorMessage(
-      Object error,
-      ) {
+  String _errorMessage(Object error) {
     /*
      * StateError:
      * Bad state: 저장하지 않은...
@@ -144,15 +117,10 @@ class _DBSearchState
     return error.toString();
   }
 
-  void _showMessage(
-      String message,
-      ) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -163,9 +131,7 @@ class _DBSearchState
   }
 
   @override
-  Widget build(
-      BuildContext context,
-      ) {
+  Widget build(BuildContext context) {
     /*
      * AnimatedBuilder가 필요한 이유:
      *
@@ -187,120 +153,76 @@ class _DBSearchState
       builder: (context, _) {
         final columns = widget.controller
             .getColumns()
-            .where(
-              (column) =>
-              !widget.hiddenColumns.contains(column),
-            )
+            .where((column) => !widget.hiddenColumns.contains(column))
             .toList();
         /*
          * 최초 조회 이후 컬럼 자동 선택
          */
-        if (_selectedColumn == null &&
-            columns.isNotEmpty) {
-          _selectedColumn =
-              columns.first;
+        if (_selectedColumn == null && columns.isNotEmpty) {
+          _selectedColumn = columns.first;
         }
         /*
          * Repository 변경 등으로
          * 기존 선택 컬럼이 사라진 경우
          */
-        if (_selectedColumn != null &&
-            !columns.contains(
-              _selectedColumn,
-            )) {
-          _selectedColumn =
-          columns.isEmpty
-              ? null
-              : columns.first;
+        if (_selectedColumn != null && !columns.contains(_selectedColumn)) {
+          _selectedColumn = columns.isEmpty ? null : columns.first;
         }
 
         return SizedBox(
           height: 45,
           child: Row(
             children: [
-
               // =================================
               // Column
               // =================================
-
               SizedBox(
                 width: 130,
-                child:
-                DropdownButtonFormField<
-                    String>(
-                  value:
-                  _selectedColumn,
+                child: DropdownButtonFormField<String>(
+                  value: _selectedColumn,
                   isExpanded: true,
 
-                  decoration:
-                  const InputDecoration(
-                    labelText:
-                    'Column',
-                    border:
-                    OutlineInputBorder(),
-                    contentPadding:
-                    EdgeInsets.symmetric(
+                  decoration: const InputDecoration(
+                    labelText: 'Column',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 8,
                     ),
                   ),
 
-                  items:
-                  columns.map(
-                        (column) {
-                      return DropdownMenuItem<
-                          String>(
-                        value: column,
-                        child: Text(
-                          column,
-                          overflow:
-                          TextOverflow
-                              .ellipsis,
-                        ),
-                      );
-                    },
-                  ).toList(),
+                  items: columns.map((column) {
+                    return DropdownMenuItem<String>(
+                      value: column,
+                      child: Text(column, overflow: TextOverflow.ellipsis),
+                    );
+                  }).toList(),
 
-                  onChanged:
-                  widget.controller
-                      .isLoading
+                  onChanged: widget.controller.isLoading
                       ? null
                       : (value) {
-                    setState(
-                          () {
-                        _selectedColumn =
-                            value;
-                      },
-                    );
-                  },
+                          setState(() {
+                            _selectedColumn = value;
+                          });
+                        },
                 ),
               ),
 
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
 
               // =================================
               // Value
               // =================================
-
               Expanded(
                 child: TextField(
-                  controller:
-                  _valueController,
+                  controller: _valueController,
 
-                  enabled:
-                  !widget.controller
-                      .isLoading,
+                  enabled: !widget.controller.isLoading,
 
-                  decoration:
-                  const InputDecoration(
-                    labelText:
-                    'Value',
-                    border:
-                    OutlineInputBorder(),
-                    contentPadding:
-                    EdgeInsets.symmetric(
+                  decoration: const InputDecoration(
+                    labelText: 'Value',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 8,
                     ),
@@ -310,52 +232,35 @@ class _DBSearchState
                    * Enter로도 검색 가능
                    */
                   onSubmitted: (_) {
-                    if (!widget.controller
-                        .isLoading) {
+                    if (!widget.controller.isLoading) {
                       _search();
                     }
                   },
                 ),
               ),
 
-              const SizedBox(
-                width: 4,
-              ),
+              const SizedBox(width: 4),
 
               // =================================
               // Search
               // =================================
-
               IconButton(
                 tooltip: '검색',
 
-                onPressed:
-                widget.controller
-                    .isLoading
-                    ? null
-                    : _search,
+                onPressed: widget.controller.isLoading ? null : _search,
 
-                icon: const Icon(
-                  Icons.search,
-                ),
+                icon: const Icon(Icons.search),
               ),
 
               // =================================
               // Reset
               // =================================
-
               IconButton(
                 tooltip: '검색 초기화',
 
-                onPressed:
-                widget.controller
-                    .isLoading
-                    ? null
-                    : _reset,
+                onPressed: widget.controller.isLoading ? null : _reset,
 
-                icon: const Icon(
-                  Icons.refresh,
-                ),
+                icon: const Icon(Icons.refresh),
               ),
             ],
           ),

@@ -9,7 +9,7 @@ class PointEntity extends Entity {
     required super.metadata,
     required this.amount,
     required this.at,
-    required this.description
+    required this.description,
   });
 
   @override
@@ -20,18 +20,13 @@ class PointEntity extends Entity {
   };
 
   factory PointEntity.init(List<Map<String, dynamic>> metadata) {
-    return PointEntity(
-      metadata: metadata,
-      amount: '',
-      at: '',
-      description: '',
-    );
+    return PointEntity(metadata: metadata, amount: '', at: '', description: '');
   }
 
   factory PointEntity.fromJson(
-      List<Map<String, dynamic>> metadata,
-      Map<String, dynamic> json,
-      ) {
+    List<Map<String, dynamic>> metadata,
+    Map<String, dynamic> json,
+  ) {
     return PointEntity(
       metadata: metadata,
       amount: (json['amount'] ?? '').toString(),

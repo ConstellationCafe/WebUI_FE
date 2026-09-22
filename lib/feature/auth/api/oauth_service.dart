@@ -1,4 +1,3 @@
-
 import 'package:constellation_cafe/shared/data/dto/response/backend/ApiResponse.dart';
 import 'package:constellation_cafe/feature/auth/api/discord_login.dart';
 import 'package:constellation_cafe/feature/auth/api/auth_Interface.dart';
@@ -6,9 +5,10 @@ import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart'
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
-
 class OAuthService implements AuthServiceInterface {
-  static const base = String.fromEnvironment('BACKEND_URI'); // "https://constellationcafe.p-e.kr";
+  static const base = String.fromEnvironment(
+    'BACKEND_URI',
+  ); // "https://constellationcafe.p-e.kr";
   final DiscordLogin discordLogin = DiscordLogin();
   final Dio dio;
 
@@ -54,8 +54,8 @@ class OAuthService implements AuthServiceInterface {
   Future<bool> refresh() async {
     try {
       final res = await http.post(
-          Uri.parse('$base/auth/refresh'),
-          headers: {"Accept": "application/json"}
+        Uri.parse('$base/auth/refresh'),
+        headers: {"Accept": "application/json"},
       );
       return res.statusCode == 200;
     } catch (_) {

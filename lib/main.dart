@@ -8,11 +8,7 @@ import 'core/keys/AppKeys.dart';
 
 void main() {
   setUrlStrategy(PathUrlStrategy());
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {

@@ -13,6 +13,5 @@ abstract class AcademyPermissionState with _$AcademyPermissionState {
     String? errorMessage,
   }) = _AcademyPermissionState;
 
-  factory AcademyPermissionState.initial() =>
-      const AcademyPermissionState();
+  factory AcademyPermissionState.initial() => const AcademyPermissionState();
 }

@@ -6,11 +6,7 @@ class PointLogButton extends StatelessWidget {
   final MembershipState state;
   final TextTheme theme;
 
-  const PointLogButton({
-    super.key,
-    required this.state,
-    required this.theme,
-  });
+  const PointLogButton({super.key, required this.state, required this.theme});
 
   @override
   Widget build(BuildContext context) {

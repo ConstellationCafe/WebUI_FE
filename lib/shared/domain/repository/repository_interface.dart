@@ -1,7 +1,6 @@
 import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 import '../pagination/page_result.dart';
 
-
 abstract class RepositoryInterface<T extends Entity> {
   // Future<List<T>> findAll();
   Future<PageResult<T>> findPage({

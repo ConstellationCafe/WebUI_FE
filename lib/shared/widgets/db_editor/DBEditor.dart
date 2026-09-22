@@ -12,7 +12,6 @@ import 'DBSearch.dart';
 import 'EditorBar.dart';
 import 'editor_usage.dart';
 
-
 class DBEditor extends StatefulWidget {
   final RepositoryInterface repository;
   final bool readonly;
@@ -46,9 +45,7 @@ class _DBEditorState extends State<DBEditor> {
   void initState() {
     super.initState();
 
-    _controller = DBController(
-      repository: widget.repository,
-    );
+    _controller = DBController(repository: widget.repository);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadInitialPage();
@@ -63,28 +60,20 @@ class _DBEditorState extends State<DBEditor> {
         return;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '데이터 조회 실패: $e',
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('데이터 조회 실패: $e')));
     }
   }
 
   @override
-  void didUpdateWidget(
-      covariant DBEditor oldWidget,
-      ) {
+  void didUpdateWidget(covariant DBEditor oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.repository != widget.repository) {
       _controller.dispose();
 
-      _controller = DBController(
-        repository: widget.repository,
-      );
+      _controller = DBController(repository: widget.repository);
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _loadInitialPage();
@@ -98,9 +87,7 @@ class _DBEditorState extends State<DBEditor> {
     super.dispose();
   }
 
-  Widget buildDBEditor(
-      DBController controller,
-      ) {
+  Widget buildDBEditor(DBController controller) {
     if (widget.readonly) {
       return _buildEditor(controller);
     }
@@ -119,23 +106,14 @@ class _DBEditorState extends State<DBEditor> {
     );
   }
 
-  Widget _buildEditor(
-      DBController controller,
-      ) {
+  Widget _buildEditor(DBController controller) {
     return LayoutBuilder(
-      builder: (
-          context,
-          constraints,
-          ) {
-        final maxH =
-        constraints.maxHeight.isFinite
+      builder: (context, constraints) {
+        final maxH = constraints.maxHeight.isFinite
             ? constraints.maxHeight
             : 500.0;
 
-        final editorH =
-        maxH < 500
-            ? maxH
-            : 500.0;
+        final editorH = maxH < 500 ? maxH : 500.0;
 
         return SizedBox(
           width: 500,
@@ -143,48 +121,33 @@ class _DBEditorState extends State<DBEditor> {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius:
-              BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(
-                    0xFF000D27,
-                  ).withOpacity(0.12),
+                  color: const Color(0xFF000D27).withOpacity(0.12),
                   blurRadius: 24,
-                  offset:
-                  const Offset(0, 8),
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
-            padding: const EdgeInsets.all(
-              ConstSize.mediumWidth,
-            ),
+            padding: const EdgeInsets.all(ConstSize.mediumWidth),
             child: Column(
-              crossAxisAlignment:
-              CrossAxisAlignment
-                  .stretch,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-
                 // 검색 UI 추가
                 DBSearch(
                   controller: controller,
                   hiddenColumns: widget.hiddenColumns,
                 ),
 
-                SizedBox(
-                  height:
-                  ConstSize
-                      .mediumHeight,
-                ),
+                SizedBox(height: ConstSize.mediumHeight),
 
                 DBColumns(
                   key: columnKey,
                   controller: controller,
                   hiddenColumns: widget.hiddenColumns,
                 ),
-                SizedBox(
-                  height: ConstSize.mediumHeight,
-                ),
+                SizedBox(height: ConstSize.mediumHeight),
                 Expanded(
                   child: DBDataView(
                     key: viewKey,
@@ -195,36 +158,25 @@ class _DBEditorState extends State<DBEditor> {
                 ),
                 if (controller.isLoading && controller.isInitialized)
                   const Padding(
-                    padding: EdgeInsets.only(
-                      top: 8,
-                    ),
+                    padding: EdgeInsets.only(top: 8),
                     child: Center(
                       child: SizedBox(
                         width: 20,
                         height: 20,
-                        child:
-                        CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                     ),
                   ),
 
                 if (!widget.readonly) ...[
-                  SizedBox(
-                    height:
-                    ConstSize
-                        .mediumHeight,
-                  ),
+                  SizedBox(height: ConstSize.mediumHeight),
 
                   EditorBar(
                     addKey: addKey,
-                    deleteKey:
-                    deleteKey,
+                    deleteKey: deleteKey,
                     editKey: editKey,
                     saveKey: saveKey,
-                    controller:
-                    controller,
+                    controller: controller,
                   ),
                 ],
               ],
@@ -236,19 +188,11 @@ class _DBEditorState extends State<DBEditor> {
   }
 
   @override
-  Widget build(
-      BuildContext context,
-      ) {
-    if (!_controller.isInitialized &&
-        _controller.isLoading) {
-      return const Center(
-        child:
-        CircularProgressIndicator(),
-      );
+  Widget build(BuildContext context) {
+    if (!_controller.isInitialized && _controller.isLoading) {
+      return const Center(child: CircularProgressIndicator());
     }
 
-    return buildDBEditor(
-      _controller,
-    );
+    return buildDBEditor(_controller);
   }
 }

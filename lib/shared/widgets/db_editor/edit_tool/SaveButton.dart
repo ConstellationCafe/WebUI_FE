@@ -1,4 +1,3 @@
-
 import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +8,7 @@ import '../../loading/ButtonLoading.dart';
 class SaveButton extends StatefulWidget {
   final DBController controller;
 
-  const SaveButton({
-    super.key,
-    required this.controller,
-  });
+  const SaveButton({super.key, required this.controller});
 
   @override
   State<SaveButton> createState() => _SaveButtonState();
@@ -39,9 +35,9 @@ class _SaveButtonState extends State<SaveButton> {
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SaveResultBar.build(context, "저장 실패 : $e")
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SaveResultBar.build(context, "저장 실패 : $e"));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -52,22 +48,18 @@ class _SaveButtonState extends State<SaveButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: ConstSize.bigHeight,
-        child: ElevatedButton(
-          onPressed: _isLoading ? null : _onPressed,
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(0, 30),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: _isLoading
-              ? const SizedBox(
-                width: 18,
-                height: 18,
-                child: ButtonLoading(),
-              )
-              : const Text("저장"),
-        )
+      height: ConstSize.bigHeight,
+      child: ElevatedButton(
+        onPressed: _isLoading ? null : _onPressed,
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(0, 30),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        child: _isLoading
+            ? const SizedBox(width: 18, height: 18, child: ButtonLoading())
+            : const Text("저장"),
+      ),
     );
   }
 }

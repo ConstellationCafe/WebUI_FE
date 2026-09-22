@@ -50,20 +50,14 @@ class AnimatedOverlayState extends State<AnimatedOverlay>
       duration: const Duration(milliseconds: 250),
     );
 
-    _fade = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    );
+    _fade = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
 
     _slide = Tween<Offset>(
       begin: widget.isAbove
           ? const Offset(0, 0.1) // 위에 있을 때 아래→위
           : const Offset(0, -0.1), // 아래 있을 때 위→아래
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
   }

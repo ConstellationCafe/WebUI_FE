@@ -23,9 +23,7 @@ enum AcademyRole {
       case 'STUDENT':
         return AcademyRole.student;
       default:
-        throw ArgumentError(
-          'Unknown AcademyRole: $value',
-        );
+        throw ArgumentError('Unknown AcademyRole: $value');
     }
   }
 }

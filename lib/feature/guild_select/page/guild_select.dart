@@ -13,22 +13,16 @@ import 'package:constellation_cafe/feature/guild_select/provider/guild_list_prov
 import '../../../shared/widgets/loading/PageLoading.dart';
 import '../constants/guild_constants.dart';
 
-
 class GuildSelectPage extends ConsumerWidget {
   final Widget? child;
 
-  const GuildSelectPage({
-    super.key,
-    this.child,
-  });
+  const GuildSelectPage({super.key, this.child});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final guildsAsync = ref.watch(guildListProvider);
 
-    final guildStateNotifier = ref.read(
-      currentGuildStateProvider.notifier,
-    );
+    final guildStateNotifier = ref.read(currentGuildStateProvider.notifier);
 
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = ScreenWidth.isDesktop(width);
@@ -37,11 +31,7 @@ class GuildSelectPage extends ConsumerWidget {
       loading: () => const PageLoading(),
 
       error: (error, stack) {
-        return const Scaffold(
-          body: Center(
-            child: Text('길드 목록을 불러오지 못했습니다.'),
-          ),
-        );
+        return const Scaffold(body: Center(child: Text('길드 목록을 불러오지 못했습니다.')));
       },
 
       data: (guilds) {
@@ -53,10 +43,7 @@ class GuildSelectPage extends ConsumerWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  ConstColor.gradientStart,
-                  ConstColor.gradientEnd,
-                ],
+                colors: [ConstColor.gradientStart, ConstColor.gradientEnd],
               ),
             ),
             child: SingleChildScrollView(
@@ -76,9 +63,7 @@ class GuildSelectPage extends ConsumerWidget {
                   children: [
                     const SelectPageHeader(),
 
-                    const SizedBox(
-                      height: GuildConstants.headerListSpacing,
-                    ),
+                    const SizedBox(height: GuildConstants.headerListSpacing),
 
                     GuildList(
                       guilds: guilds,
@@ -89,15 +74,11 @@ class GuildSelectPage extends ConsumerWidget {
                           guildIcon: guild.iconUrl,
                         );
 
-                        context.go(
-                          '/home?guild_id=${guild.id}',
-                        );
+                        context.go('/home?guild_id=${guild.id}');
                       },
                     ),
 
-                    const SizedBox(
-                      height: GuildConstants.listFooterSpacing,
-                    ),
+                    const SizedBox(height: GuildConstants.listFooterSpacing),
 
                     const SelectPageFooter(),
                   ],

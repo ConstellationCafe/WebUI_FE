@@ -28,7 +28,7 @@ class ProfileMenu extends ConsumerWidget {
 
   Future<void> route(BuildContext context, WidgetRef ref, selected) async {
     if (selected == null) return;
-    switch(selected) {
+    switch (selected) {
       case 'profile':
         context.go('/profile');
         break;
@@ -43,14 +43,16 @@ class ProfileMenu extends ConsumerWidget {
     return GestureDetector(
       onTapDown: (details) async {
         final renderBox = context.findRenderObject() as RenderBox;
-        final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+        final overlay =
+            Overlay.of(context).context.findRenderObject() as RenderBox;
 
         final topLeft = renderBox.localToGlobal(
-          Offset(0, renderBox.size.height+18),
+          Offset(0, renderBox.size.height + 18),
           ancestor: overlay,
         );
         final bottomRight = renderBox.localToGlobal(
-          renderBox.size.bottomRight(Offset.zero) + Offset(0, renderBox.size.height),
+          renderBox.size.bottomRight(Offset.zero) +
+              Offset(0, renderBox.size.height),
           ancestor: overlay,
         );
 
@@ -63,14 +65,8 @@ class ProfileMenu extends ConsumerWidget {
           context: context,
           position: position,
           items: const [
-            PopupMenuItem(
-              value: 'profile',
-              child: Text('프로필 수정'),
-            ),
-            PopupMenuItem(
-              value: 'logout',
-              child: Text('로그아웃'),
-            ),
+            PopupMenuItem(value: 'profile', child: Text('프로필 수정')),
+            PopupMenuItem(value: 'logout', child: Text('로그아웃')),
           ],
         );
         await route(context, ref, selected);

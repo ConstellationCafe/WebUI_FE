@@ -32,12 +32,8 @@ class ViewMembershipCard extends ConsumerWidget {
         padding: ConstPadding.largePaddingAll,
         decoration: BoxDecoration(
           color: theme.colorScheme.primary,
-          borderRadius: BorderRadius.circular(
-            ProfileConstants.cardRadius,
-          ),
-          boxShadow: const [
-            ConstShadow.card,
-          ],
+          borderRadius: BorderRadius.circular(ProfileConstants.cardRadius),
+          boxShadow: const [ConstShadow.card],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,9 +51,7 @@ class ViewMembershipCard extends ConsumerWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(
-                  width: ConstSize.mediumSpacing,
-                ),
+                const SizedBox(width: ConstSize.mediumSpacing),
 
                 // 닉네임
                 Expanded(
@@ -71,9 +65,7 @@ class ViewMembershipCard extends ConsumerWidget {
                   ),
                 ),
 
-                const SizedBox(
-                  width: ConstSize.mediumSpacing,
-                ),
+                const SizedBox(width: ConstSize.mediumSpacing),
 
                 // 길드 로고
                 if (guild.guildIcon?.isNotEmpty ?? false)
@@ -91,9 +83,7 @@ class ViewMembershipCard extends ConsumerWidget {
               ],
             ),
 
-            const SizedBox(
-              height: ConstSize.mediumSpacing,
-            ),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             // UID / 역할 / 길드
             Row(
@@ -103,10 +93,7 @@ class ViewMembershipCard extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'UID',
-                        style: theme.textTheme.labelMedium,
-                      ),
+                      Text('UID', style: theme.textTheme.labelMedium),
                       Text(
                         (state.uid1?.isNotEmpty ?? false)
                             ? 's1 : ${state.uid1}'
@@ -128,17 +115,12 @@ class ViewMembershipCard extends ConsumerWidget {
                 ),
 
                 if (state.role?.isNotEmpty ?? false) ...[
-                  const SizedBox(
-                    width: ConstSize.mediumSpacing,
-                  ),
+                  const SizedBox(width: ConstSize.mediumSpacing),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '역할',
-                          style: theme.textTheme.labelMedium,
-                        ),
+                        Text('역할', style: theme.textTheme.labelMedium),
                         Text(
                           state.role!,
                           style: theme.textTheme.bodyMedium,
@@ -151,17 +133,12 @@ class ViewMembershipCard extends ConsumerWidget {
                 ],
 
                 if (state.guild?.isNotEmpty ?? false) ...[
-                  const SizedBox(
-                    width: ConstSize.mediumSpacing,
-                  ),
+                  const SizedBox(width: ConstSize.mediumSpacing),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '길드',
-                          style: theme.textTheme.labelMedium,
-                        ),
+                        Text('길드', style: theme.textTheme.labelMedium),
                         Text(
                           state.guild!,
                           style: theme.textTheme.bodyMedium,
@@ -175,19 +152,14 @@ class ViewMembershipCard extends ConsumerWidget {
               ],
             ),
 
-            const SizedBox(
-              height: ConstSize.mediumSpacing,
-            ),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             // 대회 경력
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (state.s1Data?.isNotEmpty ?? false) ...[
-                  Text(
-                    's1 경력',
-                    style: theme.textTheme.labelMedium,
-                  ),
+                  Text('s1 경력', style: theme.textTheme.labelMedium),
                   Text(
                     state.s1Data!,
                     style: theme.textTheme.bodyMedium,
@@ -196,13 +168,8 @@ class ViewMembershipCard extends ConsumerWidget {
                 ],
 
                 if (state.s2Data?.isNotEmpty ?? false) ...[
-                  const SizedBox(
-                    height: ConstSize.mediumSpacing,
-                  ),
-                  Text(
-                    's2 경력',
-                    style: theme.textTheme.labelMedium,
-                  ),
+                  const SizedBox(height: ConstSize.mediumSpacing),
+                  Text('s2 경력', style: theme.textTheme.labelMedium),
                   Text(
                     state.s2Data!,
                     style: theme.textTheme.bodyMedium,
@@ -212,9 +179,7 @@ class ViewMembershipCard extends ConsumerWidget {
               ],
             ),
 
-            const SizedBox(
-              height: ConstSize.mediumSpacing,
-            ),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             // 포인트 로그 / 발급 일자
             Row(
@@ -225,17 +190,12 @@ class ViewMembershipCard extends ConsumerWidget {
                   state: state,
                   theme: theme.textTheme,
                 ),
-                const SizedBox(
-                  width: ConstSize.mediumSpacing,
-                ),
+                const SizedBox(width: ConstSize.mediumSpacing),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '발급 일자',
-                        style: theme.textTheme.labelMedium,
-                      ),
+                      Text('발급 일자', style: theme.textTheme.labelMedium),
                       Text(
                         state.joinAt,
                         style: theme.textTheme.bodyMedium,
@@ -248,9 +208,7 @@ class ViewMembershipCard extends ConsumerWidget {
               ],
             ),
 
-            const SizedBox(
-              height: ConstSize.mediumSpacing,
-            ),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             Text(
               '* UID의 허위 기재 및 도용시 처벌받을 수 있습니다',

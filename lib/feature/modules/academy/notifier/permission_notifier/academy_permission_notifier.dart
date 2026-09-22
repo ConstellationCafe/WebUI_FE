@@ -6,9 +6,7 @@ import '../../state/permission_state/academy_permission_state.dart';
 part 'academy_permission_notifier.g.dart';
 
 @Riverpod(keepAlive: true)
-class AcademyPermissionNotifier
-    extends _$AcademyPermissionNotifier {
-
+class AcademyPermissionNotifier extends _$AcademyPermissionNotifier {
   @override
   AcademyPermissionState build() {
     return AcademyPermissionState.initial();
@@ -19,18 +17,12 @@ class AcademyPermissionNotifier
       return;
     }
 
-    state = state.copyWith(
-      isLoading: true,
-      errorMessage: null,
-    );
+    state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final academyApi = ref.read(
-        academyApiProvider,
-      );
+      final academyApi = ref.read(academyApiProvider);
 
-      final permission =
-      await academyApi.getMyPermissions();
+      final permission = await academyApi.getMyPermissions();
 
       state = state.copyWith(
         isLoading: false,
@@ -39,10 +31,7 @@ class AcademyPermissionNotifier
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
@@ -51,18 +40,12 @@ class AcademyPermissionNotifier
       return;
     }
 
-    state = state.copyWith(
-      isLoading: true,
-      errorMessage: null,
-    );
+    state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final academyApi = ref.read(
-        academyApiProvider,
-      );
+      final academyApi = ref.read(academyApiProvider);
 
-      final permission =
-      await academyApi.getMyPermissions();
+      final permission = await academyApi.getMyPermissions();
 
       state = state.copyWith(
         isLoading: false,
@@ -71,10 +54,7 @@ class AcademyPermissionNotifier
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 

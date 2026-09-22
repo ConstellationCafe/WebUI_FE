@@ -1,16 +1,17 @@
 class UserTemplate {
-  UserTemplate(
-      {required this.name,
-      required this.role,
-      required this.guild,
-      required this.s1rank,
-      required this.s1grade,
-      required this.s2rank,
-      required this.s2grade,
-      required this.s1tournamentData,
-      required this.s2tournamentData,
-      required this.point,
-      required this.createdAt});
+  UserTemplate({
+    required this.name,
+    required this.role,
+    required this.guild,
+    required this.s1rank,
+    required this.s1grade,
+    required this.s2rank,
+    required this.s2grade,
+    required this.s1tournamentData,
+    required this.s2tournamentData,
+    required this.point,
+    required this.createdAt,
+  });
 
   // name
   final String name;

@@ -11,10 +11,7 @@ class MenuEntity extends Entity {
   });
 
   @override
-  Map<String, dynamic> toJson() => {
-    'mnValue': mnValue,
-    'discordId': discordId,
-  };
+  Map<String, dynamic> toJson() => {'mnValue': mnValue, 'discordId': discordId};
 
   @override
   Map<String, dynamic> toDisplayJson() => {
@@ -23,17 +20,13 @@ class MenuEntity extends Entity {
   };
 
   factory MenuEntity.init(List<Map<String, dynamic>> metadata) {
-    return MenuEntity(
-      metadata: metadata,
-      mnValue: '',
-      discordId: '',
-    );
+    return MenuEntity(metadata: metadata, mnValue: '', discordId: '');
   }
 
   factory MenuEntity.fromJson(
-      List<Map<String, dynamic>> metadata,
-      Map<String, dynamic> json,
-      ) {
+    List<Map<String, dynamic>> metadata,
+    Map<String, dynamic> json,
+  ) {
     return MenuEntity(
       metadata: metadata,
       mnValue: (json['mnValue'] ?? '').toString(),

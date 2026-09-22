@@ -7,16 +7,10 @@ import 'academy_section_card.dart';
 class LessonDescription extends ConsumerWidget {
   final String description;
 
-  const LessonDescription({
-    super.key,
-    required this.description,
-  });
+  const LessonDescription({super.key, required this.description});
 
   @override
-  Widget build(
-      BuildContext context,
-      WidgetRef ref,
-      ) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(lessonRecordFormProvider.notifier);
 
     return AcademySectionCard(
@@ -28,8 +22,7 @@ class LessonDescription extends ConsumerWidget {
         maxLength: 1000,
         onChanged: notifier.setDescription,
         decoration: const InputDecoration(
-          hintText:
-          '수업 내용, 목표, 진행 내용 등을 자유롭게 작성해주세요.',
+          hintText: '수업 내용, 목표, 진행 내용 등을 자유롭게 작성해주세요.',
           alignLabelWithHint: true,
         ),
       ),

@@ -14,10 +14,10 @@ class APITranslator extends APIInterface {
     String targetFunc = parts[3];
 
     SocketModel model = SocketModel(
-        dst: dst,
-        sub: sub,
-        targetFunc: targetFunc,
-        args: args
+      dst: dst,
+      sub: sub,
+      targetFunc: targetFunc,
+      args: args,
     );
     return await client.send(model);
   }

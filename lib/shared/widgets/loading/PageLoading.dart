@@ -8,9 +8,7 @@ class PageLoading extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const SizedBox.expand(
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
+      child: Center(child: CircularProgressIndicator()),
     );
   }
 }

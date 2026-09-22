@@ -19,10 +19,7 @@ import 'package:constellation_cafe/core/constants/const_size.dart';
 class InputFriendlyMatch extends ConsumerStatefulWidget {
   final double width;
 
-  const InputFriendlyMatch({
-    super.key,
-    required this.width
-  });
+  const InputFriendlyMatch({super.key, required this.width});
 
   @override
   ConsumerState<InputFriendlyMatch> createState() => _InputFriendlyMatchState();
@@ -38,7 +35,8 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
   // s1.timesleep_rotation
   FriendlyMatchModeType _selectedMode = FriendlyMatchS1ModeType.values.first;
   // s1.bo1
-  FriendlyMatchPlatformType _selectedPlatform = FriendlyMatchS1PlatformType.values.first;
+  FriendlyMatchPlatformType _selectedPlatform =
+      FriendlyMatchS1PlatformType.values.first;
 
   @override
   void dispose() {
@@ -52,11 +50,13 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
     super.initState();
 
     Future.microtask(() {
-      ref.read(friendlyMatchProvider.notifier).update(
-        version: _selectedVersion.typeToString(),
-        mode: _selectedMode.typeToString(),
-        platform: _selectedPlatform.typeToString(),
-      );
+      ref
+          .read(friendlyMatchProvider.notifier)
+          .update(
+            version: _selectedVersion.typeToString(),
+            mode: _selectedMode.typeToString(),
+            platform: _selectedPlatform.typeToString(),
+          );
     });
   }
 
@@ -84,11 +84,13 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
           _selectedPlatform = FriendlyMatchS2PlatformType.values.first;
         }
         // 버전 변경 시 mode와 platform도 초기화, 이후 roomNumber와 message 삭제
-        ref.read(friendlyMatchProvider.notifier).update(
-          version: _selectedVersion.typeToString(),
-          mode: _selectedMode.typeToString(),
-          platform: _selectedPlatform.typeToString(),
-        );
+        ref
+            .read(friendlyMatchProvider.notifier)
+            .update(
+              version: _selectedVersion.typeToString(),
+              mode: _selectedMode.typeToString(),
+              platform: _selectedPlatform.typeToString(),
+            );
         _roomController.clear();
         _messageController.clear();
       });
@@ -126,9 +128,11 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF000D27).withOpacity(0.12),  // rgba(0, 13, 39, 0.12)
-              blurRadius: 24,                              // 24px 흐림
-              offset: Offset(0, 8),                        // 0px x, 8px y
+              color: Color(
+                0xFF000D27,
+              ).withOpacity(0.12), // rgba(0, 13, 39, 0.12)
+              blurRadius: 24, // 24px 흐림
+              offset: Offset(0, 8), // 0px x, 8px y
             ),
           ],
         ),
@@ -143,15 +147,15 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
                 initialValue: _selectedVersion,
                 isExpanded: true,
                 items: GameVersionType.values
-                    .map((version) => DropdownMenuItem(
-                  value: version,
-                  child: Text(version.typeToString()),
-                ))
+                    .map(
+                      (version) => DropdownMenuItem(
+                        value: version,
+                        child: Text(version.typeToString()),
+                      ),
+                    )
                     .toList(),
                 onChanged: _onVersionChanged,
-                decoration: InputDecoration(
-                  labelText: 'version',
-                ),
+                decoration: InputDecoration(labelText: 'version'),
                 style: const TextStyle(fontSize: ConstSize.bigTextSize),
               ),
             ),
@@ -162,13 +166,14 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
               height: 40,
               child: DropdownButtonFormField<FriendlyMatchModeType>(
                 initialValue: _selectedMode,
-                items: _getCurrentModeList.map((mode) =>
-                    DropdownMenuItem(
-                      value: mode,
-                      child: Text(
-                        mode.typeToString(),
+                items: _getCurrentModeList
+                    .map(
+                      (mode) => DropdownMenuItem(
+                        value: mode,
+                        child: Text(mode.typeToString()),
                       ),
-                    )).toList(),
+                    )
+                    .toList(),
                 onChanged: (value) {
                   if (value != null) {
                     setState(() {
@@ -177,11 +182,9 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
                     });
                   }
                 },
-                decoration: InputDecoration(
-                  labelText: 'mode',
-                ),
+                decoration: InputDecoration(labelText: 'mode'),
                 style: const TextStyle(fontSize: ConstSize.bigTextSize),
-              )
+              ),
             ),
             const SizedBox(height: ConstSize.mediumHeight),
 
@@ -190,26 +193,27 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
               height: 40,
               child: DropdownButtonFormField<FriendlyMatchPlatformType>(
                 initialValue: _selectedPlatform,
-                items: _getCurrentPlatformList.map((platform) =>
-                    DropdownMenuItem(
-                      value: platform,
-                      child: Text(
-                        platform.typeToString(),
+                items: _getCurrentPlatformList
+                    .map(
+                      (platform) => DropdownMenuItem(
+                        value: platform,
+                        child: Text(platform.typeToString()),
                       ),
-                    )).toList(),
+                    )
+                    .toList(),
                 onChanged: (value) {
                   if (value != null) {
                     setState(() {
                       _selectedPlatform = value;
-                      notifier.update(platform: _selectedPlatform.typeToString());
+                      notifier.update(
+                        platform: _selectedPlatform.typeToString(),
+                      );
                     });
                   }
                 },
-                decoration: InputDecoration(
-                  labelText: 'BoN',
-                ),
+                decoration: InputDecoration(labelText: 'BoN'),
                 style: const TextStyle(fontSize: ConstSize.bigTextSize),
-              )
+              ),
             ),
             const SizedBox(height: ConstSize.mediumHeight),
 
@@ -219,15 +223,11 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
               child: TextFormField(
                 controller: _roomController,
                 cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    labelText: 'Room',
-                ),
+                decoration: InputDecoration(labelText: 'Room'),
                 onChanged: (value) {
-                  notifier.update(
-                    roomNumber: value,
-                  );
+                  notifier.update(roomNumber: value);
                 },
-              )
+              ),
             ),
             const SizedBox(height: ConstSize.mediumHeight),
 
@@ -236,13 +236,9 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
               controller: _messageController,
               maxLines: 3,
               cursorColor: Colors.black,
-              decoration: InputDecoration(
-                labelText: 'Message',
-              ),
+              decoration: InputDecoration(labelText: 'Message'),
               onChanged: (value) {
-                notifier.update(
-                  message: value,
-                );
+                notifier.update(message: value);
               },
             ),
           ],

@@ -9,9 +9,7 @@ class ClassOptionResponse {
     required this.state,
   });
 
-  factory ClassOptionResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory ClassOptionResponse.fromJson(Map<String, dynamic> json) {
     return ClassOptionResponse(
       id: int.parse(json['id'].toString()),
       classNumber: json['classNumber']?.toString() ?? '',

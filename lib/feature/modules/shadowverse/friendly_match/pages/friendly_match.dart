@@ -34,9 +34,7 @@ class _FriendlyMatchState extends ConsumerState<FriendlyMatch> {
           final isDesktop = ScreenWidth.isDesktop(constraints.maxWidth);
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(
-              ConstSize.mediumSpacing,
-            ),
+            padding: const EdgeInsets.all(ConstSize.mediumSpacing),
             child: isDesktop
                 ? _buildDesktop(constraints)
                 : _buildMobile(constraints),
@@ -47,8 +45,7 @@ class _FriendlyMatchState extends ConsumerState<FriendlyMatch> {
   }
 
   Widget _buildDesktop(BoxConstraints constraints) {
-    final availableWidth =
-        constraints.maxWidth - (ConstSize.mediumSpacing * 2);
+    final availableWidth = constraints.maxWidth - (ConstSize.mediumSpacing * 2);
 
     final contentWidth = availableWidth.clamp(
       0.0,
@@ -60,24 +57,15 @@ class _FriendlyMatchState extends ConsumerState<FriendlyMatch> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ViewFriendlyMatch(
-          submitKey: submitKey,
-          width: contentWidth,
-        ),
-        const SizedBox(
-          width: ConstSize.largeSpacing,
-        ),
-        InputFriendlyMatch(
-          key: inputDataKey,
-          width: contentWidth,
-        ),
+        ViewFriendlyMatch(submitKey: submitKey, width: contentWidth),
+        const SizedBox(width: ConstSize.largeSpacing),
+        InputFriendlyMatch(key: inputDataKey, width: contentWidth),
       ],
     );
   }
 
   Widget _buildMobile(BoxConstraints constraints) {
-    final availableWidth =
-        constraints.maxWidth - (ConstSize.mediumSpacing * 2);
+    final availableWidth = constraints.maxWidth - (ConstSize.mediumSpacing * 2);
 
     final contentWidth = availableWidth.clamp(
       0.0,
@@ -88,17 +76,9 @@ class _FriendlyMatchState extends ConsumerState<FriendlyMatch> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ViewFriendlyMatch(
-          submitKey: submitKey,
-          width: contentWidth,
-        ),
-        const SizedBox(
-          height: ConstSize.largeSpacing,
-        ),
-        InputFriendlyMatch(
-          key: inputDataKey,
-          width: contentWidth,
-        ),
+        ViewFriendlyMatch(submitKey: submitKey, width: contentWidth),
+        const SizedBox(height: ConstSize.largeSpacing),
+        InputFriendlyMatch(key: inputDataKey, width: contentWidth),
       ],
     );
   }

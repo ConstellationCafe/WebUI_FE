@@ -5,13 +5,13 @@ enum SaveResultType { success, error, warning, info, loading }
 class SaveResultBar {
   /// 단일 스낵바 생성 (내부/호환용)
   static SnackBar buildOne(
-      BuildContext context,
-      String message, {
-        SaveResultType type = SaveResultType.info,
-        Duration duration = const Duration(seconds: 3),
-        String? actionLabel,
-        VoidCallback? onAction,
-      }) {
+    BuildContext context,
+    String message, {
+    SaveResultType type = SaveResultType.info,
+    Duration duration = const Duration(seconds: 3),
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
 
@@ -21,7 +21,9 @@ class SaveResultBar {
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.all(16),
       elevation: 8,
-      duration: type == SaveResultType.loading ? const Duration(days: 1) : duration,
+      duration: type == SaveResultType.loading
+          ? const Duration(days: 1)
+          : duration,
       backgroundColor: style.bg,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       dismissDirection: DismissDirection.horizontal,
@@ -53,24 +55,24 @@ class SaveResultBar {
       ),
       action: (actionLabel != null && onAction != null)
           ? SnackBarAction(
-        label: actionLabel,
-        onPressed: onAction,
-        textColor: style.fg,
-      )
+              label: actionLabel,
+              onPressed: onAction,
+              textColor: style.fg,
+            )
           : null,
     );
   }
 
   /// 여러 메시지를 "각 원소마다" 순서대로 띄움
   static Future<void> showAll(
-      BuildContext context,
-      List<String> messages, {
-        SaveResultType type = SaveResultType.info,
-        Duration durationPerBar = const Duration(seconds: 3),
-        bool clearBefore = false,
-        String? actionLabel,
-        VoidCallback? onAction,
-      }) async {
+    BuildContext context,
+    List<String> messages, {
+    SaveResultType type = SaveResultType.info,
+    Duration durationPerBar = const Duration(seconds: 3),
+    bool clearBefore = false,
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) async {
     final messenger = ScaffoldMessenger.of(context);
 
     if (clearBefore) {
@@ -104,13 +106,13 @@ class SaveResultBar {
   /// "첫 번째 메시지"용 SnackBar 하나만 만들어 반환하도록 두고,
   /// 실제로 여러 개 띄우는 건 showAll을 쓰는 구조가 안전합니다.
   static SnackBar build(
-      BuildContext context,
-      String message, {
-        SaveResultType type = SaveResultType.info,
-        Duration duration = const Duration(seconds: 3),
-        String? actionLabel,
-        VoidCallback? onAction,
-      }) {
+    BuildContext context,
+    String message, {
+    SaveResultType type = SaveResultType.info,
+    Duration duration = const Duration(seconds: 3),
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) {
     return buildOne(
       context,
       message,

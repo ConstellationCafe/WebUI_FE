@@ -25,29 +25,17 @@ class StatusSummaryItem extends StatelessWidget {
       padding: ConstPadding.mediumPaddingAll,
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(
-          AcademyConstants.cardBorderRadius,
-        ),
+        borderRadius: BorderRadius.circular(AcademyConstants.cardBorderRadius),
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: theme.colorScheme.secondary,
-          ),
-          const SizedBox(
-            width: ConstPadding.mediumPadding,
-          ),
+          Icon(icon, color: theme.colorScheme.secondary),
+          const SizedBox(width: ConstPadding.mediumPadding),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style: theme.textTheme.bodyMedium,
-              ),
-              const SizedBox(
-                height: ConstPadding.tinyPadding,
-              ),
+              Text(label, style: theme.textTheme.bodyMedium),
+              const SizedBox(height: ConstPadding.tinyPadding),
               Text(
                 '$count명',
                 style: theme.textTheme.titleLarge?.copyWith(

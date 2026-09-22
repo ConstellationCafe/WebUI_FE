@@ -3,15 +3,12 @@ import '../../../../../shared/domain/pagination/page_result.dart';
 import '../domain/entity/music_entity.dart';
 import 'package:dio/dio.dart';
 
-class MusicRepository
-    implements RepositoryInterface<MusicEntity> {
+class MusicRepository implements RepositoryInterface<MusicEntity> {
   static String apiPath = "/api/repository/music";
 
   final Dio dio;
 
-  MusicRepository({
-    required this.dio,
-  });
+  MusicRepository({required this.dio});
 
   @override
   Future<PageResult<MusicEntity>> findPage({
@@ -51,36 +48,34 @@ class MusicRepository
 
     final body = res['response'];
 
-    final List rawMeta =
-        (body['metadata'] as List?)?.toList() ?? const [];
+    final List rawMeta = (body['metadata'] as List?)?.toList() ?? const [];
 
     final List<Map<String, dynamic>> metadata = rawMeta
         .map((e) => Map<String, dynamic>.from(e as Map))
         .map((m) {
-      final dbName = m['colName'].toString();
+          final dbName = m['colName'].toString();
 
-      m['dbName'] = dbName;
+          m['dbName'] = dbName;
 
-      if (dbName == 'video_id') {
-        m['colName'] = 'videoId';
-      } else if (dbName == 'recommender') {
-        m['colName'] = 'discordId';
-      }
+          if (dbName == 'video_id') {
+            m['colName'] = 'videoId';
+          } else if (dbName == 'recommender') {
+            m['colName'] = 'discordId';
+          }
 
-      return m;
-    })
+          return m;
+        })
         .toList();
 
-    final List rawEntities =
-        (body['entities'] as List?)?.toList() ?? const [];
+    final List rawEntities = (body['entities'] as List?)?.toList() ?? const [];
 
     final List<MusicEntity> entities = rawEntities
         .map(
           (e) => MusicEntity.fromJson(
-        metadata,
-        Map<String, dynamic>.from(e as Map),
-      ),
-    )
+            metadata,
+            Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
 
     return PageResult<MusicEntity>(
@@ -88,10 +83,8 @@ class MusicRepository
       metadata: metadata,
       page: (body['page'] as num?)?.toInt() ?? page,
       size: (body['size'] as num?)?.toInt() ?? size,
-      totalElements:
-      (body['totalElements'] as num?)?.toInt() ?? 0,
-      totalPages:
-      (body['totalPages'] as num?)?.toInt() ?? 0,
+      totalElements: (body['totalElements'] as num?)?.toInt() ?? 0,
+      totalPages: (body['totalPages'] as num?)?.toInt() ?? 0,
       hasNext: body['hasNext'] == true,
     );
   }
@@ -100,18 +93,14 @@ class MusicRepository
   Future<dynamic> save(MusicEntity entity) async {
     final res = await dio.post(
       "$apiPath/save",
-      data: [
-        _toApiJson(entity.toJson()),
-      ],
+      data: [_toApiJson(entity.toJson())],
     );
 
     return res.data;
   }
 
   @override
-  Future<dynamic> saveAll(
-      List<Map<String, String>> model,
-      ) async {
+  Future<dynamic> saveAll(List<Map<String, String>> model) async {
     final res = await dio.post(
       "$apiPath/save_all",
       data: model.map(_toApiJson).toList(),
@@ -121,9 +110,7 @@ class MusicRepository
   }
 
   @override
-  Future<dynamic> deleteAll(
-      List<Map<String, String>> model,
-      ) async {
+  Future<dynamic> deleteAll(List<Map<String, String>> model) async {
     final res = await dio.post(
       "$apiPath/delete_all",
       data: model.map(_toApiJson).toList(),

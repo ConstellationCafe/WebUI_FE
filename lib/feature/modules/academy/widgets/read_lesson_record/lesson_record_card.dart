@@ -8,10 +8,7 @@ import '../../domain/model/lesson_record_view.dart';
 class LessonRecordCard extends StatelessWidget {
   final LessonRecordView record;
 
-  const LessonRecordCard({
-    super.key,
-    required this.record,
-  });
+  const LessonRecordCard({super.key, required this.record});
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +16,12 @@ class LessonRecordCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          AcademyConstants.cardBorderRadius,
-        ),
+        borderRadius: BorderRadius.circular(AcademyConstants.cardBorderRadius),
       ),
       child: Padding(
         padding: ConstPadding.mediumPaddingAll,
         child: Column(
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -45,56 +39,39 @@ class LessonRecordCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: ConstPadding.smallPadding,
-            ),
+            const SizedBox(height: ConstPadding.smallPadding),
             Text(
               '${record.academyName} · ${record.className}분반',
               style: textTheme.bodyMedium,
             ),
-            const SizedBox(
-              height: ConstPadding.tinyPadding,
-            ),
+            const SizedBox(height: ConstPadding.tinyPadding),
             Text(
               '담당 교사: ${record.mainTeacherName}',
               style: textTheme.bodySmall,
             ),
-            const SizedBox(
-              height: ConstPadding.tinyPadding,
-            ),
+            const SizedBox(height: ConstPadding.tinyPadding),
             Text(
               '수업 시간: ${record.educationDuration.inMinutes}분',
               style: textTheme.bodySmall,
             ),
-            const SizedBox(
-              height: ConstPadding.smallPadding,
-            ),
+            const SizedBox(height: ConstPadding.smallPadding),
             const Divider(),
-            const SizedBox(
-              height: ConstPadding.smallPadding,
-            ),
+            const SizedBox(height: ConstPadding.smallPadding),
             Text(
               record.description.isEmpty
                   ? '작성된 수업 내용이 없습니다.'
                   : record.description,
               style: textTheme.bodyMedium,
             ),
-            const SizedBox(
-              height: ConstPadding.smallPadding,
-            ),
+            const SizedBox(height: ConstPadding.smallPadding),
             Row(
               children: [
                 const Icon(
                   Icons.people_outline,
                   size: AcademyConstants.memberIconSize,
                 ),
-                const SizedBox(
-                  width: ConstPadding.tinyPadding,
-                ),
-                Text(
-                  '수강자: ${record.memberCount}명',
-                  style: textTheme.bodySmall,
-                ),
+                const SizedBox(width: ConstPadding.tinyPadding),
+                Text('수강자: ${record.memberCount}명', style: textTheme.bodySmall),
               ],
             ),
           ],

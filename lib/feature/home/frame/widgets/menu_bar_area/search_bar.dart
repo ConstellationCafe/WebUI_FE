@@ -34,24 +34,15 @@ class _MainSearchBar extends ConsumerState<MainSearchBar> {
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[700]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[700]!, width: 1),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[700]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[700]!, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.blue[300]!,
-                width: 2,
-              ),
+              borderSide: BorderSide(color: Colors.blue[300]!, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

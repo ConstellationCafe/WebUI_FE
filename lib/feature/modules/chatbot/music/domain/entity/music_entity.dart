@@ -11,10 +11,7 @@ class MusicEntity extends Entity {
   });
 
   @override
-  Map<String, dynamic> toJson() => {
-    'videoId': videoId,
-    'discordId': discordId,
-  };
+  Map<String, dynamic> toJson() => {'videoId': videoId, 'discordId': discordId};
 
   @override
   Map<String, dynamic> toDisplayJson() => {
@@ -22,20 +19,14 @@ class MusicEntity extends Entity {
     'discordId': discordId,
   };
 
-  factory MusicEntity.init(
-      List<Map<String, dynamic>> metadata,
-      ) {
-    return MusicEntity(
-      metadata: metadata,
-      videoId: '',
-      discordId: '',
-    );
+  factory MusicEntity.init(List<Map<String, dynamic>> metadata) {
+    return MusicEntity(metadata: metadata, videoId: '', discordId: '');
   }
 
   factory MusicEntity.fromJson(
-      List<Map<String, dynamic>> metadata,
-      Map<String, dynamic> json,
-      ) {
+    List<Map<String, dynamic>> metadata,
+    Map<String, dynamic> json,
+  ) {
     return MusicEntity(
       metadata: metadata,
       videoId: (json['videoId'] ?? '').toString(),

@@ -20,7 +20,7 @@ class AddButton extends StatelessWidget {
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         child: const Text("추가"),
-      )
+      ),
     );
   }
 }

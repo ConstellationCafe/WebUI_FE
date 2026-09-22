@@ -9,11 +9,11 @@ class LessonRecordApi {
 
   final Dio dio;
 
-  LessonRecordApi({
-    required this.dio,
-  });
+  LessonRecordApi({required this.dio});
 
-  Future<List<LessonRecordQueryResponse>> getLessonRecords(LessonRecordQueryRequest request) async {
+  Future<List<LessonRecordQueryResponse>> getLessonRecords(
+    LessonRecordQueryRequest request,
+  ) async {
     final response = await dio.get(
       '$base/api/academy/lesson-records',
       queryParameters: request.toJson(),
@@ -24,17 +24,13 @@ class LessonRecordApi {
     }
     return data
         .map(
-          (item) => LessonRecordQueryResponse.fromJson(
-            item as Map<String, dynamic>,
-          ),
+          (item) =>
+              LessonRecordQueryResponse.fromJson(item as Map<String, dynamic>),
         )
         .toList();
   }
 
   Future<void> createLessonRecord(LessonRecord record) async {
-    await dio.post(
-      '$base/api/academy/lesson-record',
-      data: record.toJson(),
-    );
+    await dio.post('$base/api/academy/lesson-record', data: record.toJson());
   }
 }

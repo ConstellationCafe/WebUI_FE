@@ -17,41 +17,19 @@ class StudentStatusResponse {
     this.subjects = const [],
   });
 
-  factory StudentStatusResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory StudentStatusResponse.fromJson(Map<String, dynamic> json) {
     return StudentStatusResponse(
-      academies:
-      (json['academies'] as List<dynamic>? ?? [])
-          .map(
-            (e) => AcademyOptionResponse.fromJson(
-          e as Map<String, dynamic>,
-        ),
-      )
+      academies: (json['academies'] as List<dynamic>? ?? [])
+          .map((e) => AcademyOptionResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
-      classes:
-      (json['classes'] as List<dynamic>? ?? [])
-          .map(
-            (e) => ClassOptionResponse.fromJson(
-          e as Map<String, dynamic>,
-        ),
-      )
+      classes: (json['classes'] as List<dynamic>? ?? [])
+          .map((e) => ClassOptionResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
-      students:
-      (json['students'] as List<dynamic>? ?? [])
-          .map(
-            (e) => OptionResponse.fromJson(
-          e as Map<String, dynamic>,
-        ),
-      )
+      students: (json['students'] as List<dynamic>? ?? [])
+          .map((e) => OptionResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
-      subjects:
-      (json['subjects'] as List<dynamic>? ?? [])
-          .map(
-            (e) => SubjectOptionResponse.fromJson(
-          e as Map<String, dynamic>,
-        ),
-      )
+      subjects: (json['subjects'] as List<dynamic>? ?? [])
+          .map((e) => SubjectOptionResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
   }

@@ -22,41 +22,24 @@ class LessonRecordRepository {
     return await academyApi.getAcademies();
   }
 
-  Future<List<AcademyClass>> getClasses(
-      int academyId,
-      ) async {
+  Future<List<AcademyClass>> getClasses(int academyId) async {
     return await academyApi.getClasses(academyId);
   }
 
-  Future<List<Subject>> getSubjects(
-      int academyId,
-      ) async {
+  Future<List<Subject>> getSubjects(int academyId) async {
     return await academyApi.getSubjects(academyId);
   }
 
-  Future<List<Teacher>> getTeachers(
-      int academyId,
-      int classId,
-      ) async {
+  Future<List<Teacher>> getTeachers(int academyId, int classId) async {
     return await academyApi.getTeachers(academyId, classId);
   }
 
-  Future<List<Student>> getStudents(
-      int academyId,
-      int classId,
-      ) async {
-    return await academyApi.getStudents(
-      academyId,
-      classId,
-    );
+  Future<List<Student>> getStudents(int academyId, int classId) async {
+    return await academyApi.getStudents(academyId, classId);
   }
 
-  Future<void> createLessonRecord(
-      LessonRecord lessonRecord,
-      ) async {
-    await lessonRecordApi.createLessonRecord(
-      lessonRecord,
-    );
+  Future<void> createLessonRecord(LessonRecord lessonRecord) async {
+    await lessonRecordApi.createLessonRecord(lessonRecord);
   }
 
   Future<List<LessonRecordQueryResponse>> getLessonRecords({

@@ -9,9 +9,10 @@ import '../../domain/model/academy_member.dart';
 import '../../domain/type/roster_status.dart';
 
 class StatusQueryForm<
-TMember extends AcademyMember,
-TStatus extends RosterStatus
-> extends StatelessWidget {
+  TMember extends AcademyMember,
+  TStatus extends RosterStatus
+>
+    extends StatelessWidget {
   final List<Academy> academies;
   final List<AcademyClass> classes;
   final List<TMember> academyMembers;
@@ -68,125 +69,80 @@ TStatus extends RosterStatus
           children: [
             Row(
               children: [
-                const Icon(
-                  Icons.filter_alt_outlined,
-                ),
-                const SizedBox(
-                  width: ConstPadding.smallPadding,
-                ),
-                Text(
-                  '조회 조건',
-                  style: theme.textTheme.titleLarge,
-                ),
+                const Icon(Icons.filter_alt_outlined),
+                const SizedBox(width: ConstPadding.smallPadding),
+                Text('조회 조건', style: theme.textTheme.titleLarge),
               ],
             ),
 
-            const SizedBox(
-              height: ConstPadding.largePadding,
-            ),
+            const SizedBox(height: ConstPadding.largePadding),
 
             Wrap(
-              spacing:
-              AcademyConstants.statusFilterSpacing,
-              runSpacing:
-              AcademyConstants.statusFilterRunSpacing,
+              spacing: AcademyConstants.statusFilterSpacing,
+              runSpacing: AcademyConstants.statusFilterRunSpacing,
               children: [
                 SizedBox(
-                  width:
-                  AcademyConstants.statusFilterFieldWidth,
+                  width: AcademyConstants.statusFilterFieldWidth,
                   child: DropdownButtonFormField<Academy?>(
                     value: selectedAcademy,
-                    decoration: const InputDecoration(
-                      labelText: '아카데미',
-                    ),
+                    decoration: const InputDecoration(labelText: '아카데미'),
                     items: [
                       const DropdownMenuItem<Academy?>(
                         value: null,
-                        child: Text(
-                          '전체 아카데미',
-                        ),
+                        child: Text('전체 아카데미'),
                       ),
                       ...academies.map(
-                            (academy) =>
-                            DropdownMenuItem<Academy?>(
-                              value: academy,
-                              child: Text(
-                                academy.name,
-                              ),
-                            ),
+                        (academy) => DropdownMenuItem<Academy?>(
+                          value: academy,
+                          child: Text(academy.name),
+                        ),
                       ),
                     ],
-                    onChanged: isLoading
-                        ? null
-                        : onAcademyChanged,
+                    onChanged: isLoading ? null : onAcademyChanged,
                   ),
                 ),
 
                 SizedBox(
-                  width:
-                  AcademyConstants.statusFilterFieldWidth,
-                  child:
-                  DropdownButtonFormField<AcademyClass?>(
+                  width: AcademyConstants.statusFilterFieldWidth,
+                  child: DropdownButtonFormField<AcademyClass?>(
                     value: selectedAcademyClass,
-                    decoration: const InputDecoration(
-                      labelText: '분반',
-                    ),
+                    decoration: const InputDecoration(labelText: '분반'),
                     items: [
-                      const DropdownMenuItem<
-                          AcademyClass?>(
+                      const DropdownMenuItem<AcademyClass?>(
                         value: null,
-                        child: Text(
-                          '전체 분반',
-                        ),
+                        child: Text('전체 분반'),
                       ),
                       ...classes.map(
-                            (academyClass) =>
-                            DropdownMenuItem<
-                                AcademyClass?>(
-                              value: academyClass,
-                              child: Text(
-                                '${academyClass.classNumber}분반',
-                              ),
-                            ),
+                        (academyClass) => DropdownMenuItem<AcademyClass?>(
+                          value: academyClass,
+                          child: Text('${academyClass.classNumber}분반'),
+                        ),
                       ),
                     ],
-                    onChanged:
-                    selectedAcademy == null ||
-                        isLoading
+                    onChanged: selectedAcademy == null || isLoading
                         ? null
                         : onClassChanged,
                   ),
                 ),
 
                 SizedBox(
-                  width:
-                  AcademyConstants.statusFilterFieldWidth,
-                  child:
-                  DropdownButtonFormField<TMember?>(
+                  width: AcademyConstants.statusFilterFieldWidth,
+                  child: DropdownButtonFormField<TMember?>(
                     value: selectedAcademyMember,
-                    decoration: InputDecoration(
-                      labelText: memberLabel,
-                    ),
+                    decoration: InputDecoration(labelText: memberLabel),
                     items: [
                       DropdownMenuItem<TMember?>(
                         value: null,
-                        child: Text(
-                          '전체 $memberLabel',
-                        ),
+                        child: Text('전체 $memberLabel'),
                       ),
                       ...academyMembers.map(
-                            (academyMember) =>
-                            DropdownMenuItem<TMember?>(
-                              value: academyMember,
-                              child: Text(
-                                academyMember.name,
-                              ),
-                            ),
+                        (academyMember) => DropdownMenuItem<TMember?>(
+                          value: academyMember,
+                          child: Text(academyMember.name),
+                        ),
                       ),
                     ],
-                    onChanged:
-                    selectedAcademyClass == null ||
-                        isLoading
+                    onChanged: selectedAcademyClass == null || isLoading
                         ? null
                         : onAcademyMemberChanged,
                   ),
@@ -194,120 +150,74 @@ TStatus extends RosterStatus
               ],
             ),
 
-            const SizedBox(
-              height: ConstPadding.largePadding,
-            ),
+            const SizedBox(height: ConstPadding.largePadding),
 
-            Text(
-              statusLabel,
-              style: theme.textTheme.labelLarge,
-            ),
+            Text(statusLabel, style: theme.textTheme.labelLarge),
 
-            const SizedBox(
-              height: ConstPadding.smallPadding,
-            ),
+            const SizedBox(height: ConstPadding.smallPadding),
 
             Wrap(
-              spacing:
-              AcademyConstants.statusFilterSpacing,
-              runSpacing:
-              AcademyConstants.statusFilterRunSpacing,
+              spacing: AcademyConstants.statusFilterSpacing,
+              runSpacing: AcademyConstants.statusFilterRunSpacing,
               children: [
                 ChoiceChip(
-                  label: const Text(
-                    '전체',
-                  ),
-                  selected:
-                  selectedStatus == null,
+                  label: const Text('전체'),
+                  selected: selectedStatus == null,
                   onSelected: isLoading
                       ? null
                       : (_) {
-                    onStatusChanged(null);
-                  },
+                          onStatusChanged(null);
+                        },
                 ),
 
                 ...statuses.map(
-                      (status) => ChoiceChip(
-                    label: Text(
-                      status.label,
-                    ),
-                    selected:
-                    selectedStatus == status,
+                  (status) => ChoiceChip(
+                    label: Text(status.label),
+                    selected: selectedStatus == status,
                     onSelected: isLoading
                         ? null
                         : (_) {
-                      onStatusChanged(
-                        status,
-                      );
-                    },
+                            onStatusChanged(status);
+                          },
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(
-              height: ConstPadding.largePadding,
-            ),
+            const SizedBox(height: ConstPadding.largePadding),
 
             Row(
-              mainAxisAlignment:
-              MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
-                    foregroundColor:
-                    theme.colorScheme.secondary,
-                    side: BorderSide(
-                      color: theme.colorScheme.secondary,
-                    ),
+                    foregroundColor: theme.colorScheme.secondary,
+                    side: BorderSide(color: theme.colorScheme.secondary),
                   ),
-                  onPressed:
-                  isLoading
-                      ? null
-                      : onReset,
-                  icon: const Icon(
-                    Icons.refresh,
-                  ),
-                  label: const Text(
-                    '초기화',
-                  ),
+                  onPressed: isLoading ? null : onReset,
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('초기화'),
                 ),
 
-                const SizedBox(
-                  width: ConstPadding.smallPadding,
-                ),
+                const SizedBox(width: ConstPadding.smallPadding),
 
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
-                    foregroundColor:
-                    theme.colorScheme.secondary,
-                    side: BorderSide(
-                      color: theme.colorScheme.secondary,
-                    ),
+                    foregroundColor: theme.colorScheme.secondary,
+                    side: BorderSide(color: theme.colorScheme.secondary),
                   ),
-                  onPressed:
-                  isLoading
-                      ? null
-                      : onSearch,
+                  onPressed: isLoading ? null : onSearch,
                   icon: isLoading
                       ? const SizedBox(
-                    width: AcademyConstants
-                        .savingIndicatorSize,
-                    height: AcademyConstants
-                        .savingIndicatorSize,
-                    child:
-                    CircularProgressIndicator(
-                      strokeWidth:
-                      AcademyConstants
-                          .savingIndicatorStrokeWidth,
-                    ),
-                  )
-                      : const Icon(
-                    Icons.search,
-                  ),
-                  label: const Text(
-                    '조회',
-                  ),
+                          width: AcademyConstants.savingIndicatorSize,
+                          height: AcademyConstants.savingIndicatorSize,
+                          child: CircularProgressIndicator(
+                            strokeWidth:
+                                AcademyConstants.savingIndicatorStrokeWidth,
+                          ),
+                        )
+                      : const Icon(Icons.search),
+                  label: const Text('조회'),
                 ),
               ],
             ),

@@ -21,9 +21,7 @@ class AcademySectionCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
-      margin: const EdgeInsets.only(
-        bottom: ConstPadding.smallPadding,
-      ),
+      margin: const EdgeInsets.only(bottom: ConstPadding.smallPadding),
       child: Padding(
         padding: ConstPadding.mediumPaddingAll,
         child: Column(
@@ -38,29 +36,19 @@ class AcademySectionCard extends StatelessWidget {
                     color: colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(
-                    icon,
-                    size: 18,
-                    color: colorScheme.secondary,
-                  ),
+                  child: Icon(icon, size: 18, color: colorScheme.secondary),
                 ),
-                const SizedBox(
-                  width: ConstPadding.smallPadding,
-                ),
+                const SizedBox(width: ConstPadding.smallPadding),
                 Expanded(
                   child: Text(
                     title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
                 if (trailing != null) trailing!,
               ],
             ),
-            const SizedBox(
-              height: ConstPadding.mediumPadding,
-            ),
+            const SizedBox(height: ConstPadding.mediumPadding),
             child,
           ],
         ),

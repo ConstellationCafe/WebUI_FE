@@ -11,8 +11,7 @@ import '../lesson_record_selection_notifier/lesson_record_selection_notifier.dar
 part 'lesson_record_list_notifier.g.dart';
 
 @riverpod
-class LessonRecordListNotifier
-    extends _$LessonRecordListNotifier {
+class LessonRecordListNotifier extends _$LessonRecordListNotifier {
   late final LessonRecordRepository _repository;
 
   @override
@@ -22,9 +21,7 @@ class LessonRecordListNotifier
       lessonRecordApi: ref.read(lessonRecordApiProvider),
     );
 
-    return LessonRecordListState(
-      isLoading: false,
-    );
+    return LessonRecordListState(isLoading: false);
   }
 
   Future<void> search() async {
@@ -32,13 +29,13 @@ class LessonRecordListNotifier
   }
 
   Future<void> loadRecords() async {
-    state = state.copyWith(
-      isLoading: true,
-      errorMessage: null,
-    );
+    state = state.copyWith(isLoading: true, errorMessage: null);
 
-    final LessonRecordSelectionState lessonRecordSelectionState = ref.read(lessonRecordSelectionProvider);
-    final LessonRecordSelection lessonRecordSelection = lessonRecordSelectionState.queryForm;
+    final LessonRecordSelectionState lessonRecordSelectionState = ref.read(
+      lessonRecordSelectionProvider,
+    );
+    final LessonRecordSelection lessonRecordSelection =
+        lessonRecordSelectionState.queryForm;
 
     try {
       final records = await _repository.getLessonRecords(
@@ -54,26 +51,22 @@ class LessonRecordListNotifier
         isLoading: false,
         lessonRecordList: state.lessonRecordList.copyWith(
           records: records.map((record) {
-              return LessonRecordView(
-                id: record.id,
-                academyName: record.academyName,
-                className: record.className,
-                subjectName: record.subjectName,
-                educationDate: record.educationDate,
-                educationDuration: record.educationDuration,
-                mainTeacherName: record.mainTeacherName,
-                description: record.description,
-                memberCount: record.memberCount,
-              );
-            },
-          ).toList(),
+            return LessonRecordView(
+              id: record.id,
+              academyName: record.academyName,
+              className: record.className,
+              subjectName: record.subjectName,
+              educationDate: record.educationDate,
+              educationDuration: record.educationDuration,
+              mainTeacherName: record.mainTeacherName,
+              description: record.description,
+              memberCount: record.memberCount,
+            );
+          }).toList(),
         ),
       );
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 }

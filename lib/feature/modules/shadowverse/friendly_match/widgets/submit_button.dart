@@ -6,7 +6,6 @@ import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
 import '../domain/friendly_match_template.dart';
 import '../notifier/friendly_match_notifier.dart';
 
-
 class SubmitButton extends ConsumerStatefulWidget {
   const SubmitButton({super.key});
 
@@ -39,14 +38,14 @@ class _SubmitButtonState extends ConsumerState<SubmitButton> {
       );
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SaveResultBar.build(context, result),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SaveResultBar.build(context, result));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SaveResultBar.build(context, "전송 실패 : $e"),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SaveResultBar.build(context, "전송 실패 : $e"));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -62,16 +61,14 @@ class _SubmitButtonState extends ConsumerState<SubmitButton> {
         backgroundColor: const Color(0xFF444444),
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       ),
       child: _isLoading
           ? const SizedBox(
-        height: 16,
-        width: 16,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      )
+              height: 16,
+              width: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
           : const Text('전송'),
     );
   }

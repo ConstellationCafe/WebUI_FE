@@ -6,8 +6,7 @@ import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
 import '../../domain/model/academy_member.dart';
 
-class StatusBasicInfo<T extends AcademyMember>
-    extends StatelessWidget {
+class StatusBasicInfo<T extends AcademyMember> extends StatelessWidget {
   final String memberLabel;
 
   final List<Academy> academies;
@@ -41,13 +40,8 @@ class StatusBasicInfo<T extends AcademyMember>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '$memberLabel 정보',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(
-          height: ConstPadding.mediumPadding,
-        ),
+        Text('$memberLabel 정보', style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: ConstPadding.mediumPadding),
         DropdownButtonFormField<Academy>(
           value: selectedAcademy,
           decoration: const InputDecoration(
@@ -57,10 +51,10 @@ class StatusBasicInfo<T extends AcademyMember>
           items: academies
               .map(
                 (academy) => DropdownMenuItem<Academy>(
-              value: academy,
-              child: Text(academy.name),
-            ),
-          )
+                  value: academy,
+                  child: Text(academy.name),
+                ),
+              )
               .toList(),
           onChanged: (academy) {
             if (academy != null) {
@@ -68,9 +62,7 @@ class StatusBasicInfo<T extends AcademyMember>
             }
           },
         ),
-        const SizedBox(
-          height: ConstPadding.mediumPadding,
-        ),
+        const SizedBox(height: ConstPadding.mediumPadding),
         DropdownButtonFormField<AcademyClass>(
           value: selectedAcademyClass,
           decoration: const InputDecoration(
@@ -79,26 +71,21 @@ class StatusBasicInfo<T extends AcademyMember>
           ),
           items: classes
               .map(
-                (academyClass) =>
-                DropdownMenuItem<AcademyClass>(
+                (academyClass) => DropdownMenuItem<AcademyClass>(
                   value: academyClass,
-                  child: Text(
-                    '${academyClass.classNumber}분반',
-                  ),
+                  child: Text('${academyClass.classNumber}분반'),
                 ),
-          )
+              )
               .toList(),
           onChanged: classes.isEmpty
               ? null
               : (academyClass) {
-            if (academyClass != null) {
-              onClassChanged(academyClass);
-            }
-          },
+                  if (academyClass != null) {
+                    onClassChanged(academyClass);
+                  }
+                },
         ),
-        const SizedBox(
-          height: ConstPadding.mediumPadding,
-        ),
+        const SizedBox(height: ConstPadding.mediumPadding),
         DropdownButtonFormField<T>(
           value: selectedMembers,
           decoration: InputDecoration(
@@ -106,20 +93,20 @@ class StatusBasicInfo<T extends AcademyMember>
             hintText: '$memberLabel(을/를) 선택하세요',
           ),
           items: members
-            .map(
-              (member) => DropdownMenuItem<T>(
-                value: member,
-                child: Text(member.name),
-            ),
-          )
+              .map(
+                (member) => DropdownMenuItem<T>(
+                  value: member,
+                  child: Text(member.name),
+                ),
+              )
               .toList(),
           onChanged: members.isEmpty
               ? null
               : (student) {
-            if (student != null) {
-              onMemberChanged(student);
-            }
-          },
+                  if (student != null) {
+                    onMemberChanged(student);
+                  }
+                },
         ),
       ],
     );

@@ -25,12 +25,10 @@ class LessonRecordBottom extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ElevatedButton(
-          onPressed: isSaving ? null : onCancel,
+            onPressed: isSaving ? null : onCancel,
             child: const Text('취소'),
           ),
-          const SizedBox(
-            width: ConstPadding.smallPadding,
-          ),
+          const SizedBox(width: ConstPadding.smallPadding),
           ElevatedButton.icon(
             onPressed: isSaving ? null : onSave,
             icon: isSaving
@@ -40,9 +38,7 @@ class LessonRecordBottom extends StatelessWidget {
                     child: ButtonLoading(),
                   )
                 : const Icon(Icons.save_outlined),
-            label: Text(
-              isSaving ? '저장 중...' : '저장하기',
-            ),
+            label: Text(isSaving ? '저장 중...' : '저장하기'),
           ),
         ],
       ),

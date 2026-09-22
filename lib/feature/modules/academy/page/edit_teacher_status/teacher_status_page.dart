@@ -15,20 +15,13 @@ import '../../widgets/edit_status/status_basic_info.dart';
 import '../../widgets/edit_status/status_process_form.dart';
 
 class TeacherStatusPage extends ConsumerWidget {
-  const TeacherStatusPage({
-    super.key,
-  });
+  const TeacherStatusPage({super.key});
 
   @override
-  Widget build(
-      BuildContext context,
-      WidgetRef ref,
-      ) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(teacherStatusProvider);
 
-    final notifier = ref.read(
-      teacherStatusProvider.notifier,
-    );
+    final notifier = ref.read(teacherStatusProvider.notifier);
 
     final width = MediaQuery.sizeOf(context).width;
 
@@ -56,27 +49,17 @@ class TeacherStatusPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppBreadcrumb(items: ['교사 관리', '교사 상태 처리']),
-              const SizedBox(
-                height: ConstPadding.smallPadding,
-              ),
+              const SizedBox(height: ConstPadding.smallPadding),
               Text(
                 '교사 상태 처리',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(
-                height: ConstPadding.tinyPadding,
-              ),
+              const SizedBox(height: ConstPadding.tinyPadding),
               Text(
                 '교사의 은퇴, 징계 처리를 진행합니다.',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(
-                height: ConstPadding.largePadding,
-              ),
+              const SizedBox(height: ConstPadding.largePadding),
               _sectionCard(
                 context,
                 title: '교사 정보',
@@ -94,9 +77,7 @@ class TeacherStatusPage extends ConsumerWidget {
                   onMemberChanged: notifier.selectTeacher,
                 ),
               ),
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
               _sectionCard(
                 context,
                 title: '처리 정보',
@@ -112,9 +93,7 @@ class TeacherStatusPage extends ConsumerWidget {
                   onReasonChanged: notifier.setReason,
                 ),
               ),
-              const SizedBox(
-                height: ConstPadding.mediumPadding,
-              ),
+              const SizedBox(height: ConstPadding.mediumPadding),
               StatusActions(
                 isProcessing: state.isProcessing,
                 onCancel: context.pop,
@@ -127,21 +106,13 @@ class TeacherStatusPage extends ConsumerWidget {
 
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          '교사 상태 처리가 완료되었습니다.',
-                        ),
-                      ),
+                      const SnackBar(content: Text('교사 상태 처리가 완료되었습니다.')),
                     );
 
                     context.pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          '필수 항목을 확인해주세요.',
-                        ),
-                      ),
+                      const SnackBar(content: Text('필수 항목을 확인해주세요.')),
                     );
                   }
                 },
@@ -154,11 +125,11 @@ class TeacherStatusPage extends ConsumerWidget {
   }
 
   Widget _sectionCard(
-      BuildContext context, {
-        required String title,
-        required IconData icon,
-        required Widget child,
-      }) {
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required Widget child,
+  }) {
     return Card(
       child: Padding(
         padding: ConstPadding.largePaddingAll,
@@ -168,20 +139,11 @@ class TeacherStatusPage extends ConsumerWidget {
             Row(
               children: [
                 Icon(icon),
-                const SizedBox(
-                  width: ConstPadding.smallPadding,
-                ),
-                Text(
-                  title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge,
-                ),
+                const SizedBox(width: ConstPadding.smallPadding),
+                Text(title, style: Theme.of(context).textTheme.titleLarge),
               ],
             ),
-            const SizedBox(
-              height: ConstPadding.mediumPadding,
-            ),
+            const SizedBox(height: ConstPadding.mediumPadding),
             child,
           ],
         ),

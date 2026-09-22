@@ -11,25 +11,12 @@ class TeacherStatusSummaryResponse {
     required this.disciplinaryCount,
   });
 
-  factory TeacherStatusSummaryResponse.fromJson(
-      Map<String, dynamic> json,
-      ) {
+  factory TeacherStatusSummaryResponse.fromJson(Map<String, dynamic> json) {
     return TeacherStatusSummaryResponse(
-      totalCount:
-      (json['totalCount'] as num?)?.toInt() ??
-          0,
-      enrolledCount:
-      (json['enrolledCount'] as num?)
-          ?.toInt() ??
-          0,
-      retirementCount:
-      (json['retirementCount'] as num?)
-          ?.toInt() ??
-          0,
-      disciplinaryCount:
-      (json['disciplinaryCount'] as num?)
-          ?.toInt() ??
-          0,
+      totalCount: (json['totalCount'] as num?)?.toInt() ?? 0,
+      enrolledCount: (json['enrolledCount'] as num?)?.toInt() ?? 0,
+      retirementCount: (json['retirementCount'] as num?)?.toInt() ?? 0,
+      disciplinaryCount: (json['disciplinaryCount'] as num?)?.toInt() ?? 0,
     );
   }
 }

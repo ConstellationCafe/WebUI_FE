@@ -1,15 +1,14 @@
-
-
 import 'package:constellation_cafe/shared/data/dto/request/SocketModel.dart';
 
 class FriendlyMatchTemplate {
-  FriendlyMatchTemplate(
-      {required this.version,
-      required this.mode,
-      required this.platform,
-      required this.roomNumber,
-      required this.message,
-      required this.sender});
+  FriendlyMatchTemplate({
+    required this.version,
+    required this.mode,
+    required this.platform,
+    required this.roomNumber,
+    required this.message,
+    required this.sender,
+  });
 
   final String version;
   final String mode;
@@ -30,10 +29,10 @@ class FriendlyMatchTemplate {
           data.mode, // mode
           data.platform, // platform
           data.roomNumber, // room_number
-          data.message // message
+          data.message, // message
         ],
         "섀버 별자리 Cafe",
-        data.sender
+        data.sender,
       ],
     );
     return jsonBody;
