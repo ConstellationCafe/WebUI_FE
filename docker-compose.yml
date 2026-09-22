@@ -1,3 +1,5 @@
+name: webui-fe
+
 services:
   webui-fe:
     build:
