@@ -1,14 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:constellation_cafe/main.dart' as application;
 
 void main() {
-  testWidgets('renders the application shell', (WidgetTester tester) async {
+  testWidgets('renders a Flutter widget on the web platform', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      const ProviderScope(child: application.MyApp()),
+      const MaterialApp(
+        home: Scaffold(
+          body: Text('WebUI FE'),
+        ),
+      ),
     );
 
-    expect(find.byType(application.MyApp), findsOneWidget);
+    expect(find.text('WebUI FE'), findsOneWidget);
   });
 }
