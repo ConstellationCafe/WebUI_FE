@@ -4,6 +4,8 @@ class LessonRecordView {
   final String className;
   final String subjectName;
   final DateTime educationDate;
+  final DateTime? startTime;
+  final DateTime? endTime;
   final Duration educationDuration;
   final String mainTeacherName;
   final String description;
@@ -15,6 +17,8 @@ class LessonRecordView {
     required this.className,
     required this.subjectName,
     required this.educationDate,
+    required this.startTime,
+    required this.endTime,
     required this.educationDuration,
     required this.mainTeacherName,
     required this.description,

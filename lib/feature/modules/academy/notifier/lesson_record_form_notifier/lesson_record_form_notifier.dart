@@ -71,6 +71,8 @@ class LessonRecordFormNotifier extends _$LessonRecordFormNotifier {
         className: selectedAcademyClass.classNumber,
         subjectName: selectedSubject.name,
         educationDate: educationDate,
+        startTime: startTime,
+        endTime: endTime,
         educationDuration: duration,
         mainTeacherId: mainTeacher.sk,
         coTeacherIds: lessonRecordLessonSelection.selectedCoTeachers

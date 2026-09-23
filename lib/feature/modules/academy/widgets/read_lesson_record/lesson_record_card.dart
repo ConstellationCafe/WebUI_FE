@@ -51,7 +51,7 @@ class LessonRecordCard extends StatelessWidget {
             ),
             const SizedBox(height: ConstPadding.tinyPadding),
             Text(
-              '수업 시간: ${record.educationDuration.inMinutes}분',
+              '수업 시간: ${_formatTimeRange(record)} · ${record.educationDuration.inMinutes}분',
               style: textTheme.bodySmall,
             ),
             const SizedBox(height: ConstPadding.smallPadding),
@@ -79,6 +79,14 @@ class LessonRecordCard extends StatelessWidget {
       ),
     );
   }
+
+  String _formatTimeRange(LessonRecordView record) {
+    if (record.startTime == null || record.endTime == null) return '--:-- ~ --:--';
+    return '${_formatTime(record.startTime!)} ~ ${_formatTime(record.endTime!)}';
+  }
+
+  String _formatTime(DateTime time) =>
+      '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
 
   String _formatDate(DateTime date) {
     return '${date.year}.'

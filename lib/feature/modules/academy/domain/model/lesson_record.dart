@@ -4,6 +4,8 @@ class LessonRecord {
   final String subjectName;
 
   final DateTime educationDate;
+  final DateTime startTime;
+  final DateTime endTime;
   final Duration educationDuration;
 
   final String mainTeacherId;
@@ -18,6 +20,8 @@ class LessonRecord {
     required this.className,
     required this.subjectName,
     required this.educationDate,
+    required this.startTime,
+    required this.endTime,
     required this.educationDuration,
     required this.mainTeacherId,
     required this.coTeacherIds,
@@ -25,12 +29,17 @@ class LessonRecord {
     required this.description,
   });
 
+  String _formatTime(DateTime time) =>
+      '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}:00';
+
   Map<String, dynamic> toJson() {
     return {
       'academyId': academyId,
       'className': className,
       'subject': subjectName,
       'educationDate': educationDate.toIso8601String(),
+      'startTime': _formatTime(startTime),
+      'endTime': _formatTime(endTime),
       'educationDuration': educationDuration.inMinutes,
       'mainTeacherId': mainTeacherId,
       'coTeacherIds': coTeacherIds,
