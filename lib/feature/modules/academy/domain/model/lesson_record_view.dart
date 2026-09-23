@@ -10,6 +10,7 @@ class LessonRecordView {
   final String mainTeacherName;
   final String description;
   final int memberCount;
+  final bool canModify;
 
   const LessonRecordView({
     required this.id,
@@ -23,5 +24,6 @@ class LessonRecordView {
     required this.mainTeacherName,
     required this.description,
     required this.memberCount,
+    required this.canModify,
   });
 }
