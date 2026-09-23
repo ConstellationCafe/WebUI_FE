@@ -16,6 +16,7 @@ import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.da
 // user
 import 'package:constellation_cafe/feature/profile/pages/profile.dart';
 import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
+import 'package:constellation_cafe/feature/admin/point/pages/admin_point_page.dart';
 
 // contents
 import 'package:constellation_cafe/feature/modules/academy/routes/academy_routes.dart';
@@ -87,6 +88,12 @@ GoRouter router(Ref ref) {
             path: '/point_log',
             pageBuilder: (context, state) =>
                 noAnim(state, const ViewPointLog()),
+          ),
+
+          GoRoute(
+            path: '/point',
+            pageBuilder: (context, state) =>
+                noAnim(state, const AdminPointPage()),
           ),
           ...chatbotRoutes,
           ...shadowverseRoutes,
