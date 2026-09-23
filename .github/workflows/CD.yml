@@ -11,14 +11,14 @@ jobs:
       - name: Checkout Github Repository
         uses: actions/checkout@v4
 
-      - name: Copy project to Remote Server
+      - name: Copy project files required for the image build to Remote Server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_ADDR }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PWD }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "./*"
+          source: "Dockerfile,docker-compose.yml,nginx.conf,pubspec.yaml,pubspec.lock,.dockerignore,.metadata,assets,lib,web"
           target: "/home/${{ secrets.SERVER_USERNAME }}/workspace/dockers/WebUI_FE/service"
           rm: true
 
@@ -40,6 +40,5 @@ jobs:
           script: |
             set -euo pipefail
             cd /home/${{ secrets.SERVER_USERNAME }}/workspace/dockers/WebUI_FE/service
-            docker compose -p webui-fe down
             docker compose -p webui-fe up -d --build
             docker compose -p webui-fe ps
