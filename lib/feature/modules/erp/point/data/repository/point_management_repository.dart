@@ -97,5 +97,7 @@ class PointManagementRepository {
   );
 
   int _asInt(dynamic value, int fallback) =>
-      value is num ? value.toInt() : int.tryParse(value?.toString() ?? '') ?? fallback;
+      value is num
+          ? value.toInt()
+          : int.tryParse(value?.toString() ?? '') ?? fallback;
 }
