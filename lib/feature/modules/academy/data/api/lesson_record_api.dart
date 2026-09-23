@@ -36,10 +36,7 @@ class LessonRecordApi {
   }
 
   Future<void> updateLessonRecord(String id, LessonRecordUpdate update) async {
-    await dio.put(
-      '$base/api/academy/lesson-record/$id',
-      data: update.toJson(),
-    );
+    await dio.put('$base/api/academy/lesson-record/$id', data: update.toJson());
   }
 
   Future<void> deleteLessonRecord(String id) async {

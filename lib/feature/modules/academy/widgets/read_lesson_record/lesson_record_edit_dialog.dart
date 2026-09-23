@@ -9,8 +9,7 @@ class LessonRecordEditDialog extends StatefulWidget {
   const LessonRecordEditDialog({super.key, required this.record});
 
   @override
-  State<LessonRecordEditDialog> createState() =>
-      _LessonRecordEditDialogState();
+  State<LessonRecordEditDialog> createState() => _LessonRecordEditDialogState();
 }
 
 class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
@@ -23,9 +22,7 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   @override
   void initState() {
     super.initState();
-    _subjectController = TextEditingController(
-      text: widget.record.subjectName,
-    );
+    _subjectController = TextEditingController(text: widget.record.subjectName);
     _descriptionController = TextEditingController(
       text: widget.record.description,
     );
@@ -96,10 +93,7 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('취소'),
         ),
-        FilledButton(
-          onPressed: _save,
-          child: const Text('저장'),
-        ),
+        FilledButton(onPressed: _save, child: const Text('저장')),
       ],
     );
   }
@@ -127,10 +121,7 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   }
 
   Future<void> _selectEndTime() async {
-    final time = await showTimePicker(
-      context: context,
-      initialTime: _endTime,
-    );
+    final time = await showTimePicker(context: context, initialTime: _endTime);
     if (time != null) {
       setState(() => _endTime = time);
     }
@@ -139,8 +130,7 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   void _save() {
     final startMinutes = _startTime.hour * 60 + _startTime.minute;
     final endMinutes = _endTime.hour * 60 + _endTime.minute;
-    if (_subjectController.text.trim().isEmpty ||
-        endMinutes <= startMinutes) {
+    if (_subjectController.text.trim().isEmpty || endMinutes <= startMinutes) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('과목과 올바른 수업 시간 범위를 입력해주세요.')),
       );
