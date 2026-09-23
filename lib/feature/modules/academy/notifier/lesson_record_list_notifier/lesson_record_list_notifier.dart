@@ -29,10 +29,7 @@ class LessonRecordListNotifier extends _$LessonRecordListNotifier {
     await loadRecords();
   }
 
-  Future<void> updateRecord(
-    String id,
-    LessonRecordUpdate update,
-  ) async {
+  Future<void> updateRecord(String id, LessonRecordUpdate update) async {
     await _repository.updateLessonRecord(id, update);
     await loadRecords();
   }

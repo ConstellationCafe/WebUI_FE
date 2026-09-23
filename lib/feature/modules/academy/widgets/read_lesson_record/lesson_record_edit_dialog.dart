@@ -23,7 +23,9 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   @override
   void initState() {
     super.initState();
-    _subjectController = TextEditingController(text: widget.record.subjectName);
+    _subjectController = TextEditingController(
+      text: widget.record.subjectName,
+    );
     _descriptionController = TextEditingController(
       text: widget.record.description,
     );

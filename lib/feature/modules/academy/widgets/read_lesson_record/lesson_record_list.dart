@@ -33,10 +33,10 @@ class LessonRecordList extends StatelessWidget {
           const SizedBox(height: AcademyConstants.recordCardSpacing),
       itemBuilder: (context, index) {
         return LessonRecordCard(
-            record: records[index],
-            onUpdate: onUpdate,
-            onDelete: onDelete,
-          );
+          record: records[index],
+          onUpdate: onUpdate,
+          onDelete: onDelete,
+        );
       },
     );
   }

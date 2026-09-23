@@ -43,10 +43,7 @@ class LessonRecordRepository {
     await lessonRecordApi.createLessonRecord(lessonRecord);
   }
 
-  Future<void> updateLessonRecord(
-    String id,
-    LessonRecordUpdate update,
-  ) async {
+  Future<void> updateLessonRecord(String id, LessonRecordUpdate update) async {
     await lessonRecordApi.updateLessonRecord(id, update);
   }
 

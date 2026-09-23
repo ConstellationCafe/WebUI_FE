@@ -35,10 +35,7 @@ class LessonRecordApi {
     await dio.post('$base/api/academy/lesson-record', data: record.toJson());
   }
 
-  Future<void> updateLessonRecord(
-    String id,
-    LessonRecordUpdate update,
-  ) async {
+  Future<void> updateLessonRecord(String id, LessonRecordUpdate update) async {
     await dio.put(
       '$base/api/academy/lesson-record/$id',
       data: update.toJson(),
