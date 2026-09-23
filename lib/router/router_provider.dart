@@ -19,6 +19,7 @@ import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
 
 // contents
 import 'package:constellation_cafe/feature/modules/academy/routes/academy_routes.dart';
+import 'package:constellation_cafe/feature/modules/erp/routes/erp_routes.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
 import '../feature/modules/chatbot/routes/chatbot_routes.dart';
@@ -91,6 +92,7 @@ GoRouter router(Ref ref) {
           ...chatbotRoutes,
           ...shadowverseRoutes,
           ...academyRoutes,
+          ...erpRoutes,
         ],
       ),
     ],
