@@ -202,7 +202,9 @@ class PointManagementPage extends ConsumerWidget {
   }) {
     final theme = Theme.of(context);
     return Material(
-      color: selected ? theme.colorScheme.secondaryContainer : Colors.transparent,
+      color: selected
+          ? theme.colorScheme.secondaryContainer
+          : Colors.transparent,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
@@ -214,7 +216,9 @@ class PointManagementPage extends ConsumerWidget {
               CircleAvatar(
                 radius: 18,
                 child: Text(
-                  member.username.isEmpty ? '?' : member.username.characters.first,
+                  member.username.isEmpty
+                      ? '?'
+                      : member.username.characters.first,
                 ),
               ),
               const SizedBox(width: ConstSize.smallSpacing),
@@ -313,8 +317,14 @@ class PointManagementPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(detail.member.username, style: theme.textTheme.titleLarge),
-                  Text(detail.member.discordId, style: theme.textTheme.bodySmall),
+                  Text(
+                    detail.member.username,
+                    style: theme.textTheme.titleLarge,
+                  ),
+                  Text(
+                    detail.member.discordId,
+                    style: theme.textTheme.bodySmall,
+                  ),
                 ],
               ),
             ),
@@ -429,7 +439,9 @@ class PointManagementPage extends ConsumerWidget {
           ),
           Text(
             signedAmount,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: color,
+            ),
           ),
         ],
       ),
