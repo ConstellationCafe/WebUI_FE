@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../domain/model/lesson_record.dart';
+import '../../domain/model/lesson_record_update.dart';
 import '../../data/dto/response/lesson_record_query_response.dart';
 import '../../data/dto/request/lesson_record_query_request.dart';
 
@@ -32,5 +33,19 @@ class LessonRecordApi {
 
   Future<void> createLessonRecord(LessonRecord record) async {
     await dio.post('$base/api/academy/lesson-record', data: record.toJson());
+  }
+
+  Future<void> updateLessonRecord(
+    String id,
+    LessonRecordUpdate update,
+  ) async {
+    await dio.put(
+      '$base/api/academy/lesson-record/$id',
+      data: update.toJson(),
+    );
+  }
+
+  Future<void> deleteLessonRecord(String id) async {
+    await dio.delete('$base/api/academy/lesson-record/$id');
   }
 }

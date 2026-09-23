@@ -10,6 +10,7 @@ class LessonRecordQueryResponse {
   final String mainTeacherName;
   final String description;
   final int memberCount;
+  final bool canModify;
 
   const LessonRecordQueryResponse({
     required this.id,
@@ -23,6 +24,7 @@ class LessonRecordQueryResponse {
     required this.mainTeacherName,
     required this.description,
     required this.memberCount,
+    required this.canModify,
   });
 
   factory LessonRecordQueryResponse.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class LessonRecordQueryResponse {
       mainTeacherName: json['mainTeacherName'] ?? '',
       description: json['description'] ?? '',
       memberCount: json['memberCount'] ?? 0,
+      canModify: json['canModify'] as bool? ?? false,
     );
   }
   static DateTime? _parseTime(dynamic value) {
