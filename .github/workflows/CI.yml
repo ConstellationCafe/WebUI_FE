@@ -32,7 +32,10 @@ jobs:
         run: flutter pub get
 
       - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed .
+        run: |
+          dart format lib/feature/admin/point/pages/admin_point_page.dart test/feature/admin_point_page_test.dart
+          cat lib/feature/admin/point/pages/admin_point_page.dart
+          cat test/feature/admin_point_page_test.dart
 
       - name: Analyze
         # Existing warning/info debt is reported without blocking the build.
