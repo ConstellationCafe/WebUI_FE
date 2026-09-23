@@ -3,6 +3,7 @@ import '../../data/api/lesson_record_api.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
 import '../../domain/model/lesson_record.dart';
+import '../../domain/model/lesson_record_update.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/model/teacher.dart';
@@ -40,6 +41,14 @@ class LessonRecordRepository {
 
   Future<void> createLessonRecord(LessonRecord lessonRecord) async {
     await lessonRecordApi.createLessonRecord(lessonRecord);
+  }
+
+  Future<void> updateLessonRecord(String id, LessonRecordUpdate update) async {
+    await lessonRecordApi.updateLessonRecord(id, update);
+  }
+
+  Future<void> deleteLessonRecord(String id) async {
+    await lessonRecordApi.deleteLessonRecord(id);
   }
 
   Future<List<LessonRecordQueryResponse>> getLessonRecords({

@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repository/lesson_record_repository.dart';
 import '../../domain/model/lesson_record_view.dart';
+import '../../domain/model/lesson_record_update.dart';
 import '../../state/lesson_record_list_state/lesson_record_list_state.dart';
 import '../../state/lesson_record_selection_state/lesson_record_selection_state.dart';
 import '../lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
@@ -25,6 +26,16 @@ class LessonRecordListNotifier extends _$LessonRecordListNotifier {
   }
 
   Future<void> search() async {
+    await loadRecords();
+  }
+
+  Future<void> updateRecord(String id, LessonRecordUpdate update) async {
+    await _repository.updateLessonRecord(id, update);
+    await loadRecords();
+  }
+
+  Future<void> deleteRecord(String id) async {
+    await _repository.deleteLessonRecord(id);
     await loadRecords();
   }
 
@@ -57,10 +68,13 @@ class LessonRecordListNotifier extends _$LessonRecordListNotifier {
               className: record.className,
               subjectName: record.subjectName,
               educationDate: record.educationDate,
+              startTime: record.startTime,
+              endTime: record.endTime,
               educationDuration: record.educationDuration,
               mainTeacherName: record.mainTeacherName,
               description: record.description,
               memberCount: record.memberCount,
+              canModify: record.canModify,
             );
           }).toList(),
         ),

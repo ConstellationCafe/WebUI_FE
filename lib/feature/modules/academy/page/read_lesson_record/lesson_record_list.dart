@@ -68,7 +68,41 @@ class LessonRecordListPage extends ConsumerWidget {
                 onReset: queryNotifier.resetFilters,
               ),
               const SizedBox(height: ConstPadding.largePadding),
-              LessonRecordList(records: listState.lessonRecordList.records),
+              LessonRecordList(
+                records: listState.lessonRecordList.records,
+                onUpdate: (record, update) async {
+                  try {
+                    await listNotifier.updateRecord(record.id, update);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('수업 기록을 수정했습니다.')),
+                      );
+                    }
+                  } catch (_) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('수업 기록 수정에 실패했습니다.')),
+                      );
+                    }
+                  }
+                },
+                onDelete: (record) async {
+                  try {
+                    await listNotifier.deleteRecord(record.id);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('수업 기록을 삭제했습니다.')),
+                      );
+                    }
+                  } catch (_) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('수업 기록 삭제에 실패했습니다.')),
+                      );
+                    }
+                  }
+                },
+              ),
             ],
           ),
         ),

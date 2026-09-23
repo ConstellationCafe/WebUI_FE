@@ -4,12 +4,20 @@ import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
 import '../../domain/model/lesson_record_view.dart';
+import '../../domain/model/lesson_record_update.dart';
 import 'lesson_record_card.dart';
 
 class LessonRecordList extends StatelessWidget {
   final List<LessonRecordView> records;
+  final Future<void> Function(LessonRecordView, LessonRecordUpdate) onUpdate;
+  final Future<void> Function(LessonRecordView) onDelete;
 
-  const LessonRecordList({super.key, required this.records});
+  const LessonRecordList({
+    super.key,
+    required this.records,
+    required this.onUpdate,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +32,11 @@ class LessonRecordList extends StatelessWidget {
       separatorBuilder: (_, __) =>
           const SizedBox(height: AcademyConstants.recordCardSpacing),
       itemBuilder: (context, index) {
-        return LessonRecordCard(record: records[index]);
+        return LessonRecordCard(
+          record: records[index],
+          onUpdate: onUpdate,
+          onDelete: onDelete,
+        );
       },
     );
   }
