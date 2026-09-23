@@ -7,8 +7,7 @@ import 'package:constellation_cafe/feature/modules/erp/point/domain/point_page.d
 import 'package:dio/dio.dart';
 
 class FakePointManagementRepository extends PointManagementRepository {
-  FakePointManagementRepository()
-    : super(api: PointManagementApi(dio: Dio()));
+  FakePointManagementRepository() : super(api: PointManagementApi(dio: Dio()));
 
   final member = const PointMember(
     discordId: '123',
