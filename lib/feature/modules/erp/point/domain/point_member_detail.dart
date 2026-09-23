@@ -6,8 +6,5 @@ class PointMemberDetail {
   final PointMember member;
   final PointPage<PointLog> logs;
 
-  const PointMemberDetail({
-    required this.member,
-    required this.logs,
-  });
+  const PointMemberDetail({required this.member, required this.logs});
 }
