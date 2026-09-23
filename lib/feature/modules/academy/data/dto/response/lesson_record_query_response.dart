@@ -44,7 +44,10 @@ class LessonRecordQueryResponse {
     if (value == null) return null;
     final parts = value.toString().split(':');
     if (parts.length < 2) return null;
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null || minute == null) return null;
     final now = DateTime.now();
-    return DateTime(now.year, now.month, now.day, int.parse(parts[0]), int.parse(parts[1]));
+    return DateTime(now.year, now.month, now.day, hour, minute);
   }
 }
