@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+
+import '../constants/point_strings.dart';
+import '../domain/model/point_member.dart';
+
+class MemberListPanel extends StatelessWidget {
+  final List<PointMember> members;
+  final String? selectedDiscordId;
+  final TextEditingController searchController;
+  final bool isLoading;
+  final int page;
+  final int totalPages;
+  final VoidCallback onSearch;
+  final ValueChanged<PointMember> onSelected;
+  final ValueChanged<int> onPageChanged;
+
+  const MemberListPanel({
+    super.key,
+    required this.members,
+    required this.selectedDiscordId,
+    required this.searchController,
+    required this.isLoading,
+    required this.page,
+    required this.totalPages,
+    required this.onSearch,
+    required this.onSelected,
+    required this.onPageChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(PointStrings.members, style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 12),
+            SearchBar(
+              controller: searchController,
+              hintText: PointStrings.searchHint,
+              leading: const Icon(Icons.search),
+              onSubmitted: (_) => onSearch(),
+              trailing: [
+                IconButton(
+                  tooltip: '검색',
+                  onPressed: onSearch,
+                  icon: const Icon(Icons.arrow_forward),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : members.isEmpty
+                  ? const Center(child: Text(PointStrings.noMembers))
+                  : ListView.separated(
+                      itemCount: members.length,
+                      separatorBuilder: (_, __) => const Divider(height: 1),
+                      itemBuilder: (context, index) {
+                        final member = members[index];
+                        return ListTile(
+                          selected: member.discordId == selectedDiscordId,
+                          title: Text(member.username),
+                          subtitle: Text(member.discordId),
+                          trailing: Text('${member.coin} P'),
+                          onTap: () => onSelected(member),
+                        );
+                      },
+                    ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  tooltip: '이전 페이지',
+                  onPressed: page > 1 ? () => onPageChanged(page - 1) : null,
+                  icon: const Icon(Icons.chevron_left),
+                ),
+                Text('$page / ${totalPages == 0 ? 1 : totalPages}'),
+                IconButton(
+                  tooltip: '다음 페이지',
+                  onPressed: page < totalPages
+                      ? () => onPageChanged(page + 1)
+                      : null,
+                  icon: const Icon(Icons.chevron_right),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
