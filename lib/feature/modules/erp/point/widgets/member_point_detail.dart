@@ -25,7 +25,9 @@ class MemberPointDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isLoading) return const Center(child: CircularProgressIndicator());
     final data = detail;
-    if (data == null) return const Center(child: Text(PointStrings.selectMember));
+    if (data == null) {
+      return const Center(child: Text(PointStrings.selectMember));
+    }
     final number = NumberFormat.decimalPattern();
     final date = DateFormat('yyyy.MM.dd HH:mm');
 
@@ -35,10 +37,16 @@ class MemberPointDetail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(data.member.username, style: Theme.of(context).textTheme.headlineSmall),
+            Text(
+              data.member.username,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             Text('${data.member.discordId} · ${data.member.state}'),
             const SizedBox(height: 24),
-            Text(PointStrings.balance, style: Theme.of(context).textTheme.labelLarge),
+            Text(
+              PointStrings.balance,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
             Text(
               '${number.format(data.member.coin)} P',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -60,7 +68,10 @@ class MemberPointDetail extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            Text(PointStrings.history, style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              PointStrings.history,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const Divider(),
             Expanded(
               child: data.logs.isEmpty
@@ -79,7 +90,10 @@ class MemberPointDetail extends StatelessWidget {
                           subtitle: Text(date.format(log.at.toLocal())),
                           trailing: Text(
                             '${log.amount > 0 ? '+' : ''}${number.format(log.amount)} P',
-                            style: TextStyle(color: color, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                              color: color,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         );
                       },
