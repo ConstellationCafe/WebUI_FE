@@ -40,7 +40,10 @@ class _AdminPointPageState extends ConsumerState<AdminPointPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(PointStrings.title, style: Theme.of(context).textTheme.headlineMedium),
+          Text(
+            PointStrings.title,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
           const SizedBox(height: 16),
           Expanded(
             child: LayoutBuilder(
