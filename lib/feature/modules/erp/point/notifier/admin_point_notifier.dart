@@ -11,10 +11,12 @@ final adminPointRepositoryProvider = Provider<AdminPointRepository>((ref) {
 });
 
 final adminPointProvider =
-    StateNotifierProvider.autoDispose<AdminPointNotifier, AdminPointState>((ref) {
-      return AdminPointNotifier(ref.read(adminPointRepositoryProvider))
-        ..loadMembers();
-    });
+    StateNotifierProvider.autoDispose<AdminPointNotifier, AdminPointState>(
+      (ref) {
+        return AdminPointNotifier(ref.read(adminPointRepositoryProvider))
+          ..loadMembers();
+      },
+    );
 
 class AdminPointNotifier extends StateNotifier<AdminPointState> {
   final AdminPointRepository repository;
