@@ -1,7 +1,7 @@
 name: WebUI_FE_CD
 on:
   push:
-    branches: ["main", "develope"]
+    branches: ["main"]
 
 jobs:
   deploy:
