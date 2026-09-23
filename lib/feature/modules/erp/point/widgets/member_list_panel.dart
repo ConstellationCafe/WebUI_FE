@@ -35,7 +35,10 @@ class MemberListPanel extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(PointStrings.members, style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              PointStrings.members,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             const SizedBox(height: 12),
             SearchBar(
               controller: searchController,
@@ -55,21 +58,21 @@ class MemberListPanel extends StatelessWidget {
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : members.isEmpty
-                  ? const Center(child: Text(PointStrings.noMembers))
-                  : ListView.separated(
-                      itemCount: members.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
-                      itemBuilder: (context, index) {
-                        final member = members[index];
-                        return ListTile(
-                          selected: member.discordId == selectedDiscordId,
-                          title: Text(member.username),
-                          subtitle: Text(member.discordId),
-                          trailing: Text('${member.coin} P'),
-                          onTap: () => onSelected(member),
-                        );
-                      },
-                    ),
+                      ? const Center(child: Text(PointStrings.noMembers))
+                      : ListView.separated(
+                          itemCount: members.length,
+                          separatorBuilder: (_, __) => const Divider(height: 1),
+                          itemBuilder: (context, index) {
+                            final member = members[index];
+                            return ListTile(
+                              selected: member.discordId == selectedDiscordId,
+                              title: Text(member.username),
+                              subtitle: Text(member.discordId),
+                              trailing: Text('${member.coin} P'),
+                              onTap: () => onSelected(member),
+                            );
+                          },
+                        ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
