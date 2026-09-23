@@ -32,7 +32,9 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.isDeposit ? PointStrings.deposit : PointStrings.withdraw),
+      title: Text(
+        widget.isDeposit ? PointStrings.deposit : PointStrings.withdraw,
+      ),
       content: Form(
         key: _formKey,
         child: Column(
