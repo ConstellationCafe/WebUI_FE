@@ -57,6 +57,8 @@ class LessonRecordListNotifier extends _$LessonRecordListNotifier {
               className: record.className,
               subjectName: record.subjectName,
               educationDate: record.educationDate,
+              startTime: record.startTime,
+              endTime: record.endTime,
               educationDuration: record.educationDuration,
               mainTeacherName: record.mainTeacherName,
               description: record.description,
