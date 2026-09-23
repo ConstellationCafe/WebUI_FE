@@ -31,6 +31,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Debug formatting output
+        run: |
+          dart format lib/feature/modules/academy/data/api/lesson_record_api.dart lib/feature/modules/academy/widgets/read_lesson_record/lesson_record_edit_dialog.dart
+          git diff --no-color -- lib/feature/modules/academy/data/api/lesson_record_api.dart lib/feature/modules/academy/widgets/read_lesson_record/lesson_record_edit_dialog.dart
+
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed .
 
