@@ -77,7 +77,7 @@ class _AdminPointPageState extends State<AdminPointPage> {
     final filtered = _members.where((member) =>
         member.username.toLowerCase().contains(query) || member.discordId.contains(query)).toList();
     final pages = (filtered.length / _pageSize).ceil();
-    final page = pages == 0 ? 0 : _page.clamp(0, pages - 1);
+    final page = pages == 0 ? 0 : (_page >= pages ? pages - 1 : _page);
     final visible = filtered.skip(page * _pageSize).take(_pageSize).toList();
     final selected = _members[_selectedIndex];
 
