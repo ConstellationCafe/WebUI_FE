@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:constellation_cafe/core/constants/const_size.dart';
-import '../../home/frame/widgets/menu_bar_area/categories/container/menu_container.dart';
+import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/categories/container/menu_container.dart';
 
-class AdminCategory extends ConsumerWidget {
-  const AdminCategory({super.key});
+class ErpCategory extends ConsumerWidget {
+  const ErpCategory({super.key});
 
   @override
   Widget build(BuildContext build, WidgetRef ref) {
@@ -13,13 +14,12 @@ class AdminCategory extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(textAlign: TextAlign.left, "관리자 메뉴"),
+        Text(textAlign: TextAlign.left, "ERP 메뉴"),
         SizedBox(height: ConstSize.tinyWidth),
         MenuContainer(
-          iconImage: Image.asset(
-            "assets/icons/admin/point.png",
+          iconImage: SvgPicture.asset(
+            "assets/icons/modules/chatbot/point.svg",
             fit: BoxFit.contain,
-            filterQuality: FilterQuality.high,
           ),
           menuName: "포인트 관리",
           callbackUrl: "/point",
