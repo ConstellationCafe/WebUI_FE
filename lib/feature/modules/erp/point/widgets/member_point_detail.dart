@@ -30,7 +30,13 @@ class MemberPointDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) return const Center(child: CircularProgressIndicator());
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      );
+    }
     if (hasError) {
       return PointLoadError(
         message: PointStrings.detailFailed,
@@ -67,12 +73,12 @@ class MemberPointDetail extends StatelessWidget {
             Wrap(
               spacing: 12,
               children: [
-                FilledButton.icon(
+                ElevatedButton.icon(
                   onPressed: isSubmitting ? null : onDeposit,
                   icon: const Icon(Icons.add),
                   label: const Text(PointStrings.deposit),
                 ),
-                OutlinedButton.icon(
+                ElevatedButton.icon(
                   onPressed: isSubmitting ? null : onWithdraw,
                   icon: const Icon(Icons.remove),
                   label: const Text(PointStrings.withdraw),
@@ -88,7 +94,11 @@ class MemberPointDetail extends StatelessWidget {
             if (data.logs.isEmpty)
               const Center(child: Text(PointStrings.noHistory)),
             for (final log in data.logs) ...[
-              Text(log.description),
+              Text(
+                log.description.trim().isEmpty
+                    ? PointStrings.noDescription
+                    : log.description,
+              ),
               Text(date.format(log.at.toLocal())),
               Text(
                 '${log.amount > 0 ? '+' : ''}${number.format(log.amount)} P',

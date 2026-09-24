@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:constellation_cafe/di/DioProvider.dart';
 
@@ -8,16 +9,14 @@ import '../data/api/admin_point_api.dart';
 import '../data/repository/admin_point_repository.dart';
 import '../state/admin_point_state.dart';
 
+part 'admin_point_notifier.g.dart';
+
 final adminPointRepositoryProvider = Provider<AdminPointRepository>((ref) {
   return AdminPointRepository(api: AdminPointApi(dio: ref.read(dioProvider)));
 });
 
-final adminPointProvider =
-    NotifierProvider.autoDispose<AdminPointNotifier, AdminPointState>(
-      AdminPointNotifier.new,
-    );
-
-class AdminPointNotifier extends Notifier<AdminPointState> {
+@riverpod
+class AdminPointNotifier extends _$AdminPointNotifier {
   late AdminPointRepository _repository;
   int _membersRequest = 0;
   int _detailRequest = 0;
@@ -30,6 +29,12 @@ class AdminPointNotifier extends Notifier<AdminPointState> {
     });
     return const AdminPointState(isLoadingMembers: true);
   }
+
+  void updateSearchInput(String value) {
+    state = state.copyWith(searchInput: value);
+  }
+
+  Future<void> searchMembers() => loadMembers(search: state.searchInput.trim());
 
   Future<void> loadMembers({int page = 1, String? search}) async {
     if (!ref.mounted) return;
@@ -63,7 +68,9 @@ class AdminPointNotifier extends Notifier<AdminPointState> {
     final request = ++_detailRequest;
     state = state.copyWith(
       selectedDiscordId: discordId,
-      clearSelected: state.selected?.member.discordId != discordId,
+      selected: state.selected?.member.discordId == discordId
+          ? state.selected
+          : null,
       isLoadingDetail: true,
       hasDetailError: false,
     );

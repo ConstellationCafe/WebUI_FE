@@ -1,0 +1,1 @@
+enum PointTransactionType { deposit, withdraw }

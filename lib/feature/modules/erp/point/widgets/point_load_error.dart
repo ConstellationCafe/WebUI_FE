@@ -17,7 +17,7 @@ class PointLoadError extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(message, textAlign: TextAlign.center),
-            TextButton(
+            ElevatedButton(
               onPressed: onRetry,
               child: const Text(PointStrings.retry),
             ),

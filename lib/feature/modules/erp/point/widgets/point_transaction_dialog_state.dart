@@ -30,6 +30,7 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
             children: [
               Text('${widget.member.username} · ${widget.member.discordId}'),
               TextFormField(
+                cursorColor: Theme.of(context).colorScheme.secondary,
                 controller: _amountController,
                 autofocus: true,
                 enabled: !_isSubmitting && !_hasError,
@@ -49,6 +50,7 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
                 },
               ),
               TextFormField(
+                cursorColor: Theme.of(context).colorScheme.secondary,
                 controller: _descriptionController,
                 maxLength: 255,
                 enabled: !_isSubmitting && !_hasError,
@@ -64,16 +66,19 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
           ),
         ),
         actions: [
-          TextButton(
+          ElevatedButton(
             onPressed: _isSubmitting ? null : () => Navigator.pop(context),
             child: const Text(PointStrings.cancel),
           ),
-          FilledButton(
+          ElevatedButton(
             onPressed: _isSubmitting || _hasError ? null : _submit,
             child: _isSubmitting
-                ? const SizedBox.square(
+                ? SizedBox.square(
                     dimension: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   )
                 : const Text(PointStrings.apply),
           ),

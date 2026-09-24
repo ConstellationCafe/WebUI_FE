@@ -1,5 +1,11 @@
 import 'package:dio/dio.dart';
 
+import '../dto/request/admin_point_history_request.dart';
+import '../dto/request/admin_point_members_request.dart';
+import '../dto/request/admin_point_transaction_request.dart';
+import '../dto/response/admin_point_detail_response.dart';
+import '../dto/response/admin_point_member_page_response.dart';
+
 class AdminPointApi {
   static const base = String.fromEnvironment('BACKEND_URI');
   static const path = '$base/api/repository/membership/admin/points';
@@ -8,49 +14,36 @@ class AdminPointApi {
 
   const AdminPointApi({required this.dio});
 
-  Future<Map<String, dynamic>> getMembers({
-    required int page,
-    required int size,
-    String? discordId,
-  }) async {
+  Future<AdminPointMemberPageResponse> getMembers(
+    AdminPointMembersRequest request,
+  ) async {
     final response = await dio.get<Map<String, dynamic>>(
       '$path/members',
-      queryParameters: {
-        'page': page,
-        'size': size,
-        if (discordId != null && discordId.isNotEmpty) 'discordId': discordId,
-      },
+      queryParameters: request.toJson(),
     );
-    return _responseBody(response.data);
+    return AdminPointMemberPageResponse.fromJson(_responseBody(response.data));
   }
 
-  Future<Map<String, dynamic>> getMember(
-    String discordId, {
-    required int page,
-    required int size,
-  }) async {
+  Future<AdminPointDetailResponse> getMember(
+    String discordId,
+    AdminPointHistoryRequest request,
+  ) async {
     final response = await dio.get<Map<String, dynamic>>(
-      '$path/members/$discordId',
-      queryParameters: {'page': page, 'size': size},
+      '$path/members/${Uri.encodeComponent(discordId)}',
+      queryParameters: request.toJson(),
     );
-    return _responseBody(response.data);
+    return AdminPointDetailResponse.fromJson(_responseBody(response.data));
   }
 
-  Future<Map<String, dynamic>> transact({
-    required String discordId,
-    required bool isDeposit,
-    required int amount,
-    required String description,
-  }) async {
+  Future<AdminPointDetailResponse> transact(
+    String discordId,
+    AdminPointTransactionRequest request,
+  ) async {
     final response = await dio.post<Map<String, dynamic>>(
-      '$path/members/$discordId/transactions',
-      data: {
-        'type': isDeposit ? 'DEPOSIT' : 'WITHDRAW',
-        'amount': amount,
-        'description': description,
-      },
+      '$path/members/${Uri.encodeComponent(discordId)}/transactions',
+      data: request.toJson(),
     );
-    return _responseBody(response.data);
+    return AdminPointDetailResponse.fromJson(_responseBody(response.data));
   }
 
   Map<String, dynamic> _responseBody(Map<String, dynamic>? data) {

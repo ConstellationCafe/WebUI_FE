@@ -8,7 +8,7 @@ import 'point_load_error.dart';
 class MemberListPanel extends StatelessWidget {
   final List<PointMember> members;
   final String? selectedDiscordId;
-  final TextEditingController searchController;
+  final ValueChanged<String> onSearchChanged;
   final bool isLoading;
   final bool isSubmitting;
   final bool hasError;
@@ -23,7 +23,7 @@ class MemberListPanel extends StatelessWidget {
     super.key,
     required this.members,
     required this.selectedDiscordId,
-    required this.searchController,
+    required this.onSearchChanged,
     required this.isLoading,
     this.isSubmitting = false,
     this.hasError = false,
@@ -49,7 +49,7 @@ class MemberListPanel extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             SearchBar(
-              controller: searchController,
+              onChanged: onSearchChanged,
               hintText: PointStrings.searchHint,
               leading: const Icon(Icons.search),
               onSubmitted: (_) => onSearch(),
@@ -64,7 +64,11 @@ class MemberListPanel extends StatelessWidget {
             const SizedBox(height: 12),
             Expanded(
               child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    )
                   : hasError
                   ? PointLoadError(
                       message: PointStrings.membersFailed,
@@ -79,6 +83,12 @@ class MemberListPanel extends StatelessWidget {
                         final member = members[index];
                         return ListTile(
                           selected: member.discordId == selectedDiscordId,
+                          selectedColor: Theme.of(
+                            context,
+                          ).colorScheme.onSecondaryContainer,
+                          selectedTileColor: Theme.of(
+                            context,
+                          ).colorScheme.secondaryContainer,
                           title: Text(member.username),
                           subtitle: Text(
                             '${member.discordId}\n${NumberFormat.decimalPattern().format(member.coin)} P',

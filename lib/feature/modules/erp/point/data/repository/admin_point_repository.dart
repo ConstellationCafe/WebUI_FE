@@ -2,7 +2,13 @@ import '../../domain/model/point_log.dart';
 import '../../domain/model/point_member.dart';
 import '../../domain/model/point_member_detail.dart';
 import '../../domain/model/point_member_page.dart';
+import '../../domain/type/point_transaction_type.dart';
 import '../api/admin_point_api.dart';
+import '../dto/request/admin_point_history_request.dart';
+import '../dto/request/admin_point_members_request.dart';
+import '../dto/request/admin_point_transaction_request.dart';
+import '../dto/response/admin_point_detail_response.dart';
+import '../dto/response/admin_point_member_response.dart';
 
 class AdminPointRepository {
   final AdminPointApi api;
@@ -14,23 +20,23 @@ class AdminPointRepository {
     int size = 20,
     String? discordId,
   }) async {
-    final json = await api.getMembers(
-      page: page,
-      size: size,
-      discordId: discordId,
+    final response = await api.getMembers(
+      AdminPointMembersRequest(page: page, size: size, discordId: discordId),
     );
-    final rawItems = json['items'] as List<dynamic>? ?? const [];
     return PointMemberPage(
-      items: rawItems
-          .map((item) => _member(Map<String, dynamic>.from(item as Map)))
-          .toList(),
-      page: (json['page'] as num?)?.toInt() ?? page,
-      totalPages: (json['totalPages'] as num?)?.toInt() ?? 0,
+      items: response.items.map(_member).toList(),
+      page: response.page,
+      totalPages: response.totalPages,
     );
   }
 
   Future<PointMemberDetail> getMember(String discordId, {int page = 1}) async {
-    return _detail(await api.getMember(discordId, page: page, size: 20));
+    return _detail(
+      await api.getMember(
+        discordId,
+        AdminPointHistoryRequest(page: page, size: 20),
+      ),
+    );
   }
 
   Future<PointMemberDetail> transact({
@@ -41,37 +47,46 @@ class AdminPointRepository {
   }) async {
     return _detail(
       await api.transact(
-        discordId: discordId,
-        isDeposit: isDeposit,
-        amount: amount,
-        description: description,
+        discordId,
+        AdminPointTransactionRequest(
+          type: isDeposit
+              ? PointTransactionType.deposit
+              : PointTransactionType.withdraw,
+          amount: amount,
+          description: description,
+        ),
       ),
     );
   }
 
-  PointMemberDetail _detail(Map<String, dynamic> json) {
-    final rawLogs = json['logs'] as List<dynamic>? ?? const [];
+  PointMemberDetail _detail(AdminPointDetailResponse response) {
     return PointMemberDetail(
-      member: _member(json),
-      logs: rawLogs.map((item) {
-        final log = Map<String, dynamic>.from(item as Map);
-        return PointLog(
-          amount: (log['amount'] as num).toInt(),
-          at: DateTime.parse(log['at'] as String),
-          description: log['description'] as String? ?? '',
-        );
-      }).toList(),
-      page: (json['page'] as num?)?.toInt() ?? 1,
-      totalPages: (json['totalPages'] as num?)?.toInt() ?? 0,
+      member: PointMember(
+        discordId: response.discordId,
+        username: response.username ?? '',
+        state: response.state,
+        coin: response.coin,
+      ),
+      logs: response.logs
+          .map(
+            (log) => PointLog(
+              amount: log.amount,
+              at: log.at,
+              description: log.description ?? '',
+            ),
+          )
+          .toList(),
+      page: response.page,
+      totalPages: response.totalPages,
     );
   }
 
-  PointMember _member(Map<String, dynamic> json) {
+  PointMember _member(AdminPointMemberResponse response) {
     return PointMember(
-      discordId: json['discordId'] as String,
-      username: json['username'] as String? ?? '',
-      state: json['state'] as String,
-      coin: (json['coin'] as num).toInt(),
+      discordId: response.discordId,
+      username: response.username ?? '',
+      state: response.state,
+      coin: response.coin,
     );
   }
 }

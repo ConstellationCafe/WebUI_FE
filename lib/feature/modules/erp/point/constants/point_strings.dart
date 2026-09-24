@@ -14,6 +14,7 @@ class PointStrings {
   static const apply = '적용';
   static const retry = '다시 시도';
   static const noHistory = '포인트 내역이 없습니다.';
+  static const noDescription = '등록된 설명이 없습니다.';
   static const search = '검색';
   static const previousPage = '이전 페이지';
   static const nextPage = '다음 페이지';

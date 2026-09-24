@@ -18,7 +18,7 @@ class ErpCategory extends ConsumerWidget {
         SizedBox(height: ConstSize.tinyWidth),
         MenuContainer(
           iconImage: SvgPicture.asset(
-            "assets/icons/modules/chatbot/point.svg",
+            "assets/icons/modules/erp/point.svg",
             fit: BoxFit.contain,
           ),
           menuName: "포인트 관리",

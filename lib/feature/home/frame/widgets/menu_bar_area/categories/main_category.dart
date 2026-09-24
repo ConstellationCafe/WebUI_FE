@@ -29,9 +29,7 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
         if (!permissionState.isLoading && permissionState.isInitialized) ...[
           AcademyCategory(),
         ],
-        if (globalState.roles.contains(UserRole.ADMIN)) ...[
-          ErpCategory()
-        ],
+        if (globalState.roles.contains(UserRole.ADMIN)) ...[ErpCategory()],
       ],
     );
   }

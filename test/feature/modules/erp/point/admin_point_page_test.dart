@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -21,6 +22,7 @@ void main() {
           ),
         ],
         child: MaterialApp(
+          theme: CustomTheme.themeData,
           builder: (context, child) => MediaQuery(
             data: MediaQuery.of(
               context,

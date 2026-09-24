@@ -32,6 +32,28 @@ void main() {
     expect(state.members.single.discordId, '123');
   });
 
+  test('입력 중에는 검색하지 않고 제출한 검색어로 페이지를 이동한다', () async {
+    final queries = <String?>[];
+    repository.membersHandler = (page, search) async {
+      queries.add(search);
+      return PointMemberPage(
+        items: [pointMember('456')],
+        page: page,
+        totalPages: 2,
+      );
+    };
+    notifier.updateSearchInput(' 456 ');
+    expect(container.read(adminPointProvider).searchInput, ' 456 ');
+    expect(queries, isEmpty);
+    await notifier.searchMembers();
+    notifier.updateSearchInput('789');
+    await notifier.loadMembers(page: 2);
+    expect(queries, ['456', '456']);
+    expect(container.read(adminPointProvider).search, '456');
+    expect(container.read(adminPointProvider).searchInput, '789');
+    expect(container.read(adminPointProvider).memberPage, 2);
+  });
+
   test('검색 응답이 역순으로 와도 최근 검색 결과를 유지한다', () async {
     final older = Completer<PointMemberPage>();
     final latest = Completer<PointMemberPage>();
