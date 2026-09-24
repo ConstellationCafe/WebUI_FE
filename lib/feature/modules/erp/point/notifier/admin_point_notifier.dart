@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/di/DioProvider.dart';
@@ -11,71 +13,97 @@ final adminPointRepositoryProvider = Provider<AdminPointRepository>((ref) {
 });
 
 final adminPointProvider =
-    StateNotifierProvider.autoDispose<AdminPointNotifier, AdminPointState>(
-      (ref) {
-        return AdminPointNotifier(ref.read(adminPointRepositoryProvider))
-          ..loadMembers();
-      },
+    NotifierProvider.autoDispose<AdminPointNotifier, AdminPointState>(
+      AdminPointNotifier.new,
     );
 
-class AdminPointNotifier extends StateNotifier<AdminPointState> {
-  final AdminPointRepository repository;
+class AdminPointNotifier extends Notifier<AdminPointState> {
+  late AdminPointRepository _repository;
+  int _membersRequest = 0;
+  int _detailRequest = 0;
 
-  AdminPointNotifier(this.repository) : super(const AdminPointState());
+  @override
+  AdminPointState build() {
+    _repository = ref.read(adminPointRepositoryProvider);
+    scheduleMicrotask(() {
+      if (ref.mounted && _membersRequest == 0) unawaited(loadMembers());
+    });
+    return const AdminPointState(isLoadingMembers: true);
+  }
 
   Future<void> loadMembers({int page = 1, String? search}) async {
+    if (!ref.mounted) return;
+    final request = ++_membersRequest;
     final nextSearch = search ?? state.search;
     state = state.copyWith(
       search: nextSearch,
       isLoadingMembers: true,
-      clearError: true,
+      hasMembersError: false,
     );
     try {
-      final result = await repository.getMembers(
+      final result = await _repository.getMembers(
         page: page,
         discordId: nextSearch,
       );
+      if (!ref.mounted || request != _membersRequest) return;
       state = state.copyWith(
         members: result.items,
         memberPage: result.page,
         memberTotalPages: result.totalPages,
         isLoadingMembers: false,
       );
-    } catch (error) {
-      state = state.copyWith(isLoadingMembers: false, error: error);
+    } catch (_) {
+      if (!ref.mounted || request != _membersRequest) return;
+      state = state.copyWith(isLoadingMembers: false, hasMembersError: true);
     }
   }
 
   Future<void> selectMember(String discordId, {int page = 1}) async {
-    state = state.copyWith(isLoadingDetail: true, clearError: true);
+    if (!ref.mounted || state.isSubmitting) return;
+    final request = ++_detailRequest;
+    state = state.copyWith(
+      selectedDiscordId: discordId,
+      clearSelected: state.selected?.member.discordId != discordId,
+      isLoadingDetail: true,
+      hasDetailError: false,
+    );
     try {
-      final detail = await repository.getMember(discordId, page: page);
+      final detail = await _repository.getMember(discordId, page: page);
+      if (!ref.mounted || request != _detailRequest) return;
       state = state.copyWith(selected: detail, isLoadingDetail: false);
-    } catch (error) {
-      state = state.copyWith(isLoadingDetail: false, error: error);
+    } catch (_) {
+      if (!ref.mounted || request != _detailRequest) return;
+      state = state.copyWith(isLoadingDetail: false, hasDetailError: true);
     }
   }
 
   Future<bool> transact({
+    required String discordId,
     required bool isDeposit,
     required int amount,
     required String description,
   }) async {
-    final selected = state.selected;
-    if (selected == null || state.isSubmitting) return false;
-    state = state.copyWith(isSubmitting: true, clearError: true);
+    if (!ref.mounted) return false;
+    if (state.selected?.member.discordId != discordId ||
+        state.isSubmitting ||
+        state.isLoadingDetail ||
+        state.hasDetailError) {
+      return false;
+    }
+    state = state.copyWith(isSubmitting: true);
     try {
-      final detail = await repository.transact(
-        discordId: selected.member.discordId,
+      final detail = await _repository.transact(
+        discordId: discordId,
         isDeposit: isDeposit,
         amount: amount,
         description: description,
       );
+      if (!ref.mounted) return true;
       state = state.copyWith(selected: detail, isSubmitting: false);
-      await loadMembers(page: state.memberPage);
+      unawaited(loadMembers(page: state.memberPage));
       return true;
-    } catch (error) {
-      state = state.copyWith(isSubmitting: false, error: error);
+    } catch (_) {
+      if (ref.mounted) state = state.copyWith(isSubmitting: false);
       return false;
     }
   }

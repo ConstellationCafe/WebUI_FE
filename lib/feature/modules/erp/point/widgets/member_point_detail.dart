@@ -4,10 +4,14 @@ import 'package:intl/intl.dart';
 import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
 import '../domain/model/point_member_detail.dart';
+import 'point_load_error.dart';
 
 class MemberPointDetail extends StatelessWidget {
   final PointMemberDetail? detail;
   final bool isLoading;
+  final bool isSubmitting;
+  final bool hasError;
+  final VoidCallback? onRetry;
   final VoidCallback onDeposit;
   final VoidCallback onWithdraw;
   final ValueChanged<int> onPageChanged;
@@ -16,6 +20,9 @@ class MemberPointDetail extends StatelessWidget {
     super.key,
     required this.detail,
     required this.isLoading,
+    this.isSubmitting = false,
+    this.hasError = false,
+    this.onRetry,
     required this.onDeposit,
     required this.onWithdraw,
     required this.onPageChanged,
@@ -24,6 +31,12 @@ class MemberPointDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) return const Center(child: CircularProgressIndicator());
+    if (hasError) {
+      return PointLoadError(
+        message: PointStrings.detailFailed,
+        onRetry: onRetry,
+      );
+    }
     final data = detail;
     if (data == null) {
       return const Center(child: Text(PointStrings.selectMember));
@@ -34,8 +47,7 @@ class MemberPointDetail extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: ListView(
           children: [
             Text(
               data.member.username,
@@ -56,12 +68,12 @@ class MemberPointDetail extends StatelessWidget {
               spacing: 12,
               children: [
                 FilledButton.icon(
-                  onPressed: onDeposit,
+                  onPressed: isSubmitting ? null : onDeposit,
                   icon: const Icon(Icons.add),
                   label: const Text(PointStrings.deposit),
                 ),
                 OutlinedButton.icon(
-                  onPressed: onWithdraw,
+                  onPressed: isSubmitting ? null : onWithdraw,
                   icon: const Icon(Icons.remove),
                   label: const Text(PointStrings.withdraw),
                 ),
@@ -73,46 +85,38 @@ class MemberPointDetail extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const Divider(),
-            Expanded(
-              child: data.logs.isEmpty
-                  ? const Center(child: Text(PointStrings.noHistory))
-                  : ListView.separated(
-                      itemCount: data.logs.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
-                      itemBuilder: (context, index) {
-                        final log = data.logs[index];
-                        final color = log.amount >= 0
-                            ? PointTokens.positive
-                            : PointTokens.negative;
-                        return ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(log.description),
-                          subtitle: Text(date.format(log.at.toLocal())),
-                          trailing: Text(
-                            '${log.amount > 0 ? '+' : ''}${number.format(log.amount)} P',
-                            style: TextStyle(
-                              color: color,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-            ),
+            if (data.logs.isEmpty)
+              const Center(child: Text(PointStrings.noHistory)),
+            for (final log in data.logs) ...[
+              Text(log.description),
+              Text(date.format(log.at.toLocal())),
+              Text(
+                '${log.amount > 0 ? '+' : ''}${number.format(log.amount)} P',
+                style: TextStyle(
+                  color: log.amount >= 0
+                      ? PointTokens.positive
+                      : PointTokens.negative,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const Divider(),
+            ],
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  tooltip: '이전 내역',
-                  onPressed: data.page > 1
+                  tooltip: PointStrings.previousHistory,
+                  onPressed: !isSubmitting && data.page > 1
                       ? () => onPageChanged(data.page - 1)
                       : null,
                   icon: const Icon(Icons.chevron_left),
                 ),
-                Text('${data.page} / ${data.totalPages == 0 ? 1 : data.totalPages}'),
+                Text(
+                  '${data.page} / ${data.totalPages == 0 ? 1 : data.totalPages}',
+                ),
                 IconButton(
-                  tooltip: '다음 내역',
-                  onPressed: data.page < data.totalPages
+                  tooltip: PointStrings.nextHistory,
+                  onPressed: !isSubmitting && data.page < data.totalPages
                       ? () => onPageChanged(data.page + 1)
                       : null,
                   icon: const Icon(Icons.chevron_right),

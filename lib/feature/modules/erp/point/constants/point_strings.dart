@@ -14,4 +14,16 @@ class PointStrings {
   static const apply = '적용';
   static const retry = '다시 시도';
   static const noHistory = '포인트 내역이 없습니다.';
+  static const search = '검색';
+  static const previousPage = '이전 페이지';
+  static const nextPage = '다음 페이지';
+  static const previousHistory = '이전 내역';
+  static const nextHistory = '다음 내역';
+  static const membersFailed = '회원 목록을 불러오지 못했습니다.';
+  static const detailFailed = '포인트 내역을 불러오지 못했습니다.';
+  static const transactionFailed = '처리 결과를 확인할 수 없습니다. 창을 닫고 잔액과 내역을 확인해 주세요.';
+  static const invalidAmount = '1 이상 100,000,000 이하의 금액을 입력하세요.';
+  static const insufficientBalance = '보유 포인트보다 큰 금액은 출금할 수 없습니다.';
+  static const descriptionRequired = '내역을 입력하세요.';
+  static const transactionComplete = '포인트 처리가 완료되었습니다.';
 }

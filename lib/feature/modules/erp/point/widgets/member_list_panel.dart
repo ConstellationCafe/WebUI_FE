@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constants/point_strings.dart';
 import '../domain/model/point_member.dart';
+import 'point_load_error.dart';
 
 class MemberListPanel extends StatelessWidget {
   final List<PointMember> members;
   final String? selectedDiscordId;
   final TextEditingController searchController;
   final bool isLoading;
+  final bool isSubmitting;
+  final bool hasError;
+  final VoidCallback? onRetry;
   final int page;
   final int totalPages;
   final VoidCallback onSearch;
@@ -20,6 +25,9 @@ class MemberListPanel extends StatelessWidget {
     required this.selectedDiscordId,
     required this.searchController,
     required this.isLoading,
+    this.isSubmitting = false,
+    this.hasError = false,
+    this.onRetry,
     required this.page,
     required this.totalPages,
     required this.onSearch,
@@ -47,7 +55,7 @@ class MemberListPanel extends StatelessWidget {
               onSubmitted: (_) => onSearch(),
               trailing: [
                 IconButton(
-                  tooltip: '검색',
+                  tooltip: PointStrings.search,
                   onPressed: onSearch,
                   icon: const Icon(Icons.arrow_forward),
                 ),
@@ -57,35 +65,43 @@ class MemberListPanel extends StatelessWidget {
             Expanded(
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
+                  : hasError
+                  ? PointLoadError(
+                      message: PointStrings.membersFailed,
+                      onRetry: onRetry,
+                    )
                   : members.isEmpty
-                      ? const Center(child: Text(PointStrings.noMembers))
-                      : ListView.separated(
-                          itemCount: members.length,
-                          separatorBuilder: (_, __) => const Divider(height: 1),
-                          itemBuilder: (context, index) {
-                            final member = members[index];
-                            return ListTile(
-                              selected: member.discordId == selectedDiscordId,
-                              title: Text(member.username),
-                              subtitle: Text(member.discordId),
-                              trailing: Text('${member.coin} P'),
-                              onTap: () => onSelected(member),
-                            );
-                          },
-                        ),
+                  ? const Center(child: Text(PointStrings.noMembers))
+                  : ListView.separated(
+                      itemCount: members.length,
+                      separatorBuilder: (_, __) => const Divider(height: 1),
+                      itemBuilder: (context, index) {
+                        final member = members[index];
+                        return ListTile(
+                          selected: member.discordId == selectedDiscordId,
+                          title: Text(member.username),
+                          subtitle: Text(
+                            '${member.discordId}\n${NumberFormat.decimalPattern().format(member.coin)} P',
+                          ),
+                          onTap: isSubmitting ? null : () => onSelected(member),
+                        );
+                      },
+                    ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  tooltip: '이전 페이지',
-                  onPressed: page > 1 ? () => onPageChanged(page - 1) : null,
+                  tooltip: PointStrings.previousPage,
+                  onPressed: !isLoading && page > 1
+                      ? () => onPageChanged(page - 1)
+                      : null,
                   icon: const Icon(Icons.chevron_left),
                 ),
                 Text('$page / ${totalPages == 0 ? 1 : totalPages}'),
                 IconButton(
-                  tooltip: '다음 페이지',
-                  onPressed: page < totalPages
+                  tooltip: PointStrings.nextPage,
+                  onPressed: !isLoading && page < totalPages
                       ? () => onPageChanged(page + 1)
                       : null,
                   icon: const Icon(Icons.chevron_right),
