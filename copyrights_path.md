@@ -1,6 +1,14 @@
-- Icons
-  - [swords](https://www.flaticon.com/free-icon/swords_861891?term=sword&page=1&position=6&origin=search&related_id=861891)
+- Icon Copyrights
+  - ChatBot
+    - [learning](https://www.flaticon.com/free-icon-font/person-chalkboard_18556856?page=1&position=8&term=teach&origin=search&related_id=18556856)
+    - [menu](https://www.flaticon.com/free-icon-font/plate-eating_17588776?page=1&position=18&term=dish&origin=search&related_id=17588776)
+    - [music](https://www.flaticon.com/free-icon-font/headphones-rhythm_19000468?page=1&position=12&term=music&origin=search&related_id=19000468)
+    - [content](https://www.flaticon.com/free-icon-font/photo-video_7931044?page=1&position=13&term=content&origin=search&related_id=7931044)
   - Academy
     - [hr](https://www.flaticon.com/free-icon-font/hr_13794369?page=1&position=11&term=hr&origin=search&related_id=13794369)
     - [write](https://www.flaticon.com/free-icon-font/file-edit_10469584?page=1&position=3&term=write&origin=search&related_id=10469584)
     - [read](https://www.flaticon.com/free-icon-font/book-alt_3914149?page=1&position=1&term=read&origin=search&related_id=3914149)
+  - Shadowverse
+    - [swords](https://www.flaticon.com/free-icon-font/two-swords_17697891?page=1&position=26&term=sword&origin=search&related_id=17697891)
+  - ERP
+    - [coin](https://www.flaticon.com/free-icon-font/coins_7928197?page=1&position=1&term=coin&origin=search&related_id=7928197)

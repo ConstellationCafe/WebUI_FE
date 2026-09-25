@@ -1,0 +1,41 @@
+class PointStrings {
+  static const title = '포인트 관리';
+  static const searchHint = 'Discord ID 검색';
+  static const members = '재적 회원';
+  static const noMembers = '조회된 재적 회원이 없습니다.';
+  static const selectMember = '회원을 선택하면 포인트 내역을 확인할 수 있습니다.';
+  static const balance = '보유 포인트';
+  static const history = '포인트 내역';
+  static const deposit = '입금';
+  static const withdraw = '출금';
+  static const amount = '금액';
+  static const description = '내역';
+  static const cancel = '취소';
+  static const apply = '적용';
+  static const retry = '다시 시도';
+  static const noHistory = '포인트 내역이 없습니다.';
+  static const noDescription = '등록된 설명이 없습니다.';
+  static const edit = '수정';
+  static const delete = '삭제';
+  static const editHistory = '포인트 내역 수정';
+  static const deleteHistory = '포인트 내역 삭제';
+  static const signedAmountHint = '입금은 양수, 출금은 음수로 입력하세요.';
+  static const invalidSignedAmount =
+      '0이 아닌 -100,000,000 이상 100,000,000 이하의 금액을 입력하세요.';
+  static const invalidResultingBalance = '변경 후 잔액이 허용 범위를 벗어납니다.';
+  static const invalidDescription = '내역은 255자 이하로 입력하세요.';
+  static const deleteConfirmation = '이 내역을 삭제하고 잔액을 되돌리시겠습니까?';
+  static const balanceAfter = '삭제 후 잔액';
+  static const search = '검색';
+  static const previousPage = '이전 페이지';
+  static const nextPage = '다음 페이지';
+  static const previousHistory = '이전 내역';
+  static const nextHistory = '다음 내역';
+  static const membersFailed = '회원 목록을 불러오지 못했습니다.';
+  static const detailFailed = '포인트 내역을 불러오지 못했습니다.';
+  static const transactionFailed = '처리 결과를 확인할 수 없습니다. 창을 닫고 잔액과 내역을 확인해 주세요.';
+  static const invalidAmount = '1 이상 100,000,000 이하의 금액을 입력하세요.';
+  static const insufficientBalance = '보유 포인트보다 큰 금액은 출금할 수 없습니다.';
+  static const descriptionRequired = '내역을 입력하세요.';
+  static const transactionComplete = '포인트 처리가 완료되었습니다.';
+}
