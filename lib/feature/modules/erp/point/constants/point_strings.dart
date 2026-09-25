@@ -15,6 +15,16 @@ class PointStrings {
   static const retry = '다시 시도';
   static const noHistory = '포인트 내역이 없습니다.';
   static const noDescription = '등록된 설명이 없습니다.';
+  static const edit = '수정';
+  static const delete = '삭제';
+  static const editHistory = '포인트 내역 수정';
+  static const deleteHistory = '포인트 내역 삭제';
+  static const signedAmountHint = '입금은 양수, 출금은 음수로 입력하세요.';
+  static const invalidSignedAmount = '0이 아닌 -100,000,000 이상 100,000,000 이하의 금액을 입력하세요.';
+  static const invalidResultingBalance = '변경 후 잔액이 허용 범위를 벗어납니다.';
+  static const invalidDescription = '내역은 255자 이하로 입력하세요.';
+  static const deleteConfirmation = '이 내역을 삭제하고 잔액을 되돌리시겠습니까?';
+  static const balanceAfter = '삭제 후 잔액';
   static const search = '검색';
   static const previousPage = '이전 페이지';
   static const nextPage = '다음 페이지';

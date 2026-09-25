@@ -5,6 +5,7 @@ import 'package:constellation_cafe/feature/modules/erp/point/data/api/admin_poin
 import 'package:constellation_cafe/feature/modules/erp/point/data/dto/request/admin_point_history_request.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/data/dto/request/admin_point_members_request.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/data/repository/admin_point_repository.dart';
+import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_log.dart';
 
 Map<String, dynamic> memberJson({int coin = 1200}) => {
   'discordId': '123',
@@ -146,6 +147,42 @@ void main() {
     final result = await repository.getMember('123', page: 2);
     expect(result.logs.single.description, '');
     expect(result.logs.single.at, DateTime.utc(2026, 9, 24, 1, 2, 3));
+  });
+
+  test('내역 수정은 원본 금액과 원본 timestamp 정밀도를 보존한다', () async {
+    const sourceAt = '2026-09-24T01:02:03.123456';
+    final log = PointLog(
+      amount: -5800,
+      at: DateTime.parse('${sourceAt}Z'),
+      description: '기존',
+      sourceAt: sourceAt,
+    );
+    await repository.updateLog(
+      discordId: '123',
+      log: log,
+      amount: -3000,
+      description: ' 수정 ',
+    );
+    expect(request.method, 'PATCH');
+    expect(request.path, '${AdminPointApi.path}/members/123/logs/-5800');
+    expect(request.queryParameters, {'at': sourceAt});
+    expect(request.data, {'amount': -3000, 'description': '수정'});
+  });
+
+  test('내역 삭제는 원본 복합 키만 전송한다', () async {
+    const sourceAt = '2026-09-24T01:02:03.123456';
+    await repository.deleteLog(
+      discordId: '123',
+      log: PointLog(
+        amount: 500,
+        at: DateTime.parse('${sourceAt}Z'),
+        description: '지급',
+        sourceAt: sourceAt,
+      ),
+    );
+    expect(request.method, 'DELETE');
+    expect(request.path, '${AdminPointApi.path}/members/123/logs/500');
+    expect(request.queryParameters, {'at': sourceAt});
   });
 
   test('실패 응답을 정상 상세 데이터로 처리하지 않는다', () async {

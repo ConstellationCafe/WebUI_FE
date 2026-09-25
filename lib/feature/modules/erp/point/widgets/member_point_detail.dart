@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
 import '../domain/model/point_member_detail.dart';
+import '../domain/model/point_log.dart';
 import 'point_load_error.dart';
 
 class MemberPointDetail extends StatelessWidget {
@@ -15,6 +16,8 @@ class MemberPointDetail extends StatelessWidget {
   final VoidCallback onDeposit;
   final VoidCallback onWithdraw;
   final ValueChanged<int> onPageChanged;
+  final ValueChanged<PointLog>? onEditLog;
+  final ValueChanged<PointLog>? onDeleteLog;
 
   const MemberPointDetail({
     super.key,
@@ -26,6 +29,8 @@ class MemberPointDetail extends StatelessWidget {
     required this.onDeposit,
     required this.onWithdraw,
     required this.onPageChanged,
+    this.onEditLog,
+    this.onDeleteLog,
   });
 
   @override
@@ -108,6 +113,27 @@ class MemberPointDetail extends StatelessWidget {
                       : PointTokens.negative,
                   fontWeight: FontWeight.w700,
                 ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 12,
+                runSpacing: 8,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: isSubmitting || onEditLog == null
+                        ? null
+                        : () => onEditLog!(log),
+                    icon: const Icon(Icons.edit),
+                    label: const Text(PointStrings.edit),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: isSubmitting || onDeleteLog == null
+                        ? null
+                        : () => onDeleteLog!(log),
+                    icon: const Icon(Icons.delete),
+                    label: const Text(PointStrings.delete),
+                  ),
+                ],
               ),
               const Divider(),
             ],

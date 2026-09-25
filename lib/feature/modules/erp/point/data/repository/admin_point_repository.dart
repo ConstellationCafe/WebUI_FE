@@ -5,6 +5,8 @@ import '../../domain/model/point_member_page.dart';
 import '../../domain/type/point_transaction_type.dart';
 import '../api/admin_point_api.dart';
 import '../dto/request/admin_point_history_request.dart';
+import '../dto/request/admin_point_log_reference_request.dart';
+import '../dto/request/admin_point_log_update_request.dart';
 import '../dto/request/admin_point_members_request.dart';
 import '../dto/request/admin_point_transaction_request.dart';
 import '../dto/response/admin_point_detail_response.dart';
@@ -59,6 +61,42 @@ class AdminPointRepository {
     );
   }
 
+  Future<PointMemberDetail> updateLog({
+    required String discordId,
+    required PointLog log,
+    required int amount,
+    required String description,
+  }) async {
+    return _detail(
+      await api.updateLog(
+        discordId,
+        AdminPointLogReferenceRequest(
+          originalAmount: log.amount,
+          at: log.referenceAt,
+        ),
+        AdminPointLogUpdateRequest(
+          amount: amount == log.amount ? null : amount,
+          description: description,
+        ),
+      ),
+    );
+  }
+
+  Future<PointMemberDetail> deleteLog({
+    required String discordId,
+    required PointLog log,
+  }) async {
+    return _detail(
+      await api.deleteLog(
+        discordId,
+        AdminPointLogReferenceRequest(
+          originalAmount: log.amount,
+          at: log.referenceAt,
+        ),
+      ),
+    );
+  }
+
   PointMemberDetail _detail(AdminPointDetailResponse response) {
     return PointMemberDetail(
       member: PointMember(
@@ -73,6 +111,7 @@ class AdminPointRepository {
               amount: log.amount,
               at: log.at,
               description: log.description ?? '',
+              sourceAt: log.sourceAt,
             ),
           )
           .toList(),

@@ -36,6 +36,8 @@ void main() {
               onDeposit: () {},
               onWithdraw: () {},
               onPageChanged: (_) {},
+              onEditLog: (_) {},
+              onDeleteLog: (_) {},
             ),
           ),
         ),
@@ -78,6 +80,8 @@ void main() {
               onDeposit: () {},
               onWithdraw: () {},
               onPageChanged: (_) {},
+              onEditLog: (_) {},
+              onDeleteLog: (_) {},
             ),
           ),
         ),
@@ -89,6 +93,8 @@ void main() {
     expect(find.text('이벤트 지급'), findsOneWidget);
     expect(find.text('입금'), findsOneWidget);
     expect(find.text('출금'), findsOneWidget);
+    expect(find.text('수정'), findsOneWidget);
+    expect(find.text('삭제'), findsOneWidget);
   });
 
   testWidgets('선택 전 안내를 표시한다', (tester) async {

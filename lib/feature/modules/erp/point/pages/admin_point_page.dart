@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
+import '../domain/model/point_log.dart';
 import '../notifier/admin_point_notifier.dart';
 import '../widgets/member_list_panel.dart';
 import '../widgets/member_point_detail.dart';
+import '../widgets/point_log_delete_dialog.dart';
 import '../widgets/point_transaction_dialog.dart';
 
 class AdminPointPage extends ConsumerWidget {
@@ -66,6 +68,13 @@ class AdminPointPage extends ConsumerWidget {
                   },
                   onDeposit: () => _showTransactionDialog(context, ref, true),
                   onWithdraw: () => _showTransactionDialog(context, ref, false),
+                  onEditLog: (log) => _showTransactionDialog(
+                    context,
+                    ref,
+                    log.amount >= 0,
+                    log: log,
+                  ),
+                  onDeleteLog: (log) => _showDeleteDialog(context, ref, log),
                   onPageChanged: (page) {
                     final discordId = state.selected?.member.discordId;
                     if (discordId != null) {
@@ -110,8 +119,9 @@ class AdminPointPage extends ConsumerWidget {
   Future<void> _showTransactionDialog(
     BuildContext context,
     WidgetRef ref,
-    bool isDeposit,
-  ) async {
+    bool isDeposit, {
+    PointLog? log,
+  }) async {
     final selected = ref.read(adminPointProvider).selected;
     if (selected == null) return;
     final success = await showDialog<bool>(
@@ -120,25 +130,64 @@ class AdminPointPage extends ConsumerWidget {
       builder: (context) => PointTransactionDialog(
         isDeposit: isDeposit,
         member: selected.member,
-        onSubmit: (amount, description) => ref
-            .read(adminPointProvider.notifier)
-            .transact(
-              discordId: selected.member.discordId,
-              isDeposit: isDeposit,
-              amount: amount,
-              description: description,
-            ),
+        originalLog: log,
+        onSubmit: (amount, description) => log == null
+            ? ref
+                  .read(adminPointProvider.notifier)
+                  .transact(
+                    discordId: selected.member.discordId,
+                    isDeposit: isDeposit,
+                    amount: amount,
+                    description: description,
+                  )
+            : ref
+                  .read(adminPointProvider.notifier)
+                  .updateLog(
+                    discordId: selected.member.discordId,
+                    log: log,
+                    amount: amount,
+                    description: description,
+                  ),
       ),
     );
     if (!context.mounted) return;
+    await _completeDialog(context, ref, selected.member.discordId, success);
+  }
+
+  Future<void> _showDeleteDialog(
+    BuildContext context,
+    WidgetRef ref,
+    PointLog log,
+  ) async {
+    final selected = ref.read(adminPointProvider).selected;
+    if (selected == null) return;
+    final success = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => PointLogDeleteDialog(
+        member: selected.member,
+        log: log,
+        onSubmit: () => ref
+            .read(adminPointProvider.notifier)
+            .deleteLog(discordId: selected.member.discordId, log: log),
+      ),
+    );
+    if (!context.mounted) return;
+    await _completeDialog(context, ref, selected.member.discordId, success);
+  }
+
+  Future<void> _completeDialog(
+    BuildContext context,
+    WidgetRef ref,
+    String discordId,
+    bool? success,
+  ) async {
     if (success == true) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text(PointStrings.transactionComplete)),
       );
     } else {
-      await ref
-          .read(adminPointProvider.notifier)
-          .selectMember(selected.member.discordId);
+      await ref.read(adminPointProvider.notifier).selectMember(discordId);
     }
   }
 }

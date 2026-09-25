@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_member_detail.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_member_page.dart';
+import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/notifier/admin_point_notifier.dart';
 
 import 'support/fake_admin_point_repository.dart';
@@ -157,6 +158,40 @@ void main() {
     );
     expect(container.read(adminPointProvider).isSubmitting, isFalse);
     expect(container.read(adminPointProvider).selected?.member.coin, 1200);
+  });
+
+  test('내역 수정과 삭제 결과로 상세와 회원 잔액을 갱신한다', () async {
+    await notifier.selectMember('123');
+    final log = PointLog(
+      amount: -500,
+      at: DateTime.utc(2026, 9, 24),
+      description: '차감',
+    );
+    repository.updateHandler = (id, original, amount, description) async {
+      expect(id, '123');
+      expect(original, same(log));
+      expect(amount, -300);
+      expect(description, '수정');
+      return pointDetail(id, coin: 1400);
+    };
+    expect(
+      await notifier.updateLog(
+        discordId: '123',
+        log: log,
+        amount: -300,
+        description: '수정',
+      ),
+      isTrue,
+    );
+    expect(container.read(adminPointProvider).selected?.member.coin, 1400);
+    repository.deleteHandler = (id, original) async {
+      expect(original, same(log));
+      return pointDetail(id, coin: 1900);
+    };
+    expect(await notifier.deleteLog(discordId: '123', log: log), isTrue);
+    expect(container.read(adminPointProvider).selected?.member.coin, 1900);
+    expect(repository.updateCount, 1);
+    expect(repository.deleteCount, 1);
   });
 
   test('화면을 닫은 뒤 완료되는 요청은 폐기된 상태를 수정하지 않는다', () async {

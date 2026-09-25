@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 
 import '../dto/request/admin_point_history_request.dart';
+import '../dto/request/admin_point_log_reference_request.dart';
+import '../dto/request/admin_point_log_update_request.dart';
 import '../dto/request/admin_point_members_request.dart';
 import '../dto/request/admin_point_transaction_request.dart';
 import '../dto/response/admin_point_detail_response.dart';
@@ -42,6 +44,30 @@ class AdminPointApi {
     final response = await dio.post<Map<String, dynamic>>(
       '$path/members/${Uri.encodeComponent(discordId)}/transactions',
       data: request.toJson(),
+    );
+    return AdminPointDetailResponse.fromJson(_responseBody(response.data));
+  }
+
+  Future<AdminPointDetailResponse> updateLog(
+    String discordId,
+    AdminPointLogReferenceRequest reference,
+    AdminPointLogUpdateRequest request,
+  ) async {
+    final response = await dio.patch<Map<String, dynamic>>(
+      '$path/members/${Uri.encodeComponent(discordId)}/logs/${reference.originalAmount}',
+      queryParameters: reference.toJson(),
+      data: request.toJson(),
+    );
+    return AdminPointDetailResponse.fromJson(_responseBody(response.data));
+  }
+
+  Future<AdminPointDetailResponse> deleteLog(
+    String discordId,
+    AdminPointLogReferenceRequest reference,
+  ) async {
+    final response = await dio.delete<Map<String, dynamic>>(
+      '$path/members/${Uri.encodeComponent(discordId)}/logs/${reference.originalAmount}',
+      queryParameters: reference.toJson(),
     );
     return AdminPointDetailResponse.fromJson(_responseBody(response.data));
   }

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/feature/modules/erp/point/data/repository/admin_point_repository.dart';
+import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_member.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_member_detail.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_member_page.dart';
@@ -26,7 +27,18 @@ class FakeAdminPointRepository extends Fake implements AdminPointRepository {
     String description,
   )?
   transactionHandler;
+  Future<PointMemberDetail> Function(
+    String discordId,
+    PointLog log,
+    int amount,
+    String description,
+  )?
+  updateHandler;
+  Future<PointMemberDetail> Function(String discordId, PointLog log)?
+  deleteHandler;
   int transactionCount = 0;
+  int updateCount = 0;
+  int deleteCount = 0;
 
   @override
   Future<PointMemberPage> getMembers({
@@ -64,5 +76,29 @@ class FakeAdminPointRepository extends Fake implements AdminPointRepository {
             discordId,
             coin: isDeposit ? 1200 + amount : 1200 - amount,
           );
+  }
+
+  @override
+  Future<PointMemberDetail> updateLog({
+    required String discordId,
+    required PointLog log,
+    required int amount,
+    required String description,
+  }) async {
+    updateCount++;
+    return updateHandler != null
+        ? updateHandler!(discordId, log, amount, description)
+        : pointDetail(discordId);
+  }
+
+  @override
+  Future<PointMemberDetail> deleteLog({
+    required String discordId,
+    required PointLog log,
+  }) async {
+    deleteCount++;
+    return deleteHandler != null
+        ? deleteHandler!(discordId, log)
+        : pointDetail(discordId);
   }
 }

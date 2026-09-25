@@ -5,6 +5,7 @@ import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/feature/modules/erp/point/constants/point_strings.dart';
+import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/widgets/point_transaction_dialog.dart';
 
 import 'support/fake_admin_point_repository.dart';
@@ -12,6 +13,7 @@ import 'support/fake_admin_point_repository.dart';
 Future<void> openDialog(
   WidgetTester tester, {
   bool isDeposit = true,
+  PointLog? originalLog,
   required Future<bool> Function(int, String) onSubmit,
 }) async {
   await tester.pumpWidget(
@@ -26,6 +28,7 @@ Future<void> openDialog(
               builder: (_) => PointTransactionDialog(
                 isDeposit: isDeposit,
                 member: pointMember('123'),
+                originalLog: originalLog,
                 onSubmit: onSubmit,
               ),
             ),
@@ -40,6 +43,37 @@ Future<void> openDialog(
 }
 
 void main() {
+  testWidgets('회원, 금액, 내역 입력 행 사이에 여백을 둔다', (tester) async {
+    await openDialog(tester, onSubmit: (_, _) async => true);
+    expect(find.byType(SizedBox), findsWidgets);
+    final fields = find.byType(TextFormField);
+    final firstTop = tester.getTopLeft(fields.first).dy;
+    final secondTop = tester.getTopLeft(fields.last).dy;
+    expect(secondTop - firstTop, greaterThan(56));
+  });
+
+  testWidgets('내역 수정은 음수 금액을 허용하고 기존 값을 표시한다', (tester) async {
+    var receivedAmount = 0;
+    await openDialog(
+      tester,
+      originalLog: PointLog(
+        amount: -5800,
+        at: DateTime.utc(2026, 9, 24),
+        description: '차감',
+      ),
+      onSubmit: (amount, _) async {
+        receivedAmount = amount;
+        return true;
+      },
+    );
+    expect(find.text(PointStrings.editHistory), findsOneWidget);
+    expect(find.text('-5800'), findsOneWidget);
+    await tester.enterText(find.byType(TextFormField).first, '-3000');
+    await tester.tap(find.text(PointStrings.apply));
+    await tester.pumpAndSettle();
+    expect(receivedAmount, -3000);
+  });
+
   testWidgets('취소 버튼은 공통 버튼 테마에서 읽을 수 있는 대비를 가진다', (tester) async {
     await openDialog(tester, onSubmit: (_, _) async => true);
     final button = find.widgetWithText(ElevatedButton, PointStrings.cancel);

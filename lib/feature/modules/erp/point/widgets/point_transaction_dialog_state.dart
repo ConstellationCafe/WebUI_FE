@@ -8,6 +8,16 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
   bool _hasError = false;
 
   @override
+  void initState() {
+    super.initState();
+    final log = widget.originalLog;
+    if (log != null) {
+      _amountController.text = log.amount.toString();
+      _descriptionController.text = log.description;
+    }
+  }
+
+  @override
   void dispose() {
     _amountController.dispose();
     _descriptionController.dispose();
@@ -21,7 +31,11 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
       child: AlertDialog(
         scrollable: true,
         title: Text(
-          widget.isDeposit ? PointStrings.deposit : PointStrings.withdraw,
+          widget.originalLog != null
+              ? PointStrings.editHistory
+              : widget.isDeposit
+              ? PointStrings.deposit
+              : PointStrings.withdraw,
         ),
         content: Form(
           key: _formKey,
@@ -29,17 +43,38 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('${widget.member.username} · ${widget.member.discordId}'),
+              const SizedBox(height: PointTokens.fieldGap),
               TextFormField(
                 cursorColor: Theme.of(context).colorScheme.secondary,
                 controller: _amountController,
                 autofocus: true,
                 enabled: !_isSubmitting && !_hasError,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
+                keyboardType: TextInputType.numberWithOptions(
+                  signed: widget.originalLog != null,
+                ),
+                decoration: InputDecoration(
                   labelText: PointStrings.amount,
+                  helperText: widget.originalLog != null
+                      ? PointStrings.signedAmountHint
+                      : null,
+                  helperMaxLines: 2,
                 ),
                 validator: (value) {
                   final amount = int.tryParse(value ?? '');
+                  final original = widget.originalLog;
+                  if (original != null) {
+                    if (amount == null ||
+                        amount == 0 ||
+                        amount.abs() > 100000000) {
+                      return PointStrings.invalidSignedAmount;
+                    }
+                    final nextBalance =
+                        widget.member.coin + amount - original.amount;
+                    if (nextBalance < 0 || nextBalance > 2147483647) {
+                      return PointStrings.invalidResultingBalance;
+                    }
+                    return null;
+                  }
                   if (amount == null || amount <= 0 || amount > 100000000) {
                     return PointStrings.invalidAmount;
                   }
@@ -49,6 +84,7 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
                   return null;
                 },
               ),
+              const SizedBox(height: PointTokens.fieldGap),
               TextFormField(
                 cursorColor: Theme.of(context).colorScheme.secondary,
                 controller: _descriptionController,
@@ -57,9 +93,16 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
                 decoration: const InputDecoration(
                   labelText: PointStrings.description,
                 ),
-                validator: (value) => value == null || value.trim().isEmpty
-                    ? PointStrings.descriptionRequired
-                    : null,
+                validator: (value) {
+                  if ((value ?? '').length > 255) {
+                    return PointStrings.invalidDescription;
+                  }
+                  if (widget.originalLog == null &&
+                      (value ?? '').trim().isEmpty) {
+                    return PointStrings.descriptionRequired;
+                  }
+                  return null;
+                },
               ),
               if (_hasError) const Text(PointStrings.transactionFailed),
             ],

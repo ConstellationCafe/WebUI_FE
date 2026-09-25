@@ -2,11 +2,13 @@ class AdminPointLogResponse {
   final int amount;
   final DateTime at;
   final String? description;
+  final String sourceAt;
 
   const AdminPointLogResponse({
     required this.amount,
     required this.at,
     required this.description,
+    required this.sourceAt,
   });
 
   factory AdminPointLogResponse.fromJson(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class AdminPointLogResponse {
       amount: (json['amount'] as num).toInt(),
       at: DateTime.parse(hasOffset ? timestamp : '${timestamp}Z').toUtc(),
       description: json['description'] as String?,
+      sourceAt: timestamp,
     );
   }
 }
