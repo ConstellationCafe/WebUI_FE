@@ -85,7 +85,7 @@ lib/
 ## 📚 사용된 주요 라이브러리
 
 ### 핵심 라이브러리
-- `flutter_riverpod`: ^2.6.1 (상태 관리)
+- `flutter_riverpod`: ^3.3.1 (상태 관리)
 - `go_router`: ^16.0.0 (라우팅)
 - `dio`: ^5.4.0 (HTTP 클라이언트)
 
@@ -121,6 +121,25 @@ lib/
 ### 카테고리 설계
 - 통합 검색 지원 (Category + Search Bar + Tags)
 - 사용자/관리자 영역 분리된 카테고리 구조
+
+### ERP 포인트 관리
+- 구현 위치: `lib/feature/modules/erp/point/`.
+- `notifier/`는 `@riverpod` 자동 생성 provider, `state/`는 `@freezed` 불변 UI 상태를 사용한다. 화면 종료 시 provider가 해제되며, 늦게 완료된 요청은 상태를 수정하지 않는다.
+- `data/dto/request`와 `data/dto/response`는 membership 포인트 API 계약을 표현한다. API에서 JSON을 DTO로 변환하고 repository에서 domain model로 변환한다.
+- 페이지는 `ConsumerWidget`이다. 검색 입력과 제출한 검색어는 UI 상태에서 구분하며, 다이얼로그 입력 controller는 해당 위젯의 `State`에서 생성·해제한다.
+- 백엔드가 시간대 없이 반환하는 UTC 일시는 DTO 경계에서 UTC로 해석하고 화면에서 현지 시각으로 표시한다. null·빈 문자열·공백뿐인 설명은 “등록된 설명이 없습니다.”로 표시한다.
+- `*.g.dart`, `*.freezed.dart` 생성 결과는 커밋한다. 의존성은 `pubspec.lock`을 사용하며, annotation 버전을 바꾸지 않고 다음 명령으로 재생성·검증한다.
+
+```sh
+flutter pub get
+dart run build_runner build
+dart format lib/feature/modules/erp/point test/feature/modules/erp/point
+dart analyze lib/feature/modules/erp/point test/feature/modules/erp/point
+flutter test test/feature/modules/erp/point
+flutter build web
+```
+
+포인트 테스트는 API 직렬화·매핑, 검색 및 페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 공통 테마 버튼의 대비 및 빈 설명을 검증한다.
 ---
 
 ## 📚 **참조 자료**
