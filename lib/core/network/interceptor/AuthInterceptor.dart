@@ -13,9 +13,16 @@ class AuthInterceptor extends Interceptor {
     final requestOptions = err.requestOptions;
     final statusCode = err.response?.statusCode;
 
+    // 백엔드에서 403은 항상 순수 비즈니스 규칙 거부다(예:
+    // GUILD_NOT_REGISTERED, GUILD_MEMBER_NOT_FOUND). 토큰/세션 문제는
+    // GlobalExceptionHandler.handleAuthorizationDeniedException이
+    // 미인증이면 401로, 인증됐지만 권한 없음이면 404로 내려준다 — 403이
+    // 아니다. 즉 refresh로 해결될 수 있는 경우는 401뿐이라, 403에
+    // refresh-and-retry를 시도하는 건 항상 헛수고이고(같은 방을 다시
+    // 선택 못 하는 이유는 refresh로 바뀌지 않는다) 에러 노출도 늦춘다.
     if (requestOptions.path.contains('/auth/refresh') ||
         requestOptions.extra[_retryKey] == true ||
-        (statusCode != 401 && statusCode != 403)) {
+        statusCode != 401) {
       return handler.next(err);
     }
 
