@@ -42,7 +42,7 @@ final class MembershipNotifierProvider
 }
 
 String _$membershipNotifierHash() =>
-    r'400a0e785e0227c2b95ecbe51ab5a69aa8ba7de3';
+    r'25d1f5c9106a6dd5d9680622a9cbfd770989f611';
 
 abstract class _$MembershipNotifier extends $Notifier<MembershipState> {
   MembershipState build();
