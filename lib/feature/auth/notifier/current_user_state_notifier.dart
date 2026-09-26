@@ -29,6 +29,14 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
     }
   }
 
+  /// ADR-0001: roles(관리자 여부)는 방(botId) 단위로 갈린다. 채팅방을
+  /// 새로 선택/변경했을 때는 이미 초기화되어 있어도 강제로 다시 불러와야
+  /// 이전 방의 roles가 남아있지 않다.
+  Future<void> refresh() async {
+    _isInitialized = false;
+    await initialize();
+  }
+
   /// 상태 업데이트
   void update({
     String? userId,
