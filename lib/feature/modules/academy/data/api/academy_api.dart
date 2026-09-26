@@ -39,9 +39,11 @@ class AcademyApi {
     return data.map((json) => Subject.fromJson(json)).toList();
   }
 
+  // 2026-09-26: BE의 getTeachers/getStudents가 TeacherController/
+  // StudentController로 이관되면서 경로가 바뀜.
   Future<List<Teacher>> getTeachers(int academyId, int classId) async {
     final response = await dio.get(
-      '$base/api/academy/$academyId/classes/$classId/teachers',
+      '$base/api/academy/teachers/$academyId/classes/$classId',
     );
     final List<dynamic> data = response.data['response'];
     return data.map((json) => Teacher.fromJson(json)).toList();
@@ -49,7 +51,7 @@ class AcademyApi {
 
   Future<List<Student>> getStudents(int academyId, int classId) async {
     final response = await dio.get(
-      '$base/api/academy/$academyId/classes/$classId/students',
+      '$base/api/academy/students/$academyId/classes/$classId',
     );
     final List<dynamic> data = response.data['response'];
     return data.map((json) => Student.fromJson(json)).toList();

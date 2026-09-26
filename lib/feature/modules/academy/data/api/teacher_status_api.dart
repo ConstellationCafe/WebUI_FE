@@ -22,7 +22,7 @@ class TeacherStatusApi {
     int? classId,
   }) async {
     final response = await dio.get(
-      '$base/api/academy/teacher-status/options',
+      '$base/api/academy/teachers/options',
       queryParameters: {
         if (academyId != null) 'academyId': academyId,
         if (classId != null) 'classId': classId,
@@ -38,7 +38,7 @@ class TeacherStatusApi {
     StatusQueryRequest request,
   ) async {
     final response = await dio.get(
-      '$base/api/academy/teacher-status',
+      '$base/api/academy/teachers',
       queryParameters: request.toJson(),
     );
 
