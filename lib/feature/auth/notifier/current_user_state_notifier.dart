@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import '../state/current_user_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/auth/service/login.dart';
 
 part 'current_user_state_notifier.g.dart';
 

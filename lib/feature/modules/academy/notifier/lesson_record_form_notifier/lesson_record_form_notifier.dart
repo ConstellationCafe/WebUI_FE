@@ -1,12 +1,13 @@
-import 'package:constellation_cafe/di/ApiProvider.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
 import 'package:constellation_cafe/feature/modules/academy/state/lesson_record_selection_state/lesson_record_selection_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../data/api/academy_api.dart';
+import '../../data/api/lesson_record_api.dart';
 import '../../data/repository/lesson_record_repository.dart';
-import '../../domain/model/lesson_record.dart';
-import '../../domain/model/lesson_record_form/lesson_record_form.dart';
-import '../../domain/model/lesson_record_selection/lesson_record_selection.dart';
+import '../../domain/model/lesson_record/lesson_record.dart';
+import '../../domain/model/lesson_record/lesson_record_form.dart';
+import '../../domain/model/lesson_record/lesson_record_selection.dart';
 import '../../state/lesson_record_form_state/lesson_record_form_state.dart';
 
 part 'lesson_record_form_notifier.g.dart';

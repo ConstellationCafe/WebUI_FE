@@ -1,8 +1,15 @@
 import 'package:constellation_cafe/shared/domain/pagination/page_result.dart';
 import 'package:dio/dio.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:constellation_cafe/core/network/DioProvider.dart';
 
 import '../domain/entity/content_entity.dart';
+
+final contentRepositoryProvider = Provider<RepositoryInterface>(
+  (ref) => ContentRepository(dio: ref.watch(dioProvider)),
+);
 
 class ContentRepository implements RepositoryInterface<ContentEntity> {
   static String apiPath = "/api/repository/content";

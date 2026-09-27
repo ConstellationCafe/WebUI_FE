@@ -2,6 +2,9 @@ import 'package:constellation_cafe/core/network/discordBot/Interface.dart';
 import 'package:constellation_cafe/core/network/discordBot/socket/Interface.dart';
 import 'package:constellation_cafe/core/network/discordBot/socket/Client.dart';
 import 'package:constellation_cafe/shared/data/dto/request/SocketModel.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final apiTranslatorProvider = Provider((ref) => APITranslator());
 
 class APITranslator extends APIInterface {
   final SocketInterface client = SocketClient();

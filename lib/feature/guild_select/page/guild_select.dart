@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:constellation_cafe/core/constants/const_color.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';

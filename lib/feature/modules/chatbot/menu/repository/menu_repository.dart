@@ -1,8 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:constellation_cafe/core/network/DioProvider.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 import 'package:constellation_cafe/shared/domain/pagination/page_result.dart';
 
 import '../domain/entity/menu_entity.dart';
+
+final menuRepositoryProvider = Provider<RepositoryInterface>(
+  (ref) => MenuRepository(dio: ref.watch(dioProvider)),
+);
 
 class MenuRepository implements RepositoryInterface<MenuEntity> {
   static String apiPath = "/api/repository/menu";

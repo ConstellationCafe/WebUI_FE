@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/di/RepositoryProvider.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/content/repository/content_repository.dart';
 import 'package:constellation_cafe/shared/widgets/db_editor/DBEditor.dart';
 
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';

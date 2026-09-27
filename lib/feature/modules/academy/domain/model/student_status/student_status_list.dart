@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../type/student_roster_status.dart';
-import '../status_view/status_view.dart';
+import '../status_shared/status_view.dart';
 import '../student.dart';
 
 part 'student_status_list.freezed.dart';

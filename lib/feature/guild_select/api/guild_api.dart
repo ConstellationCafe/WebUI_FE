@@ -1,5 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:constellation_cafe/core/network/DioProvider.dart';
+
 import '../domain/guild.dart';
+
+final guildApiProvider = Provider((ref) {
+  final dio = ref.watch(dioProvider);
+  return GuildApi(dio: dio);
+});
 
 class GuildApi {
   static const base = String.fromEnvironment('BACKEND_URI');

@@ -1,6 +1,6 @@
-import 'package:constellation_cafe/di/ApiProvider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../data/api/academy_api.dart';
 import '../../state/permission_state/academy_permission_state.dart';
 
 part 'academy_permission_notifier.g.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/auth/service/jwt.dart';
 
 import '../state/login_status.dart';
 import 'current_user_state_notifier.dart';

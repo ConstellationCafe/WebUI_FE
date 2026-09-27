@@ -1,6 +1,13 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:constellation_cafe/feature/auth/api/auth_Interface.dart';
+import 'package:constellation_cafe/feature/auth/api/auth_service_provider.dart';
 import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart';
 import 'package:constellation_cafe/shared/data/dto/response/backend/ApiResponse.dart';
+
+final loginApiProvider = Provider<Login>(
+  (ref) => Login(ref.read(oauthServiceProvider)),
+);
 
 class Login {
   final AuthServiceInterface oauthService;

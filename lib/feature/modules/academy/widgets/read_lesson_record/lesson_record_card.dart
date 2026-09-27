@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../domain/model/lesson_record_view.dart';
-import '../../domain/model/lesson_record_update.dart';
+import '../../domain/model/lesson_record/lesson_record_view.dart';
+import '../../domain/model/lesson_record/lesson_record_update.dart';
 import 'lesson_record_edit_dialog.dart';
 
 class LessonRecordCard extends StatelessWidget {
