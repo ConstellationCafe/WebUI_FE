@@ -66,8 +66,12 @@ class PenaltyLogTile extends StatelessWidget {
                         runSpacing: PenaltyTokens.cardGap,
                         children: [
                           Text(
-                            '${PenaltyStrings.score} ${log.score}점',
-                            style: theme.textTheme.titleSmall,
+                            '${PenaltyStrings.score} ${log.score}점 · '
+                            '${PenaltyStrings.cumulativeScoreInline} '
+                            '${displayedCumulativeScore}점',
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           DecoratedBox(
                             decoration: BoxDecoration(
