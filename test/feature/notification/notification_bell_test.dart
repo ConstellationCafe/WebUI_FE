@@ -161,4 +161,3 @@ void main() {
     expect(find.text(NotificationStrings.minutesAgo(5)), findsOneWidget);
   });
 }
-

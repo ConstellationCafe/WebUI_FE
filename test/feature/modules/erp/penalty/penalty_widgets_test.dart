@@ -153,8 +153,9 @@ void main() {
       MaterialApp(
         theme: CustomTheme.themeData,
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context)
-              .copyWith(textScaler: TextScaler.linear(1.4)),
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(1.4)),
           child: child!,
         ),
         home: Scaffold(

@@ -400,8 +400,9 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
     );
     if (!mounted) return;
     if (result == true) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('벌점이 부여되었습니다.')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('벌점이 부여되었습니다.')));
     } else {
       ref.read(adminPenaltyProvider.notifier).loadHistory();
     }
@@ -419,8 +420,9 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
     );
     if (!mounted) return;
     if (result == true) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('벌점이 취소되었습니다.')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('벌점이 취소되었습니다.')));
     } else {
       ref.read(adminPenaltyProvider.notifier).loadHistory();
       final selected = ref.read(adminPenaltyProvider).selectedId;
