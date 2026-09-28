@@ -40,7 +40,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(adminApp(FakePenaltyRepository()));
     await tester.pumpAndSettle();
-    expect(find.text(PenaltyStrings.currentScore), findsWidgets);
+    expect(find.text(PenaltyStrings.cumulativeScore), findsWidgets);
     expect(find.text('2점'), findsWidgets);
     expect(find.text(PenaltyStrings.cancelPenalty), findsOneWidget);
     expect(tester.takeException(), isNull);
