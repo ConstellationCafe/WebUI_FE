@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,9 +31,9 @@ class NotificationPanel extends ConsumerWidget {
     final state = ref.watch(notificationCenterProvider);
     final notifier = ref.read(notificationCenterProvider.notifier);
     final textTheme = Theme.of(context).textTheme;
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final available = screenWidth - NotificationTokens.panelScreenMargin * 2;
-    final width = max(0.0, min(NotificationTokens.panelWidth, available));
+    final width = NotificationTokens.panelWidthFor(
+      MediaQuery.sizeOf(context).width,
+    );
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(NotificationTokens.panelRadius),

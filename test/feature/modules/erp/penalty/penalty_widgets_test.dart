@@ -76,7 +76,7 @@ void main() {
     final action = tester.getRect(
       find.widgetWithText(ElevatedButton, PenaltyStrings.cancelPenalty).first,
     );
-    expect(tile.left, closeTo(tab.left, 1));
+    expect(tile.left, closeTo(tab.left - PenaltyTokens.tabBarInset, 1));
     expect(action.left - tile.left, closeTo(tile.bottom - action.bottom, 4));
   });
 

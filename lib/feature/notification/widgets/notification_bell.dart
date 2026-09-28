@@ -33,11 +33,14 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
     if (hasUnread) {
       tooltip = NotificationStrings.unreadCount(unreadCount);
     }
+    final panelWidth = NotificationTokens.panelWidthFor(
+      MediaQuery.sizeOf(context).width,
+    );
 
     return MenuAnchor(
       controller: _menuController,
-      alignmentOffset: const Offset(
-        -NotificationTokens.panelScreenMargin,
+      alignmentOffset: Offset(
+        -panelWidth - NotificationTokens.panelScreenMargin,
         NotificationTokens.panelBelowHeaderGap,
       ),
       style: MenuStyle(

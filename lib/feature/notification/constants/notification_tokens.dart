@@ -31,4 +31,10 @@ class NotificationTokens {
   static const bodyMaxLines = 6;
   static const progressSize = 18.0;
   static const progressStroke = 2.0;
+
+  static double panelWidthFor(double screenWidth) {
+    final available = screenWidth - panelScreenMargin * 2;
+    if (available <= 0) return 0;
+    return available < panelWidth ? available : panelWidth;
+  }
 }

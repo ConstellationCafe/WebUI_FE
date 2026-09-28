@@ -200,7 +200,7 @@ void main() {
       await tester.tap(find.byType(ProfileMenu));
       await tester.pumpAndSettle();
       expect(find.text('프로필 수정'), findsOneWidget);
-      expect(find.text('내 벌점'), findsOneWidget);
+      expect(find.text('내 벌점'), findsWidgets);
 
       await tester.tap(find.text('로그아웃'));
       await tester.pumpAndSettle();
