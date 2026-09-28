@@ -12,3 +12,4 @@
     - [swords](https://www.flaticon.com/free-icon-font/two-swords_17697891?page=1&position=26&term=sword&origin=search&related_id=17697891)
   - ERP
     - [coin](https://www.flaticon.com/free-icon-font/coins_7928197?page=1&position=1&term=coin&origin=search&related_id=7928197)
+    - [penalty](https://uxwing.com/gavel-icon/)
