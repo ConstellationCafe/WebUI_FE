@@ -34,6 +34,7 @@ class PenaltyDetailPanel extends StatelessWidget {
     );
 
     return Card(
+      margin: EdgeInsets.zero,
       child: ListView(
         padding: const EdgeInsets.all(PenaltyTokens.cardPadding),
         children: [
@@ -86,15 +87,18 @@ class PenaltyDetailPanel extends StatelessWidget {
               child: Text(PenaltyStrings.noHistory),
             ),
           for (var index = 0; index < detail.history.items.length; index++)
-            PenaltyLogTile(
-              log: detail.history.items[index],
-              cumulativeScore: cumulativeScores[index],
-              onCancel:
-                  onCancel == null ||
-                      isSubmitting ||
-                      detail.history.items[index].isCanceled
-                  ? null
-                  : () => onCancel!(detail.history.items[index]),
+            Padding(
+              padding: const EdgeInsets.only(bottom: PenaltyTokens.cardGap),
+              child: PenaltyLogTile(
+                log: detail.history.items[index],
+                cumulativeScore: cumulativeScores[index],
+                onCancel:
+                    onCancel == null ||
+                        isSubmitting ||
+                        detail.history.items[index].isCanceled
+                    ? null
+                    : () => onCancel!(detail.history.items[index]),
+              ),
             ),
           PenaltyPager(
             page: detail.history.page,

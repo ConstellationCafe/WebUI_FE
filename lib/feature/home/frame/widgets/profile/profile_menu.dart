@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
+import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
 
 import 'profile_icon.dart';
 
@@ -29,7 +30,11 @@ class ProfileMenu extends ConsumerWidget {
     context.go('/login');
   }
 
-  Future<void> route(BuildContext context, WidgetRef ref, selected) async {
+  Future<void> route(
+    BuildContext context,
+    WidgetRef ref,
+    String? selected,
+  ) async {
     if (selected == null) return;
     switch (selected) {
       case 'profile':
@@ -37,6 +42,9 @@ class ProfileMenu extends ConsumerWidget {
         break;
       case 'penalties':
         context.go('/my-penalties');
+        break;
+      case 'select':
+        context.go('/select');
         break;
       case 'logout':
         await performLogout(context, ref);
@@ -73,6 +81,10 @@ class ProfileMenu extends ConsumerWidget {
           items: const [
             PopupMenuItem(value: 'profile', child: Text('프로필 수정')),
             PopupMenuItem(value: 'penalties', child: Text('내 벌점')),
+            PopupMenuItem(
+              value: 'select',
+              child: Text(HomeStrings.selectGuild),
+            ),
             PopupMenuItem(value: 'logout', child: Text('로그아웃')),
           ],
         );

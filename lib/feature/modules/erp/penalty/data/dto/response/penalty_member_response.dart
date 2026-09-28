@@ -19,7 +19,8 @@ class PenaltyMemberResponse {
         username: json['username'] as String,
         cumulativeScore30d: (json['cumulativeScore30d'] as num).toInt(),
         penaltyCount30d: (json['penaltyCount30d'] as num).toInt(),
-        lastOccurredAt: DateTime.parse(json['lastOccurredAt'] as String)
-            .toUtc(),
+        lastOccurredAt: DateTime.parse(
+          json['lastOccurredAt'] as String,
+        ).toUtc(),
       );
 }

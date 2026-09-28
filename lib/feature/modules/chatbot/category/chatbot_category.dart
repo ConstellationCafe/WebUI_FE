@@ -4,18 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../home/frame/widgets/menu_bar_area/categories/container/menu_container.dart';
+import '../../../home/frame/widgets/menu_bar_area/categories/container/menu_category_section.dart';
 
 class ChatBotCategory extends ConsumerWidget {
   const ChatBotCategory({super.key});
 
   @override
   Widget build(BuildContext build, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+    return MenuCategorySection(
+      title: '빗자루 메뉴',
+      storageKey: 'chatbot',
       children: [
-        Text("빗자루 메뉴", textAlign: TextAlign.left),
-        SizedBox(height: ConstSize.smallSpacing),
         MenuContainer(
           iconImage: SvgPicture.asset(
             "assets/icons/modules/chatbot/learning.svg",
