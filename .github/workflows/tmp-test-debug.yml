@@ -45,15 +45,11 @@ jobs:
       fail-fast: false
       matrix:
         dir:
-          - test/core
-          - test/shared
-          - test/feature/auth
-          - test/feature/guild_select
-          - test/feature/home
-          - test/feature/profile
-          - test/feature/modules/academy
-          - test/feature/modules/chatbot
-          - test/feature/modules/shadowverse
+          - test/feature/auth/auth_widget_test.dart
+          - test/feature/guild_select/guild_select_widget_test.dart
+          - test/feature/profile/profile_widget_test.dart
+          - test/feature/modules/academy/academy_widget_test.dart
+          - test/feature/modules/chatbot/chatbot_widget_test.dart
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
