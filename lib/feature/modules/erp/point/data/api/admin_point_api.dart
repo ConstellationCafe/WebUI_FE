@@ -10,7 +10,7 @@ import '../dto/response/admin_point_member_page_response.dart';
 
 class AdminPointApi {
   static const base = String.fromEnvironment('BACKEND_URI');
-  static const path = '$base/api/repository/membership/admin/points';
+  static const path = '$base/api/admin/points';
 
   final Dio dio;
 

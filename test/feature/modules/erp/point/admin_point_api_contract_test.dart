@@ -59,6 +59,11 @@ void main() {
 
   tearDown(() => dio.close());
 
+  test('관리자 포인트 API는 /api/admin/points 경로를 사용한다 (ADR-0002)', () {
+    expect(AdminPointApi.path, endsWith('/api/admin/points'));
+    expect(AdminPointApi.path, isNot(contains('/api/repository/')));
+  });
+
   test('회원 검색 요청과 items 및 페이지 응답을 백엔드 DTO에 맞춘다', () async {
     response['response'] = {
       ...paginationJson(),
