@@ -8,8 +8,14 @@ import 'guild_information.dart';
 class GuildTile extends StatefulWidget {
   final Guild guild;
   final VoidCallback? onTap;
+  final bool isSelecting;
 
-  const GuildTile({super.key, required this.guild, this.onTap});
+  const GuildTile({
+    super.key,
+    required this.guild,
+    this.onTap,
+    this.isSelecting = false,
+  });
 
   @override
   State<GuildTile> createState() => _GuildTileState();
@@ -33,11 +39,11 @@ class _GuildTileState extends State<GuildTile> {
     final theme = Theme.of(context);
 
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor: widget.onTap == null
+          ? SystemMouseCursors.basic
+          : SystemMouseCursors.click,
       onEnter: (_) {
-        setState(() {
-          _isHovered = true;
-        });
+        if (widget.onTap != null) setState(() => _isHovered = true);
       },
       onExit: (_) {
         setState(() {
@@ -50,13 +56,15 @@ class _GuildTileState extends State<GuildTile> {
         ),
         transform: Matrix4.translationValues(
           0,
-          _isHovered ? -GuildConstants.tileHoverOffset : 0,
+          _isHovered && widget.onTap != null
+              ? -GuildConstants.tileHoverOffset
+              : 0,
           0,
         ),
         child: Material(
           color: theme.colorScheme.primary,
           borderRadius: BorderRadius.circular(GuildConstants.tileRadius),
-          elevation: _isHovered
+          elevation: _isHovered && widget.onTap != null
               ? GuildConstants.tileHoverElevation
               : GuildConstants.tileElevation,
           shadowColor: GuildConstants.tileShadowColor,
@@ -74,11 +82,20 @@ class _GuildTileState extends State<GuildTile> {
                   const SizedBox(width: GuildConstants.iconInformationSpacing),
                   Expanded(child: GuildInformation(guild: widget.guild)),
                   const SizedBox(width: GuildConstants.informationArrowSpacing),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    size: GuildConstants.arrowIconSize,
-                    color: theme.colorScheme.secondary,
-                  ),
+                  if (widget.isSelecting)
+                    SizedBox.square(
+                      dimension: GuildConstants.tileProgressSize,
+                      child: CircularProgressIndicator(
+                        strokeWidth: GuildConstants.tileProgressStroke,
+                        color: theme.colorScheme.secondary,
+                      ),
+                    )
+                  else
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      size: GuildConstants.arrowIconSize,
+                      color: theme.colorScheme.secondary,
+                    ),
                 ],
               ),
             ),

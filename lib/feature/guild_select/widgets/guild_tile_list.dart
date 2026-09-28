@@ -8,8 +8,14 @@ import 'guild_tile/guild_tile.dart';
 class GuildList extends StatelessWidget {
   final List<Guild> guilds;
   final ValueChanged<Guild>? onGuildSelected;
+  final String? selectingGuildId;
 
-  const GuildList({super.key, required this.guilds, this.onGuildSelected});
+  const GuildList({
+    super.key,
+    required this.guilds,
+    this.onGuildSelected,
+    this.selectingGuildId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,10 @@ class GuildList extends StatelessWidget {
 
         return GuildTile(
           guild: guild,
-          onTap: () => onGuildSelected?.call(guild),
+          isSelecting: selectingGuildId == guild.id,
+          onTap: selectingGuildId == null
+              ? () => onGuildSelected?.call(guild)
+              : null,
         );
       },
     );
