@@ -7,6 +7,7 @@ import '../constants/notification_tokens.dart';
 import '../domain/model/app_notification.dart';
 import '../notifier/notification_center_notifier.dart';
 import 'notification_panel.dart';
+import 'notification_panel_position.dart';
 
 /// 헤더 우측 상단 프로필 아이콘 왼쪽의 종 아이콘.
 ///
@@ -33,18 +34,10 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
     if (hasUnread) {
       tooltip = NotificationStrings.unreadCount(unreadCount);
     }
-    final panelWidth = NotificationTokens.panelWidthFor(
-      MediaQuery.sizeOf(context).width,
-    );
 
     return MenuAnchor(
       controller: _menuController,
-      alignmentOffset: Offset(
-        -panelWidth - NotificationTokens.panelScreenMargin,
-        NotificationTokens.panelBelowHeaderGap,
-      ),
       style: MenuStyle(
-        alignment: AlignmentDirectional.bottomEnd,
         backgroundColor: WidgetStatePropertyAll(
           Theme.of(context).colorScheme.primary,
         ),
@@ -83,8 +76,22 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
     if (_menuController.isOpen) {
       _menuController.close();
     } else {
-      _menuController.open();
+      _menuController.open(position: _panelPosition());
     }
+  }
+
+  /// 종 아이콘의 실제 위치로 패널 위치를 정한다. 헤더에서 종 오른쪽에 프로필 아이콘이
+  /// 있어도 좁은 화면에서 패널이 화면 밖으로 밀리지 않게 하기 위해서다.
+  Offset? _panelPosition() {
+    final bell = context.findRenderObject();
+    final overlay = Overlay.maybeOf(context)?.context.findRenderObject();
+    if (bell is! RenderBox || overlay is! RenderBox) return null;
+    if (!bell.hasSize || !overlay.hasSize) return null;
+    final topLeft = bell.localToGlobal(Offset.zero, ancestor: overlay);
+    return notificationPanelOffset(
+      anchor: topLeft & bell.size,
+      screenWidth: overlay.size.width,
+    );
   }
 
   void _close() => _menuController.close();

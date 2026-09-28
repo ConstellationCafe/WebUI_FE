@@ -17,7 +17,30 @@ import 'support/fake_notification_repository.dart';
 const _dot = ValueKey('notification-unread-dot');
 const _bell = ValueKey('notification-bell');
 
-Widget _app(FakeNotificationRepository repository, {double textScale = 1}) {
+// 실제 헤더처럼 종 오른쪽에 프로필 아이콘 자리가 있는 경우를 재현한다.
+const _profileSlotWidth = 56.0;
+
+/// `setSurfaceSize`는 MediaQuery 크기를 바꾸지 않으므로 view 크기로 화면을 맞춘다.
+void _useScreen(WidgetTester tester, Size size) {
+  tester.view.physicalSize = size;
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+}
+
+void _expectPanelInsideScreen(WidgetTester tester, double screenWidth) {
+  final panel = tester.getRect(find.byType(NotificationPanel));
+  final bell = tester.getRect(find.byKey(_bell));
+  const margin = NotificationTokens.panelScreenMargin;
+  expect(panel.left, greaterThanOrEqualTo(margin));
+  expect(panel.right, lessThanOrEqualTo(screenWidth - margin));
+  expect(panel.top, greaterThan(bell.bottom));
+}
+
+Widget _app(
+  FakeNotificationRepository repository, {
+  double textScale = 1,
+  double trailingWidth = 0,
+}) {
   return ProviderScope(
     overrides: [notificationRepositoryProvider.overrideWithValue(repository)],
     child: MaterialApp(
@@ -27,8 +50,17 @@ Widget _app(FakeNotificationRepository repository, {double textScale = 1}) {
         final data = MediaQuery.of(context).copyWith(textScaler: scaler);
         return MediaQuery(data: data, child: child!);
       },
-      home: const Scaffold(
-        body: Align(alignment: Alignment.topRight, child: NotificationBell()),
+      home: Scaffold(
+        body: Align(
+          alignment: Alignment.topRight,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const NotificationBell(),
+              SizedBox(width: trailingWidth),
+            ],
+          ),
+        ),
       ),
     ),
   );
@@ -102,8 +134,7 @@ void main() {
   });
 
   testWidgets('작은 화면과 큰 글자에서도 패널이 깨지지 않는다', (tester) async {
-    await tester.binding.setSurfaceSize(const Size(320, 568));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
+    _useScreen(tester, const Size(320, 568));
     final repository = FakeNotificationRepository()
       ..unreadSummary = summary(2, latestId: 12)
       ..firstPage = [appNotification(12), appNotification(11)];
@@ -113,26 +144,44 @@ void main() {
     await tester.tap(find.byKey(_bell));
     await tester.pumpAndSettle();
 
-    final layoutIssue = tester.takeException();
-    print(
-      'notification panel geometry: '
-      'panel=${tester.getRect(find.byType(NotificationPanel))}, '
-      'bell=${tester.getRect(find.byKey(_bell))}, '
-      'layoutIssue=$layoutIssue',
-    );
-    expect(layoutIssue, isNull);
+    expect(tester.takeException(), isNull);
     expect(find.text('공지 11'), findsOneWidget);
+    _expectPanelInsideScreen(tester, 320);
+  });
+
+  testWidgets('종 오른쪽에 프로필 아이콘이 있어도 패널이 화면 양옆 여백을 지킨다', (tester) async {
+    _useScreen(tester, const Size(360, 640));
+    final repository = FakeNotificationRepository()
+      ..firstPage = [appNotification(12)];
+
+    await tester.pumpWidget(_app(repository, trailingWidth: _profileSlotWidth));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(_bell));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('공지 12'), findsOneWidget);
+    _expectPanelInsideScreen(tester, 360);
+  });
+
+  testWidgets('넓은 화면에서는 패널 오른쪽 끝을 종 아이콘 쪽에 맞춘다', (tester) async {
+    _useScreen(tester, const Size(1280, 800));
+    final repository = FakeNotificationRepository()
+      ..firstPage = [appNotification(12)];
+
+    await tester.pumpWidget(_app(repository, trailingWidth: _profileSlotWidth));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(_bell));
+    await tester.pumpAndSettle();
+
     final panel = tester.getRect(find.byType(NotificationPanel));
     final bell = tester.getRect(find.byKey(_bell));
-    expect(
-      panel.left,
-      greaterThanOrEqualTo(NotificationTokens.panelScreenMargin),
-    );
+    expect(panel.width, NotificationTokens.panelWidth);
     expect(
       panel.right,
-      lessThanOrEqualTo(320 - NotificationTokens.panelScreenMargin),
+      moreOrLessEquals(bell.right - NotificationTokens.panelScreenMargin),
     );
-    expect(panel.top, greaterThan(bell.bottom));
+    _expectPanelInsideScreen(tester, 1280);
   });
 
   testWidgets('본문이 비어 있으면 안내 문구를 표시한다', (tester) async {
