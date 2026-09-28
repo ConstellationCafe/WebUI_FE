@@ -24,6 +24,15 @@ class ErpCategory extends ConsumerWidget {
           menuName: "포인트 관리",
           callbackUrl: "/point",
         ),
+        SizedBox(height: ConstSize.tinyWidth),
+        MenuContainer(
+          iconImage: SvgPicture.asset(
+            "assets/icons/modules/erp/point.svg",
+            fit: BoxFit.contain,
+          ),
+          menuName: "벌점 관리",
+          callbackUrl: "/penalties",
+        ),
       ],
     );
   }
