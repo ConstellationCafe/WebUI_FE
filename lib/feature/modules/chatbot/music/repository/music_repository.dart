@@ -97,16 +97,6 @@ class MusicRepository implements RepositoryInterface<MusicEntity> {
   }
 
   @override
-  Future<dynamic> save(MusicEntity entity) async {
-    final res = await dio.post(
-      "$apiPath/save",
-      data: [_toApiJson(entity.toJson())],
-    );
-
-    return res.data;
-  }
-
-  @override
   Future<dynamic> saveAll(List<Map<String, String>> model) async {
     final res = await dio.post(
       "$apiPath/save_all",

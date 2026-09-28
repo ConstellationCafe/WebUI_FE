@@ -11,7 +11,6 @@ abstract class RepositoryInterface<T extends Entity> {
     String? sortColumn,
     String? sortDirection,
   });
-  Future<void> save(T entity);
   Future<dynamic> saveAll(List<Map<String, String>> model);
   Future<dynamic> deleteAll(List<Map<String, String>> model);
 }

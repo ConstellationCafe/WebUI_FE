@@ -106,13 +106,6 @@ class LearningRepository implements RepositoryInterface<LearningEntity> {
   }
 
   @override
-  Future<dynamic> save(LearningEntity entity) async {
-    final res = await dio.post("$apiPath/save", data: [entity.toJson()]);
-
-    return res.data;
-  }
-
-  @override
   Future<dynamic> saveAll(List<Map<String, String>> model) async {
     final data = model.map(_toApiJson).toList();
 
