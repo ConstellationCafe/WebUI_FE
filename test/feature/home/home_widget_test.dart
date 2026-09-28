@@ -11,6 +11,7 @@ import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_not
 import 'package:constellation_cafe/feature/home/frame/pages/home_frame.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/main_menu_bar.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/profile/profile_menu.dart';
+import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
 import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
@@ -67,6 +68,7 @@ class HomeHarness {
           ],
         ),
         GoRoute(path: '/login', builder: (_, _) => page('login')),
+        GoRoute(path: '/select', builder: (_, _) => page('select')),
         GoRoute(path: '/profile', builder: (_, _) => page('profile')),
       ],
     );
@@ -127,7 +129,8 @@ void main() {
       expect(find.text('섀도우버스 메뉴'), findsOneWidget);
       expect(find.text('아카데미 메뉴'), findsNothing);
       expect(find.text('ERP 메뉴'), findsNothing);
-      expect(find.text('홈페이지 메인 컨텐츠'), findsOneWidget);
+      expect(find.text(HomeStrings.welcomeTo('별자리')), findsOneWidget);
+      expect(find.text(HomeStrings.quickLinks), findsOneWidget);
     });
 
     testWidgets('관리자와 교사 권한이 있으면 ERP와 아카데미 메뉴를 추가한다', (tester) async {
@@ -152,7 +155,19 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('learning page'), findsOneWidget);
-      expect(find.text('홈페이지 메인 컨텐츠'), findsNothing);
+      expect(find.text(HomeStrings.welcomeTo('별자리')), findsNothing);
+    });
+
+    testWidgets('메뉴 카테고리를 접고 다시 펼칠 수 있다', (tester) async {
+      await pumpHome(tester, size: const Size(1400, 1000));
+
+      await tester.tap(find.text('빗자루 메뉴'));
+      await tester.pumpAndSettle();
+      expect(find.text('가르치기'), findsNothing);
+
+      await tester.tap(find.text('빗자루 메뉴'));
+      await tester.pumpAndSettle();
+      expect(find.text('가르치기'), findsOneWidget);
     });
   });
 
@@ -195,6 +210,24 @@ void main() {
       expect(container.read(currentUserStateProvider).userId, isEmpty);
       expect(container.read(currentGuildStateProvider).guildId, isEmpty);
       expect(find.text('login page'), findsOneWidget);
+    });
+
+    testWidgets('프로필 메뉴에서 채팅방 선택으로 돌아가도 로그아웃하지 않는다', (tester) async {
+      final harness = await pumpHome(
+        tester,
+        size: const Size(390, 844),
+        frame: true,
+      );
+
+      await tester.tap(find.byType(ProfileMenu));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(HomeStrings.selectGuild).last);
+      await tester.pumpAndSettle();
+
+      expect(find.text('select page'), findsOneWidget);
+      expect(harness.auth.logoutCalls, 0);
+      expect(harness.container.read(currentGuildStateProvider).guildId, '1');
+      expect(harness.container.read(currentUserStateProvider).userId, '123');
     });
   });
 }

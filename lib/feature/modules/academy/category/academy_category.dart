@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:constellation_cafe/core/constants/const_size.dart';
+
 import '../../../home/frame/widgets/menu_bar_area/categories/container/menu_container.dart';
+import '../../../home/frame/widgets/menu_bar_area/categories/container/menu_category_section.dart';
 import '../notifier/permission_notifier/academy_permission_notifier.dart';
 
 class AcademyCategory extends ConsumerWidget {
@@ -14,12 +16,10 @@ class AcademyCategory extends ConsumerWidget {
     final permissionState = ref.watch(academyPermissionProvider);
     final permission = permissionState.permission;
     if (permission?.isTeacherOrAbove() ?? false) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
+      return MenuCategorySection(
+        title: '아카데미 메뉴',
+        storageKey: 'academy',
         children: [
-          Text(textAlign: TextAlign.left, "아카데미 메뉴"),
-          SizedBox(height: ConstSize.tinyWidth),
           MenuContainer(
             iconImage: SvgPicture.asset(
               "assets/icons/modules/academy/lesson_record_write.svg",
@@ -73,7 +73,7 @@ class AcademyCategory extends ConsumerWidget {
         ],
       );
     } else {
-      return Column();
+      return const SizedBox.shrink();
     }
   }
 }
