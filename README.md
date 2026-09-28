@@ -163,6 +163,27 @@ flutter test test/feature/notification
 ```
 ---
 
+## 🧪 테스트
+
+### 구조
+- `test/`는 `lib/`와 같은 경로로 나눈다. 예: `lib/feature/auth` → `test/feature/auth`, `lib/core` → `test/core`, `lib/shared` → `test/shared`.
+- 기능마다 `*_api_test.dart`(요청 경로·파라미터, 응답 변환, 오류 처리)와 `*_widget_test.dart`(화면 상태, 사용자 동작)를 둔다. 화면만 있는 기능(`home`)은 위젯 테스트만 둔다.
+- 테스트 대역은 `test/support/`와 각 기능의 `support/`에 둔다.
+  - `FakeBackend`: Dio HTTP 어댑터를 바꿔 등록한 응답을 돌려준다. API 테스트에서만 사용한다.
+  - `FakeTranslator`: Discord Bot 라우터 호출 경로와 인자를 기록한다.
+  - `FakePageRepository`, `FakeAcademyApi`: 위젯 테스트용 가짜 데이터 계층이다. 위젯 테스트는 가짜 시간에서 실행되므로 Dio를 거치지 않는다.
+  - `setScreenSize`: `MediaQuery` 크기까지 바꾼다. 화면 폭으로 레이아웃을 고르는 위젯에 사용한다.
+
+### 실행
+`dart:html`을 쓰는 코드가 있어 웹 플랫폼에서 실행한다.
+
+```sh
+flutter test --platform chrome                     # 전체
+flutter test --platform chrome test/feature/auth   # 기능 하나
+```
+
+CI(`.github/workflows/CI.yml`)는 `develope`, `main`으로 향하는 PR과 `develope` push에서 format, analyze, 전체 테스트, 웹 빌드를 차례로 검증한다. 실패한 테스트는 PR 화면에 annotation으로 표시된다.
+
 ## 📚 **참조 자료**
 - [배포 가이드](./docs/deploy.md): 로컬 및 클라우드 환경 배포 절차
 

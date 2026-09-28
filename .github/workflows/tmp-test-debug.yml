@@ -45,11 +45,8 @@ jobs:
       fail-fast: false
       matrix:
         dir:
-          - test/feature/auth/auth_widget_test.dart
-          - test/feature/guild_select/guild_select_widget_test.dart
-          - test/feature/profile/profile_widget_test.dart
-          - test/feature/modules/academy/academy_widget_test.dart
-          - test/feature/modules/chatbot/chatbot_widget_test.dart
+          - test/feature/auth
+          - test/feature/profile
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2

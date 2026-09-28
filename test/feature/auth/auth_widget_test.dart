@@ -47,26 +47,21 @@ void main() {
     expect(auth.logins, [LoginMethodType.discord]);
   });
 
-  testWidgets('데스크톱에서는 버튼 너비를 고정하고 모바일에서는 카드 너비를 채운다', (tester) async {
+  testWidgets('화면 폭에 따라 로그인 버튼 너비 설정을 바꾼다', (tester) async {
     final button = find.descendant(
       of: find.byType(DiscordLoginButton),
       matching: find.byType(SizedBox),
     );
+    double? configuredWidth() => tester.widget<SizedBox>(button.first).width;
 
     setScreenSize(tester, const Size(1400, 900));
     await tester.pumpWidget(loginApp(FakeAuthService()));
     await tester.pumpAndSettle();
-    expect(
-      tester.getSize(button.first).width,
-      AuthConstants.discordLoginButtonDesktopWidth,
-    );
+    expect(configuredWidth(), AuthConstants.discordLoginButtonDesktopWidth);
 
     setScreenSize(tester, const Size(390, 800));
     await tester.pumpAndSettle();
-    expect(
-      tester.getSize(button.first).width,
-      greaterThan(AuthConstants.discordLoginButtonDesktopWidth),
-    );
+    expect(configuredWidth(), double.infinity);
     expect(tester.takeException(), isNull);
   });
 

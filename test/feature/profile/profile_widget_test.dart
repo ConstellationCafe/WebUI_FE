@@ -112,9 +112,7 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          pointRepositoryProvider.overrideWithValue(repository),
-        ],
+        overrides: [pointRepositoryProvider.overrideWithValue(repository)],
         child: MaterialApp(
           theme: CustomTheme.themeData,
           home: const Scaffold(body: ViewPointLog()),
