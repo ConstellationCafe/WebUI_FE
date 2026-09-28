@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,11 +14,11 @@ import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/main
 import 'package:constellation_cafe/feature/home/frame/widgets/profile/profile_menu.dart';
 import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/notification/notifier/notification_center_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
-import '../../support/fake_backend.dart';
 import '../auth/support/fake_auth_service.dart';
 import '../notification/support/fake_notification_repository.dart';
 
@@ -37,6 +38,17 @@ List<Map<String, dynamic>> academiesFor(String role) {
   ];
 }
 
+/// Dio 없이 권한을 돌려준다. 위젯 테스트의 가짜 시간에서 네트워크 타이머를
+/// 기다리지 않도록 한다.
+class FakeAcademyApi extends AcademyApi {
+  FakeAcademyApi() : super(dio: Dio());
+
+  AcademyPermission permission = AcademyPermission.initial();
+
+  @override
+  Future<AcademyPermission> getMyPermissions() async => permission;
+}
+
 class HomeHarness {
   HomeHarness({required bool frame}) {
     container = ProviderContainer(
@@ -44,7 +56,7 @@ class HomeHarness {
       overrides: [
         jwtApiProvider.overrideWithValue(Jwt(auth)),
         loginApiProvider.overrideWithValue(Login(auth)),
-        academyApiProvider.overrideWithValue(AcademyApi(dio: backend.dio)),
+        academyApiProvider.overrideWithValue(academyApi),
         notificationRepositoryProvider.overrideWithValue(notifications),
       ],
     );
@@ -65,7 +77,7 @@ class HomeHarness {
     );
   }
 
-  final FakeBackend backend = FakeBackend();
+  final FakeAcademyApi academyApi = FakeAcademyApi();
   final FakeAuthService auth = FakeAuthService();
   final FakeNotificationRepository notifications = FakeNotificationRepository();
   late final ProviderContainer container;
@@ -80,7 +92,7 @@ class HomeHarness {
     final guild = container.read(currentGuildStateProvider.notifier);
     guild.setGuild(guildId: '1', guildName: '별자리', guildIcon: '');
     final permission = {'admin': false, 'academies': academiesFor(academyRole)};
-    backend.reply('GET', '/api/academy/me/permissions', ok(permission));
+    academyApi.permission = AcademyPermission.fromJson(permission);
     await container.read(academyPermissionProvider.notifier).initialize();
   }
 
@@ -92,10 +104,7 @@ class HomeHarness {
     ),
   );
 
-  void dispose() {
-    container.dispose();
-    backend.close();
-  }
+  void dispose() => container.dispose();
 }
 
 Future<HomeHarness> pumpHome(

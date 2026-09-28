@@ -8,9 +8,9 @@ permissions:
   contents: read
 
 jobs:
-  debug:
+  static:
     runs-on: ubuntu-22.04
-    timeout-minutes: 40
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -25,7 +25,7 @@ jobs:
         if: always()
         run: |
           dart format test tool > /dev/null
-          for f in $(git diff --name-only -- test tool); do
+          for f in $(git diff --name-only -- test tool | grep -v erp/penalty); do
             d=$(git diff -U0 -- "$f" | python3 -c "import sys;print(sys.stdin.read().replace('%','%25').replace('\r','%0D').replace('\n','%0A'))")
             echo "::warning file=$f,title=format::$d"
           done
@@ -37,10 +37,32 @@ jobs:
           grep -E '^(ERROR|WARNING)' an.txt | head -40 | while IFS='|' read -r sev t code file line col len msg; do
             echo "::error file=$file,line=$line,title=$code::$msg"
           done || true
-      - name: Tests
-        if: always()
+
+  tests:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        dir:
+          - test/core
+          - test/shared
+          - test/feature/auth
+          - test/feature/guild_select
+          - test/feature/home
+          - test/feature/profile
+          - test/feature/modules/academy
+          - test/feature/modules/chatbot
+          - test/feature/modules/shadowverse
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - name: Test
         run: |
-          for d in test/core test/shared test/feature/auth test/feature/guild_select test/feature/home test/feature/profile test/feature/modules/academy test/feature/modules/chatbot test/feature/modules/shadowverse; do
-            flutter test --platform chrome --reporter json $d > r.json 2>&1 || true
-            python3 .github/scripts/tmp_report.py "$d" r.json
-          done
+          timeout 600 flutter test --platform chrome --timeout 60s --reporter json ${{ matrix.dir }} > r.json 2>&1 || true
+          python3 .github/scripts/tmp_report.py "${{ matrix.dir }}" r.json

@@ -136,7 +136,6 @@ void main() {
           academyApiProvider.overrideWithValue(AcademyApi(dio: backend.dio)),
         ],
       );
-      container.listen(loginCheckProvider, (_, _) {});
     });
 
     tearDown(() {
@@ -144,10 +143,16 @@ void main() {
       backend.close();
     });
 
+    /// 응답을 준비한 뒤에 provider를 구독해야 첫 확인에 그 응답이 쓰인다.
+    Future<LoginStatus> checkLogin() {
+      container.listen(loginCheckProvider, (_, _) {});
+      return container.read(loginCheckProvider.future);
+    }
+
     test('채팅방까지 선택된 토큰이면 사용자와 아카데미 권한을 불러온다', () async {
       auth.checks.add(checkResponse(isLogin: true, roomSelected: true));
 
-      final status = await container.read(loginCheckProvider.future);
+      final status = await checkLogin();
 
       expect(status, const LoginStatus(isLoggedIn: true, roomSelected: true));
       expect(auth.meCalls, 1);
@@ -162,7 +167,7 @@ void main() {
         checkResponse(isLogin: true),
       ]);
 
-      final status = await container.read(loginCheckProvider.future);
+      final status = await checkLogin();
 
       expect(status, const LoginStatus(isLoggedIn: true, roomSelected: false));
       expect(auth.refreshCalls, 1);
@@ -173,7 +178,7 @@ void main() {
     test('401 응답에서 refresh가 실패하면 로그아웃 상태가 된다', () async {
       auth.checks.add(errorResponse(401));
 
-      final status = await container.read(loginCheckProvider.future);
+      final status = await checkLogin();
 
       expect(status, LoginStatus.loggedOut);
       expect(auth.refreshCalls, 1);
@@ -182,7 +187,7 @@ void main() {
     test('인증 오류가 아닌 실패 응답은 refresh 없이 로그아웃 처리한다', () async {
       auth.checks.add(errorResponse(500));
 
-      final status = await container.read(loginCheckProvider.future);
+      final status = await checkLogin();
 
       expect(status, LoginStatus.loggedOut);
       expect(auth.refreshCalls, 0);
@@ -190,7 +195,7 @@ void main() {
 
     test('강제 로그아웃 뒤 recheck는 서버를 다시 호출하지 않는다', () async {
       auth.checks.add(checkResponse(isLogin: true));
-      await container.read(loginCheckProvider.future);
+      await checkLogin();
 
       final notifier = container.read(loginCheckProvider.notifier);
       notifier.forceLogout();
