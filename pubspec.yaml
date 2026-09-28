@@ -52,6 +52,8 @@ dependencies:
   cookie_jar: ^4.0.0
   build_runner: ^2.13.1
   flutter_svg: ^2.0.0
+  # 실시간 알림 SSE(EventSource). dart:html 대신 사용(flutter.md)
+  web: ^1.1.1
 
 
 dev_dependencies:
