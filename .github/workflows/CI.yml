@@ -53,24 +53,6 @@ jobs:
         # New warnings should be removed as part of the corresponding change.
         run: flutter analyze --no-fatal-warnings --no-fatal-infos
 
-      - name: Diagnose notification panel geometry
-        run: |
-          flutter test --platform chrome --reporter json test/feature/notification/notification_bell_test.dart > /tmp/notification-test.json || {
-            python3 - <<'PY'
-          import json
-          from pathlib import Path
-          for line in Path('/tmp/notification-test.json').read_text().splitlines():
-              try:
-                  event = json.loads(line)
-              except json.JSONDecodeError:
-                  print(line)
-                  continue
-              if event.get('type') in ('print', 'error', 'done'):
-                  print(json.dumps(event, ensure_ascii=False))
-          PY
-            exit 1
-          }
-
       - name: Run tests
         # Web coverage collection is not supported reliably by the current Flutter toolchain.
         # The github reporter turns failing tests into PR annotations.
