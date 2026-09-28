@@ -13,7 +13,10 @@ import '../../domain/type/teacher_status_type.dart';
 
 final teacherStatusApiProvider = Provider((ref) {
   final dio = ref.watch(dioProvider);
-  return TeacherStatusApi(translator: ref.read(apiTranslatorProvider), dio: dio);
+  return TeacherStatusApi(
+    translator: ref.read(apiTranslatorProvider),
+    dio: dio,
+  );
 });
 
 class TeacherStatusApi {
