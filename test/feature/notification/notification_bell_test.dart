@@ -113,7 +113,14 @@ void main() {
     await tester.tap(find.byKey(_bell));
     await tester.pumpAndSettle();
 
-    expect(tester.takeException(), isNull);
+    final layoutIssue = tester.takeException();
+    print(
+      'notification panel geometry: '
+      'panel=${tester.getRect(find.byType(NotificationPanel))}, '
+      'bell=${tester.getRect(find.byKey(_bell))}, '
+      'layoutIssue=$layoutIssue',
+    );
+    expect(layoutIssue, isNull);
     expect(find.text('공지 11'), findsOneWidget);
     final panel = tester.getRect(find.byType(NotificationPanel));
     final bell = tester.getRect(find.byKey(_bell));
@@ -154,3 +161,4 @@ void main() {
     expect(find.text(NotificationStrings.minutesAgo(5)), findsOneWidget);
   });
 }
+
