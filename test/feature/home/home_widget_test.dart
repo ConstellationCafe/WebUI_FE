@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,6 +18,8 @@ import 'package:constellation_cafe/feature/modules/academy/notifier/permission_n
 import 'package:constellation_cafe/feature/notification/notifier/notification_center_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
+import '../../support/fake_academy_api.dart';
+import '../../support/screen.dart';
 import '../auth/support/fake_auth_service.dart';
 import '../notification/support/fake_notification_repository.dart';
 
@@ -41,17 +42,6 @@ List<Map<String, dynamic>> academiesFor(String role) {
   return [
     {'academyId': 1, 'role': role, 'classIds': classIds},
   ];
-}
-
-/// Dio 없이 권한을 돌려준다. 위젯 테스트의 가짜 시간에서 네트워크 타이머를
-/// 기다리지 않도록 한다.
-class FakeAcademyApi extends AcademyApi {
-  FakeAcademyApi() : super(dio: Dio());
-
-  AcademyPermission permission = AcademyPermission.initial();
-
-  @override
-  Future<AcademyPermission> getMyPermissions() async => permission;
 }
 
 class HomeHarness {
@@ -119,8 +109,7 @@ Future<HomeHarness> pumpHome(
   List<String> roles = const [],
   String academyRole = '',
 }) async {
-  await tester.binding.setSurfaceSize(size);
-  addTearDown(() => tester.binding.setSurfaceSize(null));
+  setScreenSize(tester, size);
   final harness = HomeHarness(frame: frame);
   addTearDown(harness.dispose);
   await harness.signIn(roles: roles, academyRole: academyRole);

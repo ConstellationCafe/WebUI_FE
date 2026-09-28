@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,6 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/feature/modules/academy/category/academy_category.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/student_status_api.dart';
+import 'package:constellation_cafe/feature/modules/academy/data/dto/request/status_query_request.dart';
+import 'package:constellation_cafe/feature/modules/academy/data/dto/response/student_status_list_response.dart';
+import 'package:constellation_cafe/feature/modules/academy/data/dto/response/student_status_response.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/lesson_record/lesson_record_update.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/lesson_record/lesson_record_view.dart';
@@ -16,9 +20,32 @@ import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_r
 import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_record/lesson_record_list.dart';
 import 'package:constellation_cafe/feature/modules/academy/widgets/read_status/status_pagination.dart';
 
-import '../../../support/fake_backend.dart';
 import '../../../support/fake_translator.dart';
+import '../../../support/screen.dart';
 import 'support/academy_fixtures.dart';
+
+/// 위젯 테스트용 학생 상태 API. HTTP 계약은 academy_api_test에서 검증한다.
+class FakeStudentStatusApi extends StudentStatusApi {
+  FakeStudentStatusApi() : super(translator: FakeTranslator(), dio: Dio());
+
+  final List<StatusQueryRequest> searches = [];
+
+  @override
+  Future<StudentStatusResponse> getStatusOptions({
+    int? academyId,
+    int? classId,
+  }) async {
+    return StudentStatusResponse.fromJson(studentOptions());
+  }
+
+  @override
+  Future<StudentStatusListResponse> getStudentStatuses(
+    StatusQueryRequest request,
+  ) async {
+    searches.add(request);
+    return StudentStatusListResponse.fromJson(studentStatusPage());
+  }
+}
 
 AcademyPermissionState permissionState(String role) {
   final permission = AcademyPermission.fromJson(permissionJson(role: role));
@@ -55,27 +82,11 @@ Future<void> noDelete(LessonRecordView _) async {}
 
 void main() {
   group('학생 상태 조회 화면', () {
-    late FakeBackend backend;
-
-    setUp(() {
-      backend = FakeBackend();
-      backend.reply(
-        'GET',
-        '/api/academy/students/options',
-        ok(studentOptions()),
-      );
-      backend.reply('GET', '/api/academy/students', ok(studentStatusPage()));
-    });
-
-    tearDown(() => backend.close());
+    late FakeStudentStatusApi api;
 
     Future<void> pumpPage(WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(1400, 1600));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      final api = StudentStatusApi(
-        translator: FakeTranslator(),
-        dio: backend.dio,
-      );
+      setScreenSize(tester, const Size(1400, 1600));
+      api = FakeStudentStatusApi();
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -107,7 +118,7 @@ void main() {
       await tester.tap(find.text('조회'));
       await tester.pumpAndSettle();
 
-      expect(backend.last.uri.path, '/api/academy/students');
+      expect(api.searches.single.page, 1);
       expect(find.text('김별'), findsOneWidget);
       expect(find.text('이달'), findsOneWidget);
       expect(find.text('과정 수료'), findsOneWidget);
@@ -202,8 +213,7 @@ void main() {
 
   group('아카데미 메뉴', () {
     Future<void> pumpCategory(WidgetTester tester, String role) async {
-      await tester.binding.setSurfaceSize(const Size(800, 1000));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+      setScreenSize(tester, const Size(800, 1000));
       final router = GoRouter(
         routes: [
           GoRoute(

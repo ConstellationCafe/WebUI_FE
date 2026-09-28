@@ -9,6 +9,7 @@ import 'package:constellation_cafe/feature/auth/pages/login.dart';
 import 'package:constellation_cafe/feature/auth/service/login.dart';
 import 'package:constellation_cafe/feature/auth/widgets/discord_login_button.dart';
 
+import '../../support/screen.dart';
 import 'support/fake_auth_service.dart';
 
 Widget loginApp(FakeAuthService auth) => ProviderScope(
@@ -22,14 +23,9 @@ Widget doubleText(BuildContext context, Widget? child) {
   return MediaQuery(data: scaled, child: child!);
 }
 
-Future<void> setSurface(WidgetTester tester, Size size) async {
-  await tester.binding.setSurfaceSize(size);
-  addTearDown(() => tester.binding.setSurfaceSize(null));
-}
-
 void main() {
   testWidgets('로그인 화면은 서비스 이름과 Discord 로그인 버튼을 보여준다', (tester) async {
-    await setSurface(tester, const Size(1400, 900));
+    setScreenSize(tester, const Size(1400, 900));
     await tester.pumpWidget(loginApp(FakeAuthService()));
     await tester.pumpAndSettle();
 
@@ -41,7 +37,7 @@ void main() {
 
   testWidgets('Discord 로그인 버튼을 누르면 Discord 로그인을 요청한다', (tester) async {
     final auth = FakeAuthService();
-    await setSurface(tester, const Size(1400, 900));
+    setScreenSize(tester, const Size(1400, 900));
     await tester.pumpWidget(loginApp(auth));
     await tester.pumpAndSettle();
 
@@ -57,7 +53,7 @@ void main() {
       matching: find.byType(SizedBox),
     );
 
-    await setSurface(tester, const Size(1400, 900));
+    setScreenSize(tester, const Size(1400, 900));
     await tester.pumpWidget(loginApp(FakeAuthService()));
     await tester.pumpAndSettle();
     expect(
@@ -65,7 +61,7 @@ void main() {
       AuthConstants.discordLoginButtonDesktopWidth,
     );
 
-    await setSurface(tester, const Size(390, 800));
+    setScreenSize(tester, const Size(390, 800));
     await tester.pumpAndSettle();
     expect(
       tester.getSize(button.first).width,
@@ -75,7 +71,7 @@ void main() {
   });
 
   testWidgets('큰 글자 설정에서도 로그인 카드가 넘치지 않는다', (tester) async {
-    await setSurface(tester, const Size(390, 800));
+    setScreenSize(tester, const Size(390, 800));
     await tester.pumpWidget(
       ProviderScope(
         overrides: [

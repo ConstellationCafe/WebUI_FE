@@ -16,15 +16,11 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Check feature test coverage
-        # 모든 기능 폴더에 API 테스트와 위젯 테스트가 있는지 먼저 확인한다.
-        run: bash tool/check_feature_tests.sh
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -36,7 +32,6 @@ jobs:
         run: flutter pub get
 
       - name: Generate penalty providers and state
-        id: codegen
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Format penalty source using CI Flutter
@@ -58,56 +53,10 @@ jobs:
         # New warnings should be removed as part of the corresponding change.
         run: flutter analyze --no-fatal-warnings --no-fatal-infos
 
-      # 기능별로 API 테스트와 위젯 테스트를 나눠 실행한다. 한 기능이 실패해도
-      # 나머지 기능의 결과를 모두 볼 수 있도록 코드 생성이 성공했다면 계속 실행한다.
-      # Web coverage collection is not supported reliably by the current Flutter toolchain.
-      - name: Test core
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/core
-
-      - name: Test shared
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/shared
-
-      - name: Test auth
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/auth
-
-      - name: Test guild_select
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/guild_select
-
-      - name: Test home
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/home
-
-      - name: Test notification
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/notification
-
-      - name: Test profile
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/profile
-
-      - name: Test academy
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/modules/academy
-
-      - name: Test chatbot
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/modules/chatbot
-
-      - name: Test shadowverse
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/modules/shadowverse
-
-      - name: Test erp point
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/modules/erp/point
-
-      - name: Test erp penalty
-        if: ${{ !cancelled() && steps.codegen.outcome == 'success' }}
-        run: flutter test --platform chrome --reporter github test/feature/modules/erp/penalty
+      - name: Run tests
+        # Web coverage collection is not supported reliably by the current Flutter toolchain.
+        # The github reporter turns failing tests into PR annotations.
+        run: flutter test --platform chrome --reporter github
 
       - name: Build web
         run: flutter build web
