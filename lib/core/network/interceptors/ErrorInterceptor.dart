@@ -2,6 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class ErrorInterceptor extends Interceptor {
+  /// 요청 `extra`에 true로 넣으면 전역 오류 SnackBar를 띄우지 않는다.
+  /// 화면이 직접 오류 상태를 보여주거나, 백그라운드 재조회처럼 사용자가
+  /// 요청하지 않은 호출에 사용한다.
+  static const silentErrorKey = 'silentError';
+
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
 
   ErrorInterceptor(this.scaffoldMessengerKey);
@@ -12,8 +17,9 @@ class ErrorInterceptor extends Interceptor {
     final isSilentAuthError =
         (err.response?.statusCode == 401 || err.response?.statusCode == 403) &&
         path.contains('/auth/');
+    final isSilentRequest = err.requestOptions.extra[silentErrorKey] == true;
 
-    if (!isSilentAuthError) {
+    if (!isSilentAuthError && !isSilentRequest) {
       _showErrorSnackBar(_getErrorMessage(err));
     }
 

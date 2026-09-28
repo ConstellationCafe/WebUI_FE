@@ -69,6 +69,7 @@ lib/
 ## 📱 주요 기능
 
 ### 사용자 기능
+- **알림**: 우측 상단 종 아이콘으로 공지·포인트 등 알림을 실시간 수신, 읽지 않은 알림은 빨간 점으로 표시
 - **친선전 게시판**: 게임 매치 등록 및 참가
 - **학습 자료**: 학습 콘텐츠 조회
 - **추천 시스템**: 메뉴, 음악, 콘텐츠 추천
@@ -76,6 +77,7 @@ lib/
 
 ### 관리자 기능
 - **포인트 관리**: 사용자 포인트 시스템 관리
+- **알림 발행**: 채팅방 전체 또는 특정 회원에게 알림 발행, 발행 이력 조회
 - **대회 공지**: 별자리 내/외부 대회 공지
 
 ### UI 컴포넌트
@@ -146,6 +148,19 @@ flutter build web
 - 서버가 JWT에서 현재 채팅방 `botId`를 꺼내므로 프런트는 `botId`나 `sk`를 보내지 않습니다. 대상은 숫자 Discord ID로 입력하며 점수는 1점 고정입니다. 발생 시각 입력은 브라우저 현지 시각에서 UTC로 변환합니다.
 - 요청·응답 DTO는 `data/dto/request`, `data/dto/response`, 업무 데이터는 `domain/model`, 상태는 `state/`의 Freezed와 `notifier/`의 생성형 Riverpod으로 분리합니다. 부여 다이얼로그는 요청 UUID를 한 번 생성하고 중복 제출을 막습니다.
 - 생성 코드를 수동 수정하지 않고 `flutter pub get` 이후 `dart run build_runner build`로 `*.g.dart`, `*.freezed.dart`를 생성·커밋합니다. `dart format lib/feature/modules/erp/penalty test/feature/modules/erp/penalty`, `flutter analyze`, `flutter test --platform chrome`, `flutter build web`으로 확인합니다.
+### 알림 (종 아이콘)
+- 구현 위치: `lib/feature/notification/`. 설계 근거는 WebUI_BE의 ADR-0004(DB 저장 + Redis Pub/Sub + SSE)이다.
+- 헤더 우측 상단 프로필 아이콘 왼쪽의 `NotificationBell`이 읽지 않은 알림이 있으면 우측 하단에 빨간 점을 표시한다. 누르면 알림 패널이 열리고, 가장 최신 알림까지 읽음 처리(`PUT /api/me/notifications/read-cursor`)되어 빨간 점이 사라진다. 이번에 새로 본 알림은 패널에서 배경색과 "새 알림" 문구로 구분한다.
+- 실시간 수신은 `EventSource`(SSE, `GET /api/me/notifications/stream`)를 쓴다. 인증은 기존 HttpOnly 쿠키로 하며 토큰을 URL에 넣지 않는다. 브라우저 전용 구현은 `data/realtime/`에서 conditional import로 격리했고(`package:web`, `dart:html` 미사용), 그 외 플랫폼은 REST 조회만 한다.
+- 연결 직후 서버가 보내는 `ready` 이벤트로 읽지 않은 개수를 다시 맞추므로, 오프라인이던 동안의 알림도 접속하면 빨간 점으로 표시된다. 서버가 연결을 끝내면(토큰 만료 등) 읽지 않은 개수를 REST로 먼저 다시 받아 토큰 갱신을 거친 뒤 2초에서 시작해 최대 60초 간격(±20% jitter)으로 다시 연결한다.
+- 관리자는 ERP 메뉴의 "알림 발행"(`/notification`)에서 채팅방 전체 또는 특정 회원에게 알림을 발행하고 발행 이력을 본다. 발행 시도마다 요청 ID를 만들고, 결과를 알 수 없는 실패 뒤 다시 누르면 같은 ID를 재사용해 중복 발행을 막는다. 링크는 `/`로 시작하는 앱 내부 경로만 허용한다.
+- 알림 API 호출은 화면이 오류 상태를 직접 보여주므로 `ErrorInterceptor.silentErrorKey`로 전역 오류 SnackBar를 끈다.
+- 배포 시 reverse proxy를 두면 `/api/me/notifications/stream` 응답 buffering을 끄고 read timeout을 30초 이상으로 둔다(서버 heartbeat 25초).
+- 알림 테스트는 API 계약(경로·쿼리·직렬화·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기와 읽음 처리, loading·error·empty 상태, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성을 검증한다.
+
+```sh
+flutter test test/feature/notification
+```
 ---
 
 ## 📚 **참조 자료**
