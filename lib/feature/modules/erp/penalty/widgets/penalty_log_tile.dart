@@ -44,6 +44,7 @@ class PenaltyLogTile extends StatelessWidget {
         : PenaltyTokens.activeStatusForeground;
 
     return Card(
+      margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(PenaltyTokens.cardPadding),
         child: Column(

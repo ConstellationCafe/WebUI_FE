@@ -4,10 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/feature/notification/constants/notification_strings.dart';
+import 'package:constellation_cafe/feature/notification/constants/notification_tokens.dart';
 import 'package:constellation_cafe/feature/notification/domain/model/app_notification.dart';
 import 'package:constellation_cafe/feature/notification/domain/type/notification_category.dart';
 import 'package:constellation_cafe/feature/notification/notifier/notification_center_notifier.dart';
 import 'package:constellation_cafe/feature/notification/widgets/notification_bell.dart';
+import 'package:constellation_cafe/feature/notification/widgets/notification_panel.dart';
 import 'package:constellation_cafe/feature/notification/widgets/notification_tile.dart';
 
 import 'support/fake_notification_repository.dart';
@@ -113,6 +115,17 @@ void main() {
 
     expect(tester.takeException(), isNull);
     expect(find.text('공지 11'), findsOneWidget);
+    final panel = tester.getRect(find.byType(NotificationPanel));
+    final bell = tester.getRect(find.byKey(_bell));
+    expect(
+      panel.left,
+      greaterThanOrEqualTo(NotificationTokens.panelScreenMargin),
+    );
+    expect(
+      panel.right,
+      lessThanOrEqualTo(320 - NotificationTokens.panelScreenMargin),
+    );
+    expect(panel.top, greaterThan(bell.bottom));
   });
 
   testWidgets('본문이 비어 있으면 안내 문구를 표시한다', (tester) async {

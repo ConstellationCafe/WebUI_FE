@@ -33,16 +33,16 @@ class PenaltyTokens {
   static const cancelButtonVerticalPadding = 6.0;
   static const rankingListTileRadius = 10.0;
 
-  static const Color metadataColor = Color(0xFF5E6B7A);
-  static const Color scoreBadgeBackground = Color(0xFFE8F0FF);
-  static const Color scoreBadgeForeground = Color(0xFF001D4A);
+  static const Color metadataColor = Color(0xFF607086);
+  static const Color scoreBadgeBackground = Color(0xFFEAF1F8);
+  static const Color scoreBadgeForeground = Color(0xFF365778);
   static const Color activeStatusBackground = Color(0xFFE8F5E9);
   static const Color activeStatusForeground = Color(0xFF256B35);
   static const Color canceledStatusBackground = Color(0xFFFFF1F2);
   static const Color canceledStatusForeground = Color(0xFFB42318);
-  static const Color tabBarBackground = Color(0xFFE9EEF5);
-  static const Color tabBarActiveBackground = Color(0xFF405D7D);
+  static const Color tabBarBackground = Color(0xFFF0F3F7);
+  static const Color tabBarActiveBackground = Color(0xFF526F8C);
   static const Color tabBarActiveForeground = Color(0xFFFFFFFF);
-  static const Color tabBarInactiveForeground = Color(0xFF334155);
-  static const Color selectedListBackground = Color(0xFFE8F0FF);
+  static const Color tabBarInactiveForeground = Color(0xFF40566D);
+  static const Color selectedListBackground = Color(0xFFEAF1F8);
 }

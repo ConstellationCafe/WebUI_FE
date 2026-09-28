@@ -211,8 +211,10 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
                 )
               : history == null || history.items.isEmpty
               ? const Center(child: Text(PenaltyStrings.noHistory))
-              : ListView.builder(
+              : ListView.separated(
                   itemCount: history.items.length,
+                  separatorBuilder: (_, __) =>
+                      const SizedBox(height: PenaltyTokens.cardGap),
                   itemBuilder: (context, index) {
                     final log = history.items[index];
                     return PenaltyLogTile(
@@ -240,6 +242,7 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
     final members = state.members;
     final notifier = ref.read(adminPenaltyProvider.notifier);
     final list = Card(
+      margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(PenaltyTokens.gap),
         child: Column(
@@ -342,27 +345,30 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
                 notifier.selectMember(state.selectedId!, page: page),
             onCancel: _showCancel,
           );
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < PenaltyTokens.breakpoint) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 350, child: list),
-                const SizedBox(height: PenaltyTokens.gap),
-                SizedBox(height: 520, child: detail),
-              ],
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(top: PenaltyTokens.gap),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < PenaltyTokens.breakpoint) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 350, child: list),
+                  const SizedBox(height: PenaltyTokens.gap),
+                  SizedBox(height: 520, child: detail),
+                ],
+              ),
+            );
+          }
+          return Row(
+            children: [
+              SizedBox(width: PenaltyTokens.listWidth, child: list),
+              const SizedBox(width: PenaltyTokens.gap),
+              Expanded(child: detail),
+            ],
           );
-        }
-        return Row(
-          children: [
-            SizedBox(width: PenaltyTokens.listWidth, child: list),
-            const SizedBox(width: PenaltyTokens.gap),
-            Expanded(child: detail),
-          ],
-        );
-      },
+        },
+      ),
     );
   }
 

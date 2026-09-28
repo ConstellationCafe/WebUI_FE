@@ -67,6 +67,19 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('벌점 이력 카드와 탭의 시작선을 맞추고 취소 버튼 여백을 균일하게 둔다', (tester) async {
+    await tester.pumpWidget(adminApp(FakePenaltyRepository()));
+    await tester.pumpAndSettle();
+
+    final tab = tester.getRect(find.byType(TabBar));
+    final tile = tester.getRect(find.byType(PenaltyLogTile).first);
+    final action = tester.getRect(
+      find.widgetWithText(ElevatedButton, PenaltyStrings.cancelPenalty).first,
+    );
+    expect(tile.left, closeTo(tab.left, 1));
+    expect(action.left - tile.left, closeTo(tile.bottom - action.bottom, 4));
+  });
+
   testWidgets('대상자 우클릭 메뉴에서 닉네임과 Discord ID를 따로 복사한다', (tester) async {
     String? copied;
     final messenger =

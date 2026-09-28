@@ -37,41 +37,48 @@ class NotificationPanel extends ConsumerWidget {
     final available = screenWidth - NotificationTokens.panelScreenMargin * 2;
     final width = max(0.0, min(NotificationTokens.panelWidth, available));
 
-    return SizedBox(
-      width: width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              NotificationTokens.fieldGap,
-              NotificationTokens.panelGap,
-              NotificationTokens.panelGap,
-              NotificationTokens.panelGap,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Semantics(
-                    header: true,
-                    child: Text(
-                      NotificationStrings.panelTitle,
-                      style: textTheme.titleMedium,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(NotificationTokens.panelRadius),
+      child: SizedBox(
+        width: width,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                NotificationTokens.fieldGap,
+                NotificationTokens.panelGap,
+                NotificationTokens.panelGap,
+                NotificationTokens.panelGap,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Text(
+                        NotificationStrings.panelTitle,
+                        style: textTheme.titleMedium,
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  tooltip: NotificationStrings.close,
-                  onPressed: onClose,
-                  icon: const Icon(Icons.close),
-                ),
-              ],
+                  IconButton(
+                    tooltip: NotificationStrings.close,
+                    onPressed: onClose,
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Divider(height: 1),
-          _content(state, notifier),
-        ],
+            const Divider(
+              height: NotificationTokens.dividerHeight,
+              indent: NotificationTokens.dividerInset,
+              endIndent: NotificationTokens.dividerInset,
+            ),
+            _content(state, notifier),
+          ],
+        ),
       ),
     );
   }
@@ -100,13 +107,18 @@ class NotificationPanel extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (final notification in state.items) ...[
+        for (var index = 0; index < state.items.length; index++) ...[
           NotificationTile(
-            notification: notification,
+            notification: state.items[index],
             now: now,
-            onTap: () => onSelected(notification),
+            onTap: () => onSelected(state.items[index]),
           ),
-          const Divider(height: 1),
+          if (index < state.items.length - 1)
+            const Divider(
+              height: NotificationTokens.dividerHeight,
+              indent: NotificationTokens.dividerInset,
+              endIndent: NotificationTokens.dividerInset,
+            ),
         ],
         if (state.hasNext)
           _LoadMore(

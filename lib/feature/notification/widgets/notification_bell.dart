@@ -36,8 +36,12 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
 
     return MenuAnchor(
       controller: _menuController,
-      alignmentOffset: const Offset(0, NotificationTokens.panelGap),
+      alignmentOffset: const Offset(
+        -NotificationTokens.panelScreenMargin,
+        NotificationTokens.panelBelowHeaderGap,
+      ),
       style: MenuStyle(
+        alignment: AlignmentDirectional.bottomEnd,
         backgroundColor: WidgetStatePropertyAll(
           Theme.of(context).colorScheme.primary,
         ),

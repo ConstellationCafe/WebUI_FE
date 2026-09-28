@@ -14,8 +14,11 @@ class NotificationTokens {
   // 알림 패널
   static const panelWidth = 360.0;
   static const panelScreenMargin = 16.0;
+  static const panelBelowHeaderGap = 20.0;
   static const panelRadius = 12.0;
   static const panelGap = 8.0;
+  static const dividerInset = 16.0;
+  static const dividerHeight = 12.0;
   static const tileGap = 4.0;
   static const unreadTileColor = Color(0xFFEAF1FB);
 
