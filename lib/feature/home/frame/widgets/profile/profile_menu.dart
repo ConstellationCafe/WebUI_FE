@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
+
 import 'profile_icon.dart';
 
 class ProfileMenu extends ConsumerWidget {
@@ -33,6 +34,9 @@ class ProfileMenu extends ConsumerWidget {
     switch (selected) {
       case 'profile':
         context.go('/profile');
+        break;
+      case 'penalties':
+        context.go('/my-penalties');
         break;
       case 'logout':
         await performLogout(context, ref);
@@ -68,6 +72,7 @@ class ProfileMenu extends ConsumerWidget {
           position: position,
           items: const [
             PopupMenuItem(value: 'profile', child: Text('프로필 수정')),
+            PopupMenuItem(value: 'penalties', child: Text('내 벌점')),
             PopupMenuItem(value: 'logout', child: Text('로그아웃')),
           ],
         );

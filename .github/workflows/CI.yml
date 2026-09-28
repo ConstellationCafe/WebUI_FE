@@ -31,6 +31,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate penalty providers and state
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Format penalty source using CI Flutter
+        run: dart format lib/feature/modules/erp/penalty test/feature/modules/erp/penalty
+
+      - name: Export generated penalty code for source commit
+        uses: actions/upload-artifact@v4
+        with:
+          name: penalty-generated-code
+          path: |
+            lib/feature/modules/erp/penalty/**/*.dart
+            test/feature/modules/erp/penalty/**/*.dart
+
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed .
 

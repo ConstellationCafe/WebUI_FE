@@ -20,6 +20,7 @@ import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
 // contents
 import 'package:constellation_cafe/feature/modules/academy/routes/academy_routes.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/routes/point_routes.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/routes/penalty_routes.dart';
 import 'package:constellation_cafe/feature/notification/routes/notification_routes.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
@@ -95,6 +96,7 @@ GoRouter router(Ref ref) {
           ...shadowverseRoutes,
           ...academyRoutes,
           ...pointRoutes,
+          ...penaltyRoutes,
           ...notificationRoutes,
         ],
       ),
