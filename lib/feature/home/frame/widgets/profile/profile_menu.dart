@@ -1,10 +1,11 @@
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/auth/service/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
+import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'profile_icon.dart';
 
 class ProfileMenu extends ConsumerWidget {
@@ -21,6 +22,7 @@ class ProfileMenu extends ConsumerWidget {
     } catch (_) {}
 
     ref.read(currentUserStateProvider.notifier).clear();
+    ref.read(currentGuildStateProvider.notifier).clear();
 
     if (!context.mounted) return;
     context.go('/login');

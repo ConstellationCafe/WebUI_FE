@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/profile/api/membership_api.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 
 import '../state/membership_state.dart';

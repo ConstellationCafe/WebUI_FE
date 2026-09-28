@@ -1,4 +1,10 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
+
+final membershipApiProvider = Provider(
+  (ref) => MembershipAPI(ref.read(apiTranslatorProvider)),
+);
 
 class MembershipAPI {
   final APITranslator translator;

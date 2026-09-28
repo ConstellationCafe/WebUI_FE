@@ -1,7 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
-
 import '../../data/api/teacher_status_api.dart';
 import '../../data/repository/teacher_status_repository.dart';
 

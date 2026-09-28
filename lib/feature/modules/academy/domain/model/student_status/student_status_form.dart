@@ -1,4 +1,4 @@
-import '../type/student_status_type.dart';
+import '../../type/student_status_type.dart';
 
 class StudentStatusForm {
   final String academyName;

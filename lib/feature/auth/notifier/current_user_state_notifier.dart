@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import '../state/current_user_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/auth/service/login.dart';
 
 part 'current_user_state_notifier.g.dart';
 
@@ -27,6 +27,14 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
       }
       await ref.read(academyPermissionProvider.notifier).initialize();
     }
+  }
+
+  /// ADR-0001: roles(관리자 여부)는 방(botId) 단위로 갈린다. 채팅방을
+  /// 새로 선택/변경했을 때는 이미 초기화되어 있어도 강제로 다시 불러와야
+  /// 이전 방의 roles가 남아있지 않다.
+  Future<void> refresh() async {
+    _isInitialized = false;
+    await initialize();
   }
 
   /// 상태 업데이트

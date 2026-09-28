@@ -1,7 +1,14 @@
 import 'package:constellation_cafe/feature/profile/domain/entity/point_entity.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:constellation_cafe/core/network/DioProvider.dart';
 import '../../../../shared/domain/repository/repository_interface.dart';
 import '../../../shared/domain/pagination/page_result.dart';
+
+final pointRepositoryProvider = Provider<RepositoryInterface>(
+  (ref) => PointRepository(dio: ref.watch(dioProvider)),
+);
 
 class PointRepository implements RepositoryInterface<PointEntity> {
   static String apiPath = "/api/repository/membership";

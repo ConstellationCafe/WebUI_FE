@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../di/ApiProvider.dart';
 import '../../data/api/student_status_api.dart';
 import '../../data/repository/student_status_repository.dart';
 import '../../domain/model/academy.dart';
@@ -8,7 +7,7 @@ import '../../domain/model/academy_class.dart';
 import '../../domain/model/academy_permission.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/student_status/student_status.dart';
-import '../../domain/model/student_status_form.dart';
+import '../../domain/model/student_status/student_status_form.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/type/student_status_type.dart';
 import '../../state/student_status_state/student_status_state.dart';

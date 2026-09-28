@@ -4,7 +4,6 @@ import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_
 import 'package:constellation_cafe/feature/modules/academy/domain/type/student_roster_status.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
 import '../../data/api/academy_api.dart';
 import '../../data/api/lesson_record_api.dart';
 import '../../data/repository/lesson_record_repository.dart';

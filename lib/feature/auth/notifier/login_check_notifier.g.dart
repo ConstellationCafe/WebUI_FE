@@ -13,7 +13,7 @@ part of 'login_check_notifier.dart';
 final loginCheckProvider = LoginCheckNotifierProvider._();
 
 final class LoginCheckNotifierProvider
-    extends $AsyncNotifierProvider<LoginCheckNotifier, bool> {
+    extends $AsyncNotifierProvider<LoginCheckNotifier, LoginStatus> {
   LoginCheckNotifierProvider._()
     : super(
         from: null,
@@ -34,19 +34,19 @@ final class LoginCheckNotifierProvider
 }
 
 String _$loginCheckNotifierHash() =>
-    r'e896a29f4ed20837e5eb1b59b73a8bf010415c23';
+    r'f96549ea5ed51ef6ccd256150027fd1b3353e7cf';
 
-abstract class _$LoginCheckNotifier extends $AsyncNotifier<bool> {
-  FutureOr<bool> build();
+abstract class _$LoginCheckNotifier extends $AsyncNotifier<LoginStatus> {
+  FutureOr<LoginStatus> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
+    final ref = this.ref as $Ref<AsyncValue<LoginStatus>, LoginStatus>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<bool>, bool>,
-              AsyncValue<bool>,
+              AnyNotifier<AsyncValue<LoginStatus>, LoginStatus>,
+              AsyncValue<LoginStatus>,
               Object?,
               Object?
             >;

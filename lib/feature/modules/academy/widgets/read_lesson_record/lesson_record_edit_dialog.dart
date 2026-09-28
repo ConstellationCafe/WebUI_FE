@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/model/lesson_record_update.dart';
-import '../../domain/model/lesson_record_view.dart';
+import '../../domain/model/lesson_record/lesson_record_update.dart';
+import '../../domain/model/lesson_record/lesson_record_view.dart';
 
 class LessonRecordEditDialog extends StatefulWidget {
   final LessonRecordView record;

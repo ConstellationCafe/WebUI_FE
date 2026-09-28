@@ -7,7 +7,7 @@ import 'package:constellation_cafe/core/utils/date_formatter.dart';
 
 import '../../constants/academy_constants.dart';
 import '../../domain/model/academy_member.dart';
-import '../../domain/model/status_view/status_view.dart';
+import '../../domain/model/status_shared/status_view.dart';
 import '../../domain/type/roster_status.dart';
 
 class StatusTable<TMember extends AcademyMember, TStatus extends RosterStatus>

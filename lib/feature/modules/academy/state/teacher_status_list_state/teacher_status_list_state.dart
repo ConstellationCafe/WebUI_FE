@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/model/status_query/status_query.dart';
+import '../../domain/model/status_shared/status_query.dart';
 import '../../domain/model/teacher.dart';
-import '../../domain/model/teacher_status_list/teacher_status_list.dart';
+import '../../domain/model/teacher_status/teacher_status_list.dart';
 import '../../domain/type/teacher_roster_status.dart';
 
 part 'teacher_status_list_state.freezed.dart';

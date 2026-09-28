@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/model/lesson_record_form/lesson_record_form.dart';
+import '../../domain/model/lesson_record/lesson_record_form.dart';
 
 part 'lesson_record_form_state.freezed.dart';
 

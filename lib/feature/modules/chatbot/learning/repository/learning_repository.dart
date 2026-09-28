@@ -1,8 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:constellation_cafe/core/network/DioProvider.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 import '../../../../../shared/domain/pagination/page_result.dart';
 import '../domain/entity/learning_entity.dart';
+
+final learningRepositoryProvider = Provider<RepositoryInterface>(
+  (ref) => LearningRepository(dio: ref.watch(dioProvider)),
+);
 
 class LearningRepository implements RepositoryInterface<LearningEntity> {
   static String apiPath = "/api/repository/learning";

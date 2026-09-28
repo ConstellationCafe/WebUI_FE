@@ -2,6 +2,13 @@ import 'package:constellation_cafe/shared/domain/repository/repository_interface
 import '../../../../../shared/domain/pagination/page_result.dart';
 import '../domain/entity/music_entity.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:constellation_cafe/core/network/DioProvider.dart';
+
+final musicRepositoryProvider = Provider<RepositoryInterface>(
+  (ref) => MusicRepository(dio: ref.watch(dioProvider)),
+);
 
 class MusicRepository implements RepositoryInterface<MusicEntity> {
   static String apiPath = "/api/repository/music";

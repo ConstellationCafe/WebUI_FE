@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/auth/service/login.dart';
 import '../constants/auth_constants.dart';
 
 class DiscordLoginButton extends ConsumerWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
+import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/api/shadowverse_api.dart';
 import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
 import '../domain/friendly_match_template.dart';
 import '../notifier/friendly_match_notifier.dart';
