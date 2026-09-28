@@ -5,6 +5,10 @@ class PenaltyStrings {
   static const myPenalties = '내 벌점';
   static const award = '벌점 부여';
   static const cancelPenalty = '벌점 취소';
+  static const copyNickname = '닉네임 복사';
+  static const copyDiscordId = 'Discord ID 복사';
+  static const copiedNickname = '닉네임을 복사했습니다.';
+  static const copiedDiscordId = 'Discord ID를 복사했습니다.';
   static const cancel = '닫기';
   static const submit = '확인';
   static const search = '검색';

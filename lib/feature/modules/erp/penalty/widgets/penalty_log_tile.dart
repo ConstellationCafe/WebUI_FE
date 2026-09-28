@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../domain/model/penalty_log.dart';
+import 'penalty_identity.dart';
 import 'penalty_score_badge.dart';
 
 class PenaltyLogTile extends StatelessWidget {
@@ -55,9 +56,13 @@ class PenaltyLogTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${log.targetUsername} · ${log.targetDiscordId}',
-                        style: theme.textTheme.titleMedium,
+                      PenaltyIdentity(
+                        username: log.targetUsername,
+                        discordId: log.targetDiscordId,
+                        child: Text(
+                          '${log.targetUsername} · ${log.targetDiscordId}',
+                          style: theme.textTheme.titleMedium,
+                        ),
                       ),
                       const SizedBox(height: PenaltyTokens.cardGap),
                       Wrap(
@@ -116,18 +121,12 @@ class PenaltyLogTile extends StatelessWidget {
               spacing: PenaltyTokens.gap,
               runSpacing: PenaltyTokens.metadataTextSize / 2,
               children: [
-                Text(
-                  '채널 $channel (${log.channelId})',
-                  style: metadataStyle,
-                ),
+                Text('채널 $channel (${log.channelId})', style: metadataStyle),
                 Text(
                   '부여시간 ${date.format(log.occurredAt.toLocal())}',
                   style: metadataStyle,
                 ),
-                Text(
-                  '부여자 ${log.issuerDiscordId}',
-                  style: metadataStyle,
-                ),
+                Text('부여자 ${log.issuerDiscordId}', style: metadataStyle),
               ],
             ),
             if (log.isCanceled) ...[
@@ -146,7 +145,18 @@ class PenaltyLogTile extends StatelessWidget {
               const SizedBox(height: PenaltyTokens.cardGap),
               ElevatedButton.icon(
                 onPressed: onCancel,
-                icon: const Icon(Icons.undo),
+                icon: const Icon(
+                  Icons.undo,
+                  size: PenaltyTokens.cancelButtonIconSize,
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(0, PenaltyTokens.cancelButtonHeight),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PenaltyTokens.cancelButtonHorizontalPadding,
+                    vertical: PenaltyTokens.cancelButtonVerticalPadding,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.padded,
+                ),
                 label: const Text(PenaltyStrings.cancelPenalty),
               ),
             ],

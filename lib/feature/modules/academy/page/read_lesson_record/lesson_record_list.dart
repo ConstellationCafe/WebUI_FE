@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
 
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
 
 import '../../constants/academy_constants.dart';
@@ -45,6 +46,8 @@ class LessonRecordListPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const AppBreadcrumb(items: ['수업 관리', '수업 내용 조회']),
+              const SizedBox(height: ConstPadding.smallPadding),
               LessonRecordHeader(),
               const SizedBox(height: ConstPadding.mediumPadding),
               LessonRecordFilter(

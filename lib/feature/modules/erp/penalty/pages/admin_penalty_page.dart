@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
@@ -14,7 +15,9 @@ import '../notifier/admin_penalty_notifier.dart';
 import '../state/admin_penalty_state.dart';
 import '../widgets/penalty_award_dialog.dart';
 import '../widgets/penalty_cancel_dialog.dart';
+import '../widgets/penalty_context_menu_scope.dart';
 import '../widgets/penalty_detail_panel.dart';
+import '../widgets/penalty_identity.dart';
 import '../widgets/penalty_log_tile.dart';
 import '../widgets/penalty_pager.dart';
 import '../widgets/penalty_score_badge.dart';
@@ -45,63 +48,74 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
       return const Center(child: Text('관리자만 접근할 수 있습니다.'));
     }
     final state = ref.watch(adminPenaltyProvider);
-    return Padding(
-      padding: const EdgeInsets.all(PenaltyTokens.gap),
-      child: DefaultTabController(
-        length: 2,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: PenaltyTokens.gap,
-              runSpacing: PenaltyTokens.gap,
-              children: [
-                Text(
-                  PenaltyStrings.title,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                ElevatedButton.icon(
-                  onPressed: state.isSubmitting ? null : _showAward,
-                  icon: const Icon(Icons.add),
-                  label: const Text(PenaltyStrings.award),
-                ),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.all(PenaltyTokens.tabBarInset),
-              decoration: const BoxDecoration(
-                color: PenaltyTokens.tabBarBackground,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(PenaltyTokens.tabBarRadius),
-                ),
+    return PenaltyContextMenuScope(
+      child: Padding(
+        padding: const EdgeInsets.all(PenaltyTokens.gap),
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const AppBreadcrumb(items: ['ERP 메뉴', PenaltyStrings.title]),
+              const SizedBox(height: PenaltyTokens.cardGap),
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: PenaltyTokens.gap,
+                runSpacing: PenaltyTokens.gap,
+                children: [
+                  Text(
+                    PenaltyStrings.title,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: state.isSubmitting ? null : _showAward,
+                    icon: const Icon(Icons.add),
+                    label: const Text(PenaltyStrings.award),
+                  ),
+                ],
               ),
-              child: const TabBar(
-                dividerColor: Colors.transparent,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicator: BoxDecoration(
-                  color: PenaltyTokens.tabBarActiveBackground,
+              const SizedBox(height: PenaltyTokens.headerToTabsGap),
+              Container(
+                padding: const EdgeInsets.all(PenaltyTokens.tabBarInset),
+                decoration: const BoxDecoration(
+                  color: PenaltyTokens.tabBarBackground,
                   borderRadius: BorderRadius.all(
                     Radius.circular(PenaltyTokens.tabBarRadius),
                   ),
                 ),
-                labelColor: PenaltyTokens.tabBarActiveForeground,
-                unselectedLabelColor: PenaltyTokens.tabBarInactiveForeground,
-                labelStyle: TextStyle(fontWeight: FontWeight.w700),
-                unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-                tabs: [
-                  Tab(text: PenaltyStrings.history),
-                  Tab(text: PenaltyStrings.ranking),
-                ],
+                child: const TabBar(
+                  dividerColor: Colors.transparent,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: BoxDecoration(
+                    color: PenaltyTokens.tabBarActiveBackground,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(PenaltyTokens.tabBarRadius),
+                    ),
+                  ),
+                  labelColor: PenaltyTokens.tabBarActiveForeground,
+                  unselectedLabelColor: PenaltyTokens.tabBarInactiveForeground,
+                  labelStyle: TextStyle(fontWeight: FontWeight.w700),
+                  unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+                  tabs: [
+                    Tab(
+                      text: PenaltyStrings.history,
+                      height: PenaltyTokens.tabHeight,
+                    ),
+                    Tab(
+                      text: PenaltyStrings.ranking,
+                      height: PenaltyTokens.tabHeight,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [_historyPanel(state), _rankingPanel(state)],
+              Expanded(
+                child: TabBarView(
+                  children: [_historyPanel(state), _rankingPanel(state)],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -273,17 +287,25 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
                               PenaltyTokens.rankingListTileRadius,
                             ),
                           ),
-                          title: Text(
-                            member.username,
-                            style: Theme.of(context).textTheme.titleMedium,
+                          title: PenaltyIdentity(
+                            username: member.username,
+                            discordId: member.discordId,
+                            child: Text(
+                              member.username,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
                           ),
-                          subtitle: Text(
-                            '${member.discordId} · ${member.penaltyCount30d}건 · ${DateFormat('yyyy.MM.dd HH:mm').format(member.lastOccurredAt.toLocal())}',
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: PenaltyTokens.metadataColor,
-                                  fontSize: PenaltyTokens.metadataTextSize,
-                                ),
+                          subtitle: PenaltyIdentity(
+                            username: member.username,
+                            discordId: member.discordId,
+                            child: Text(
+                              '${member.discordId} · ${member.penaltyCount30d}건 · ${DateFormat('yyyy.MM.dd HH:mm').format(member.lastOccurredAt.toLocal())}',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: PenaltyTokens.metadataColor,
+                                    fontSize: PenaltyTokens.metadataTextSize,
+                                  ),
+                            ),
                           ),
                           trailing: PenaltyScoreBadge(
                             score: member.cumulativeScore30d,
@@ -314,6 +336,7 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
         ? const Center(child: Text(PenaltyStrings.selectMember))
         : PenaltyDetailPanel(
             detail: state.selected!,
+            showSummaryScore: false,
             isSubmitting: state.isSubmitting,
             onPageChanged: (page) =>
                 notifier.selectMember(state.selectedId!, page: page),

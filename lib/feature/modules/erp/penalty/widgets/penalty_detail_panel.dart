@@ -5,6 +5,7 @@ import '../constants/penalty_tokens.dart';
 import '../domain/calculate_penalty_cumulative.dart';
 import '../domain/model/penalty_detail.dart';
 import '../domain/model/penalty_log.dart';
+import 'penalty_identity.dart';
 import 'penalty_log_tile.dart';
 import 'penalty_pager.dart';
 import 'penalty_score_badge.dart';
@@ -14,6 +15,7 @@ class PenaltyDetailPanel extends StatelessWidget {
   final ValueChanged<int> onPageChanged;
   final ValueChanged<PenaltyLog>? onCancel;
   final bool isSubmitting;
+  final bool showSummaryScore;
 
   const PenaltyDetailPanel({
     super.key,
@@ -21,6 +23,7 @@ class PenaltyDetailPanel extends StatelessWidget {
     required this.onPageChanged,
     this.onCancel,
     this.isSubmitting = false,
+    this.showSummaryScore = true,
   });
 
   @override
@@ -41,25 +44,34 @@ class PenaltyDetailPanel extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      detail.username,
-                      style: Theme.of(context).textTheme.titleLarge,
+                    PenaltyIdentity(
+                      username: detail.username,
+                      discordId: detail.discordId,
+                      child: Text(
+                        detail.username,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
                     const SizedBox(height: PenaltyTokens.metadataTextSize / 2),
-                    Text(
-                      '${detail.discordId} · ${detail.state}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: PenaltyTokens.metadataColor,
-                        fontSize: PenaltyTokens.metadataTextSize,
+                    PenaltyIdentity(
+                      username: detail.username,
+                      discordId: detail.discordId,
+                      child: Text(
+                        '${detail.discordId} · ${detail.state}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: PenaltyTokens.metadataColor,
+                          fontSize: PenaltyTokens.metadataTextSize,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              PenaltyScoreBadge(
-                label: PenaltyStrings.currentScore,
-                score: detail.cumulativeScore30d,
-              ),
+              if (showSummaryScore)
+                PenaltyScoreBadge(
+                  label: PenaltyStrings.currentScore,
+                  score: detail.cumulativeScore30d,
+                ),
             ],
           ),
           const SizedBox(height: PenaltyTokens.gap),
@@ -77,7 +89,8 @@ class PenaltyDetailPanel extends StatelessWidget {
             PenaltyLogTile(
               log: detail.history.items[index],
               cumulativeScore: cumulativeScores[index],
-              onCancel: onCancel == null ||
+              onCancel:
+                  onCancel == null ||
                       isSubmitting ||
                       detail.history.items[index].isCanceled
                   ? null
