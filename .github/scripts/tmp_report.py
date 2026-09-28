@@ -33,3 +33,27 @@ print(f"::notice title={d}::tests={len(real)} failures={len(fails)}")
 if not real or any(names.get(i, '').startswith('loading') for i in fails):
     txt = open(path, encoding='utf-8', errors='replace').read()
     print(f"::error title={d} load::{esc(txt[-5000:])}")
+
+if fails:
+    text = []
+    for line in open(path, encoding='utf-8', errors='replace'):
+        if line.startswith('{'):
+            try:
+                e = json.loads(line)
+            except Exception:
+                text.append(line)
+                continue
+            if e.get('type') == 'print':
+                text.append(e.get('message', '') + '\n')
+            continue
+        text.append(line)
+    blob = ''.join(text)
+    # 예외 블록 위주로 잘라낸다.
+    marks = [k for k in range(len(blob)) if blob.startswith('══╡', k)]
+    chunks = []
+    for k in marks[:8]:
+        chunks.append(blob[k:k + 5000])
+    if not chunks:
+        chunks = [blob[-5000:]]
+    for c in chunks:
+        print(f"::error title={d} log::{esc(c)}")

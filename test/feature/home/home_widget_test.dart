@@ -26,7 +26,12 @@ Widget page(String name) => Center(child: Text('$name page'));
 
 Widget shell(bool frame, Widget child) {
   if (frame) return HomeFrame(child: child);
-  final menu = Row(children: [const MainMenuBar(), Expanded(child: child)]);
+  final menu = Row(
+    children: [
+      const MainMenuBar(),
+      Expanded(child: child),
+    ],
+  );
   return Scaffold(body: menu);
 }
 
