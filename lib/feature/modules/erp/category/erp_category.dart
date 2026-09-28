@@ -34,6 +34,7 @@ class ErpCategory extends ConsumerWidget {
           ),
           menuName: "벌점 관리",
           callbackUrl: "/penalties",
+        ),
         const SizedBox(height: ConstSize.tinySpacing),
         MenuContainer(
           iconImage: const Icon(
