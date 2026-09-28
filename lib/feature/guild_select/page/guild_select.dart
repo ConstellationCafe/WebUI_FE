@@ -78,9 +78,9 @@ class _GuildSelectPageState extends ConsumerState<GuildSelectPage> {
                     const SizedBox(height: GuildConstants.headerListSpacing),
 
                     if (_selectingGuildId != null)
-                      const Semantics(
+                      Semantics(
                         liveRegion: true,
-                        child: Padding(
+                        child: const Padding(
                           padding: EdgeInsets.only(
                             bottom: GuildConstants.selectionMessageGap,
                           ),
@@ -107,7 +107,7 @@ class _GuildSelectPageState extends ConsumerState<GuildSelectPage> {
                           selected = false;
                         }
 
-                        if (!mounted) return;
+                        if (!context.mounted) return;
                         if (!selected) {
                           setState(() => _selectingGuildId = null);
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -130,7 +130,7 @@ class _GuildSelectPageState extends ConsumerState<GuildSelectPage> {
                         // 새로 발급된(botId 포함) 토큰을 기준으로
                         // 로그인 상태(roomSelected)를 다시 확인한다.
                         await ref.read(loginCheckProvider.notifier).recheck();
-                        if (!mounted) return;
+                        if (!context.mounted) return;
                         if (ref.read(loginCheckProvider).value?.roomSelected !=
                             true) {
                           setState(() => _selectingGuildId = null);
