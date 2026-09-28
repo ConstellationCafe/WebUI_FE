@@ -197,6 +197,9 @@ void main() {
     expect(find.text(NotificationStrings.historyFailed), findsOneWidget);
 
     repository.historyError = null;
+    // 좁은 화면에서는 이력이 작성 폼 아래에 있으므로 버튼이 보이도록 스크롤한다.
+    await tester.ensureVisible(find.text(NotificationStrings.retry));
+    await tester.pumpAndSettle();
     await tester.tap(find.text(NotificationStrings.retry));
     await tester.pumpAndSettle();
     expect(find.text(NotificationStrings.noHistory), findsOneWidget);
