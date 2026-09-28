@@ -29,7 +29,7 @@ class ErpCategory extends ConsumerWidget {
         SizedBox(height: ConstSize.tinyWidth),
         MenuContainer(
           iconImage: SvgPicture.asset(
-            "assets/icons/modules/erp/point.svg",
+            "assets/icons/modules/erp/penalty.svg",
             fit: BoxFit.contain,
           ),
           menuName: "벌점 관리",
