@@ -8,6 +8,7 @@ import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
+import '../domain/calculate_penalty_cumulative.dart';
 import '../domain/model/penalty_log.dart';
 import '../notifier/admin_penalty_notifier.dart';
 import '../state/admin_penalty_state.dart';
@@ -16,6 +17,7 @@ import '../widgets/penalty_cancel_dialog.dart';
 import '../widgets/penalty_detail_panel.dart';
 import '../widgets/penalty_log_tile.dart';
 import '../widgets/penalty_pager.dart';
+import '../widgets/penalty_score_badge.dart';
 
 class AdminPenaltyPage extends ConsumerStatefulWidget {
   const AdminPenaltyPage({super.key});
@@ -67,11 +69,32 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
                 ),
               ],
             ),
-            const TabBar(
-              tabs: [
-                Tab(text: PenaltyStrings.history),
-                Tab(text: PenaltyStrings.ranking),
-              ],
+            Container(
+              padding: const EdgeInsets.all(PenaltyTokens.tabBarInset),
+              decoration: const BoxDecoration(
+                color: PenaltyTokens.tabBarBackground,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(PenaltyTokens.tabBarRadius),
+                ),
+              ),
+              child: const TabBar(
+                dividerColor: Colors.transparent,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicator: BoxDecoration(
+                  color: PenaltyTokens.tabBarActiveBackground,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(PenaltyTokens.tabBarRadius),
+                  ),
+                ),
+                labelColor: PenaltyTokens.tabBarActiveForeground,
+                unselectedLabelColor: PenaltyTokens.tabBarInactiveForeground,
+                labelStyle: TextStyle(fontWeight: FontWeight.w700),
+                unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+                tabs: [
+                  Tab(text: PenaltyStrings.history),
+                  Tab(text: PenaltyStrings.ranking),
+                ],
+              ),
             ),
             Expanded(
               child: TabBarView(
@@ -86,6 +109,12 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
 
   Widget _historyPanel(AdminPenaltyState state) {
     final history = state.history;
+    final cumulativeScores = history == null
+        ? const <int>[]
+        : cumulativeScoresForLogs(
+            logs: history.items,
+            newestFirst: state.sort == 'OCCURRED_AT_DESC',
+          );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -125,17 +154,29 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
                 onSubmitted: (_) => _searchHistory(),
               ),
             ),
-            DropdownButton<String>(
-              value: state.sort,
-              items: const [
-                DropdownMenuItem(value: 'OCCURRED_AT_DESC', child: Text('최신순')),
-                DropdownMenuItem(value: 'OCCURRED_AT_ASC', child: Text('오래된순')),
-              ],
-              onChanged: (value) => value == null
-                  ? null
-                  : ref
-                        .read(adminPenaltyProvider.notifier)
-                        .loadHistory(page: 1, sort: value),
+            SizedBox(
+              width: 160,
+              child: DropdownButtonFormField<String>(
+                value: state.sort,
+                decoration: const InputDecoration(
+                  labelText: PenaltyStrings.sort,
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'OCCURRED_AT_DESC',
+                    child: Text('최신순'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'OCCURRED_AT_ASC',
+                    child: Text('오래된순'),
+                  ),
+                ],
+                onChanged: (value) => value == null
+                    ? null
+                    : ref
+                          .read(adminPenaltyProvider.notifier)
+                          .loadHistory(page: 1, sort: value),
+              ),
             ),
             ElevatedButton.icon(
               onPressed: _searchHistory,
@@ -162,6 +203,7 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
                     final log = history.items[index];
                     return PenaltyLogTile(
                       log: log,
+                      cumulativeScore: cumulativeScores[index],
                       onCancel: log.isCanceled || state.isSubmitting
                           ? null
                           : () => _showCancel(log),
@@ -220,12 +262,32 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
                       itemBuilder: (context, index) {
                         final member = members.items[index];
                         return ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: PenaltyTokens.cardPadding,
+                          ),
                           selected: state.selectedId == member.discordId,
+                          selectedTileColor:
+                              PenaltyTokens.selectedListBackground,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              PenaltyTokens.rankingListTileRadius,
+                            ),
+                          ),
                           title: Text(
-                            '${member.username} · ${member.cumulativeScore30d}점',
+                            member.username,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           subtitle: Text(
                             '${member.discordId} · ${member.penaltyCount30d}건 · ${DateFormat('yyyy.MM.dd HH:mm').format(member.lastOccurredAt.toLocal())}',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: PenaltyTokens.metadataColor,
+                                  fontSize: PenaltyTokens.metadataTextSize,
+                                ),
+                          ),
+                          trailing: PenaltyScoreBadge(
+                            score: member.cumulativeScore30d,
+                            compact: true,
                           ),
                           onTap: state.isSubmitting
                               ? null

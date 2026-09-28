@@ -8,11 +8,13 @@ import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/constants/penalty_strings.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/constants/penalty_tokens.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/dto/request/penalty_create_request.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_page.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/pages/admin_penalty_page.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_log_tile.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_award_dialog.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_cancel_dialog.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
@@ -38,7 +40,8 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(adminApp(FakePenaltyRepository()));
     await tester.pumpAndSettle();
-    expect(find.text('${PenaltyStrings.currentScore} 2점'), findsWidgets);
+    expect(find.text(PenaltyStrings.currentScore), findsWidgets);
+    expect(find.text('2점'), findsWidgets);
     expect(find.text(PenaltyStrings.cancelPenalty), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -132,4 +135,24 @@ void main() {
     await tester.pump();
     expect(find.text(PenaltyStrings.invalidReason), findsOneWidget);
   });
+  testWidgets('벌점 사유와 누적 점수는 메타데이터보다 눈에 띄게 표시한다', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: CustomTheme.themeData,
+        home: Scaffold(
+          body: PenaltyLogTile(
+            log: exampleLog(),
+            cumulativeScore: 2,
+          ),
+        ),
+      ),
+    );
+
+    final reason = tester.widget<Text>(find.text('도배'));
+    final metadata = tester.widget<Text>(find.text('부여자 900'));
+    expect(reason.style?.fontSize, PenaltyTokens.reasonTextSize);
+    expect(metadata.style?.fontSize, PenaltyTokens.metadataTextSize);
+    expect(find.text('벌점 1점 · 누적벌점 2점'), findsOneWidget);
+  });
+
 }
