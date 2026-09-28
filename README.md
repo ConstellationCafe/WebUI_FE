@@ -140,6 +140,12 @@ flutter build web
 ```
 
 포인트 테스트는 API 직렬화·매핑, 검색 및 페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 공통 테마 버튼의 대비 및 빈 설명을 검증한다.
+
+### ERP 벌점 관리
+- 위치: `lib/feature/modules/erp/penalty/`. 관리자 메뉴의 `/penalties`에서 채널·대상별 벌점 이력, 조회 시점 기준 30일 누적 점수, 재적 회원 순위와 상세를 보고 벌점을 부여·취소합니다. 프로필 메뉴의 `/my-penalties`에서 본인 벌점 이력을 봅니다.
+- 서버가 JWT에서 현재 채팅방 `botId`를 꺼내므로 프런트는 `botId`나 `sk`를 보내지 않습니다. 대상은 숫자 Discord ID로 입력하며 점수는 1점 고정입니다. 발생 시각 입력은 브라우저 현지 시각에서 UTC로 변환합니다.
+- 요청·응답 DTO는 `data/dto/request`, `data/dto/response`, 업무 데이터는 `domain/model`, 상태는 `state/`의 Freezed와 `notifier/`의 생성형 Riverpod으로 분리합니다. 부여 다이얼로그는 요청 UUID를 한 번 생성하고 중복 제출을 막습니다.
+- 생성 코드를 수동 수정하지 않고 `flutter pub get` 이후 `dart run build_runner build`로 `*.g.dart`, `*.freezed.dart`를 생성·커밋합니다. `dart format lib/feature/modules/erp/penalty test/feature/modules/erp/penalty`, `flutter analyze`, `flutter test --platform chrome`, `flutter build web`으로 확인합니다.
 ---
 
 ## 📚 **참조 자료**
