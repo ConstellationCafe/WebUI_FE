@@ -1,3 +1,6 @@
+import 'package:constellation_cafe/feature/modules/chatbot/learning/domain/entity/learning_entity.dart';
+import 'package:constellation_cafe/shared/domain/pagination/page_result.dart';
+
 Map<String, dynamic> column(String name, {int isPrimary = 0}) => {
   'colName': name,
   'isPrimary': isPrimary,
@@ -39,4 +42,23 @@ Map<String, dynamic> learningPage() {
     'totalPages': 2,
     'hasNext': true,
   };
+}
+
+/// 저장소가 화면용 컬럼명으로 바꾼 뒤의 가르치기 목록.
+PageResult<LearningEntity> learningResult() {
+  final metadata = [
+    {'colName': 'lnKey', 'dbName': 'ln_key', 'isPrimary': 1},
+    {'colName': 'lnValue', 'dbName': 'ln_value'},
+    {'colName': 'discordId', 'dbName': 'teacher'},
+  ];
+  final json = {'lnKey': '안녕', 'lnValue': '반가워', 'teacher': '900'};
+  return PageResult(
+    items: [LearningEntity.fromJson(metadata, json)],
+    metadata: metadata,
+    page: 1,
+    size: 20,
+    totalElements: 1,
+    totalPages: 1,
+    hasNext: false,
+  );
 }

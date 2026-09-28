@@ -124,8 +124,8 @@ lib/
 
 ## 8. 테스트 요약
 
-- 자동 테스트: 공용 widget, 봇 router·`ApiResponse` 계약, 포인트·벌점·알림 feature(API 계약, notifier, widget)
-- 테스트 없음: ChatBot, Academy, Shadowverse, 프로필, 로그인·라우팅 가드
+- 자동 테스트: `test/`는 `lib/`와 같은 경로로 나누고, 기능마다 API 테스트와 widget 테스트를 둡니다(core·shared·로그인·채팅방 선택·홈·프로필·아카데미·빗자루·섀도우버스·포인트·벌점·알림).
+- 테스트 없음: 라우팅 가드, 수업 기록 작성·수정 화면, 교사 상태 처리 화면
 - CI gate: PR(→ `main`/`develope`)과 `develope` push에서 생성 코드 → format → analyze → test(chrome) → web build → Docker build
 - `*.g.dart`, `*.freezed.dart`는 커밋하고 직접 수정하지 않습니다.
 
@@ -148,6 +148,8 @@ lib/
 - `flutter_dotenv`는 의존성에 있으나 사용하지 않고, `pubspec.yaml`의 `description`이 기본값입니다.
 - `chatbot`, `profile`, `shadowverse`, `auth`, `guild_select`는 기준 feature 구조로 아직 옮기지 않았습니다.
 - localization resource(ARB)와 fallback locale이 없습니다.
+- 로그인 카드의 `Column(crossAxisAlignment: stretch)` 때문에 데스크톱 Discord 로그인 버튼이 설정한 160px이 아니라 카드 너비로 늘어납니다. 테스트는 설정값만 확인합니다.
+- `MainAppBar`, `ViewMembershipCard`의 `Image.network`에 `errorBuilder`가 없어 아이콘 URL이 비었거나 깨지면 오류가 납니다. 그래서 두 widget은 아직 widget 테스트로 그리지 않습니다.
 - `sample/`의 스크린샷은 현재 화면과 다를 수 있습니다.
 
 ## 11. License
