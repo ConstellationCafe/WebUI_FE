@@ -6,6 +6,7 @@ class CustomTheme {
   static const Color secondaryColor = Color(0xFF000D27);
   static const Color tertiaryColor = Color(0xFF1A1A1E);
   static const Color surfaceColor = Color(0xFFF5F6F7);
+  static const Color inputFillColor = Color(0xFFF7F8FA);
   static const Color errorColor = Color(0xFFD32F2F);
 
   static ThemeData themeData = ThemeData(
@@ -130,7 +131,7 @@ class CustomTheme {
     // 입력 위젯 테마
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Color(0xFFE0E0E0),
+      fillColor: inputFillColor,
       labelStyle: TextStyle(color: secondaryColor),
       hintStyle: TextStyle(color: Color(0xFF757575)), // Colors.grey[600]과 유사
       enabledBorder: OutlineInputBorder(
@@ -154,7 +155,7 @@ class CustomTheme {
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(color: secondaryColor),
         filled: true,
-        fillColor: Color(0xFFE0E0E0),
+        fillColor: inputFillColor,
       ),
     ),
 

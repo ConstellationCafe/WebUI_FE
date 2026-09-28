@@ -8,6 +8,10 @@ class PenaltyStrings {
   static const cancel = '닫기';
   static const submit = '확인';
   static const search = '검색';
+  static const sort = '정렬';
+  static const score = '벌점';
+  static const cumulativeScore = '누적 벌점';
+  static const cumulativeScoreInline = '누적벌점';
   static const retry = '다시 시도';
   static const targetId = '대상 Discord ID';
   static const channelId = '채널 ID';
