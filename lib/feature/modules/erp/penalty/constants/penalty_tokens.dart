@@ -25,6 +25,12 @@ class PenaltyTokens {
 
   static const tabBarRadius = 10.0;
   static const tabBarInset = 4.0;
+  static const headerToTabsGap = 24.0;
+  static const tabHeight = 40.0;
+  static const cancelButtonHeight = 36.0;
+  static const cancelButtonIconSize = 16.0;
+  static const cancelButtonHorizontalPadding = 12.0;
+  static const cancelButtonVerticalPadding = 6.0;
   static const rankingListTileRadius = 10.0;
 
   static const Color metadataColor = Color(0xFF5E6B7A);
@@ -35,7 +41,7 @@ class PenaltyTokens {
   static const Color canceledStatusBackground = Color(0xFFFFF1F2);
   static const Color canceledStatusForeground = Color(0xFFB42318);
   static const Color tabBarBackground = Color(0xFFE9EEF5);
-  static const Color tabBarActiveBackground = Color(0xFF000D27);
+  static const Color tabBarActiveBackground = Color(0xFF405D7D);
   static const Color tabBarActiveForeground = Color(0xFFFFFFFF);
   static const Color tabBarInactiveForeground = Color(0xFF334155);
   static const Color selectedListBackground = Color(0xFFE8F0FF);

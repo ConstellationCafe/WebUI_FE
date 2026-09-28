@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:ui' show PointerDeviceKind;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -44,6 +47,66 @@ void main() {
     expect(find.text('2점'), findsWidgets);
     expect(find.text(PenaltyStrings.cancelPenalty), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('벌점 화면의 breadcrumb와 탭 크기, 순위 상세 중복 배지를 확인한다', (tester) async {
+    await tester.pumpWidget(adminApp(FakePenaltyRepository()));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ERP 메뉴'), findsOneWidget);
+    final rankingTab = tester.widget<Tab>(
+      find.widgetWithText(Tab, PenaltyStrings.ranking),
+    );
+    expect(rankingTab.height, PenaltyTokens.tabHeight);
+
+    await tester.tap(find.text(PenaltyStrings.ranking));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('별').first);
+    await tester.pumpAndSettle();
+    expect(find.text(PenaltyStrings.currentScore), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('대상자 우클릭 메뉴에서 닉네임과 Discord ID를 따로 복사한다', (tester) async {
+    String? copied;
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      if (call.method == 'Clipboard.setData') {
+        copied = (call.arguments as Map)['text'] as String;
+      }
+      return null;
+    });
+    addTearDown(
+      () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(body: PenaltyLogTile(log: exampleLog())),
+      ),
+    );
+
+    Future<void> rightClickIdentity() async {
+      final gesture = await tester.startGesture(
+        tester.getCenter(find.text('별 · 123')),
+        kind: PointerDeviceKind.mouse,
+        buttons: kSecondaryMouseButton,
+      );
+      await gesture.up();
+      await tester.pumpAndSettle();
+    }
+
+    await rightClickIdentity();
+    expect(find.text(PenaltyStrings.copyNickname), findsOneWidget);
+    expect(find.text(PenaltyStrings.copyDiscordId), findsOneWidget);
+    await tester.tap(find.text(PenaltyStrings.copyNickname));
+    await tester.pumpAndSettle();
+    expect(copied, '별');
+
+    await rightClickIdentity();
+    await tester.tap(find.text(PenaltyStrings.copyDiscordId));
+    await tester.pumpAndSettle();
+    expect(copied, '123');
   });
 
   testWidgets('이력 로딩, 오류와 빈 결과를 구분한다', (tester) async {
@@ -140,10 +203,7 @@ void main() {
       MaterialApp(
         theme: CustomTheme.themeData,
         home: Scaffold(
-          body: PenaltyLogTile(
-            log: exampleLog(),
-            cumulativeScore: 2,
-          ),
+          body: PenaltyLogTile(log: exampleLog(), cumulativeScore: 2),
         ),
       ),
     );
@@ -154,5 +214,4 @@ void main() {
     expect(metadata.style?.fontSize, PenaltyTokens.metadataTextSize);
     expect(find.text('벌점 1점 · 누적벌점 2점'), findsOneWidget);
   });
-
 }

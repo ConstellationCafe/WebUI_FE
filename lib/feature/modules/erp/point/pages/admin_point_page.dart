@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 
 import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
@@ -22,6 +23,8 @@ class AdminPointPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const AppBreadcrumb(items: ['ERP 메뉴', PointStrings.title]),
+          const SizedBox(height: PointTokens.panelGap / 2),
           Text(
             PointStrings.title,
             style: Theme.of(context).textTheme.headlineMedium,
