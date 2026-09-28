@@ -12,7 +12,8 @@ import 'package:constellation_cafe/feature/profile/widgets/input_membership_data
 import 'package:constellation_cafe/feature/profile/widgets/save_membership_button.dart';
 import 'package:constellation_cafe/shared/widgets/db_editor/EditorBar.dart';
 
-import '../../support/fake_backend.dart';
+import '../../support/fake_page_repository.dart';
+import '../../support/screen.dart';
 import '../../support/fake_translator.dart';
 import 'support/membership_fixtures.dart';
 
@@ -106,23 +107,12 @@ void main() {
   });
 
   testWidgets('포인트 내역 화면은 읽기 전용 표로 내역을 보여준다', (tester) async {
-    final backend = FakeBackend();
-    addTearDown(backend.close);
-    backend.reply(
-      'GET',
-      '/api/repository/membership/point_log',
-      ok(pointPage()),
-    );
-    await tester.binding.setSurfaceSize(const Size(1200, 900));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final repository = FakePageRepository(pointResult());
+    setScreenSize(tester, const Size(1200, 900));
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          pointRepositoryProvider.overrideWithValue(
-            PointRepository(dio: backend.dio),
-          ),
-        ],
+        overrides: [pointRepositoryProvider.overrideWithValue(repository)],
         child: MaterialApp(
           theme: CustomTheme.themeData,
           home: const Scaffold(body: ViewPointLog()),

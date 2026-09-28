@@ -9,37 +9,33 @@ import 'package:constellation_cafe/feature/auth/notifier/current_user_state_noti
 import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
 import 'package:constellation_cafe/feature/modules/chatbot/category/chatbot_category.dart';
 import 'package:constellation_cafe/feature/modules/chatbot/learning/pages/learning_list.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/learning/domain/entity/learning_entity.dart';
 import 'package:constellation_cafe/feature/modules/chatbot/learning/repository/learning_repository.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 import 'package:constellation_cafe/shared/widgets/db_editor/editor_usage.dart';
 
-import '../../../support/fake_backend.dart';
+import '../../../support/fake_page_repository.dart';
+import '../../../support/screen.dart';
 import 'support/chatbot_fixtures.dart';
 
 void main() {
   group('가르치기 목록', () {
-    late FakeBackend backend;
+    late FakePageRepository<LearningEntity> repository;
 
     setUp(() {
       // 튜토리얼 오버레이는 이미 본 것으로 처리한다.
       SharedPreferences.setMockInitialValues({EditorUsage.key: true});
-      backend = FakeBackend();
-      backend.reply('GET', '/api/repository/learning/list', ok(learningPage()));
+      repository = FakePageRepository(learningResult());
     });
 
-    tearDown(() => backend.close());
-
     Future<void> pumpList(WidgetTester tester, List<String> roles) async {
-      await tester.binding.setSurfaceSize(const Size(1200, 900));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+      setScreenSize(tester, const Size(1200, 900));
       final user = CurrentUserState.initial().copyWith(roles: roles);
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
             currentUserStateProvider.overrideWithValue(user),
-            learningRepositoryProvider.overrideWithValue(
-              LearningRepository(dio: backend.dio),
-            ),
+            learningRepositoryProvider.overrideWithValue(repository),
           ],
           child: MaterialApp(
             theme: CustomTheme.themeData,
@@ -53,7 +49,7 @@ void main() {
     testWidgets('조회한 학습 데이터를 표로 보여준다', (tester) async {
       await pumpList(tester, [UserRole.ADMIN]);
 
-      expect(backend.last.queryParameters, {'page': 1, 'size': 20});
+      expect(repository.requestedPages, [1]);
       expect(find.text('안녕'), findsOneWidget);
       expect(find.text('반가워'), findsOneWidget);
       expect(find.text('데이터가 없습니다.'), findsNothing);
