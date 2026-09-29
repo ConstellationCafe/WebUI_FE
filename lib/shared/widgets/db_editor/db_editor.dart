@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 
-import '../../controller/db_editor/db_controller.dart';
+import '../../constants/db_editor_strings.dart';
+import '../../notifier/db_editor/db_editor_notifier.dart';
 import '../usage/usage.dart';
-
-import 'db_columns.dart';
-import 'db_data_view.dart';
-import 'db_search.dart';
-import 'editor_bar.dart';
+import 'db_editor_panel.dart';
 import 'editor_usage.dart';
 
-class DBEditor extends StatefulWidget {
+/// 서버 데이터를 표로 보여주고 검색·정렬·편집·저장하는 편집기.
+///
+/// 상태는 [repository]별 [dbEditorProvider]가 소유하고, 이 위젯은 최초 조회와
+/// 튜토리얼 대상 key만 관리한다.
+class DBEditor extends ConsumerStatefulWidget {
   final RepositoryInterface repository;
   final bool readonly;
   final Set<String> hiddenColumns;
@@ -27,12 +28,10 @@ class DBEditor extends StatefulWidget {
   });
 
   @override
-  State<DBEditor> createState() => _DBEditorState();
+  ConsumerState<DBEditor> createState() => _DBEditorState();
 }
 
-class _DBEditorState extends State<DBEditor> {
-  late DBController _controller;
-
+class _DBEditorState extends ConsumerState<DBEditor> {
   final GlobalKey columnKey = GlobalKey();
   final GlobalKey viewKey = GlobalKey();
 
@@ -44,52 +43,54 @@ class _DBEditorState extends State<DBEditor> {
   @override
   void initState() {
     super.initState();
-
-    _controller = DBController(repository: widget.repository);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadInitialPage();
-    });
-  }
-
-  Future<void> _loadInitialPage() async {
-    try {
-      await _controller.loadInitialPage();
-    } catch (e) {
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('데이터 조회 실패: $e')));
-    }
+    _scheduleInitialLoad();
   }
 
   @override
   void didUpdateWidget(covariant DBEditor oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (oldWidget.repository != widget.repository) {
-      _controller.dispose();
+      _scheduleInitialLoad();
+    }
+  }
 
-      _controller = DBController(repository: widget.repository);
+  void _scheduleInitialLoad() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadInitialPage());
+  }
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _loadInitialPage();
-      });
+  Future<void> _loadInitialPage() async {
+    if (!mounted) return;
+    try {
+      await ref
+          .read(dbEditorProvider(widget.repository).notifier)
+          .loadInitialPage();
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text(DbEditorStrings.loadFailed)));
     }
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  Widget build(BuildContext context) {
+    final panel = DbEditorPanel(
+      repository: widget.repository,
+      readonly: widget.readonly,
+      hiddenColumns: widget.hiddenColumns,
+      readOnlyColumns: widget.readOnlyColumns,
+      columnKey: columnKey,
+      viewKey: viewKey,
+      addKey: addKey,
+      deleteKey: deleteKey,
+      editKey: editKey,
+      saveKey: saveKey,
+    );
 
-  Widget buildDBEditor(DBController controller) {
     if (widget.readonly) {
-      return _buildEditor(controller);
+      return panel;
     }
 
     return Usage(
@@ -102,97 +103,7 @@ class _DBEditorState extends State<DBEditor> {
         editKey: editKey,
         saveKey: saveKey,
       ),
-      child: _buildEditor(controller),
+      child: panel,
     );
-  }
-
-  Widget _buildEditor(DBController controller) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final maxH = constraints.maxHeight.isFinite
-            ? constraints.maxHeight
-            : 500.0;
-
-        final editorH = maxH < 500 ? maxH : 500.0;
-
-        return SizedBox(
-          width: 500,
-          height: editorH,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF000D27).withOpacity(0.12),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.all(ConstSize.mediumWidth),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 검색 UI 추가
-                DBSearch(
-                  controller: controller,
-                  hiddenColumns: widget.hiddenColumns,
-                ),
-
-                SizedBox(height: ConstSize.mediumHeight),
-
-                DBColumns(
-                  key: columnKey,
-                  controller: controller,
-                  hiddenColumns: widget.hiddenColumns,
-                ),
-                SizedBox(height: ConstSize.mediumHeight),
-                Expanded(
-                  child: DBDataView(
-                    key: viewKey,
-                    controller: controller,
-                    hiddenColumns: widget.hiddenColumns,
-                    readOnlyColumns: widget.readOnlyColumns,
-                  ),
-                ),
-                if (controller.isLoading && controller.isInitialized)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                  ),
-
-                if (!widget.readonly) ...[
-                  SizedBox(height: ConstSize.mediumHeight),
-
-                  EditorBar(
-                    addKey: addKey,
-                    deleteKey: deleteKey,
-                    editKey: editKey,
-                    saveKey: saveKey,
-                    controller: controller,
-                  ),
-                ],
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!_controller.isInitialized && _controller.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    return buildDBEditor(_controller);
   }
 }

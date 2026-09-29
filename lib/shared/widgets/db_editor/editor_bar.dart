@@ -1,12 +1,16 @@
-import 'package:constellation_cafe/shared/controller/db_editor/db_controller.dart';
-import 'edit_tool/add_button.dart';
-import 'edit_tool/save_button.dart';
-import 'edit_tool/delete_button.dart';
-import 'edit_tool/edit_button.dart';
 import 'package:flutter/material.dart';
 
+import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
+
+import '../../constants/db_editor_tokens.dart';
+import 'edit_tool/add_button.dart';
+import 'edit_tool/delete_button.dart';
+import 'edit_tool/edit_button.dart';
+import 'edit_tool/save_button.dart';
+
+/// 행 추가·수정·삭제·저장 도구.
 class EditorBar extends StatelessWidget {
-  final DBController controller;
+  final RepositoryInterface repository;
 
   final GlobalKey? addKey;
   final GlobalKey? deleteKey;
@@ -15,7 +19,7 @@ class EditorBar extends StatelessWidget {
 
   const EditorBar({
     super.key,
-    required this.controller,
+    required this.repository,
     this.addKey,
     this.deleteKey,
     this.editKey,
@@ -25,13 +29,13 @@ class EditorBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 8, // 가로 간격
-      runSpacing: 8, // 세로 간격 (줄 바뀔 때)
+      spacing: DbEditorTokens.toolbarSpacing,
+      runSpacing: DbEditorTokens.toolbarSpacing,
       children: [
-        AddButton(key: addKey, controller: controller),
-        EditButton(key: deleteKey, controller: controller),
-        DeleteButton(key: editKey, controller: controller),
-        SaveButton(key: saveKey, controller: controller),
+        AddButton(key: addKey, repository: repository),
+        EditButton(key: deleteKey, repository: repository),
+        DeleteButton(key: editKey, repository: repository),
+        SaveButton(key: saveKey, repository: repository),
       ],
     );
   }

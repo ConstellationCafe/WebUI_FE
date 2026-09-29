@@ -1,27 +1,35 @@
-import 'package:constellation_cafe/shared/widgets/snack_bar/save_result_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/shared/controller/db_editor/db_controller.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
+import 'package:constellation_cafe/shared/constants/db_editor_strings.dart';
+import 'package:constellation_cafe/shared/constants/db_editor_tokens.dart';
+import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
+import 'package:constellation_cafe/shared/notifier/db_editor/db_editor_notifier.dart';
+import 'package:constellation_cafe/shared/widgets/snack_bar/save_result_bar.dart';
+
 import '../../loading/button_loading.dart';
+import 'db_tool_button_style.dart';
 
-class SaveButton extends StatefulWidget {
-  final DBController controller;
+class SaveButton extends ConsumerStatefulWidget {
+  final RepositoryInterface repository;
 
-  const SaveButton({super.key, required this.controller});
+  const SaveButton({super.key, required this.repository});
 
   @override
-  State<SaveButton> createState() => _SaveButtonState();
+  ConsumerState<SaveButton> createState() => _SaveButtonState();
 }
 
-class _SaveButtonState extends State<SaveButton> {
-  bool _isLoading = false;
+class _SaveButtonState extends ConsumerState<SaveButton> {
+  bool _isSaving = false;
 
   Future<void> _onPressed() async {
-    setState(() => _isLoading = true);
+    setState(() => _isSaving = true);
 
     try {
-      final messages = await widget.controller.save();
+      final messages = await ref
+          .read(dbEditorProvider(widget.repository).notifier)
+          .save();
 
       if (!mounted) return;
 
@@ -35,12 +43,15 @@ class _SaveButtonState extends State<SaveButton> {
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SaveResultBar.build(context, "저장 실패 : $e"));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SaveResultBar.build(
+          context,
+          DbEditorStrings.saveError(DbEditorStrings.errorMessage(e)),
+        ),
+      );
     } finally {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() => _isSaving = false);
       }
     }
   }
@@ -48,17 +59,17 @@ class _SaveButtonState extends State<SaveButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: ConstSize.bigHeight,
+      height: ConstSize.largeSpacing,
       child: ElevatedButton(
-        onPressed: _isLoading ? null : _onPressed,
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size(0, 30),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        child: _isLoading
-            ? const SizedBox(width: 18, height: 18, child: ButtonLoading())
-            : const Text("저장"),
+        onPressed: _isSaving ? null : _onPressed,
+        style: dbToolButtonStyle,
+        child: _isSaving
+            ? const SizedBox(
+                width: DbEditorTokens.toolButtonLoadingSize,
+                height: DbEditorTokens.toolButtonLoadingSize,
+                child: ButtonLoading(),
+              )
+            : const Text(DbEditorStrings.save),
       ),
     );
   }

@@ -182,15 +182,6 @@ class DBModel {
     return {for (final column in columns) column.toString(): <String>[]};
   }
 
-  void _clearRows() {
-    table = _createEmptyTable();
-
-    origin = _createEmptyTable();
-
-    _selectedCol = 0;
-    _selectedRow = 0;
-  }
-
   List<Map<String, String>> getRows() {
     if (table.isEmpty) {
       return [];

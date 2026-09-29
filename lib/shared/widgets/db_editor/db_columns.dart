@@ -1,101 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/shared/model/db_editor/db_column.dart';
+import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 
-import '../../controller/db_editor/db_controller.dart';
+import '../../constants/db_editor_colors.dart';
+import '../../constants/db_editor_strings.dart';
+import '../../constants/db_editor_tokens.dart';
+import '../../notifier/db_editor/db_editor_notifier.dart';
+import 'db_sort_icon.dart';
 
-class DBColumns extends StatelessWidget {
-  final DBController controller;
+/// 컬럼 머리글. 누르면 해당 컬럼으로 정렬한다.
+class DBColumns extends ConsumerWidget {
+  final RepositoryInterface repository;
   final Set<String> hiddenColumns;
 
   const DBColumns({
     super.key,
-    required this.controller,
+    required this.repository,
     this.hiddenColumns = const {},
   });
 
-  Future<void> _sort(BuildContext context, String columnName) async {
+  Future<void> _sort(
+    BuildContext context,
+    DbEditorNotifier notifier,
+    String columnName,
+  ) async {
     try {
-      await controller.sort(columnName);
+      await notifier.sort(columnName);
     } catch (e) {
       if (!context.mounted) {
         return;
       }
 
-      final message = e is StateError ? e.message.toString() : e.toString();
-
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(message)));
-    }
-  }
-
-  Widget _sortIcon(DBColumn column) {
-    switch (column.sortDir) {
-      case Toggle.asc:
-        return const Icon(Icons.arrow_upward, size: 14);
-
-      case Toggle.desc:
-        return const Icon(Icons.arrow_downward, size: 14);
-
-      case Toggle.none:
-        return const SizedBox(width: 14);
+      ).showSnackBar(SnackBar(content: Text(DbEditorStrings.errorMessage(e))));
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(dbEditorProvider(repository));
+    final notifier = ref.read(dbEditorProvider(repository).notifier);
+
     return SizedBox(
       width: double.infinity,
-      height: 40,
-      child: AnimatedBuilder(
-        animation: controller,
-        builder: (context, _) {
-          if (controller.countColumn == 0) {
-            return const SizedBox();
-          }
-
-          return Table(
-            border: TableBorder.all(width: 1, color: Colors.grey),
-            children: [
-              TableRow(
-                children: controller.model.columns
-                    .where(
-                      (column) => !hiddenColumns.contains(column.toString()),
-                    )
-                    .map((column) {
-                      return InkWell(
-                        onTap: controller.isLoading
-                            ? null
-                            : () {
-                                _sort(context, column.toString());
-                              },
-                        child: Container(
-                          height: 40,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  column.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(width: 3),
-                              _sortIcon(column),
-                            ],
-                          ),
-                        ),
-                      );
-                    })
-                    .toList(),
+      height: DbEditorTokens.headerHeight,
+      child: state.countColumn == 0
+          ? const SizedBox()
+          : Table(
+              border: TableBorder.all(
+                width: DbEditorTokens.borderWidth,
+                color: DBEditorColors.headerBorder,
               ),
-            ],
-          );
-        },
-      ),
+              children: [
+                TableRow(
+                  children: state.model.columns
+                      .where(
+                        (column) => !hiddenColumns.contains(column.toString()),
+                      )
+                      .map((column) {
+                        return InkWell(
+                          onTap: state.isLoading
+                              ? null
+                              : () =>
+                                    _sort(context, notifier, column.toString()),
+                          child: Container(
+                            height: DbEditorTokens.headerHeight,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal:
+                                  DbEditorTokens.headerHorizontalPadding,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    column.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: DbEditorTokens.sortIconGap,
+                                ),
+                                DbSortIcon(direction: column.sortDir),
+                              ],
+                            ),
+                          ),
+                        );
+                      })
+                      .toList(),
+                ),
+              ],
+            ),
     );
   }
 }

@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/shared/controller/db_editor/db_controller.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
+import 'package:constellation_cafe/shared/constants/db_editor_strings.dart';
+import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
+import 'package:constellation_cafe/shared/notifier/db_editor/db_editor_notifier.dart';
 
-class EditButton extends StatelessWidget {
-  final DBController controller;
+import 'db_tool_button_style.dart';
 
-  const EditButton({super.key, required this.controller});
+class EditButton extends ConsumerWidget {
+  final RepositoryInterface repository;
+
+  const EditButton({super.key, required this.repository});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      height: ConstSize.bigHeight,
+      height: ConstSize.largeSpacing,
       child: ElevatedButton(
-        onPressed: () => controller.toggleEditMode(),
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size(0, 30),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        child: const Text("수정"),
+        onPressed: () =>
+            ref.read(dbEditorProvider(repository).notifier).toggleEditMode(),
+        style: dbToolButtonStyle,
+        child: const Text(DbEditorStrings.edit),
       ),
     );
   }
