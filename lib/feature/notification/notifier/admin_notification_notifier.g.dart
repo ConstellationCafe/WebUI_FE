@@ -8,13 +8,16 @@ part of 'admin_notification_notifier.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// 관리자 알림 발행과 발행 이력.
 
 @ProviderFor(AdminNotificationNotifier)
 final adminNotificationProvider = AdminNotificationNotifierProvider._();
 
+/// 관리자 알림 발행과 발행 이력.
 final class AdminNotificationNotifierProvider
     extends
         $NotifierProvider<AdminNotificationNotifier, AdminNotificationState> {
+  /// 관리자 알림 발행과 발행 이력.
   AdminNotificationNotifierProvider._()
     : super(
         from: null,
@@ -43,7 +46,9 @@ final class AdminNotificationNotifierProvider
 }
 
 String _$adminNotificationNotifierHash() =>
-    r'cd3cbb389191e561830ef9d2c22cd39c93a8c6f8';
+    r'db7cfe19aef1c0fb368fc4624c2ec18120e90511';
+
+/// 관리자 알림 발행과 발행 이력.
 
 abstract class _$AdminNotificationNotifier
     extends $Notifier<AdminNotificationState> {
