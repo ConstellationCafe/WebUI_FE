@@ -10,6 +10,7 @@ class GuildConstants {
   // Section Spacing
   static const double headerListSpacing = 36.0;
   static const double listFooterSpacing = 28.0;
+  static const double selectionMessageGap = 12.0;
 
   // Guild Tile
   static const double tileHorizontalPadding = 24.0;
@@ -29,6 +30,8 @@ class GuildConstants {
   static const double iconInformationSpacing = 20.0;
   static const double informationArrowSpacing = 16.0;
   static const double arrowIconSize = 30.0;
+  static const double tileProgressSize = 24.0;
+  static const double tileProgressStroke = 2.5;
 
   // Guild Information
   static const double memberIconSize = 17.0;

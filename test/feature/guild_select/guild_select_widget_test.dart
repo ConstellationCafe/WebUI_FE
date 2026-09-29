@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +12,7 @@ import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.da
 import 'package:constellation_cafe/feature/auth/service/jwt.dart';
 import 'package:constellation_cafe/feature/auth/service/login.dart';
 import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
+import 'package:constellation_cafe/feature/guild_select/constants/guild_select_strings.dart';
 import 'package:constellation_cafe/feature/guild_select/domain/guild.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:constellation_cafe/feature/guild_select/page/guild_select.dart';
@@ -27,6 +30,7 @@ class FakeGuildApi extends GuildApi {
 
   final List<Guild>? guilds;
   bool selectable = true;
+  Completer<bool>? pendingSelection;
   final List<String> selected = [];
 
   @override
@@ -39,6 +43,8 @@ class FakeGuildApi extends GuildApi {
   @override
   Future<bool> selectGuild(String guildId) async {
     selected.add(guildId);
+    final pending = pendingSelection;
+    if (pending != null) return pending.future;
     return selectable;
   }
 }
@@ -156,7 +162,54 @@ void main() {
     expect(guild.guildId, '1');
     expect(guild.guildName, '별자리');
     expect(harness.auth.checkCalls, 2);
+    expect(harness.auth.meCalls, 1);
     expect(harness.container.read(currentUserStateProvider).userId, '123');
+    expect(find.text('home 1'), findsOneWidget);
+  });
+
+  testWidgets('연결 중에는 중복 선택을 막고 진행 상태를 표시한다', (tester) async {
+    final harness = await pumpGuildPage(tester, guilds(['별자리', '은하수']));
+    final pending = Completer<bool>();
+    harness.api.pendingSelection = pending;
+    harness.auth.checks.addAll([
+      checkResponse(isLogin: true),
+      checkResponse(isLogin: true, roomSelected: true),
+    ]);
+    harness.container.listen(loginCheckProvider, (_, _) {});
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('별자리'));
+    await tester.pump();
+    expect(find.text(GuildSelectStrings.connecting), findsOneWidget);
+    await tester.tap(find.text('은하수'), warnIfMissed: false);
+    expect(harness.api.selected, ['1']);
+
+    pending.complete(true);
+    await tester.pumpAndSettle();
+    expect(find.text('home 1'), findsOneWidget);
+    expect(harness.auth.meCalls, 1);
+  });
+
+  testWidgets('채팅방을 다시 고를 때도 사용자 정보를 한 번만 다시 읽는다', (tester) async {
+    final harness = await pumpGuildPage(tester, guilds(['별자리']));
+    await harness.container
+        .read(currentUserStateProvider.notifier)
+        .initialize();
+    harness.container.read(currentUserStateProvider.notifier).update(roles: []);
+    harness.auth.checks.addAll([
+      checkResponse(isLogin: true),
+      checkResponse(isLogin: true, roomSelected: true),
+    ]);
+    harness.container.listen(loginCheckProvider, (_, _) {});
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('별자리'));
+    await tester.pumpAndSettle();
+
+    expect(harness.auth.meCalls, 2, reason: '기존 초기화 1회와 새 채팅방 초기화 1회');
+    expect(harness.container.read(currentUserStateProvider).roles, [
+      'ROLE_ADMIN',
+    ]);
     expect(find.text('home 1'), findsOneWidget);
   });
 }

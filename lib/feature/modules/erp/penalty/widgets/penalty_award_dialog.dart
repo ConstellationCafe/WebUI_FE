@@ -51,8 +51,9 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
   DateTime? _parseOccurredAt() {
     if (_occurredAt.text.trim().isEmpty) return null;
     try {
-      return DateFormat('yyyy-MM-dd HH:mm')
-          .parseStrict(_occurredAt.text.trim());
+      return DateFormat(
+        'yyyy-MM-dd HH:mm',
+      ).parseStrict(_occurredAt.text.trim());
     } on FormatException {
       return null;
     }

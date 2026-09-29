@@ -13,16 +13,25 @@ import 'package:constellation_cafe/feature/guild_select/widgets/guild_tile_list.
 import 'package:constellation_cafe/feature/guild_select/widgets/page_footer.dart';
 import 'package:constellation_cafe/feature/guild_select/widgets/page_header.dart';
 import 'package:constellation_cafe/feature/guild_select/provider/guild_list_provider.dart';
+
 import '../../../shared/widgets/loading/PageLoading.dart';
 import '../constants/guild_constants.dart';
+import '../constants/guild_select_strings.dart';
 
-class GuildSelectPage extends ConsumerWidget {
+class GuildSelectPage extends ConsumerStatefulWidget {
   final Widget? child;
 
   const GuildSelectPage({super.key, this.child});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GuildSelectPage> createState() => _GuildSelectPageState();
+}
+
+class _GuildSelectPageState extends ConsumerState<GuildSelectPage> {
+  String? _selectingGuildId;
+
+  @override
+  Widget build(BuildContext context) {
     final guildsAsync = ref.watch(guildListProvider);
 
     final guildStateNotifier = ref.read(currentGuildStateProvider.notifier);
@@ -68,9 +77,24 @@ class GuildSelectPage extends ConsumerWidget {
 
                     const SizedBox(height: GuildConstants.headerListSpacing),
 
+                    if (_selectingGuildId != null)
+                      Semantics(
+                        liveRegion: true,
+                        child: const Padding(
+                          padding: EdgeInsets.only(
+                            bottom: GuildConstants.selectionMessageGap,
+                          ),
+                          child: Text(GuildSelectStrings.connecting),
+                        ),
+                      ),
+
                     GuildList(
                       guilds: guilds,
+                      selectingGuildId: _selectingGuildId,
                       onGuildSelected: (guild) async {
+                        if (_selectingGuildId != null) return;
+                        setState(() => _selectingGuildId = guild.id);
+
                         // ADR-0001: 채팅방을 선택해야 로그인이 완료된다.
                         // 백엔드가 이 discordId를 그 방의 멤버로 확인해줘야
                         // botId가 실린 토큰이 발급되므로, 로컬 상태만 바꾸고
@@ -83,19 +107,20 @@ class GuildSelectPage extends ConsumerWidget {
                           selected = false;
                         }
 
+                        if (!context.mounted) return;
                         if (!selected) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  '이 채팅방을 선택할 수 없습니다. 멤버 여부를 확인해주세요.',
-                                ),
-                              ),
-                            );
-                          }
+                          setState(() => _selectingGuildId = null);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(GuildSelectStrings.selectionFailed),
+                            ),
+                          );
                           return;
                         }
 
+                        // 이전 채팅방의 사용자 역할과 학원 권한을 지운 다음,
+                        // 재확인 과정에서 새 방의 정보를 한 번만 불러온다.
+                        ref.read(currentUserStateProvider.notifier).clear();
                         guildStateNotifier.setGuild(
                           guildId: guild.id,
                           guildName: guild.name,
@@ -105,17 +130,18 @@ class GuildSelectPage extends ConsumerWidget {
                         // 새로 발급된(botId 포함) 토큰을 기준으로
                         // 로그인 상태(roomSelected)를 다시 확인한다.
                         await ref.read(loginCheckProvider.notifier).recheck();
-
-                        // roles(관리자 여부)는 방 단위로 갈리므로, 이미
-                        // 초기화되어 있던 경우(재선택/방 변경)에도 새 방
-                        // 기준으로 강제로 다시 불러온다.
-                        await ref
-                            .read(currentUserStateProvider.notifier)
-                            .refresh();
-
-                        if (context.mounted) {
-                          context.go('/home?guild_id=${guild.id}');
+                        if (!context.mounted) return;
+                        if (ref.read(loginCheckProvider).value?.roomSelected !=
+                            true) {
+                          setState(() => _selectingGuildId = null);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(GuildSelectStrings.checkFailed),
+                            ),
+                          );
+                          return;
                         }
+                        context.go('/home?guild_id=${guild.id}');
                       },
                     ),
 

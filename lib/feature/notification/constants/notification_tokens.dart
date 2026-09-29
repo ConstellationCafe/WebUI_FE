@@ -14,8 +14,11 @@ class NotificationTokens {
   // 알림 패널
   static const panelWidth = 360.0;
   static const panelScreenMargin = 16.0;
+  static const panelBelowHeaderGap = 20.0;
   static const panelRadius = 12.0;
   static const panelGap = 8.0;
+  static const dividerInset = 16.0;
+  static const dividerHeight = 12.0;
   static const tileGap = 4.0;
   static const unreadTileColor = Color(0xFFEAF1FB);
 
@@ -28,4 +31,10 @@ class NotificationTokens {
   static const bodyMaxLines = 6;
   static const progressSize = 18.0;
   static const progressStroke = 2.0;
+
+  static double panelWidthFor(double screenWidth) {
+    final available = screenWidth - panelScreenMargin * 2;
+    if (available <= 0) return 0;
+    return available < panelWidth ? available : panelWidth;
+  }
 }
