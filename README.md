@@ -3,7 +3,7 @@
 > 상태: Active  
 > 적용 범위: `ConstellationCafe/WebUI_FE` Flutter Web 클라이언트 (`develope` 기준)  
 > 문서 담당자: 미정 — 프로젝트 책임자가 지정 필요  
-> 마지막 검토일: 2026-09-28
+> 마지막 검토일: 2026-09-29
 
 ## 1. 프로젝트 개요
 
@@ -44,7 +44,7 @@ API 계약 기준: Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API
 
 | 항목 | 요구사항 |
 |---|---|
-| Flutter | 배포 이미지 3.41.2 고정, CI는 `stable` channel |
+| Flutter | 3.41.2 고정 (Dockerfile·CI 동일) |
 | Dart SDK | `>=3.9.0 <4.0.0` |
 | 브라우저 | Chrome (로컬 실행·테스트) |
 | Docker / Docker Compose | 컨테이너 빌드·배포 시 |
@@ -52,10 +52,10 @@ API 계약 기준: Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API
 | 분류 | 패키지 |
 |---|---|
 | 상태 관리 | `flutter_riverpod` ^3.3.1, `riverpod_annotation` ^4.0.2, `riverpod_generator` ^4.0.3 |
-| 불변 모델·직렬화 | `freezed` ^3.2.5, `freezed_annotation` ^3.1.0, `json_serializable` ^6.13.0, `build_runner` ^2.13.1 |
+| 불변 모델·직렬화 | `freezed_annotation` ^3.1.0 / dev: `freezed` ^3.2.5, `json_serializable` ^6.13.0, `build_runner` ^2.13.1 |
 | 라우팅 | `go_router` ^16.0.0 (`PathUrlStrategy`) |
-| 네트워크 | `dio` ^5.4.0, `dio_cookie_manager`, `cookie_jar`, `http` ^1.2.2 |
-| Web API | `web` ^1.1.1 (실시간 알림 `EventSource`) |
+| 네트워크 | `dio` ^5.4.0 (연결 10초·응답 30초 timeout), `dio_cookie_manager`, `cookie_jar`, `http` ^1.2.2 |
+| Web API | `web` ^1.1.1 (실시간 알림 `EventSource`, 로그인 페이지 이동), `flutter_web_plugins` (URL 전략) |
 | UI | `flutter_svg`, `image_picker`, `url_launcher`, `intl` |
 
 정확한 버전은 `pubspec.lock`이 기준이며, lockfile은 dependency 변경과 같은 commit에서 갱신합니다.
@@ -77,14 +77,14 @@ dart run build_runner build --delete-conflicting-outputs
 
 # CI와 같은 검증
 dart format --output=none --set-exit-if-changed .
-flutter analyze --no-fatal-warnings --no-fatal-infos
+flutter analyze
 flutter test --platform chrome
 flutter build web
 ```
 
 성공 기준
 
-- `dart format`이 변경 없이 끝나고, `flutter analyze`에 새 error·변경 코드의 새 경고가 없습니다.
+- `dart format`이 변경 없이 끝나고, `flutter analyze`가 `No issues found!`로 끝납니다.
 - `flutter test --platform chrome`이 모두 통과하고 `flutter build web`이 `build/web`을 생성합니다.
 - 로컬 실행 시 `/login`이 열리고, Discord 로그인 후 `/select`로 이동합니다.
 
@@ -92,7 +92,7 @@ flutter build web
 
 필수 `--dart-define`: `CLIENT_ID`, `REDIRECT_URI`, `BACKEND_URI`, `ROUTE_URI`
 
-- `.env`/`flutter_dotenv`는 사용하지 않습니다.
+- `.env`/`flutter_dotenv`는 사용하지 않습니다(의존성에서도 제거).
 - Web 번들은 누구나 받을 수 있으므로 공개해도 되는 값만 넣습니다. 비밀값과 서버 권한 판단은 client에 두지 않습니다.
 - 인증 토큰은 백엔드의 HttpOnly 쿠키로만 다룹니다.
 - production 값은 GitHub Actions secrets로 CD가 Docker build arg에 전달합니다.
@@ -107,7 +107,7 @@ lib/
 └── feature/                     # auth, guild_select, home, profile, notification, modules/{academy,chatbot,erp,shadowverse}
 ```
 
-- 새 feature는 `feature/modules/academy`의 `data/ · domain/ · state/ · notifier/ · pages/ · widgets/` 구조를 따릅니다.
+- 모든 feature는 `feature/modules/academy`의 `data/ · domain/ · state/ · notifier/ · pages/ · widgets/` 구조를 따릅니다. 파일·폴더 이름은 snake_case입니다.
 - page → notifier(`@riverpod`) → repository(DTO ↔ domain) → API(Dio) → WebUI_BE 순서로 흐릅니다.
 - `AuthInterceptor`는 401일 때만 `/auth/refresh` 후 1회 재시도합니다.
 
@@ -125,8 +125,8 @@ lib/
 ## 8. 테스트 요약
 
 - 자동 테스트: `test/`는 `lib/`와 같은 경로로 나누고, 기능마다 API 테스트와 widget 테스트를 둡니다(core·shared·로그인·채팅방 선택·홈·프로필·아카데미·빗자루·섀도우버스·포인트·벌점·알림).
-- 테스트 없음: 라우팅 가드, 수업 기록 작성·수정 화면, 교사 상태 처리 화면
-- CI gate: PR(→ `main`/`develope`)과 `develope` push에서 생성 코드 → format → analyze → test(chrome) → web build → Docker build
+- 테스트 없음: 라우팅 가드, 수업 기록 작성·수정 화면, 교사 상태 처리 화면, 임시 연동 키 화면(라우트 미연결)
+- CI gate: PR(→ `main`/`develope`)과 `develope` push에서 lockfile 고정 설치 → 생성 코드 일치 → format → analyze(경고·info 포함) → test(chrome) → web build, 별도로 secret scan·Docker build
 - `*.g.dart`, `*.freezed.dart`는 커밋하고 직접 수정하지 않습니다.
 
 상세: [testing](docs/testing.md)
@@ -140,17 +140,19 @@ lib/
 
 상세: [deploy](docs/deploy.md)
 
-## 10. 알려진 이슈와 후속 작업 (2026-09-28 기준)
+## 10. 알려진 이슈와 예외 기록 (2026-09-29 기준)
 
-- `pubspec.yaml`의 `fonts:`가 `flutter:` 아래가 아니고 경로도 `asset/`(실제는 `assets/`)여서 Noto Sans KR이 등록되지 않습니다.
-- `feature/auth/api/discord_login.dart`가 `dart:html`을 직접 import합니다(Flutter 가이드 위반).
-- CI는 Flutter `stable`, Docker는 3.41.2 고정이라 toolchain이 다를 수 있습니다.
-- `flutter_dotenv`는 의존성에 있으나 사용하지 않고, `pubspec.yaml`의 `description`이 기본값입니다.
-- `chatbot`, `profile`, `shadowverse`, `auth`, `guild_select`는 기준 feature 구조로 아직 옮기지 않았습니다.
-- localization resource(ARB)와 fallback locale이 없습니다.
-- 로그인 카드의 `Column(crossAxisAlignment: stretch)` 때문에 데스크톱 Discord 로그인 버튼이 설정한 160px이 아니라 카드 너비로 늘어납니다. 테스트는 설정값만 확인합니다.
-- `MainAppBar`, `ViewMembershipCard`의 `Image.network`에 `errorBuilder`가 없어 아이콘 URL이 비었거나 깨지면 오류가 납니다. 그래서 두 widget은 아직 widget 테스트로 그리지 않습니다.
-- `sample/`의 스크린샷은 현재 화면과 다를 수 있습니다.
+아래 항목은 동작을 바꾸지 않는 정리 범위 밖이라 남겨 두었습니다. 승인 주체와 재검토 시점은 아직 정하지 않았습니다(결정 필요).
+
+| 항목 | 사유·영향 | 대안·후속 |
+|---|---|---|
+| 폰트 미등록 | `pubspec.yaml`의 `fonts:`가 `flutter:` 밖이고 경로가 `asset/`라 Noto Sans KR이 적용되지 않음. 고치면 전체 글꼴이 바뀜 | 디자인 검토 후 등록 ([design-system](docs/design-system.md#6-폰트)) |
+| localization resource 없음 | ARB·fallback locale이 없음. 문자열은 `*_strings.dart`로 모아 둠 | 다국어 요구 시 ARB 도입 ([design-system](docs/design-system.md#7-국제화)) |
+| 로그아웃 시 회원증 캐시 | 회원증(`membershipProvider`, keepAlive)을 로그아웃·채팅방 변경 때 비우지 않아 다른 계정으로 로그인하면 이전 회원증이 보일 수 있음 | 로그아웃 흐름에서 `clear()` 호출 검토 |
+| DB 편집기 튜토리얼 key | 튜토리얼의 "삭제" 단계가 수정 버튼을, "수정" 단계가 삭제 버튼을 가리킴(`EditorBar`의 key 전달 순서) | 안내 순서와 key를 맞춤 |
+| 입·출금 중복 가능성 | 포인트 입·출금 요청에 서버 요청 ID가 없어 결과를 모르는 실패 뒤 재시도하면 중복 반영될 수 있음 | WebUI_BE와 idempotency key 합의 |
+| 로그인 버튼 너비 | 로그인 카드의 `Column(crossAxisAlignment: stretch)` 때문에 데스크톱 Discord 로그인 버튼이 설정한 160px이 아니라 카드 너비로 늘어남. 테스트는 설정값만 확인 | 레이아웃 수정 시 시각 검토 |
+| `sample/` 스크린샷 | 현재 화면과 다를 수 있음 | 화면 변경 PR에서 갱신 |
 
 ## 11. License
 

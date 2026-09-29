@@ -1,14 +1,14 @@
 # WebUI_FE 실행과 배포
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-28  
+> 마지막 검토일: 2026-09-29  
 > 상위 문서: [README](../README.md) · 관련: [테스트와 CI](testing.md), [architecture](architecture.md)
 
 ## 1. 환경 요구사항
 
 | 항목 | 요구사항 |
 |---|---|
-| Flutter | 배포 이미지 3.41.2(`Dockerfile`의 `FLUTTER_VERSION`), CI는 `stable` channel |
+| Flutter | 3.41.2 고정 (`Dockerfile`의 `FLUTTER_VERSION`, `CI.yml`의 `flutter-version`) |
 | Dart SDK | `>=3.9.0 <4.0.0` (`pubspec.yaml`) |
 | 브라우저 | Chrome |
 | Docker / Docker Compose | 컨테이너 빌드·배포 시 |
@@ -71,7 +71,7 @@ docker compose ps
 
 | workflow | trigger | 내용 |
 |---|---|---|
-| `CI.yml` | PR → `main`/`develope`, push → `develope` | 생성 코드, format, analyze, test(chrome), `flutter build web`, Docker build ([테스트와 CI](testing.md#4-ci-gate-githubworkflowsciyml)) |
+| `CI.yml` | PR → `main`/`develope`, push → `develope` | lockfile 고정 설치, 생성 코드 일치 확인, format, analyze(경고·info 포함), test(chrome), `flutter build web`, secret scan, Docker build ([테스트와 CI](testing.md#4-ci-gate-githubworkflowsciyml)) |
 | `CD.yml` | push → `main` | 빌드에 필요한 파일(`Dockerfile`, `docker-compose.yml`, `nginx.conf`, `pubspec.*`, `.dockerignore`, `.metadata`, `assets`, `lib`, `web`)을 SCP로 원격 서버에 전송 → `docker compose -p webui-fe up -d --build` → `ps` |
 
 - CD는 `CLIENT_ID`, `REDIRECT_URI`, `ROUTE_URI`, `BACKEND_URI`를 secrets에서 SSH step 환경 변수로 넘겨 Compose build arg로 씁니다.

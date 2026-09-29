@@ -1,7 +1,7 @@
 # 디자인 시스템과 UI 규칙
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-28  
+> 마지막 검토일: 2026-09-29  
 > 상위 문서: [README](../README.md) · 관련: [architecture](architecture.md)
 
 ## 1. theme
@@ -26,7 +26,9 @@
 | `core/constants/const_size.dart` | 공통 글자 크기(12~18), 간격(8 배수), 너비 |
 | `core/constants/const_shadow.dart` | 그림자 |
 | `core/constants/const_color.dart` | theme 밖 공통 색 |
-| `shared/constants/db_editor_colors.dart` | DB 편집기 전용 색 |
+| `shared/constants/db_editor_*.dart` | DB 편집기 색·크기·문구 |
+| `shared/constants/snack_bar_tokens.dart`, `loading_tokens.dart` | 공용 SnackBar·진행 표시 |
+| `shared/widgets/usage/constants/` | 튜토리얼 안내 token·문구 |
 | `feature/**/constants/*_tokens.dart`, `*_strings.dart`, `*_constants.dart` | feature 전용 token·문자열 |
 
 - 같은 magic value를 반복하지 않고 token을 씁니다. 의미가 다르면 값이 같아도 억지로 합치지 않습니다.
@@ -59,12 +61,18 @@
 ## 6. 폰트
 
 - 의도: Noto Sans KR (`assets/fonts/NotoSansKR`, Thin~Black), theme의 `fontFamily: "Noto Sans KR"`.
-- **현재 문제**: `pubspec.yaml`의 `fonts:`가 `flutter:` 아래가 아니고 경로도 `asset/`(실제는 `assets/`)라 폰트가 등록되지 않습니다. 브라우저 기본 폰트로 대체되어 보입니다.
+- **알려진 차이(예외 기록)**: `pubspec.yaml`의 `fonts:`가 `flutter:` 아래가 아니고 경로도 `asset/`(실제는 `assets/`)라 폰트가 등록되지 않아 브라우저 기본 폰트로 보입니다.
+  - 고치면 모든 화면의 글꼴·줄 높이가 바뀌므로 동작 변경 없는 정리 PR에서는 제외했습니다.
+  - 영향: 디자인 의도와 실제 글꼴이 다릅니다. 대안: 폰트 등록 후 주요 화면 시각 검토.
+  - 승인 주체·재검토 시점: 미정 — 디자인 담당자 지정 후 결정 필요.
 
 ## 7. 국제화
 
-- 한국어 단일 locale입니다. feature 전용 문자열은 `constants/*_strings.dart`에 모으고 있습니다.
-- localization resource(ARB), fallback locale, 번역 누락 동작은 아직 도입하지 않았습니다.
+- 한국어 단일 locale입니다. 사용자 노출 문자열은 widget에 흩어 두지 않고 feature별 `constants/*_strings.dart`(공용은 `shared/constants`, `core/network/network_strings.dart`)에 모읍니다. 문장은 문자열 결합 대신 `*_strings.dart`의 함수로 만듭니다.
+- Backend·봇 router 계약값(예: 친선전 모드 이름, 분반 상태 `운영`)은 domain에 둡니다.
+- **예외 기록**: localization resource(ARB), fallback locale, 번역 누락 동작은 아직 도입하지 않았습니다.
+  - 사유: 모든 widget이 `AppLocalizations`를 거치도록 바꾸는 작업이라 동작 변경 없는 정리 범위를 넘습니다. 문자열은 `*_strings.dart`로 모아 ARB로 옮기기 쉬운 상태입니다.
+  - 영향: 다국어를 지원하지 않습니다. 승인 주체·재검토 시점: 미정 — 다국어 요구가 생기면 결정 필요.
 - 날짜·시간은 `core/utils/date_formatter.dart`와 `intl`로 현지 시각 표시합니다.
 
 ## 8. 아이콘
