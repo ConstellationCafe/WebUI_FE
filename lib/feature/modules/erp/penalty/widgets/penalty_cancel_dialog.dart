@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../domain/model/penalty_log.dart';
+import '../domain/penalty_input_rules.dart';
 
 class PenaltyCancelDialog extends StatefulWidget {
   final PenaltyLog log;
@@ -43,7 +44,10 @@ class _PenaltyCancelDialogState extends State<PenaltyCancelDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${widget.log.targetUsername} · ${widget.log.targetDiscordId}',
+              PenaltyStrings.identity(
+                widget.log.targetUsername,
+                widget.log.targetDiscordId,
+              ),
             ),
             Text(widget.log.reason),
             const SizedBox(height: PenaltyTokens.fieldGap),
@@ -53,12 +57,13 @@ class _PenaltyCancelDialogState extends State<PenaltyCancelDialog> {
               controller: _reason,
               autofocus: true,
               enabled: !_submitting && !_uncertain,
-              maxLength: 255,
+              maxLength: PenaltyInputRules.reasonMaxLength,
               decoration: const InputDecoration(
                 labelText: PenaltyStrings.reason,
               ),
               validator: (value) =>
-                  (value ?? '').trim().isNotEmpty && (value ?? '').length <= 255
+                  (value ?? '').trim().isNotEmpty &&
+                      (value ?? '').length <= PenaltyInputRules.reasonMaxLength
                   ? null
                   : PenaltyStrings.invalidReason,
             ),
@@ -75,8 +80,10 @@ class _PenaltyCancelDialogState extends State<PenaltyCancelDialog> {
           onPressed: _submitting || _uncertain ? null : _submit,
           child: _submitting
               ? const SizedBox.square(
-                  dimension: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  dimension: PenaltyTokens.progressIndicatorSize,
+                  child: CircularProgressIndicator(
+                    strokeWidth: PenaltyTokens.progressIndicatorStrokeWidth,
+                  ),
                 )
               : const Text(PenaltyStrings.cancelPenalty),
         ),

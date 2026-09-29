@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../constants/penalty_formats.dart';
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../domain/model/penalty_log.dart';
@@ -22,7 +23,7 @@ class PenaltyLogTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final date = DateFormat('yyyy.MM.dd HH:mm');
+    final date = DateFormat(PenaltyFormats.displayDateTime);
     final channel = log.channelName?.trim().isNotEmpty == true
         ? log.channelName!
         : log.channelId;
@@ -61,7 +62,10 @@ class PenaltyLogTile extends StatelessWidget {
                         username: log.targetUsername,
                         discordId: log.targetDiscordId,
                         child: Text(
-                          '${log.targetUsername} · ${log.targetDiscordId}',
+                          PenaltyStrings.identity(
+                            log.targetUsername,
+                            log.targetDiscordId,
+                          ),
                           style: theme.textTheme.titleMedium,
                         ),
                       ),
@@ -72,9 +76,10 @@ class PenaltyLogTile extends StatelessWidget {
                         runSpacing: PenaltyTokens.cardGap,
                         children: [
                           Text(
-                            '${PenaltyStrings.score} ${log.score}점 · '
-                            '${PenaltyStrings.cumulativeScoreInline} '
-                            '${displayedCumulativeScore}점',
+                            PenaltyStrings.scoreSummary(
+                              log.score,
+                              displayedCumulativeScore,
+                            ),
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
@@ -122,23 +127,35 @@ class PenaltyLogTile extends StatelessWidget {
               spacing: PenaltyTokens.gap,
               runSpacing: PenaltyTokens.metadataTextSize / 2,
               children: [
-                Text('채널 $channel (${log.channelId})', style: metadataStyle),
                 Text(
-                  '부여시간 ${date.format(log.occurredAt.toLocal())}',
+                  PenaltyStrings.channelInfo(channel, log.channelId),
                   style: metadataStyle,
                 ),
-                Text('부여자 ${log.issuerDiscordId}', style: metadataStyle),
+                Text(
+                  PenaltyStrings.occurredAtInfo(
+                    date.format(log.occurredAt.toLocal()),
+                  ),
+                  style: metadataStyle,
+                ),
+                Text(
+                  PenaltyStrings.issuerInfo(log.issuerDiscordId),
+                  style: metadataStyle,
+                ),
               ],
             ),
             if (log.isCanceled) ...[
               const SizedBox(height: PenaltyTokens.metadataTextSize / 2),
               Text(
-                '취소 사유: ${log.cancellationReason ?? '-'}',
+                PenaltyStrings.cancellationReasonInfo(
+                  log.cancellationReason ?? PenaltyStrings.emptyValue,
+                ),
                 style: metadataStyle,
               ),
               if (log.canceledAt != null)
                 Text(
-                  '취소 시각: ${date.format(log.canceledAt!.toLocal())}',
+                  PenaltyStrings.canceledAtInfo(
+                    date.format(log.canceledAt!.toLocal()),
+                  ),
                   style: metadataStyle,
                 ),
             ],

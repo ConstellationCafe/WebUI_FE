@@ -6,6 +6,7 @@ import '../constants/penalty_tokens.dart';
 import '../notifier/my_penalty_provider.dart';
 import '../widgets/penalty_context_menu_scope.dart';
 import '../widgets/penalty_detail_panel.dart';
+import '../widgets/penalty_load_error.dart';
 
 class MyPenaltyPage extends ConsumerStatefulWidget {
   const MyPenaltyPage({super.key});
@@ -34,18 +35,8 @@ class _MyPenaltyPageState extends ConsumerState<MyPenaltyPage> {
             Expanded(
               child: detail.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (_, __) => Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(PenaltyStrings.loadFailed),
-                      ElevatedButton(
-                        onPressed: () =>
-                            ref.invalidate(myPenaltyProvider(_page)),
-                        child: const Text(PenaltyStrings.retry),
-                      ),
-                    ],
-                  ),
+                error: (_, _) => PenaltyLoadError(
+                  onRetry: () => ref.invalidate(myPenaltyProvider(_page)),
                 ),
                 data: (value) => PenaltyDetailPanel(
                   detail: value,

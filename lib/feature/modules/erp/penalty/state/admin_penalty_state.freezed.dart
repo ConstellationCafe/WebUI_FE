@@ -221,7 +221,7 @@ return $default(_that.history,_that.members,_that.selected,_that.selectedId,_tha
 
 
 class _AdminPenaltyState implements AdminPenaltyState {
-  const _AdminPenaltyState({this.history, this.members, this.selected, this.selectedId, this.channelId = '', this.discordId = '', this.rankingSearch = '', this.sort = 'OCCURRED_AT_DESC', this.isHistoryLoading = true, this.isMembersLoading = true, this.isDetailLoading = false, this.isSubmitting = false, this.hasHistoryError = false, this.hasMembersError = false, this.hasDetailError = false, this.submissionError});
+  const _AdminPenaltyState({this.history, this.members, this.selected, this.selectedId, this.channelId = '', this.discordId = '', this.rankingSearch = '', this.sort = PenaltyHistorySort.newest, this.isHistoryLoading = true, this.isMembersLoading = true, this.isDetailLoading = false, this.isSubmitting = false, this.hasHistoryError = false, this.hasMembersError = false, this.hasDetailError = false, this.submissionError});
   
 
 @override final  PenaltyPage<PenaltyLog>? history;

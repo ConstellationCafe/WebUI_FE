@@ -4,6 +4,7 @@ import '../domain/model/penalty_detail.dart';
 import '../domain/model/penalty_log.dart';
 import '../domain/model/penalty_member.dart';
 import '../domain/model/penalty_page.dart';
+import '../domain/type/penalty_history_sort.dart';
 
 part 'admin_penalty_state.freezed.dart';
 
@@ -17,7 +18,7 @@ abstract class AdminPenaltyState with _$AdminPenaltyState {
     @Default('') String channelId,
     @Default('') String discordId,
     @Default('') String rankingSearch,
-    @Default('OCCURRED_AT_DESC') String sort,
+    @Default(PenaltyHistorySort.newest) String sort,
     @Default(true) bool isHistoryLoading,
     @Default(true) bool isMembersLoading,
     @Default(false) bool isDetailLoading,

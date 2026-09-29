@@ -58,7 +58,10 @@ class PenaltyDetailPanel extends StatelessWidget {
                       username: detail.username,
                       discordId: detail.discordId,
                       child: Text(
-                        '${detail.discordId} · ${detail.state}',
+                        PenaltyStrings.memberStatus(
+                          detail.discordId,
+                          detail.state,
+                        ),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: PenaltyTokens.metadataColor,
                           fontSize: PenaltyTokens.metadataTextSize,

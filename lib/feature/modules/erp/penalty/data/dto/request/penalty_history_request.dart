@@ -1,3 +1,5 @@
+import '../../../domain/type/penalty_history_sort.dart';
+
 class PenaltyHistoryRequest {
   final String? channelId;
   final String? discordId;
@@ -8,7 +10,7 @@ class PenaltyHistoryRequest {
   const PenaltyHistoryRequest({
     this.channelId,
     this.discordId,
-    this.sort = 'OCCURRED_AT_DESC',
+    this.sort = PenaltyHistorySort.newest,
     this.page = 1,
     this.size = 20,
   });
