@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
-import 'package:constellation_cafe/feature/auth/service/login.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
+
 import '../constants/auth_constants.dart';
+import '../constants/auth_strings.dart';
 
 class DiscordLoginButton extends ConsumerWidget {
   const DiscordLoginButton({super.key});
@@ -40,7 +42,7 @@ class DiscordLoginButton extends ConsumerWidget {
           size: AuthConstants.discordLoginButtonIconSize,
         ),
         label: Text(
-          'Discord로 로그인',
+          AuthStrings.discordLogin,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           softWrap: false,

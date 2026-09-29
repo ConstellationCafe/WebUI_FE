@@ -14,7 +14,7 @@ import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_
 import 'package:constellation_cafe/feature/modules/academy/domain/model/lesson_record/lesson_record_update.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/lesson_record/lesson_record_view.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
-import 'package:constellation_cafe/feature/modules/academy/page/read_student_status/read_student_status.dart';
+import 'package:constellation_cafe/feature/modules/academy/pages/read_student_status/read_student_status.dart';
 import 'package:constellation_cafe/feature/modules/academy/state/permission_state/academy_permission_state.dart';
 import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_record/lesson_record_card.dart';
 import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_record/lesson_record_list.dart';

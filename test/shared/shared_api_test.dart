@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:constellation_cafe/core/utils/date_formatter.dart';
-import 'package:constellation_cafe/shared/data/dto/request/SocketModel.dart';
-import 'package:constellation_cafe/shared/data/dto/response/backend/ApiResponse.dart';
+import 'package:constellation_cafe/shared/data/dto/request/socket_model.dart';
+import 'package:constellation_cafe/shared/data/dto/response/backend/api_response.dart';
 
 void main() {
   group('SocketModel request contract', () {

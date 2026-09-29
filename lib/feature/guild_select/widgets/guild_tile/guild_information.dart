@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/guild_constants.dart';
+import '../../constants/guild_select_strings.dart';
 import '../../domain/guild.dart';
 
 class GuildInformation extends StatelessWidget {
@@ -30,7 +31,10 @@ class GuildInformation extends StatelessWidget {
               color: theme.colorScheme.onSurfaceVariant,
             ),
             const SizedBox(width: GuildConstants.memberTextSpacing),
-            Text('${guild.memberCount}명', style: theme.textTheme.bodySmall),
+            Text(
+              GuildSelectStrings.memberCount(guild.memberCount),
+              style: theme.textTheme.bodySmall,
+            ),
           ],
         ),
       ],

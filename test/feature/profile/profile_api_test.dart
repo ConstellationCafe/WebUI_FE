@@ -2,9 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
-import 'package:constellation_cafe/feature/profile/api/membership_api.dart';
+import 'package:constellation_cafe/feature/profile/data/api/membership_api.dart';
+import 'package:constellation_cafe/feature/profile/data/dto/response/membership_card_response.dart';
+import 'package:constellation_cafe/feature/profile/data/repository/point_repository.dart';
+import 'package:constellation_cafe/feature/profile/domain/model/membership.dart';
 import 'package:constellation_cafe/feature/profile/notifier/membership_notifier.dart';
-import 'package:constellation_cafe/feature/profile/repository/point_repository.dart';
 
 import '../../support/fake_backend.dart';
 import '../../support/fake_translator.dart';
@@ -19,7 +21,28 @@ void main() {
 
       expect(translator.calls.single.$1, createCardPath);
       expect(translator.calls.single.$2, ['123']);
-      expect(data['payload']['result'], hasLength(9));
+      expect(data.fields, hasLength(9));
+    });
+
+    test('회원증 응답은 정해진 순서의 필드를 도메인 모델로 옮긴다', () {
+      final membership = MembershipCardResponse.fromJson(
+        cardPayload(),
+      ).toDomain(avatar: 'avatar');
+
+      expect(membership.username, '별');
+      expect(membership.uid1, '111111111');
+      expect(membership.uid2, '');
+      expect(membership.role, '운영진');
+      expect(membership.coin, '1200');
+      expect(membership.s1Data, '2025 시즌 우승');
+      expect(membership.guild, '은하수');
+      expect(membership.joinAt, '2026-01-01');
+      expect(membership.avatar, 'avatar');
+    });
+
+    test('UID 길이로 게임 버전을 고른다', () {
+      expect(Membership.gameVersionOfUid('123456789'), 's1');
+      expect(Membership.gameVersionOfUid('1234567890'), 's2');
     });
 
     test('UID와 길드 수정은 봇 응답 메시지를 반환한다', () async {

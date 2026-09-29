@@ -9,6 +9,18 @@ class PenaltyTokens {
   static const breakpoint = 850.0;
   static const listWidth = 330.0;
 
+  /// 이력 검색 필드 너비.
+  static const historyFilterFieldWidth = 200.0;
+  static const historySortFieldWidth = 160.0;
+
+  /// breakpoint보다 좁은 화면에서 순위 목록과 상세를 세로로 쌓을 때의 높이.
+  static const compactRankingListHeight = 350.0;
+  static const compactRankingDetailHeight = 520.0;
+
+  static const dialogWidth = 390.0;
+  static const progressIndicatorSize = 18.0;
+  static const progressIndicatorStrokeWidth = 2.0;
+
   static const reasonTextSize = 18.0;
   static const metadataTextSize = 12.0;
   static const cumulativeScoreTextSize = 26.0;
@@ -24,6 +36,8 @@ class PenaltyTokens {
   static const statusVerticalPadding = 4.0;
 
   static const tabBarRadius = 10.0;
+
+  /// 탭 배경 안쪽 상하 여백. 좌우에는 두지 않아 탭 영역이 아래 TabBarView와 같은 너비가 된다.
   static const tabBarInset = 4.0;
   static const headerToTabsGap = 24.0;
   static const tabHeight = 40.0;

@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 
 import '../data/api/notification_api.dart';

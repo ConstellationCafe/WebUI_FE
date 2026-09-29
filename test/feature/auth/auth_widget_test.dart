@@ -4,9 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/feature/auth/constants/auth_constants.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
 import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart';
 import 'package:constellation_cafe/feature/auth/pages/login.dart';
-import 'package:constellation_cafe/feature/auth/service/login.dart';
 import 'package:constellation_cafe/feature/auth/widgets/discord_login_button.dart';
 
 import '../../support/screen.dart';

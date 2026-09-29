@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
+
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
-import 'package:flutter/material.dart';
+
+import 'constants/usage_constants.dart';
+import 'constants/usage_strings.dart';
 
 class UsageContent extends StatelessWidget {
   final String message;
@@ -23,8 +27,8 @@ class UsageContent extends StatelessWidget {
     return Container(
       padding: ConstPadding.mediumPaddingAll,
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.8),
-        borderRadius: BorderRadius.circular(12),
+        color: UsageConstants.contentPanelColor,
+        borderRadius: BorderRadius.circular(UsageConstants.contentBorderRadius),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -35,7 +39,7 @@ class UsageContent extends StatelessWidget {
             softWrap: true,
             overflow: TextOverflow.visible,
             style: const TextStyle(
-              color: Colors.white,
+              color: UsageConstants.contentForeground,
               fontSize: ConstSize.largeTextSize,
               fontWeight: FontWeight.w600,
             ),
@@ -53,15 +57,21 @@ class UsageContent extends StatelessWidget {
                       vertical: ConstPadding.smallPadding,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(20),
+                      color: UsageConstants.contentForeground.withValues(
+                        alpha: UsageConstants.previousButtonBackgroundOpacity,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        UsageConstants.navigationButtonRadius,
+                      ),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: UsageConstants.contentForeground.withValues(
+                          alpha: UsageConstants.previousButtonBorderOpacity,
+                        ),
                       ),
                     ),
                     child: const Text(
-                      '이전',
-                      style: TextStyle(color: Colors.white),
+                      UsageStrings.previous,
+                      style: TextStyle(color: UsageConstants.contentForeground),
                     ),
                   ),
                 ),
@@ -74,13 +84,17 @@ class UsageContent extends StatelessWidget {
                     vertical: ConstPadding.smallPadding,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.25),
-                    borderRadius: BorderRadius.circular(20),
+                    color: UsageConstants.contentForeground.withValues(
+                      alpha: UsageConstants.nextButtonBackgroundOpacity,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      UsageConstants.navigationButtonRadius,
+                    ),
                   ),
                   child: Text(
-                    isLastStep ? '확인' : '다음',
+                    isLastStep ? UsageStrings.done : UsageStrings.next,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: UsageConstants.contentForeground,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

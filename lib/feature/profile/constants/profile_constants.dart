@@ -16,6 +16,9 @@ class ProfileConstants {
   // Profile Image
   static const double profileImageSize = 32.0;
 
+  // Point log button
+  static const double pointLogButtonRadius = 2.0;
+
   // Main Icon
   static const double mainIconSize = 40.0;
   static const double mainIconRadius = 8.0;

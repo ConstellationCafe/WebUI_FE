@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:constellation_cafe/feature/modules/chatbot/content/repository/content_repository.dart';
-import 'package:constellation_cafe/feature/modules/chatbot/learning/repository/learning_repository.dart';
-import 'package:constellation_cafe/feature/modules/chatbot/menu/repository/menu_repository.dart';
-import 'package:constellation_cafe/feature/modules/chatbot/music/repository/music_repository.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/content/data/repository/content_repository.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/learning/data/repository/learning_repository.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/menu/data/repository/menu_repository.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/music/data/repository/music_repository.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 
 import '../../../support/fake_backend.dart';

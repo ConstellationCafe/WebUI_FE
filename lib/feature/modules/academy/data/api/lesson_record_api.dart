@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 
+import '../../data/dto/request/lesson_record_query_request.dart';
+import '../../data/dto/response/lesson_record_query_response.dart';
 import '../../domain/model/lesson_record/lesson_record.dart';
 import '../../domain/model/lesson_record/lesson_record_update.dart';
-import '../../data/dto/response/lesson_record_query_response.dart';
-import '../../data/dto/request/lesson_record_query_request.dart';
 
 final lessonRecordApiProvider = Provider((ref) {
   final dio = ref.watch(dioProvider);

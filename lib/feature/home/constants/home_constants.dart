@@ -6,6 +6,31 @@ class HomeConstants {
   static const double mainAppBarMenuIconSize = 30.0;
   static const double mainAppBarGuildIconSize = 40.0;
 
+  // Profile
+  static const double profileIconSize = 40.0;
+  static const double profileFallbackIconSize = 30.0;
+  static const double profileMenuOffset = 18.0;
+  static const Color profileIconBackground = Color(0xFF000000);
+
+  // Menu item
+  static const double menuItemHeight = 48.0;
+  static const double menuItemRadius = 8.0;
+  static const double menuItemIconSize = 20.0;
+  static const double menuHoverOpacity = 0.08;
+  static const double menuSplashOpacity = 0.12;
+
+  // Search
+  static const double searchBarWidth = 180.0;
+  static const double searchBarHeight = 50.0;
+  static const double searchFieldRadius = 12.0;
+  static const double searchFieldHorizontalPadding = 16.0;
+  static const double searchFieldVerticalPadding = 14.0;
+  static const double searchBorderWidth = 1.0;
+  static const double searchFocusedBorderWidth = 2.0;
+  static const Color searchText = Color(0xFF000000);
+  static const Color searchBorder = Color(0xFF616161);
+  static const Color searchFocusedBorder = Color(0xFF64B5F6);
+
   // Drawer
   static const double menuWidth = 180.0;
   static const double drawerWidth = 228.0;

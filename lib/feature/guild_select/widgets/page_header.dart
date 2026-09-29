@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../constants/guild_constants.dart';
+import '../constants/guild_select_strings.dart';
+
 class SelectPageHeader extends StatelessWidget {
   const SelectPageHeader({super.key});
 
@@ -10,38 +13,40 @@ class SelectPageHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 64,
-          height: 64,
+          width: GuildConstants.headerIconBoxSize,
+          height: GuildConstants.headerIconBoxSize,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
+            borderRadius: BorderRadius.circular(
+              GuildConstants.headerIconBoxRadius,
+            ),
+            boxShadow: const [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
+                color: GuildConstants.headerShadowColor,
+                blurRadius: GuildConstants.headerShadowBlur,
+                offset: GuildConstants.headerShadowOffset,
               ),
             ],
           ),
           child: Icon(
             Icons.bar_chart_rounded,
-            size: 34,
+            size: GuildConstants.headerIconSize,
             color: theme.colorScheme.secondary,
           ),
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: GuildConstants.headerTitleSpacing),
 
         Text(
-          '사용할 채팅방을 선택해주세요',
+          GuildSelectStrings.title,
           textAlign: TextAlign.center,
           style: theme.textTheme.headlineMedium,
         ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: GuildConstants.headerDescriptionSpacing),
 
         Text(
-          '관리할 Discord 채팅방을 선택하면 ERP 서비스를 이용할 수 있습니다.',
+          GuildSelectStrings.description,
           textAlign: TextAlign.center,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,

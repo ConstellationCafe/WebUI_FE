@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-import 'router/router_provider.dart';
 import 'core/constants/theme_data.dart';
-import 'core/keys/AppKeys.dart';
+import 'core/keys/app_keys.dart';
+import 'router/router_provider.dart';
 
 void main() {
   setUrlStrategy(PathUrlStrategy());

@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_constants.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+
 class DateField extends StatelessWidget {
   final DateTime? selectedDate;
   final ValueChanged<DateTime> onChanged;
+
+  /// 선택된 날짜가 없을 때 달력이 처음 보여줄 날짜. 테스트에서 주입한다.
+  final DateTime Function() clock;
 
   const DateField({
     super.key,
     required this.selectedDate,
     required this.onChanged,
+    this.clock = DateTime.now,
   });
 
   @override
@@ -18,9 +25,9 @@ class DateField extends StatelessWidget {
       onTap: () async {
         final date = await showDatePicker(
           context: context,
-          firstDate: DateTime(2020),
-          lastDate: DateTime(2100),
-          initialDate: selectedDate ?? DateTime.now(),
+          firstDate: AcademyConstants.firstSelectableDate,
+          lastDate: AcademyConstants.lastSelectableDate,
+          initialDate: selectedDate ?? clock(),
           builder: (context, child) {
             return Theme(
               data: Theme.of(context).copyWith(
@@ -41,17 +48,15 @@ class DateField extends StatelessWidget {
       },
       child: InputDecorator(
         decoration: const InputDecoration(
-          labelText: '날짜',
+          labelText: AcademyStrings.date,
           suffixIcon: Icon(Icons.calendar_today_outlined),
         ),
-        child: Text(selectedDate == null ? '전체' : _formatDate(selectedDate!)),
+        child: Text(
+          selectedDate == null
+              ? AcademyStrings.all
+              : AcademyStrings.formatDate(selectedDate!),
+        ),
       ),
     );
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.year}. '
-        '${date.month.toString().padLeft(2, '0')}. '
-        '${date.day.toString().padLeft(2, '0')}';
   }
 }

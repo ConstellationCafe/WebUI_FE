@@ -3,7 +3,7 @@ import 'package:constellation_cafe/shared/domain/pagination/page_result.dart';
 
 const createCardPath = '/ConstellationAPI/MembershipAPI/create_card';
 
-/// 봇의 create_card 응답. 순서는 MembershipState.fromList와 같다.
+/// 봇의 create_card 응답. 순서는 MembershipCardResponse와 같다.
 Map<String, dynamic> cardPayload() {
   final result = [
     '별',

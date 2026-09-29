@@ -1,11 +1,13 @@
-import '../page/edit_student_status/student_status_page.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../router/no_aim_page.dart';
-import '../page/read_lesson_record/lesson_record_list.dart';
-import '../page/read_student_status/read_student_status.dart';
-import '../page/edit_teacher_status/teacher_status_page.dart';
-import '../page/read_teacher_status/read_teacher_status.dart';
-import '../page/write_lesson_record/class_content_record.dart';
+
+import 'package:constellation_cafe/router/no_aim_page.dart';
+
+import '../pages/edit_student_status/student_status_page.dart';
+import '../pages/edit_teacher_status/teacher_status_page.dart';
+import '../pages/read_lesson_record/lesson_record_list.dart';
+import '../pages/read_student_status/read_student_status.dart';
+import '../pages/read_teacher_status/read_teacher_status.dart';
+import '../pages/write_lesson_record/class_content_record.dart';
 
 final academyRoutes = <GoRoute>[
   GoRoute(

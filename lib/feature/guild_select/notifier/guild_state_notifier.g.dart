@@ -8,12 +8,18 @@ part of 'guild_state_notifier.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// 선택한 채팅방. 화면을 오가도 유지되도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 채팅방 선택 화면에서 다시 고른다.)
 
 @ProviderFor(CurrentGuildStateNotifier)
 final currentGuildStateProvider = CurrentGuildStateNotifierProvider._();
 
+/// 선택한 채팅방. 화면을 오가도 유지되도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 채팅방 선택 화면에서 다시 고른다.)
 final class CurrentGuildStateNotifierProvider
     extends $NotifierProvider<CurrentGuildStateNotifier, CurrentGuildState> {
+  /// 선택한 채팅방. 화면을 오가도 유지되도록 앱 수명 동안 유지한다.
+  /// (브라우저 새로고침은 앱을 다시 시작하므로 채팅방 선택 화면에서 다시 고른다.)
   CurrentGuildStateNotifierProvider._()
     : super(
         from: null,
@@ -42,7 +48,10 @@ final class CurrentGuildStateNotifierProvider
 }
 
 String _$currentGuildStateNotifierHash() =>
-    r'a8974911615bcf0020b6a7a18243ee393861a660';
+    r'b940da294c3dcd04230e935242a8dc6092d3b902';
+
+/// 선택한 채팅방. 화면을 오가도 유지되도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 채팅방 선택 화면에서 다시 고른다.)
 
 abstract class _$CurrentGuildStateNotifier
     extends $Notifier<CurrentGuildState> {

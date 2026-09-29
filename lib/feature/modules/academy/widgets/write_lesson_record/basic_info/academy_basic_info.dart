@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_class.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 
-import '../../../domain/model/academy.dart';
-import '../../../domain/model/academy_class.dart';
-import '../../../domain/model/subject.dart';
 import '../academy_section_card.dart';
 import 'academy_date_field.dart';
 import 'academy_selection_fields.dart';
@@ -53,7 +54,7 @@ class AcademyBasicInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AcademySectionCard(
-      title: '기본 정보',
+      title: AcademyStrings.basicInfo,
       icon: Icons.menu_book_rounded,
       child: Column(
         children: [

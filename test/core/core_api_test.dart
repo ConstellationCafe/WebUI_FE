@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:constellation_cafe/core/network/interceptor/AuthInterceptor.dart';
+import 'package:constellation_cafe/core/network/interceptors/auth_interceptor.dart';
 
 import '../support/fake_backend.dart';
 

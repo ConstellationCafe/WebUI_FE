@@ -4,14 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:constellation_cafe/core/constants/theme_data.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/jwt.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
-import 'package:constellation_cafe/feature/auth/service/jwt.dart';
-import 'package:constellation_cafe/feature/auth/service/login.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
+import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
 import 'package:constellation_cafe/feature/home/frame/pages/home_frame.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/main_menu_bar.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/profile/profile_menu.dart';
-import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
 import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
@@ -137,7 +137,7 @@ void main() {
       await pumpHome(
         tester,
         size: const Size(1400, 1200),
-        roles: [UserRole.ADMIN],
+        roles: [UserRole.admin],
         academyRole: 'TEACHER',
       );
 

@@ -70,14 +70,14 @@ class NotificationTile extends StatelessWidget {
                     Text(
                       notification.title,
                       style: textTheme.titleSmall,
-                      maxLines: 2,
+                      maxLines: NotificationTokens.tileTitleMaxLines,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: NotificationTokens.tileGap),
                     Text(
                       body.isEmpty ? NotificationStrings.noBody : body,
                       style: textTheme.bodyMedium,
-                      maxLines: 3,
+                      maxLines: NotificationTokens.tileBodyMaxLines,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: NotificationTokens.tileGap),

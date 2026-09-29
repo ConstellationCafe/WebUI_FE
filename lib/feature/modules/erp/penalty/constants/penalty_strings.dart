@@ -41,4 +41,30 @@ class PenaltyStrings {
   static const nextPage = '다음 페이지';
   static const previousHistory = '이전 내역';
   static const nextHistory = '다음 내역';
+  static const adminOnly = '관리자만 접근할 수 있습니다.';
+  static const sortNewest = '최신순';
+  static const sortOldest = '오래된순';
+  static const awarded = '벌점이 부여되었습니다.';
+  static const canceledResult = '벌점이 취소되었습니다.';
+  static const fixedScore = '점수: 1점';
+  static const emptyValue = '-';
+
+  static String scoreValue(int points) => '$points점';
+  static String scoreSemantics(String label, int points) => '$label $points점';
+  static String scoreSummary(int points, int cumulativePoints) =>
+      '$score $points점 · $cumulativeScoreInline $cumulativePoints점';
+  static String identity(String username, String discordId) =>
+      '$username · $discordId';
+  static String memberStatus(String discordId, String state) =>
+      '$discordId · $state';
+  static String rankingSummary(String discordId, int count, String lastAt) =>
+      '$discordId · $count건 · $lastAt';
+  static String channelInfo(String channel, String channelId) =>
+      '채널 $channel ($channelId)';
+  static String occurredAtInfo(String dateTime) => '부여시간 $dateTime';
+  static String issuerInfo(String issuerId) => '부여자 $issuerId';
+  static String cancellationReasonInfo(String reason) => '취소 사유: $reason';
+  static String canceledAtInfo(String dateTime) => '취소 시각: $dateTime';
+  static String pageIndicator(int page, int totalPages) =>
+      '$page / $totalPages';
 }

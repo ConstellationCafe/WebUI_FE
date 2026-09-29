@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../domain/model/student.dart';
 import 'academy_section_card.dart';
 
@@ -43,11 +44,11 @@ class _AcademyMemberSelectorState extends State<AcademyMemberSelector> {
     );
 
     return AcademySectionCard(
-      title: '참여 학생',
+      title: AcademyStrings.participants,
       icon: Icons.people_outline_rounded,
       trailing: ElevatedButton(
         onPressed: widget.students.isEmpty ? null : widget.onSelectAll,
-        child: const Text('전체 선택'),
+        child: const Text(AcademyStrings.selectAll),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +57,7 @@ class _AcademyMemberSelectorState extends State<AcademyMemberSelector> {
             controller: _searchController,
             onChanged: (_) => setState(() {}),
             decoration: const InputDecoration(
-              hintText: '멤버 이름을 검색하세요',
+              hintText: AcademyStrings.searchMemberHint,
               prefixIcon: Icon(Icons.search),
             ),
           ),
@@ -80,7 +81,7 @@ class _AcademyMemberSelectorState extends State<AcademyMemberSelector> {
           ),
           const SizedBox(height: ConstPadding.smallPadding),
           Text(
-            '총 ${widget.selectedStudents.length}명 선택됨',
+            AcademyStrings.selectedCount(widget.selectedStudents.length),
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ],

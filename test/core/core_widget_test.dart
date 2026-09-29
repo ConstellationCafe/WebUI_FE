@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:constellation_cafe/core/network/interceptors/ErrorInterceptor.dart';
+import 'package:constellation_cafe/core/network/interceptors/error_interceptor.dart';
 
 import '../support/fake_backend.dart';
 

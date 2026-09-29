@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../constants/point_strings.dart';
+import '../constants/point_tokens.dart';
 import '../domain/model/point_member.dart';
 import 'point_load_error.dart';
 
@@ -39,7 +40,7 @@ class MemberListPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(PointTokens.panelPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -47,7 +48,7 @@ class MemberListPanel extends StatelessWidget {
               PointStrings.members,
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: PointTokens.itemGap),
             SearchBar(
               onChanged: onSearchChanged,
               hintText: PointStrings.searchHint,
@@ -61,7 +62,7 @@ class MemberListPanel extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: PointTokens.itemGap),
             Expanded(
               child: isLoading
                   ? Center(
@@ -78,7 +79,8 @@ class MemberListPanel extends StatelessWidget {
                   ? const Center(child: Text(PointStrings.noMembers))
                   : ListView.separated(
                       itemCount: members.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
+                      separatorBuilder: (_, _) =>
+                          const Divider(height: PointTokens.dividerHeight),
                       itemBuilder: (context, index) {
                         final member = members[index];
                         return ListTile(

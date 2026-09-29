@@ -1,10 +1,12 @@
 import 'package:constellation_cafe/feature/modules/academy/domain/type/roster_status.dart';
 
+import '../../constants/academy_strings.dart';
+
 enum StudentRosterStatus implements RosterStatus {
-  enrolled('재적', 'ENROLLED'),
-  graduation('졸업', 'GRADUATED'),
-  expulsion('퇴학', 'EXPELLED'),
-  withdrawal('자퇴', 'WITHDRAWN');
+  enrolled(AcademyStrings.enrolled, 'ENROLLED'),
+  graduation(AcademyStrings.graduated, 'GRADUATED'),
+  expulsion(AcademyStrings.expelled, 'EXPELLED'),
+  withdrawal(AcademyStrings.withdrawn, 'WITHDRAWN');
 
   @override
   final String label;

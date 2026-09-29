@@ -1,8 +1,10 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/feature/auth/service/jwt.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/jwt.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
+import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 
+import '../data/dto/response/auth_check_response.dart';
 import '../state/login_status.dart';
 import 'current_user_state_notifier.dart';
 
@@ -17,18 +19,18 @@ class LoginCheckNotifier extends _$LoginCheckNotifier {
     if (_forcedLogout) return LoginStatus.loggedOut;
     final jwt = ref.read(jwtApiProvider);
     try {
-      final res = await jwt.check();
+      final res = AuthCheckResponse.fromApiResponse(await jwt.check());
       // 정상 응답 처리
-      if (res.success == true) {
-        if (_parseIsLogin(res)) {
-          return await _onLoginSuccess(_parseRoomSelected(res));
+      if (res.success) {
+        if (res.isLogin) {
+          return await _onLoginSuccess(res.roomSelected);
         }
-        if (!_parseRefreshHint(res)) return LoginStatus.loggedOut;
+        if (!res.refreshHint) return LoginStatus.loggedOut;
 
         return await _tryJwtRefresh();
       }
       // 권한 없음(401, 403) 처리
-      else if (_isUnauthorized(res)) {
+      else if (res.isUnauthorized) {
         return await _tryJwtRefresh();
       } else {
         return LoginStatus.loggedOut;
@@ -44,23 +46,12 @@ class LoginCheckNotifier extends _$LoginCheckNotifier {
 
     if (refreshRes != true) return LoginStatus.loggedOut;
 
-    final checkRes = await jwt.check();
-    if (checkRes.success == true && _parseIsLogin(checkRes)) {
-      return await _onLoginSuccess(_parseRoomSelected(checkRes));
+    final checkRes = AuthCheckResponse.fromApiResponse(await jwt.check());
+    if (checkRes.success && checkRes.isLogin) {
+      return await _onLoginSuccess(checkRes.roomSelected);
     } else {
       return LoginStatus.loggedOut;
     }
-  }
-
-  bool _parseIsLogin(dynamic api) {
-    final resp = api.response as Map<String, dynamic>?;
-    return resp?['isLogin'] == true;
-  }
-
-  /// ADR-0001: botId(=채팅방)까지 선택되어 로그인이 완료됐는지 여부.
-  bool _parseRoomSelected(dynamic api) {
-    final resp = api.response as Map<String, dynamic>?;
-    return resp?['roomSelected'] == true;
   }
 
   Future<LoginStatus> _onLoginSuccess(bool roomSelected) async {
@@ -74,27 +65,29 @@ class LoginCheckNotifier extends _$LoginCheckNotifier {
     return LoginStatus(isLoggedIn: true, roomSelected: roomSelected);
   }
 
-  bool _parseRefreshHint(dynamic api) {
-    final resp = api.response as Map<String, dynamic>?;
-    return resp?['refreshHint'] == true;
-  }
-
-  bool _isUnauthorized(dynamic api) {
-    final s = api.error?.status;
-    return s == 401 || s == 403;
-  }
-
   /// 강제 로그아웃 (레이스 컨디션 방지)
   void forceLogout() {
     _forcedLogout = true;
     state = const AsyncData(LoginStatus.loggedOut);
   }
 
-  /// 강제 로그인 상태 주입
-  // void forceLogin() {
-  //   _forcedLogout = false;
-  //   state = const AsyncData(true);
-  // }
+  /// 로그아웃. 먼저 로그아웃 상태로 바꿔 보호된 화면을 닫고, 서버 세션 종료 요청이
+  /// 실패해도(이미 만료 등) 로컬 사용자·채팅방 상태는 반드시 지운다.
+  Future<void> logout() async {
+    // 사용자·채팅방 상태는 앱 수명 동안 유지되는 provider라 await 뒤에도 안전하게 지울 수 있다.
+    final loginApi = ref.read(loginApiProvider);
+    final currentUser = ref.read(currentUserStateProvider.notifier);
+    final currentGuild = ref.read(currentGuildStateProvider.notifier);
+
+    forceLogout();
+    try {
+      await loginApi.logout();
+    } catch (_) {
+      // 서버 세션은 토큰 만료로도 끝나므로 화면 로그아웃을 막지 않는다.
+    }
+    currentUser.clear();
+    currentGuild.clear();
+  }
 
   /// 상태 수동 갱신 (채팅방 선택 완료 등, 서버 상태가 바뀐 뒤 호출)
   Future<void> recheck() async {

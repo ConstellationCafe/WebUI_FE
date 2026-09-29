@@ -5,6 +5,7 @@ import '../constants/notification_tokens.dart';
 import '../domain/model/notification_draft.dart';
 import '../domain/model/notification_publish_failure.dart';
 import '../domain/model/notification_request_id.dart';
+import '../domain/notification_input_rules.dart';
 import '../domain/type/notification_category.dart';
 import '../domain/type/notification_target_type.dart';
 import 'notification_tile.dart';
@@ -127,7 +128,7 @@ class _AdminNotificationFormState extends State<AdminNotificationForm> {
           TextFormField(
             controller: _titleController,
             enabled: enabled,
-            maxLength: 100,
+            maxLength: NotificationInputRules.titleMaxLength,
             decoration: const InputDecoration(
               labelText: NotificationStrings.titleLabel,
             ),
@@ -137,7 +138,7 @@ class _AdminNotificationFormState extends State<AdminNotificationForm> {
           TextFormField(
             controller: _bodyController,
             enabled: enabled,
-            maxLength: 1000,
+            maxLength: NotificationInputRules.bodyMaxLength,
             minLines: 3,
             maxLines: NotificationTokens.bodyMaxLines,
             decoration: const InputDecoration(
@@ -150,7 +151,7 @@ class _AdminNotificationFormState extends State<AdminNotificationForm> {
           TextFormField(
             controller: _linkController,
             enabled: enabled,
-            maxLength: 255,
+            maxLength: NotificationInputRules.linkMaxLength,
             decoration: const InputDecoration(
               labelText: NotificationStrings.linkLabel,
               helperText: NotificationStrings.linkHelper,
@@ -211,14 +212,18 @@ class _AdminNotificationFormState extends State<AdminNotificationForm> {
   String? _validateTitle(String? value) {
     final text = value?.trim() ?? '';
     if (text.isEmpty) return NotificationStrings.titleRequired;
-    if (text.length > 100) return NotificationStrings.titleTooLong;
+    if (text.length > NotificationInputRules.titleMaxLength) {
+      return NotificationStrings.titleTooLong;
+    }
     return null;
   }
 
   String? _validateBody(String? value) {
     final text = value?.trim() ?? '';
     if (text.isEmpty) return NotificationStrings.bodyRequired;
-    if (text.length > 1000) return NotificationStrings.bodyTooLong;
+    if (text.length > NotificationInputRules.bodyMaxLength) {
+      return NotificationStrings.bodyTooLong;
+    }
     return null;
   }
 

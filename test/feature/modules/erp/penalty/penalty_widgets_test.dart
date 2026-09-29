@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui' show PointerDeviceKind;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +16,9 @@ import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/p
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_page.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/pages/admin_penalty_page.dart';
-import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_log_tile.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_award_dialog.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_cancel_dialog.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_log_tile.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
 import 'support/fake_penalty_repository.dart';
@@ -27,7 +26,7 @@ import 'support/fake_penalty_repository.dart';
 Widget adminApp(FakePenaltyRepository repository) => ProviderScope(
   overrides: [
     currentUserStateProvider.overrideWithValue(
-      CurrentUserState.initial().copyWith(roles: [UserRole.ADMIN]),
+      CurrentUserState.initial().copyWith(roles: [UserRole.admin]),
     ),
     penaltyRepositoryProvider.overrideWithValue(repository),
   ],
@@ -76,8 +75,22 @@ void main() {
     final action = tester.getRect(
       find.widgetWithText(ElevatedButton, PenaltyStrings.cancelPenalty).first,
     );
-    expect(tile.left, closeTo(tab.left - PenaltyTokens.tabBarInset, 1));
+    expect(tile.left, closeTo(tab.left, 1));
     expect(action.left - tile.left, closeTo(tile.bottom - action.bottom, 4));
+  });
+
+  testWidgets('탭 영역은 아래 TabBarView와 같은 가로 너비를 차지한다', (tester) async {
+    for (final size in const [Size(1280, 800), Size(390, 750)]) {
+      await tester.binding.setSurfaceSize(size);
+      await tester.pumpWidget(adminApp(FakePenaltyRepository()));
+      await tester.pumpAndSettle();
+
+      final tabBar = tester.getRect(find.byType(TabBar));
+      final tabBarView = tester.getRect(find.byType(TabBarView));
+      expect(tabBar.left, closeTo(tabBarView.left, 0.5));
+      expect(tabBar.width, closeTo(tabBarView.width, 0.5));
+    }
+    await tester.binding.setSurfaceSize(null);
   });
 
   testWidgets('대상자 우클릭 메뉴에서 닉네임과 Discord ID를 따로 복사한다', (tester) async {

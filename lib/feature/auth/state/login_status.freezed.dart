@@ -11,7 +11,6 @@ part of 'login_status.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$LoginStatus {
 
@@ -22,12 +21,14 @@ mixin _$LoginStatus {
 @pragma('vm:prefer-inline')
 $LoginStatusCopyWith<LoginStatus> get copyWith => _$LoginStatusCopyWithImpl<LoginStatus>(this as LoginStatus, _$identity);
 
+
+
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginStatus&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.roomSelected, roomSelected) || other.roomSelected == roomSelected));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,isLoggedIn,roomSelected);
 
@@ -207,6 +208,7 @@ return $default(_that.isLoggedIn,_that.roomSelected);case _:
 
 class _LoginStatus implements LoginStatus {
   const _LoginStatus({required this.isLoggedIn, required this.roomSelected});
+  
 
 @override final  bool isLoggedIn;
 @override final  bool roomSelected;
@@ -217,12 +219,14 @@ class _LoginStatus implements LoginStatus {
 @pragma('vm:prefer-inline')
 _$LoginStatusCopyWith<_LoginStatus> get copyWith => __$LoginStatusCopyWithImpl<_LoginStatus>(this, _$identity);
 
+
+
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginStatus&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.roomSelected, roomSelected) || other.roomSelected == roomSelected));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,isLoggedIn,roomSelected);
 

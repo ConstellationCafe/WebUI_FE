@@ -37,7 +37,7 @@ class PenaltyScoreBadge extends StatelessWidget {
         : PenaltyTokens.scoreBadgeVerticalPadding;
 
     return Semantics(
-      label: '$label $score점',
+      label: PenaltyStrings.scoreSemantics(label, score),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: PenaltyTokens.scoreBadgeBackground,
@@ -52,7 +52,7 @@ class PenaltyScoreBadge extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(label, style: labelStyle),
-              Text('$score점', style: scoreStyle),
+              Text(PenaltyStrings.scoreValue(score), style: scoreStyle),
             ],
           ),
         ),

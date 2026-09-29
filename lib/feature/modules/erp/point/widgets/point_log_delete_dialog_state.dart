@@ -52,7 +52,7 @@ class _PointLogDeleteDialogState extends State<PointLogDeleteDialog> {
                 ? SizedBox.square(
                     dimension: 18,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2,
+                      strokeWidth: PointTokens.progressStrokeWidth,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   )

@@ -1,6 +1,9 @@
-import 'package:constellation_cafe/feature/profile/state/membership_state.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../constants/profile_constants.dart';
+import '../constants/profile_strings.dart';
+import '../state/membership_state.dart';
 
 class PointLogButton extends StatelessWidget {
   final MembershipState state;
@@ -14,11 +17,13 @@ class PointLogButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: () => context.push("/point_log"),
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: BorderRadius.circular(
+          ProfileConstants.pointLogButtonRadius,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("별자리 포인트", style: theme.labelMedium),
+            Text(ProfileStrings.point, style: theme.labelMedium),
             Text(state.coin, style: theme.bodyMedium),
           ],
         ),

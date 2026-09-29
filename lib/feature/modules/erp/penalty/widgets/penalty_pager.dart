@@ -25,7 +25,9 @@ class PenaltyPager extends StatelessWidget {
         onPressed: !disabled && page > 1 ? () => onChanged(page - 1) : null,
         icon: const Icon(Icons.chevron_left),
       ),
-      Text('$page / ${totalPages == 0 ? 1 : totalPages}'),
+      Text(
+        PenaltyStrings.pageIndicator(page, totalPages == 0 ? 1 : totalPages),
+      ),
       IconButton(
         tooltip: PenaltyStrings.nextPage,
         onPressed: !disabled && page < totalPages

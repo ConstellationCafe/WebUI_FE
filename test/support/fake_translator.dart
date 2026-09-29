@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
+import 'package:constellation_cafe/core/network/discord_bot/translator.dart';
 
 typedef TranslatorHandler =
     Future<Map<String, dynamic>> Function(String path, List<dynamic> args);

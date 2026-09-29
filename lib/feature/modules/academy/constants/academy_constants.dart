@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 abstract final class AcademyConstants {
   // Layout
@@ -51,4 +51,34 @@ abstract final class AcademyConstants {
 
   // Time Picker
   static const Color timePickerSelectedTextColor = Color(0xFFFFFFFF);
+  static const Color timePickerUnselectedTextColor = Color(0xFF000000);
+  static const Color timePickerDialBackground = Color(0xFFEEEEEE);
+
+  // Form
+  static const double fieldLabelGap = 6.0;
+  static const Color requiredMarkColor = Color(0xFFF44336);
+  static const double timeRangeSeparatorPadding = 8.0;
+  static const TimeOfDay defaultLessonStartTime = TimeOfDay(
+    hour: 10,
+    minute: 0,
+  );
+  static const TimeOfDay defaultLessonEndTime = TimeOfDay(hour: 12, minute: 0);
+  static final DateTime firstSelectableDate = DateTime(2020);
+  static final DateTime firstEditableDate = DateTime(2000);
+  static final DateTime lastSelectableDate = DateTime(2100);
+  static const int lessonDescriptionLines = 7;
+  static const int lessonDescriptionMaxLength = 1000;
+  static const int statusReasonLines = 4;
+
+  // Write Lesson Record - Section card
+  static const double sectionIconBoxSize = 32.0;
+  static const double sectionIconBoxRadius = 8.0;
+  static const double sectionIconSize = 18.0;
+
+  // Read Lesson Record - Edit dialog & filter
+  static const double editDialogFieldGap = 12.0;
+  static const int editDescriptionMinLines = 3;
+  static const int editDescriptionMaxLines = 6;
+  static const int morningFilterHour = 9;
+  static const int afternoonFilterHour = 14;
 }

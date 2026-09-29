@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
-import 'package:constellation_cafe/feature/guild_select/domain/guild.dart';
+import 'package:constellation_cafe/feature/guild_select/data/api/guild_api.dart';
+import 'package:constellation_cafe/feature/guild_select/data/dto/response/guild_response.dart';
 
 import '../../support/fake_backend.dart';
 import 'support/guild_fixtures.dart';
@@ -87,7 +87,7 @@ void main() {
   });
 
   test('누락된 필드는 안전한 기본값으로 읽는다', () {
-    final guild = Guild.fromJson(const {'id': 7});
+    final guild = GuildResponse.fromJson(const {'id': 7}).toDomain();
 
     expect(guild.id, '7');
     expect(guild.name, '');

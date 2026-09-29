@@ -4,6 +4,7 @@ import '../../domain/model/penalty_detail.dart';
 import '../../domain/model/penalty_log.dart';
 import '../../domain/model/penalty_member.dart';
 import '../../domain/model/penalty_page.dart';
+import '../../domain/type/penalty_history_sort.dart';
 import '../api/penalty_api.dart';
 import '../dto/request/penalty_cancel_request.dart';
 import '../dto/request/penalty_create_request.dart';
@@ -23,7 +24,7 @@ class PenaltyRepository {
   Future<PenaltyPage<PenaltyLog>> history({
     String? channelId,
     String? discordId,
-    String sort = 'OCCURRED_AT_DESC',
+    String sort = PenaltyHistorySort.newest,
     int page = 1,
     CancelToken? cancelToken,
   }) async => _page(

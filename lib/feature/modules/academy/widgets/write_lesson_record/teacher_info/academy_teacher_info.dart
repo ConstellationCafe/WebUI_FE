@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/teacher.dart';
 
-import '../../../domain/model/teacher.dart';
 import '../academy_section_card.dart';
 import 'co_teacher_field.dart';
 import 'main_teacher_field.dart';
@@ -29,7 +30,7 @@ class AcademyTeacherInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AcademySectionCard(
-      title: '교사 정보',
+      title: AcademyStrings.teacherInfo,
       icon: Icons.person_outline_rounded,
       child: IntrinsicHeight(
         child: Row(

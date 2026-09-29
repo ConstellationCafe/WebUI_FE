@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../constants/penalty_formats.dart';
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../data/dto/request/penalty_create_request.dart';
 import '../domain/new_penalty_request_id.dart';
+import '../domain/penalty_input_rules.dart';
+import 'penalty_id_input_formatters.dart';
 
 class PenaltyAwardDialog extends StatefulWidget {
   final Future<bool> Function(PenaltyCreateRequest) onSubmit;
   final String? initialDiscordId;
 
+  /// 발생 시각이 미래인지 판단할 때 쓰는 현재 시각. 테스트에서 주입한다.
+  final DateTime Function() clock;
+
   const PenaltyAwardDialog({
     super.key,
     required this.onSubmit,
     this.initialDiscordId,
+    this.clock = DateTime.now,
   });
 
   @override
@@ -52,7 +58,7 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
     if (_occurredAt.text.trim().isEmpty) return null;
     try {
       return DateFormat(
-        'yyyy-MM-dd HH:mm',
+        PenaltyFormats.occurredAtInput,
       ).parseStrict(_occurredAt.text.trim());
     } on FormatException {
       return null;
@@ -66,7 +72,7 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
       scrollable: true,
       title: const Text(PenaltyStrings.award),
       content: SizedBox(
-        width: 390,
+        width: PenaltyTokens.dialogWidth,
         child: Form(
           key: _form,
           child: Column(
@@ -77,15 +83,12 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
                 autofocus: true,
                 enabled: !_submitting && !_uncertain,
                 keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(20),
-                ],
+                inputFormatters: penaltyIdInputFormatters(),
                 decoration: const InputDecoration(
                   labelText: PenaltyStrings.targetId,
                 ),
                 validator: (value) =>
-                    RegExp(r'^[0-9]{1,20}$').hasMatch(value ?? '')
+                    PenaltyInputRules.discordIdPattern.hasMatch(value ?? '')
                     ? null
                     : PenaltyStrings.invalidId,
               ),
@@ -94,15 +97,12 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
                 controller: _channel,
                 enabled: !_submitting && !_uncertain,
                 keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(20),
-                ],
+                inputFormatters: penaltyIdInputFormatters(),
                 decoration: const InputDecoration(
                   labelText: PenaltyStrings.channelId,
                 ),
                 validator: (value) =>
-                    RegExp(r'^[0-9]{1,20}$').hasMatch(value ?? '')
+                    PenaltyInputRules.discordIdPattern.hasMatch(value ?? '')
                     ? null
                     : PenaltyStrings.invalidId,
               ),
@@ -110,11 +110,13 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
               TextFormField(
                 controller: _channelName,
                 enabled: !_submitting && !_uncertain,
-                maxLength: 100,
+                maxLength: PenaltyInputRules.channelNameMaxLength,
                 decoration: const InputDecoration(
                   labelText: PenaltyStrings.channelName,
                 ),
-                validator: (value) => (value ?? '').length <= 100
+                validator: (value) =>
+                    (value ?? '').length <=
+                        PenaltyInputRules.channelNameMaxLength
                     ? null
                     : PenaltyStrings.invalidChannelName,
               ),
@@ -122,13 +124,14 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
               TextFormField(
                 controller: _reason,
                 enabled: !_submitting && !_uncertain,
-                maxLength: 255,
+                maxLength: PenaltyInputRules.reasonMaxLength,
                 decoration: const InputDecoration(
                   labelText: PenaltyStrings.reason,
                 ),
                 validator: (value) =>
                     (value ?? '').trim().isNotEmpty &&
-                        (value ?? '').length <= 255
+                        (value ?? '').length <=
+                            PenaltyInputRules.reasonMaxLength
                     ? null
                     : PenaltyStrings.invalidReason,
               ),
@@ -143,12 +146,12 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
                 validator: (value) =>
                     (value ?? '').trim().isEmpty ||
                         (_parseOccurredAt() != null &&
-                            !_parseOccurredAt()!.isAfter(DateTime.now()))
+                            !_parseOccurredAt()!.isAfter(widget.clock()))
                     ? null
                     : PenaltyStrings.invalidOccurredAt,
               ),
               const SizedBox(height: PenaltyTokens.fieldGap),
-              const Text('점수: 1점'),
+              const Text(PenaltyStrings.fixedScore),
               if (_uncertain) ...[
                 const SizedBox(height: PenaltyTokens.fieldGap),
                 const Text(PenaltyStrings.submitFailed),
@@ -166,8 +169,10 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
           onPressed: _submitting || _uncertain ? null : _submit,
           child: _submitting
               ? const SizedBox.square(
-                  dimension: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  dimension: PenaltyTokens.progressIndicatorSize,
+                  child: CircularProgressIndicator(
+                    strokeWidth: PenaltyTokens.progressIndicatorStrokeWidth,
+                  ),
                 )
               : const Text(PenaltyStrings.award),
         ),

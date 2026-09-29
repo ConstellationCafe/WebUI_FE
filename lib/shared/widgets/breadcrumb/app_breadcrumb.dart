@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:constellation_cafe/core/constants/const_size.dart';
+
 class AppBreadcrumb extends StatelessWidget {
   final List<String> items;
 
@@ -23,8 +25,10 @@ class AppBreadcrumb extends StatelessWidget {
             ),
             if (!isLast)
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Icon(Icons.chevron_right, size: 16),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ConstSize.smallSpacing,
+                ),
+                child: Icon(Icons.chevron_right, size: ConstSize.smallIconSize),
               ),
           ],
         );

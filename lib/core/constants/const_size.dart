@@ -11,6 +11,9 @@ class ConstSize {
   static const double smallSpacing = 8.0; // 1 * 8
   static const double tinySpacing = 4.0; // 0.5 * 8
 
+  // Icon Sizes
+  static const double smallIconSize = 16.0;
+
   // Legacy support (기존 네이밍 유지)
   @Deprecated('Use largeTextSize instead')
   static const double bigTextSize = largeTextSize;

@@ -1,7 +1,7 @@
 # 테스트와 CI
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-28  
+> 마지막 검토일: 2026-09-29  
 > 상위 문서: [README](../README.md) · 관련: [기능별 구현 노트](features.md)
 
 ## 1. 실행
@@ -24,16 +24,16 @@ flutter test --platform chrome test/feature/notification   # 특정 feature 예�
 | 범위 | 위치 | 검증 내용 |
 |---|---|---|
 | core | `test/core/` | 401 토큰 갱신 후 재요청, 403·갱신 실패 처리, 오류 SnackBar 문구와 silent 요청 |
-| shared | `test/shared/` | 봇 router `SocketModel` 직렬화, `ApiResponse` 해석, 날짜 formatter, loading·padding·SnackBar widget |
-| 로그인 | `test/feature/auth/` | `/auth/me`·check·refresh·logout 계약, Discord 인증 URI, 로그인 상태 판정(채팅방 선택·refresh 힌트·401), 로그인 화면·버튼·큰 글자 |
+| shared | `test/shared/` | 봇 router `SocketModel` 직렬화, `ApiResponse`·`RepositoryPageResponse`·`BotCommandResponse` 계약, DB 편집기 notifier(조회·행 추가·미저장 변경·셀 입력), 날짜 formatter, loading·padding·SnackBar widget |
+| 로그인 | `test/feature/auth/` | `/auth/me`·check·refresh·logout 계약과 DTO, Discord 인증 URI, 로그인 상태 판정(채팅방 선택·refresh 힌트·401), 로그아웃 시 상태 정리, 로그인 화면·버튼·큰 글자 |
 | 채팅방 선택 | `test/feature/guild_select/` | 목록·선택 API(403 처리), 목록·빈 상태·오류, 선택 불가 안내, 선택 후 로그인 재확인과 홈 이동 |
 | 홈 | `test/feature/home/` | 권한별 메뉴(아카데미·ERP), 메뉴 이동, 모바일 drawer, 로그아웃 후 상태 초기화 |
-| 프로필 | `test/feature/profile/` | 회원증·UID·길드 봇 명령, 포인트 내역 API, 변경분만 저장, 저장 결과·실패 안내, 읽기 전용 내역 표 |
-| 아카데미 | `test/feature/modules/academy/` | 권한·학원·분반·수업 기록·학생/교사 상태 API, 권한별 선택지, 졸업 처리, 상태 조회 화면, 수업 기록 카드, 페이지 버튼, 메뉴 권한 |
+| 프로필 | `test/feature/profile/` | 회원증·UID·길드 봇 명령과 `MembershipCardResponse` 순서, 포인트 내역 API, 변경분만 저장, 저장 결과·실패 안내, 회원증 조회 실패·다시 시도, 읽기 전용 내역 표 |
+| 아카데미 | `test/feature/modules/academy/` | 권한·학원·분반·수업 기록·학생/교사 상태 API, 권한별 선택지, 졸업 처리, 상태 조회 화면, 수업 기록 카드, 페이지 버튼, 메뉴 권한, 조회 실패 안내 |
 | 빗자루 | `test/feature/modules/chatbot/` | 가르치기·추천 저장소의 컬럼명 변환과 저장·삭제 본문, 관리자 전용 컬럼, 메뉴 이동 |
 | 섀도우버스 | `test/feature/modules/shadowverse/` | 친선전 전송 형식, 봇 router 요청·오류, 미리보기·버전 전환·전송 결과, 모바일 배치 |
 | 포인트 | `test/feature/modules/erp/point/` | API 계약(직렬화·매핑), 검색·페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 버튼 대비, 빈 설명 |
-| 벌점 | `test/feature/modules/erp/penalty/` | API 계약, 30일 누적 계산, notifier, widget |
+| 벌점 | `test/feature/modules/erp/penalty/` | API 계약, 30일 누적 계산, notifier, widget, 탭과 TabBarView 너비 일치 |
 | 알림 | `test/feature/notification/` | API 계약(경로·쿼리·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기·읽음 처리, loading·error·empty, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성 |
 
 아직 자동 테스트가 없는 영역: 라우팅 가드(`router_provider.dart`), 수업 기록 작성·수정 화면, 교사 상태 처리 화면.
@@ -58,18 +58,19 @@ trigger: PR → `main`/`develope`, push → `develope`
 
 | 순서 | 단계 |
 |---|---|
-| 1 | `flutter pub get` (Flutter `stable` channel) |
-| 2 | `dart run build_runner build --delete-conflicting-outputs` |
-| 3 | 벌점 feature 생성 결과를 `penalty-generated-code` artifact로 업로드 |
-| 4 | `dart format --output=none --set-exit-if-changed .` |
-| 5 | `flutter analyze --no-fatal-warnings --no-fatal-infos` (기존 warning/info는 차단하지 않음, 변경한 코드의 새 경고는 제거) |
-| 6 | `flutter test --platform chrome --reporter github` (실패한 테스트를 PR annotation으로 표시) |
-| 7 | `flutter build web` |
-| 별도 job | `docker build` |
+| 1 | `flutter pub get --enforce-lockfile` (Flutter 3.41.2 고정, Dockerfile과 같음) |
+| 2 | `dart run build_runner build --delete-conflicting-outputs` 후 `lib`·`test`에 변경이 생기면 실패 (생성 코드 commit 누락 확인) |
+| 3 | `dart format --output=none --set-exit-if-changed .` |
+| 4 | `flutter analyze` (error·warning·info 모두 실패) |
+| 5 | `flutter test --platform chrome --reporter github` (실패한 테스트를 PR annotation으로 표시) |
+| 6 | `flutter build web` |
+| 별도 job | `trufflehog`로 검증된 secret 검출, `docker build` |
+
+lint를 예외로 두어야 하면 해당 줄에 `// ignore: 규칙` 과 이유를 함께 적습니다. 현재 예외: `DropdownButtonFormField.value`(state가 선택값을 소유하는 controlled field라 `initialValue`로 바꾸면 초기화가 반영되지 않음).
 
 gate가 실패하면 merge하지 않습니다. 우회가 필요하면 사유·위험·기간·후속 조치를 PR에 기록하고 승인받습니다.
 
 ## 5. 생성 코드
 
 - `*.g.dart`, `*.freezed.dart`는 커밋합니다. 직접 수정하지 않습니다.
-- `@riverpod`, `@freezed`, `@JsonSerializable`을 바꾸면 `pubspec.lock`의 버전 그대로 재생성하고 source와 같은 commit에 넣습니다.
+- `@riverpod`, `@freezed`, `@JsonSerializable`을 바꾸면 Flutter 3.41.2와 `pubspec.lock`의 버전 그대로 재생성하고 source와 같은 commit에 넣습니다. CI가 다시 생성해 차이가 있으면 실패합니다.

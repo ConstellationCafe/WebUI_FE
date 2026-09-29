@@ -11,7 +11,6 @@ part of 'friendly_match_state.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$FriendlyMatchState {
 
@@ -22,8 +21,6 @@ mixin _$FriendlyMatchState {
 @pragma('vm:prefer-inline')
 $FriendlyMatchStateCopyWith<FriendlyMatchState> get copyWith => _$FriendlyMatchStateCopyWithImpl<FriendlyMatchState>(this as FriendlyMatchState, _$identity);
 
-  /// Serializes this FriendlyMatchState to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendlyMatchState&&(identical(other.version, version) || other.version == version)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.roomNumber, roomNumber) || other.roomNumber == roomNumber)&&(identical(other.message, message) || other.message == message)&&(identical(other.sender, sender) || other.sender == sender));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,version,mode,platform,roomNumber,message,sender);
 
@@ -211,11 +208,11 @@ return $default(_that.version,_that.mode,_that.platform,_that.roomNumber,_that.m
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _FriendlyMatchState implements FriendlyMatchState {
   const _FriendlyMatchState({required this.version, required this.mode, required this.platform, required this.roomNumber, required this.message, required this.sender});
-  factory _FriendlyMatchState.fromJson(Map<String, dynamic> json) => _$FriendlyMatchStateFromJson(json);
+  
 
 @override final  String version;
 @override final  String mode;
@@ -230,17 +227,14 @@ class _FriendlyMatchState implements FriendlyMatchState {
 @pragma('vm:prefer-inline')
 _$FriendlyMatchStateCopyWith<_FriendlyMatchState> get copyWith => __$FriendlyMatchStateCopyWithImpl<_FriendlyMatchState>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$FriendlyMatchStateToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _FriendlyMatchState&&(identical(other.version, version) || other.version == version)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.platform, platform) || other.platform == platform)&&(identical(other.roomNumber, roomNumber) || other.roomNumber == roomNumber)&&(identical(other.message, message) || other.message == message)&&(identical(other.sender, sender) || other.sender == sender));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,version,mode,platform,roomNumber,message,sender);
 

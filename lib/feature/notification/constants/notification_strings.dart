@@ -60,4 +60,10 @@ class NotificationStrings {
   static const conflict = '같은 요청으로 다른 내용이 발행되어 있습니다. 내용을 확인하고 다시 발행하세요.';
   static const invalid = '입력한 내용을 확인해 주세요.';
   static const publishUnknown = '발행 결과를 확인할 수 없습니다. 다시 발행해도 중복되지 않습니다.';
+
+  static String sentSummary(String category, String target, String source) =>
+      '$category · $target · $source';
+  static String targetUserWithId(String discordId) => '$targetUser $discordId';
+  static String pageIndicator(int page, int totalPages) =>
+      '$page / $totalPages';
 }

@@ -1,8 +1,10 @@
 import 'package:constellation_cafe/feature/modules/academy/domain/type/status_type.dart';
 
+import '../../constants/academy_strings.dart';
+
 enum TeacherStatusType implements StatusType {
-  retire('퇴직', 'RETIRED'),
-  discipline('징계', 'DISCIPLINARY');
+  retire(AcademyStrings.retired, 'RETIRED'),
+  discipline(AcademyStrings.disciplinary, 'DISCIPLINARY');
 
   @override
   final String label;

@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
-import 'package:constellation_cafe/feature/profile/api/membership_api.dart';
+import 'package:constellation_cafe/feature/profile/constants/profile_strings.dart';
+import 'package:constellation_cafe/feature/profile/data/api/membership_api.dart';
+import 'package:constellation_cafe/feature/profile/data/repository/point_repository.dart';
 import 'package:constellation_cafe/feature/profile/notifier/membership_notifier.dart';
+import 'package:constellation_cafe/feature/profile/pages/profile.dart';
 import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
-import 'package:constellation_cafe/feature/profile/repository/point_repository.dart';
 import 'package:constellation_cafe/feature/profile/widgets/input_membership_data.dart';
+import 'package:constellation_cafe/feature/profile/widgets/profile_usage.dart';
 import 'package:constellation_cafe/feature/profile/widgets/save_membership_button.dart';
-import 'package:constellation_cafe/shared/widgets/db_editor/EditorBar.dart';
+import 'package:constellation_cafe/shared/widgets/db_editor/editor_bar.dart';
 
 import '../../support/fake_page_repository.dart';
-import '../../support/screen.dart';
 import '../../support/fake_translator.dart';
+import '../../support/screen.dart';
 import 'support/membership_fixtures.dart';
 
 Future<ProviderContainer> signedIn(FakeTranslator translator) async {
@@ -104,6 +108,38 @@ void main() {
       expect(find.textContaining('저장 중 오류 발생'), findsOneWidget);
       expect(find.text('저장'), findsOneWidget);
     });
+  });
+
+  testWidgets('회원증 조회에 실패하면 안내와 다시 시도를 보여준다', (tester) async {
+    SharedPreferences.setMockInitialValues({ProfileUsage.key: true});
+    var fail = true;
+    final translator = FakeTranslator((path, _) async {
+      if (fail) throw StateError('봇 응답 없음');
+      return cardPayload();
+    });
+    final container = ProviderContainer(
+      overrides: [
+        membershipApiProvider.overrideWithValue(MembershipAPI(translator)),
+      ],
+    );
+    addTearDown(container.dispose);
+    container
+        .read(currentUserStateProvider.notifier)
+        .update(userId: '123', globalName: '별');
+    setScreenSize(tester, const Size(1200, 900));
+
+    await tester.pumpWidget(scoped(container, const Profile()));
+    await tester.pumpAndSettle();
+
+    expect(find.text(ProfileStrings.loadFailed), findsOneWidget);
+
+    fail = false;
+    await tester.tap(find.text(ProfileStrings.retry));
+    await tester.pumpAndSettle();
+
+    expect(find.text(ProfileStrings.loadFailed), findsNothing);
+    expect(find.text(ProfileStrings.cardTitle('별')), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('포인트 내역 화면은 읽기 전용 표로 내역을 보여준다', (tester) async {

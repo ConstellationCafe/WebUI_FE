@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/feature/modules/chatbot/music/repository/music_repository.dart';
-import 'package:constellation_cafe/shared/widgets/db_editor/DBEditor.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/music/data/repository/music_repository.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
+import 'package:constellation_cafe/shared/widgets/db_editor/db_editor.dart';
 
 class MusicList extends ConsumerWidget {
   const MusicList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final musicRepository = ref.read(musicRepositoryProvider);
+    final musicRepository = ref.watch(musicRepositoryProvider);
     final isAdmin = ref.watch(
       currentUserStateProvider.select(
-        (state) => state.roles.contains(UserRole.ADMIN),
+        (state) => state.roles.contains(UserRole.admin),
       ),
     );
     return LayoutBuilder(
