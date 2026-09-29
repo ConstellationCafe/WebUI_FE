@@ -1,15 +1,17 @@
-import 'package:constellation_cafe/feature/modules/academy/notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
 
-import '../../../../../shared/widgets/breadcrumb/app_breadcrumb.dart';
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../notifier/lesson_record_form_notifier/lesson_record_form_notifier.dart';
+import '../../notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
+import '../../widgets/academy_error_banner.dart';
 import '../../widgets/write_lesson_record/basic_info/academy_basic_info.dart';
 import '../../widgets/write_lesson_record/lesson_description.dart';
 import '../../widgets/write_lesson_record/lesson_record_bottom.dart';
@@ -41,17 +43,17 @@ class LessonRecordPage extends ConsumerWidget {
       }
 
       if (success) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('수업 기록이 저장되었습니다.')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text(AcademyStrings.lessonRecordSaved)),
+        );
 
         context.pop();
         return;
       }
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('필수 항목을 확인해주세요.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AcademyStrings.checkRequiredFields)),
+      );
     }
 
     void cancel() {
@@ -74,10 +76,19 @@ class LessonRecordPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBreadcrumb(items: ['수업 관리', '수업 내용 기록']),
+              const AppBreadcrumb(
+                items: [
+                  AcademyStrings.lessonManagement,
+                  AcademyStrings.writeLessonRecordTitle,
+                ],
+              ),
               const SizedBox(height: ConstPadding.smallPadding),
               LessonRecordHeader(isDesktop: isDesktop),
               const SizedBox(height: ConstPadding.mediumPadding),
+              if (queryState.errorMessage != null) ...[
+                const AcademyErrorBanner(),
+                const SizedBox(height: ConstPadding.mediumPadding),
+              ],
               AcademyBasicInfo(
                 // model
                 academies: queryState.queryForm.academies,

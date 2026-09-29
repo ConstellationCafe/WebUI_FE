@@ -4,17 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:constellation_cafe/core/network/dio_provider.dart';
 import 'package:constellation_cafe/core/network/discord_bot/translator.dart';
 
+import '../../domain/model/student_status/student_status_form.dart';
+import '../../domain/type/student_status_type.dart';
 import '../dto/request/status_query_request.dart';
 import '../dto/response/student_status_list_response.dart';
 import '../dto/response/student_status_response.dart';
 
-import '../../domain/model/student_status/student_status_form.dart';
-import '../../domain/type/student_status_type.dart';
-
 final studentStatusApiProvider = Provider((ref) {
   final dio = ref.watch(dioProvider);
   return StudentStatusApi(
-    translator: ref.read(apiTranslatorProvider),
+    translator: ref.watch(apiTranslatorProvider),
     dio: dio,
   );
 });

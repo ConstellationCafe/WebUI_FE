@@ -1,15 +1,16 @@
-import 'package:constellation_cafe/feature/modules/academy/notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
-
 import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../notifier/lesson_record_list_notifier/lesson_record_list_notifier.dart';
+import '../../notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
+import '../../widgets/academy_error_banner.dart';
 import '../../widgets/read_lesson_record/lesson_record_filter/lesson_record_filter.dart';
 import '../../widgets/read_lesson_record/lesson_record_header.dart';
 import '../../widgets/read_lesson_record/lesson_record_list.dart';
@@ -46,9 +47,14 @@ class LessonRecordListPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppBreadcrumb(items: ['수업 관리', '수업 내용 조회']),
+              const AppBreadcrumb(
+                items: [
+                  AcademyStrings.lessonManagement,
+                  AcademyStrings.readLessonRecordTitle,
+                ],
+              ),
               const SizedBox(height: ConstPadding.smallPadding),
-              LessonRecordHeader(),
+              const LessonRecordHeader(),
               const SizedBox(height: ConstPadding.mediumPadding),
               LessonRecordFilter(
                 isLoading: queryState.isLoading,
@@ -71,6 +77,11 @@ class LessonRecordListPage extends ConsumerWidget {
                 onReset: queryNotifier.resetFilters,
               ),
               const SizedBox(height: ConstPadding.largePadding),
+              if (listState.errorMessage != null ||
+                  queryState.errorMessage != null) ...[
+                AcademyErrorBanner(onRetry: listNotifier.search),
+                const SizedBox(height: ConstPadding.mediumPadding),
+              ],
               LessonRecordList(
                 records: listState.lessonRecordList.records,
                 onUpdate: (record, update) async {
@@ -78,13 +89,19 @@ class LessonRecordListPage extends ConsumerWidget {
                     await listNotifier.updateRecord(record.id, update);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('수업 기록을 수정했습니다.')),
+                        const SnackBar(
+                          content: Text(AcademyStrings.lessonRecordUpdated),
+                        ),
                       );
                     }
                   } catch (_) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('수업 기록 수정에 실패했습니다.')),
+                        const SnackBar(
+                          content: Text(
+                            AcademyStrings.lessonRecordUpdateFailed,
+                          ),
+                        ),
                       );
                     }
                   }
@@ -94,13 +111,19 @@ class LessonRecordListPage extends ConsumerWidget {
                     await listNotifier.deleteRecord(record.id);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('수업 기록을 삭제했습니다.')),
+                        const SnackBar(
+                          content: Text(AcademyStrings.lessonRecordDeleted),
+                        ),
                       );
                     }
                   } catch (_) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('수업 기록 삭제에 실패했습니다.')),
+                        const SnackBar(
+                          content: Text(
+                            AcademyStrings.lessonRecordDeleteFailed,
+                          ),
+                        ),
                       );
                     }
                   }

@@ -1,12 +1,12 @@
-import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/network/dio_provider.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 
-import '../../domain/model/academy_permission.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
+import '../../domain/model/academy_permission.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/teacher.dart';
 

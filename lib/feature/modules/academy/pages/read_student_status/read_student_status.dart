@@ -6,9 +6,11 @@ import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../domain/model/student.dart';
 import '../../domain/type/student_roster_status.dart';
 import '../../notifier/student_status_list_notifier/student_status_list_notifier.dart';
+import '../../widgets/academy_error_banner.dart';
 import '../../widgets/read_status/status_pagination.dart';
 import '../../widgets/read_status/status_query_form.dart';
 import '../../widgets/read_status/status_summary.dart';
@@ -45,19 +47,24 @@ class ReadStudentStatusPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppBreadcrumb(items: ['학생 관리', '학생 상태 조회']),
+              const AppBreadcrumb(
+                items: [
+                  AcademyStrings.studentManagement,
+                  AcademyStrings.readStudentStatusTitle,
+                ],
+              ),
 
               const SizedBox(height: ConstPadding.smallPadding),
 
               Text(
-                '학생 상태 조회',
+                AcademyStrings.readStudentStatusTitle,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
 
               const SizedBox(height: ConstPadding.tinyPadding),
 
               Text(
-                '학생의 재적, 졸업, 퇴학, 자퇴 명단을 조회합니다.',
+                AcademyStrings.readStudentStatusDescription,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
 
@@ -72,8 +79,8 @@ class ReadStudentStatusPage extends ConsumerWidget {
                 selectedAcademyClass: query.selectedAcademyClass,
                 selectedAcademyMember: query.selectedAcademyMember,
                 selectedStatus: query.selectedStatus,
-                memberLabel: '학생',
-                statusLabel: '학생 상태',
+                memberLabel: AcademyStrings.student,
+                statusLabel: AcademyStrings.studentStatus,
                 isLoading: state.isFilterLoading,
                 onAcademyChanged: notifier.selectAcademy,
                 onClassChanged: notifier.selectClass,
@@ -86,10 +93,10 @@ class ReadStudentStatusPage extends ConsumerWidget {
               const SizedBox(height: ConstPadding.mediumPadding),
 
               StatusSummary(
-                title: '학생 현황',
+                title: AcademyStrings.studentSummary,
                 items: [
                   StatusSummaryData(
-                    label: '전체',
+                    label: AcademyStrings.all,
                     count: studentStatusList.totalCount,
                     icon: Icons.people_outline,
                   ),
@@ -118,6 +125,11 @@ class ReadStudentStatusPage extends ConsumerWidget {
 
               const SizedBox(height: ConstPadding.mediumPadding),
 
+              if (state.errorMessage != null) ...[
+                AcademyErrorBanner(onRetry: notifier.search),
+                const SizedBox(height: ConstPadding.mediumPadding),
+              ],
+
               if (state.isLoading)
                 const Center(child: CircularProgressIndicator())
               else
@@ -126,9 +138,9 @@ class ReadStudentStatusPage extends ConsumerWidget {
                   totalCount: studentStatusList.totalCount,
                   currentPage: studentStatusList.currentPage,
                   pageSize: query.pageSize,
-                  title: '학생 명단',
-                  memberColumnLabel: '학생명',
-                  emptyMessage: '조회된 학생이 없습니다.',
+                  title: AcademyStrings.studentRoster,
+                  memberColumnLabel: AcademyStrings.studentName,
+                  emptyMessage: AcademyStrings.noStudents,
                 ),
 
               const SizedBox(height: ConstPadding.mediumPadding),

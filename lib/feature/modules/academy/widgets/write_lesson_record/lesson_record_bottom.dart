@@ -1,9 +1,10 @@
-import 'package:constellation_cafe/shared/widgets/loading/button_loading.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/shared/widgets/loading/button_loading.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 
 class LessonRecordBottom extends StatelessWidget {
   final bool isSaving;
@@ -26,7 +27,7 @@ class LessonRecordBottom extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: isSaving ? null : onCancel,
-            child: const Text('취소'),
+            child: const Text(AcademyStrings.cancel),
           ),
           const SizedBox(width: ConstPadding.smallPadding),
           ElevatedButton.icon(
@@ -38,7 +39,7 @@ class LessonRecordBottom extends StatelessWidget {
                     child: ButtonLoading(),
                   )
                 : const Icon(Icons.save_outlined),
-            label: Text(isSaving ? '저장 중...' : '저장하기'),
+            label: Text(isSaving ? AcademyStrings.saving : AcademyStrings.save),
           ),
         ],
       ),

@@ -1,9 +1,9 @@
-import 'status_summary_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
+import 'status_summary_item.dart';
 
 class StatusSummaryData {
   final String label;

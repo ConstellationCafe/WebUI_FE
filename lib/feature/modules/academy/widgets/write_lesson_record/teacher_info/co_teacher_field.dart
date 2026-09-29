@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/model/teacher.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_constants.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/teacher.dart';
+
+import '../academy_field_label.dart';
 
 class CoTeacherField extends StatelessWidget {
   final List<Teacher> teachers;
@@ -26,10 +31,10 @@ class CoTeacherField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(context, '함께 가르친 교사', required: false),
-        const SizedBox(height: 6),
+        const AcademyFieldLabel(AcademyStrings.coTeacher),
+        const SizedBox(height: AcademyConstants.fieldLabelGap),
         DropdownButtonFormField<Teacher>(
-          hint: const Text('교사 이름을 선택하세요'),
+          hint: const Text(AcademyStrings.selectTeacherName),
           items: availableTeachers
               .map(
                 (teacher) => DropdownMenuItem<Teacher>(
@@ -44,10 +49,10 @@ class CoTeacherField extends StatelessWidget {
             onChanged(teacher);
           },
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: ConstPadding.smallPadding),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: AcademyConstants.memberChipSpacing,
+          runSpacing: AcademyConstants.memberChipRunSpacing,
           children: selectedCoTeachers
               .map(
                 (teacher) => Chip(
@@ -60,22 +65,6 @@ class CoTeacherField extends StatelessWidget {
               .toList(),
         ),
       ],
-    );
-  }
-
-  Widget _label(BuildContext context, String text, {required bool required}) {
-    return RichText(
-      text: TextSpan(
-        style: Theme.of(context).textTheme.labelLarge,
-        children: [
-          TextSpan(text: text),
-          if (required)
-            const TextSpan(
-              text: ' *',
-              style: TextStyle(color: Colors.red),
-            ),
-        ],
-      ),
     );
   }
 }

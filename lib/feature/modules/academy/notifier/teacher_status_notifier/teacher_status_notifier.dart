@@ -98,10 +98,6 @@ class TeacherStatusNotifier extends _$TeacherStatusNotifier {
   Future<void> selectClass(AcademyClass academyClass) async {
     final int academyId = state.teacherStatus.selectedAcademy!.id;
 
-    if (academyId == null) {
-      return;
-    }
-
     state = state.copyWith(
       isLoading: true,
       teacherStatus: state.teacherStatus.copyWith(

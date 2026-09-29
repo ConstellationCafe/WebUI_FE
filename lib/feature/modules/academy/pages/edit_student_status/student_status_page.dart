@@ -4,14 +4,18 @@ import 'package:go_router/go_router.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../domain/type/student_status_type.dart';
 import '../../notifier/student_status_notifier/student_status_notifier.dart';
+import '../../widgets/academy_error_banner.dart';
 import '../../widgets/edit_status/status_actions.dart';
 import '../../widgets/edit_status/status_basic_info.dart';
 import '../../widgets/edit_status/status_process_form.dart';
+import '../../widgets/edit_status/status_section_card.dart';
 
 class StudentStatusPage extends ConsumerWidget {
   const StudentStatusPage({super.key});
@@ -47,24 +51,32 @@ class StudentStatusPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _breadcrumb(context),
+              const AppBreadcrumb(
+                items: [
+                  AcademyStrings.studentManagement,
+                  AcademyStrings.editStudentStatusTitle,
+                ],
+              ),
               const SizedBox(height: ConstPadding.smallPadding),
               Text(
-                '학생 상태 처리',
+                AcademyStrings.editStudentStatusTitle,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: ConstPadding.tinyPadding),
               Text(
-                '학생의 졸업, 퇴학, 자퇴 처리를 진행합니다.',
+                AcademyStrings.editStudentStatusDescription,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: ConstPadding.largePadding),
-              _sectionCard(
-                context,
-                title: '학생 정보',
+              if (state.errorMessage != null) ...[
+                const AcademyErrorBanner(),
+                const SizedBox(height: ConstPadding.mediumPadding),
+              ],
+              StatusSectionCard(
+                title: AcademyStrings.studentInfo,
                 icon: Icons.person_outline,
                 child: StatusBasicInfo(
-                  memberLabel: '학생',
+                  memberLabel: AcademyStrings.student,
                   academies: studentStatus.academies,
                   classes: studentStatus.classes,
                   members: studentStatus.students,
@@ -77,9 +89,8 @@ class StudentStatusPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: ConstPadding.mediumPadding),
-              _sectionCard(
-                context,
-                title: '처리 정보',
+              StatusSectionCard(
+                title: AcademyStrings.processInfo,
                 icon: Icons.assignment_outlined,
                 child: StatusProcessForm<StudentStatusType>(
                   statuses: StudentStatusType.values,
@@ -94,8 +105,8 @@ class StudentStatusPage extends ConsumerWidget {
                   showSubjectsWhen: (status) =>
                       status == StudentStatusType.graduation,
 
-                  subjectSectionTitle: '졸업 교과목',
-                  subjectHelperText: '교과목은 선택하지 않아도 됩니다.',
+                  subjectSectionTitle: AcademyStrings.graduationSubjects,
+                  subjectHelperText: AcademyStrings.subjectOptionalHelper,
                 ),
               ),
               const SizedBox(height: ConstPadding.mediumPadding),
@@ -111,69 +122,23 @@ class StudentStatusPage extends ConsumerWidget {
 
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('학생 상태 처리가 완료되었습니다.')),
+                      const SnackBar(
+                        content: Text(AcademyStrings.studentStatusProcessed),
+                      ),
                     );
 
                     context.pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('필수 항목을 확인해주세요.')),
+                      const SnackBar(
+                        content: Text(AcademyStrings.checkRequiredFields),
+                      ),
                     );
                   }
                 },
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _breadcrumb(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Row(
-      children: [
-        Text('학생 관리', style: textTheme.bodySmall),
-        const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AcademyConstants.breadcrumbIconHorizontalPadding,
-          ),
-          child: Icon(
-            Icons.chevron_right,
-            size: AcademyConstants.breadcrumbIconSize,
-          ),
-        ),
-        Text(
-          '학생 상태 처리',
-          style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
-        ),
-      ],
-    );
-  }
-
-  Widget _sectionCard(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required Widget child,
-  }) {
-    return Card(
-      child: Padding(
-        padding: ConstPadding.largePaddingAll,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon),
-                const SizedBox(width: ConstPadding.smallPadding),
-                Text(title, style: Theme.of(context).textTheme.titleLarge),
-              ],
-            ),
-            const SizedBox(height: ConstPadding.mediumPadding),
-            child,
-          ],
         ),
       ),
     );

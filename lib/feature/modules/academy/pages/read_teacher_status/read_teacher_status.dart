@@ -6,10 +6,11 @@ import 'package:constellation_cafe/core/constants/screen_width.dart';
 import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../domain/model/teacher.dart';
 import '../../domain/type/teacher_roster_status.dart';
 import '../../notifier/teacher_status_list_notifier/teacher_status_list_notifier.dart';
-
+import '../../widgets/academy_error_banner.dart';
 import '../../widgets/read_status/status_pagination.dart';
 import '../../widgets/read_status/status_query_form.dart';
 import '../../widgets/read_status/status_summary.dart';
@@ -46,19 +47,24 @@ class ReadTeacherStatusPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppBreadcrumb(items: ['교사 관리', '교사 상태 조회']),
+              const AppBreadcrumb(
+                items: [
+                  AcademyStrings.teacherManagement,
+                  AcademyStrings.readTeacherStatusTitle,
+                ],
+              ),
 
               const SizedBox(height: ConstPadding.smallPadding),
 
               Text(
-                '교사 상태 조회',
+                AcademyStrings.readTeacherStatusTitle,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
 
               const SizedBox(height: ConstPadding.tinyPadding),
 
               Text(
-                '교사의 재적, 은퇴, 징계 명단을 조회합니다.',
+                AcademyStrings.readTeacherStatusDescription,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
 
@@ -73,8 +79,8 @@ class ReadTeacherStatusPage extends ConsumerWidget {
                 selectedAcademyClass: query.selectedAcademyClass,
                 selectedAcademyMember: query.selectedAcademyMember,
                 selectedStatus: query.selectedStatus,
-                memberLabel: '교사',
-                statusLabel: '교사 상태',
+                memberLabel: AcademyStrings.teacher,
+                statusLabel: AcademyStrings.teacherStatus,
                 isLoading: state.isFilterLoading,
                 onAcademyChanged: notifier.selectAcademy,
                 onClassChanged: notifier.selectClass,
@@ -87,10 +93,10 @@ class ReadTeacherStatusPage extends ConsumerWidget {
               const SizedBox(height: ConstPadding.mediumPadding),
 
               StatusSummary(
-                title: '교사 현황',
+                title: AcademyStrings.teacherSummary,
                 items: [
                   StatusSummaryData(
-                    label: '전체',
+                    label: AcademyStrings.all,
                     count: teacherStatusList.totalCount,
                     icon: Icons.people_outline,
                   ),
@@ -114,6 +120,11 @@ class ReadTeacherStatusPage extends ConsumerWidget {
 
               const SizedBox(height: ConstPadding.mediumPadding),
 
+              if (state.errorMessage != null) ...[
+                AcademyErrorBanner(onRetry: notifier.search),
+                const SizedBox(height: ConstPadding.mediumPadding),
+              ],
+
               if (state.isLoading)
                 const Center(child: CircularProgressIndicator())
               else
@@ -122,9 +133,9 @@ class ReadTeacherStatusPage extends ConsumerWidget {
                   totalCount: teacherStatusList.totalCount,
                   currentPage: teacherStatusList.currentPage,
                   pageSize: query.pageSize,
-                  title: '교사 명단',
-                  memberColumnLabel: '교사명',
-                  emptyMessage: '조회된 교사가 없습니다.',
+                  title: AcademyStrings.teacherRoster,
+                  memberColumnLabel: AcademyStrings.teacherName,
+                  emptyMessage: AcademyStrings.noTeachers,
                 ),
 
               const SizedBox(height: ConstPadding.mediumPadding),

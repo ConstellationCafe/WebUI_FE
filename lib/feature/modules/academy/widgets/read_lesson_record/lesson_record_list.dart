@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/core/constants/const_padding.dart';
-
 import '../../constants/academy_constants.dart';
-import '../../domain/model/lesson_record/lesson_record_view.dart';
 import '../../domain/model/lesson_record/lesson_record_update.dart';
+import '../../domain/model/lesson_record/lesson_record_view.dart';
 import 'lesson_record_card.dart';
+import 'lesson_record_empty_view.dart';
 
 class LessonRecordList extends StatelessWidget {
   final List<LessonRecordView> records;
@@ -22,14 +21,14 @@ class LessonRecordList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (records.isEmpty) {
-      return _empty(context);
+      return const LessonRecordEmptyView();
     }
 
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: records.length,
-      separatorBuilder: (_, __) =>
+      separatorBuilder: (_, _) =>
           const SizedBox(height: AcademyConstants.recordCardSpacing),
       itemBuilder: (context, index) {
         return LessonRecordCard(
@@ -38,27 +37,6 @@ class LessonRecordList extends StatelessWidget {
           onDelete: onDelete,
         );
       },
-    );
-  }
-
-  Widget _empty(BuildContext context) {
-    return Padding(
-      padding: ConstPadding.largePaddingAll,
-      child: Center(
-        child: Column(
-          children: [
-            const Icon(
-              Icons.menu_book_outlined,
-              size: AcademyConstants.emptyIconSize,
-            ),
-            const SizedBox(height: ConstPadding.smallPadding),
-            Text(
-              '조회된 수업 기록이 없습니다.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

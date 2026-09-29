@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/model/academy_class.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_class.dart';
 
 class ClassDropdown extends StatelessWidget {
   final List<AcademyClass> classes;
@@ -18,13 +19,16 @@ class ClassDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<int?>(
       initialValue: selectedClassId,
-      decoration: const InputDecoration(labelText: '분반'),
+      decoration: const InputDecoration(labelText: AcademyStrings.academyClass),
       items: [
-        const DropdownMenuItem<int?>(value: null, child: Text('전체')),
+        const DropdownMenuItem<int?>(
+          value: null,
+          child: Text(AcademyStrings.all),
+        ),
         ...classes.map(
           (academyClass) => DropdownMenuItem<int?>(
             value: academyClass.id,
-            child: Text('${academyClass.classNumber}분반'),
+            child: Text(AcademyStrings.classNumber(academyClass.classNumber)),
           ),
         ),
       ],
@@ -36,7 +40,7 @@ class ClassDropdown extends StatelessWidget {
               }
 
               final academyClass = classes.firstWhere(
-                (academyClass) => academyClass.id.toString() == classId,
+                (academyClass) => academyClass.id == classId,
               );
 
               onChanged(academyClass);

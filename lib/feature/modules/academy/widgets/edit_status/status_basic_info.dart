@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
 
+import '../../constants/academy_strings.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
 import '../../domain/model/academy_member.dart';
@@ -40,13 +41,18 @@ class StatusBasicInfo<T extends AcademyMember> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('$memberLabel 정보', style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          AcademyStrings.memberInfo(memberLabel),
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: ConstPadding.mediumPadding),
         DropdownButtonFormField<Academy>(
+          // 선택 값은 notifier state가 소유하므로 controlled value를 유지한다.
+          // ignore: deprecated_member_use
           value: selectedAcademy,
           decoration: const InputDecoration(
-            labelText: '아카데미 *',
-            hintText: '아카데미를 선택하세요',
+            labelText: AcademyStrings.academyRequired,
+            hintText: AcademyStrings.selectAcademy,
           ),
           items: academies
               .map(
@@ -64,16 +70,19 @@ class StatusBasicInfo<T extends AcademyMember> extends StatelessWidget {
         ),
         const SizedBox(height: ConstPadding.mediumPadding),
         DropdownButtonFormField<AcademyClass>(
+          // ignore: deprecated_member_use
           value: selectedAcademyClass,
           decoration: const InputDecoration(
-            labelText: '분반 *',
-            hintText: '분반을 선택하세요',
+            labelText: AcademyStrings.classRequired,
+            hintText: AcademyStrings.selectClass,
           ),
           items: classes
               .map(
                 (academyClass) => DropdownMenuItem<AcademyClass>(
                   value: academyClass,
-                  child: Text('${academyClass.classNumber}분반'),
+                  child: Text(
+                    AcademyStrings.classNumber(academyClass.classNumber),
+                  ),
                 ),
               )
               .toList(),
@@ -87,10 +96,11 @@ class StatusBasicInfo<T extends AcademyMember> extends StatelessWidget {
         ),
         const SizedBox(height: ConstPadding.mediumPadding),
         DropdownButtonFormField<T>(
+          // ignore: deprecated_member_use
           value: selectedMembers,
           decoration: InputDecoration(
-            labelText: '$memberLabel *',
-            hintText: '$memberLabel(을/를) 선택하세요',
+            labelText: AcademyStrings.requiredLabel(memberLabel),
+            hintText: AcademyStrings.selectMember(memberLabel),
           ),
           items: members
               .map(

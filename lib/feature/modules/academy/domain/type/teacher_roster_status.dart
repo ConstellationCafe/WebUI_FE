@@ -1,9 +1,11 @@
 import 'package:constellation_cafe/feature/modules/academy/domain/type/roster_status.dart';
 
+import '../../constants/academy_strings.dart';
+
 enum TeacherRosterStatus implements RosterStatus {
-  enrolled('재적', 'ENROLLED'),
-  retirement('은퇴', 'RETIRED'),
-  disciplinary('징계', 'DISCIPLINARY');
+  enrolled(AcademyStrings.enrolled, 'ENROLLED'),
+  retirement(AcademyStrings.retirement, 'RETIRED'),
+  disciplinary(AcademyStrings.disciplinary, 'DISCIPLINARY');
 
   @override
   final String label;

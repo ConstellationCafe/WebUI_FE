@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+
+import '../../constants/academy_strings.dart';
 
 class LessonRecordHeader extends StatelessWidget {
   const LessonRecordHeader({super.key});
@@ -12,9 +14,15 @@ class LessonRecordHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('수업 내용 조회', style: textTheme.headlineMedium),
+        Text(
+          AcademyStrings.readLessonRecordTitle,
+          style: textTheme.headlineMedium,
+        ),
         const SizedBox(height: ConstPadding.tinyPadding),
-        Text('기록한 수업 내용을 조회할 수 있습니다.', style: textTheme.bodyMedium),
+        Text(
+          AcademyStrings.readLessonRecordDescription,
+          style: textTheme.bodyMedium,
+        ),
       ],
     );
   }
