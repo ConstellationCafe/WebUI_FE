@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:constellation_cafe/core/constants/const_size.dart';
+import 'package:constellation_cafe/feature/home/constants/home_constants.dart';
 
 class MenuContainer extends ConsumerStatefulWidget {
   final Widget iconImage;
@@ -37,26 +39,36 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
           }
           context.go(widget.callbackUrl);
         },
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(HomeConstants.menuItemRadius),
 
-        hoverColor: theme.colorScheme.onSurface.withOpacity(0.08),
+        hoverColor: theme.colorScheme.onSurface.withValues(
+          alpha: HomeConstants.menuHoverOpacity,
+        ),
         highlightColor: Colors.transparent,
-        splashColor: theme.colorScheme.onSurface.withOpacity(0.12),
+        splashColor: theme.colorScheme.onSurface.withValues(
+          alpha: HomeConstants.menuSplashOpacity,
+        ),
 
         child: Container(
-          width: 180,
-          height: 48, // 8의 배수로 변경
+          width: HomeConstants.menuWidth,
+          height: HomeConstants.menuItemHeight,
           decoration: BoxDecoration(
             color: isSelected
                 ? theme.colorScheme.primaryContainer
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(HomeConstants.menuItemRadius),
           ),
-          padding: EdgeInsets.symmetric(horizontal: ConstSize.mediumSpacing),
+          padding: const EdgeInsets.symmetric(
+            horizontal: ConstSize.mediumSpacing,
+          ),
           child: Row(
             children: [
-              SizedBox(width: 20, height: 20, child: widget.iconImage),
-              SizedBox(width: ConstSize.smallSpacing),
+              SizedBox(
+                width: HomeConstants.menuItemIconSize,
+                height: HomeConstants.menuItemIconSize,
+                child: widget.iconImage,
+              ),
+              const SizedBox(width: ConstSize.smallSpacing),
               Text(
                 widget.menuName,
                 style: theme.textTheme.labelLarge?.copyWith(

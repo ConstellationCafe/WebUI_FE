@@ -29,6 +29,8 @@ class NotificationTokens {
   static const formMaxWidth = 560.0;
   static const compactBreakpoint = 960.0;
   static const bodyMaxLines = 6;
+  static const tileTitleMaxLines = 2;
+  static const tileBodyMaxLines = 3;
   static const progressSize = 18.0;
   static const progressStroke = 2.0;
 

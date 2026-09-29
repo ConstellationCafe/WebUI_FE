@@ -8,6 +8,7 @@ import '../domain/model/app_notification.dart';
 import '../notifier/notification_center_notifier.dart';
 import 'notification_panel.dart';
 import 'notification_panel_position.dart';
+import 'notification_unread_dot.dart';
 
 /// 헤더 우측 상단 프로필 아이콘 왼쪽의 종 아이콘.
 ///
@@ -65,7 +66,7 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
               Icons.notifications_none,
               size: NotificationTokens.bellIconSize,
             ),
-            if (hasUnread) const _UnreadDot(),
+            if (hasUnread) const NotificationUnreadDot(),
           ],
         ),
       ),
@@ -116,31 +117,5 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
     if (link != null && link.startsWith('/') && !link.startsWith('//')) {
       context.go(link);
     }
-  }
-}
-
-class _UnreadDot extends StatelessWidget {
-  const _UnreadDot();
-
-  @override
-  Widget build(BuildContext context) {
-    // 종 아이콘의 우측 하단에 걸치도록 배치한다.
-    return Positioned(
-      right: NotificationTokens.unreadDotOffset,
-      bottom: NotificationTokens.unreadDotOffset,
-      child: Container(
-        key: const ValueKey('notification-unread-dot'),
-        width: NotificationTokens.unreadDotSize,
-        height: NotificationTokens.unreadDotSize,
-        decoration: BoxDecoration(
-          color: NotificationTokens.unreadDotColor,
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: Theme.of(context).colorScheme.primary,
-            width: NotificationTokens.unreadDotBorder,
-          ),
-        ),
-      ),
-    );
   }
 }

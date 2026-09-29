@@ -1,4 +1,4 @@
-import '../../../domain/type/penalty_history_sort.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/domain/type/penalty_history_sort.dart';
 
 class PenaltyHistoryRequest {
   final String? channelId;

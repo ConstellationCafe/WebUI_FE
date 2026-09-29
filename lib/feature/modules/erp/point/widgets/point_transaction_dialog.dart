@@ -4,6 +4,7 @@ import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
 import '../domain/model/point_log.dart';
 import '../domain/model/point_member.dart';
+import '../domain/point_input_rules.dart';
 
 part 'point_transaction_dialog_state.dart';
 

@@ -11,6 +11,8 @@ import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_not
 import 'package:constellation_cafe/feature/home/constants/home_constants.dart';
 import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
 
+import '../widgets/home_action_card.dart';
+
 class HomeContent extends ConsumerWidget {
   const HomeContent({super.key});
 
@@ -113,21 +115,21 @@ class HomeContent extends ConsumerWidget {
                       spacing: ConstSize.mediumSpacing,
                       runSpacing: ConstSize.mediumSpacing,
                       children: [
-                        _HomeAction(
+                        HomeActionCard(
                           width: actionWidth,
                           icon: Icons.person_outline,
                           title: HomeStrings.profile,
                           description: HomeStrings.profileDescription,
                           onTap: () => context.go('/profile'),
                         ),
-                        _HomeAction(
+                        HomeActionCard(
                           width: actionWidth,
                           icon: Icons.fact_check_outlined,
                           title: HomeStrings.penalties,
                           description: HomeStrings.penaltiesDescription,
                           onTap: () => context.go('/my-penalties'),
                         ),
-                        _HomeAction(
+                        HomeActionCard(
                           width: actionWidth,
                           icon: Icons.swap_horiz_rounded,
                           title: HomeStrings.selectGuild,
@@ -143,58 +145,6 @@ class HomeContent extends ConsumerWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _HomeAction extends StatelessWidget {
-  final double width;
-  final IconData icon;
-  final String title;
-  final String description;
-  final VoidCallback onTap;
-
-  const _HomeAction({
-    required this.width,
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return SizedBox(
-      width: width,
-      child: Material(
-        color: theme.colorScheme.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(HomeConstants.cardRadius),
-          side: const BorderSide(color: HomeConstants.actionBorderColor),
-        ),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(HomeConstants.cardRadius),
-          child: Padding(
-            padding: const EdgeInsets.all(ConstPadding.mediumPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  icon,
-                  size: HomeConstants.actionIconSize,
-                  color: HomeConstants.heroForeground,
-                ),
-                const SizedBox(height: ConstSize.mediumSpacing),
-                Text(title, style: theme.textTheme.titleMedium),
-                const SizedBox(height: ConstSize.tinySpacing),
-                Text(description, style: theme.textTheme.bodySmall),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

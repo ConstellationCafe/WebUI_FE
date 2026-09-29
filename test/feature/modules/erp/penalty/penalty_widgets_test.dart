@@ -16,9 +16,9 @@ import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/p
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_page.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/pages/admin_penalty_page.dart';
-import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_log_tile.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_award_dialog.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_cancel_dialog.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_log_tile.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
 import 'support/fake_penalty_repository.dart';
@@ -26,7 +26,7 @@ import 'support/fake_penalty_repository.dart';
 Widget adminApp(FakePenaltyRepository repository) => ProviderScope(
   overrides: [
     currentUserStateProvider.overrideWithValue(
-      CurrentUserState.initial().copyWith(roles: [UserRole.ADMIN]),
+      CurrentUserState.initial().copyWith(roles: [UserRole.admin]),
     ),
     penaltyRepositoryProvider.overrideWithValue(repository),
   ],

@@ -5,6 +5,7 @@ import '../constants/notification_strings.dart';
 import '../constants/notification_tokens.dart';
 import '../notifier/admin_notification_notifier.dart';
 import '../widgets/admin_notification_form.dart';
+import '../widgets/admin_notification_layout.dart';
 import '../widgets/sent_notification_list.dart';
 
 /// 관리자 알림 발행 화면. 넓은 화면은 작성 폼과 발행 이력을 나란히, 좁은 화면은 위아래로 둔다.
@@ -49,41 +50,15 @@ class AdminNotificationPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: NotificationTokens.fieldGap),
-              _layout(isCompact: isCompact, form: form, history: history),
+              AdminNotificationLayout(
+                isCompact: isCompact,
+                form: form,
+                history: history,
+              ),
             ],
           ),
         );
       },
-    );
-  }
-
-  Widget _layout({
-    required bool isCompact,
-    required Widget form,
-    required Widget history,
-  }) {
-    if (isCompact) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          form,
-          const SizedBox(height: NotificationTokens.sectionGap),
-          history,
-        ],
-      );
-    }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: NotificationTokens.formMaxWidth,
-          ),
-          child: form,
-        ),
-        const SizedBox(width: NotificationTokens.sectionGap),
-        Expanded(child: history),
-      ],
     );
   }
 }

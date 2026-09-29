@@ -42,7 +42,7 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!ref.watch(currentUserStateProvider).roles.contains(UserRole.ADMIN)) {
+    if (!ref.watch(currentUserStateProvider).roles.contains(UserRole.admin)) {
       return const Center(child: Text(PenaltyStrings.adminOnly));
     }
     final state = ref.watch(adminPenaltyProvider);

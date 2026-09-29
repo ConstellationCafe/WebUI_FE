@@ -5,8 +5,7 @@ import '../constants/notification_strings.dart';
 import '../constants/notification_tokens.dart';
 import '../domain/model/app_notification.dart';
 import '../notifier/notification_center_notifier.dart';
-import '../state/notification_center_state.dart';
-import 'notification_tile.dart';
+import 'notification_panel_content.dart';
 
 /// 종 아이콘을 누르면 열리는 알림 목록. loading·error·empty·success와
 /// 더 보기 로딩을 각각 다르게 보여준다.
@@ -74,115 +73,15 @@ class NotificationPanel extends ConsumerWidget {
               indent: NotificationTokens.dividerInset,
               endIndent: NotificationTokens.dividerInset,
             ),
-            _content(state, notifier),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _content(
-    NotificationCenterState state,
-    NotificationCenterNotifier notifier,
-  ) {
-    if (state.isLoading && state.items.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(NotificationTokens.sectionGap),
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
-    if (state.hasError && state.items.isEmpty) {
-      return _Message(
-        message: NotificationStrings.loadFailed,
-        actionLabel: NotificationStrings.retry,
-        onAction: notifier.loadFirstPage,
-      );
-    }
-    if (state.items.isEmpty) {
-      return const _Message(message: NotificationStrings.empty);
-    }
-    final now = clock();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        for (var index = 0; index < state.items.length; index++) ...[
-          NotificationTile(
-            notification: state.items[index],
-            now: now,
-            onTap: () => onSelected(state.items[index]),
-          ),
-          if (index < state.items.length - 1)
-            const Divider(
-              height: NotificationTokens.dividerHeight,
-              indent: NotificationTokens.dividerInset,
-              endIndent: NotificationTokens.dividerInset,
+            NotificationPanelContent(
+              state: state,
+              now: clock(),
+              onSelected: onSelected,
+              onRetry: notifier.loadFirstPage,
+              onLoadMore: notifier.loadMore,
             ),
-        ],
-        if (state.hasNext)
-          _LoadMore(
-            isLoading: state.isLoadingMore,
-            hasError: state.hasError,
-            onPressed: notifier.loadMore,
-          ),
-      ],
-    );
-  }
-}
-
-class _LoadMore extends StatelessWidget {
-  final bool isLoading;
-  final bool hasError;
-  final VoidCallback onPressed;
-
-  const _LoadMore({
-    required this.isLoading,
-    required this.hasError,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Padding(
-        padding: EdgeInsets.all(NotificationTokens.panelGap),
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
-    const retry = NotificationStrings.retry;
-    const more = NotificationStrings.loadMore;
-    return Padding(
-      padding: const EdgeInsets.all(NotificationTokens.panelGap),
-      child: Center(
-        child: TextButton(
-          onPressed: onPressed,
-          child: Text(hasError ? retry : more),
-        ),
-      ),
-    );
-  }
-}
-
-class _Message extends StatelessWidget {
-  final String message;
-  final String? actionLabel;
-  final VoidCallback? onAction;
-
-  const _Message({required this.message, this.actionLabel, this.onAction});
-
-  @override
-  Widget build(BuildContext context) {
-    final label = actionLabel;
-    return Padding(
-      padding: const EdgeInsets.all(NotificationTokens.sectionGap),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(message, textAlign: TextAlign.center),
-          if (label != null) ...[
-            const SizedBox(height: NotificationTokens.panelGap),
-            ElevatedButton(onPressed: onAction, child: Text(label)),
           ],
-        ],
+        ),
       ),
     );
   }
