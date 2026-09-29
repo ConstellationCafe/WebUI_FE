@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:test/test.dart';
 
-import 'package:constellation_cafe/core/network/interceptors/ErrorInterceptor.dart';
+import 'package:constellation_cafe/core/network/interceptors/error_interceptor.dart';
 import 'package:constellation_cafe/feature/notification/data/api/admin_notification_api.dart';
 import 'package:constellation_cafe/feature/notification/data/api/notification_api.dart';
 import 'package:constellation_cafe/feature/notification/data/realtime/notification_event_source.dart';

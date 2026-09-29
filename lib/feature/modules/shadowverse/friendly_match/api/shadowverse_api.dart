@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
+import 'package:constellation_cafe/core/network/discord_bot/translator.dart';
 
 final shadowverseApiProvider = Provider(
   (ref) => ShadowverseAPI(ref.read(apiTranslatorProvider)),

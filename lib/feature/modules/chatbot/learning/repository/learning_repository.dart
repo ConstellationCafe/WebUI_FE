@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 import '../../../../../shared/domain/pagination/page_result.dart';
 import '../domain/entity/learning_entity.dart';

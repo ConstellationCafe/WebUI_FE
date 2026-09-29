@@ -15,7 +15,7 @@ import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:constellation_cafe/feature/guild_select/constants/guild_select_strings.dart';
 import 'package:constellation_cafe/feature/guild_select/domain/guild.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
-import 'package:constellation_cafe/feature/guild_select/page/guild_select.dart';
+import 'package:constellation_cafe/feature/guild_select/pages/guild_select.dart';
 import 'package:constellation_cafe/feature/guild_select/widgets/guild_tile/fallback_guild_icon.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 

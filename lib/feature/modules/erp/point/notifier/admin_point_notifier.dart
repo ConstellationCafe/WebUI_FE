@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 
 import '../data/api/admin_point_api.dart';
 import '../data/repository/admin_point_repository.dart';

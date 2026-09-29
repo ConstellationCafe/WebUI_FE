@@ -4,7 +4,7 @@ import '../domain/entity/music_entity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 
 final musicRepositoryProvider = Provider<RepositoryInterface>(
   (ref) => MusicRepository(dio: ref.watch(dioProvider)),

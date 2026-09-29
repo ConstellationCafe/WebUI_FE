@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 
 import '../../domain/model/lesson_record/lesson_record.dart';
 import '../../domain/model/lesson_record/lesson_record_update.dart';

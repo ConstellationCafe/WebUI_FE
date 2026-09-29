@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
-import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
+import 'package:constellation_cafe/core/network/discord_bot/translator.dart';
 
 import '../dto/request/status_query_request.dart';
 import '../dto/response/teacher_status_list_response.dart';

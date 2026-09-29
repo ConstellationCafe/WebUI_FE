@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/shared/model/db_editor/DBColumn.dart';
+import 'package:constellation_cafe/shared/model/db_editor/db_column.dart';
 
-import '../../controller/db_editor/DBController.dart';
+import '../../controller/db_editor/db_controller.dart';
 
 class DBColumns extends StatelessWidget {
   final DBController controller;

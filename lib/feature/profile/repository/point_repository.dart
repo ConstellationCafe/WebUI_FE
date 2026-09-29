@@ -2,7 +2,7 @@ import 'package:constellation_cafe/feature/profile/domain/entity/point_entity.da
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 import '../../../../shared/domain/repository/repository_interface.dart';
 import '../../../shared/domain/pagination/page_result.dart';
 

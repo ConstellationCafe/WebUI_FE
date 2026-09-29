@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
-import '../../model/db_editor/DBModel.dart';
+import '../../model/db_editor/db_model.dart';
 
 class DBController extends ChangeNotifier {
   final RepositoryInterface repository;

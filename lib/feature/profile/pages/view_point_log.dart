@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/feature/profile/repository/point_repository.dart';
-import 'package:constellation_cafe/shared/widgets/db_editor/DBEditor.dart';
+import 'package:constellation_cafe/shared/widgets/db_editor/db_editor.dart';
 
 class ViewPointLog extends ConsumerWidget {
   const ViewPointLog({super.key});

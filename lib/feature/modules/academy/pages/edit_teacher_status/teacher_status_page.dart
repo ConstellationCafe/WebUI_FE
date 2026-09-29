@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
-import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
+import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
 
 import '../../constants/academy_constants.dart';
 import '../../notifier/teacher_status_notifier/teacher_status_notifier.dart';

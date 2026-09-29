@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../controller/db_editor/DBController.dart';
+import '../../controller/db_editor/db_controller.dart';
 
 class DBSearch extends StatefulWidget {
   final DBController controller;

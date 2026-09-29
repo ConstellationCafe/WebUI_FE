@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
+import 'package:constellation_cafe/shared/controller/db_editor/db_controller.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
 
-class AddButton extends StatelessWidget {
+class DeleteButton extends StatelessWidget {
   final DBController controller;
 
-  const AddButton({super.key, required this.controller});
+  const DeleteButton({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: ConstSize.bigHeight,
       child: ElevatedButton(
-        onPressed: controller.addRow,
+        onPressed: () {
+          controller.deleteRow();
+        },
         style: ElevatedButton.styleFrom(
-          minimumSize: const Size(0, 30), // 높이 30 보장
+          minimumSize: const Size(0, 30),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        child: const Text("추가"),
+        child: const Text("삭제"),
       ),
     );
   }

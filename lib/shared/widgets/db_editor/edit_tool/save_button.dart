@@ -1,9 +1,9 @@
-import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
+import 'package:constellation_cafe/shared/widgets/snack_bar/save_result_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
+import 'package:constellation_cafe/shared/controller/db_editor/db_controller.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
-import '../../loading/ButtonLoading.dart';
+import '../../loading/button_loading.dart';
 
 class SaveButton extends StatefulWidget {
   final DBController controller;

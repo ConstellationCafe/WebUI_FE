@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
+import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
 
 // auth
 import 'package:constellation_cafe/feature/auth/pages/login.dart';
@@ -26,7 +26,7 @@ import 'package:constellation_cafe/feature/notification/routes/notification_rout
 import '../feature/auth/notifier/login_check_notifier.dart';
 import '../feature/auth/state/login_status.dart';
 import '../feature/modules/chatbot/routes/chatbot_routes.dart';
-import '../feature/guild_select/page/guild_select.dart';
+import '../feature/guild_select/pages/guild_select.dart';
 import '../feature/guild_select/provider/guild_list_provider.dart';
 import '../feature/modules/shadowverse/routes/shadowverse_routes.dart';
 import 'no_aim_page.dart';

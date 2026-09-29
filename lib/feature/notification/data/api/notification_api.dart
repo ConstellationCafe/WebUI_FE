@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'package:constellation_cafe/core/network/interceptors/ErrorInterceptor.dart';
+import 'package:constellation_cafe/core/network/interceptors/error_interceptor.dart';
 
 import '../dto/request/notification_list_request.dart';
 import '../dto/request/notification_read_cursor_request.dart';

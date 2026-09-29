@@ -10,7 +10,7 @@ import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
 import 'package:constellation_cafe/feature/profile/repository/point_repository.dart';
 import 'package:constellation_cafe/feature/profile/widgets/input_membership_data.dart';
 import 'package:constellation_cafe/feature/profile/widgets/save_membership_button.dart';
-import 'package:constellation_cafe/shared/widgets/db_editor/EditorBar.dart';
+import 'package:constellation_cafe/shared/widgets/db_editor/editor_bar.dart';
 
 import '../../support/fake_page_repository.dart';
 import '../../support/screen.dart';

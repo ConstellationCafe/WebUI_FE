@@ -1,5 +1,5 @@
 import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart';
-import 'package:constellation_cafe/shared/data/dto/response/backend/ApiResponse.dart';
+import 'package:constellation_cafe/shared/data/dto/response/backend/api_response.dart';
 
 abstract class AuthServiceInterface {
   Future<void> login(LoginMethodType loginMethod);

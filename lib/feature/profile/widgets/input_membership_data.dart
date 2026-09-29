@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
-import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
+import 'package:constellation_cafe/shared/widgets/snack_bar/save_result_bar.dart';
 
 import '../../../core/constants/const_shadow.dart';
 import '../constants/profile_constants.dart';

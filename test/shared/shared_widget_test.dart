@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/semantics.dart';
 
-import 'package:constellation_cafe/shared/widgets/loading/ButtonLoading.dart';
-import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
-import 'package:constellation_cafe/shared/widgets/padding/CustomPadding.dart';
-import 'package:constellation_cafe/shared/widgets/snackBar/SaveResultBar.dart';
+import 'package:constellation_cafe/shared/widgets/loading/button_loading.dart';
+import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
+import 'package:constellation_cafe/shared/widgets/padding/custom_padding.dart';
+import 'package:constellation_cafe/shared/widgets/snack_bar/save_result_bar.dart';
 
 void main() {
   group('loading widgets', () {

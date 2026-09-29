@@ -1,8 +1,8 @@
-import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
-import 'edit_tool/AddButton.dart';
-import 'edit_tool/SaveButton.dart';
-import 'edit_tool/DeleteButton.dart';
-import 'edit_tool/EditButton.dart';
+import 'package:constellation_cafe/shared/controller/db_editor/db_controller.dart';
+import 'edit_tool/add_button.dart';
+import 'edit_tool/save_button.dart';
+import 'edit_tool/delete_button.dart';
+import 'edit_tool/edit_button.dart';
 import 'package:flutter/material.dart';
 
 class EditorBar extends StatelessWidget {

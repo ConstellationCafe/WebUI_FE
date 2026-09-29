@@ -14,7 +14,7 @@ import 'package:constellation_cafe/feature/guild_select/widgets/page_footer.dart
 import 'package:constellation_cafe/feature/guild_select/widgets/page_header.dart';
 import 'package:constellation_cafe/feature/guild_select/provider/guild_list_provider.dart';
 
-import '../../../shared/widgets/loading/PageLoading.dart';
+import '../../../shared/widgets/loading/page_loading.dart';
 import '../constants/guild_constants.dart';
 import '../constants/guild_select_strings.dart';
 

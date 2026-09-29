@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/feature/modules/chatbot/content/repository/content_repository.dart';
-import 'package:constellation_cafe/shared/widgets/db_editor/DBEditor.dart';
+import 'package:constellation_cafe/shared/widgets/db_editor/db_editor.dart';
 
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/interceptor/AuthInterceptor.dart';
-import 'package:constellation_cafe/core/network/interceptors/ErrorInterceptor.dart';
-import 'package:constellation_cafe/core/keys/AppKeys.dart';
+import 'package:constellation_cafe/core/network/interceptors/auth_interceptor.dart';
+import 'package:constellation_cafe/core/network/interceptors/error_interceptor.dart';
+import 'package:constellation_cafe/core/keys/app_keys.dart';
 
 // Network
 final dioProvider = Provider<Dio>((ref) {

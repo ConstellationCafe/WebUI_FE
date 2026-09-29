@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
-import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
+import 'package:constellation_cafe/core/network/discord_bot/translator.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/api/shadowverse_api.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/domain/friendly_match_template.dart';

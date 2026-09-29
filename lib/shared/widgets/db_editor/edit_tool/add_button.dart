@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/shared/controller/db_editor/DBController.dart';
+import 'package:constellation_cafe/shared/controller/db_editor/db_controller.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
 
-class EditButton extends StatelessWidget {
+class AddButton extends StatelessWidget {
   final DBController controller;
 
-  const EditButton({super.key, required this.controller});
+  const AddButton({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: ConstSize.bigHeight,
       child: ElevatedButton(
-        onPressed: () => controller.toggleEditMode(),
+        onPressed: controller.addRow,
         style: ElevatedButton.styleFrom(
-          minimumSize: const Size(0, 30),
+          minimumSize: const Size(0, 30), // 높이 30 보장
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        child: const Text("수정"),
+        child: const Text("추가"),
       ),
     );
   }

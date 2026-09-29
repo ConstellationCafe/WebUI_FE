@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/db_editor_colors.dart';
-import '../../controller/db_editor/DBController.dart';
+import '../../controller/db_editor/db_controller.dart';
 
-import 'DBDataCell.dart';
+import 'db_data_cell.dart';
 
 class DBDataView extends StatefulWidget {
   final DBController controller;

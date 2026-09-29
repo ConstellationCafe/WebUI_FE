@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/shared/widgets/loading/ButtonLoading.dart';
+import 'package:constellation_cafe/shared/widgets/loading/button_loading.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';

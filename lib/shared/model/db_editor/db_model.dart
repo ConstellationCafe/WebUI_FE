@@ -1,6 +1,6 @@
 import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
 
-import 'DBColumn.dart';
+import 'db_column.dart';
 
 class DBModel {
   Map<String, List<String>> origin = {};

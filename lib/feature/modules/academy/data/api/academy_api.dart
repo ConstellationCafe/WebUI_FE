@@ -2,7 +2,7 @@ import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/DioProvider.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
 
 import '../../domain/model/academy_permission.dart';
 import '../../domain/model/academy.dart';

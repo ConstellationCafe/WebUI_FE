@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/core/constants/screen_width.dart';
-import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
+import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
 import 'package:constellation_cafe/shared/widgets/usage/usage.dart';
 
 import '../constants/profile_constants.dart';
