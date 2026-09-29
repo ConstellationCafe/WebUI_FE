@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/snack_bar_tokens.dart';
+
 enum SaveResultType { success, error, warning, info, loading }
 
 class SaveResultBar {
@@ -8,7 +10,7 @@ class SaveResultBar {
     BuildContext context,
     String message, {
     SaveResultType type = SaveResultType.info,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = SnackBarTokens.defaultDuration,
     String? actionLabel,
     VoidCallback? onAction,
   }) {
@@ -19,18 +21,20 @@ class SaveResultBar {
 
     return SnackBar(
       behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.all(16),
-      elevation: 8,
+      margin: const EdgeInsets.all(SnackBarTokens.margin),
+      elevation: SnackBarTokens.elevation,
       duration: type == SaveResultType.loading
-          ? const Duration(days: 1)
+          ? SnackBarTokens.loadingDuration
           : duration,
       backgroundColor: style.bg,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(SnackBarTokens.radius),
+      ),
       dismissDirection: DismissDirection.horizontal,
       content: Row(
         children: [
           Icon(style.icon, color: style.fg),
-          const SizedBox(width: 12),
+          const SizedBox(width: SnackBarTokens.iconGap),
           Expanded(
             child: Text(
               message,
@@ -41,12 +45,12 @@ class SaveResultBar {
             ),
           ),
           if (type == SaveResultType.loading) ...[
-            const SizedBox(width: 12),
+            const SizedBox(width: SnackBarTokens.iconGap),
             SizedBox(
-              width: 18,
-              height: 18,
+              width: SnackBarTokens.progressSize,
+              height: SnackBarTokens.progressSize,
               child: CircularProgressIndicator(
-                strokeWidth: 2.4,
+                strokeWidth: SnackBarTokens.progressStrokeWidth,
                 valueColor: AlwaysStoppedAnimation<Color>(style.fg),
               ),
             ),
@@ -68,7 +72,7 @@ class SaveResultBar {
     BuildContext context,
     List<String> messages, {
     SaveResultType type = SaveResultType.info,
-    Duration durationPerBar = const Duration(seconds: 3),
+    Duration durationPerBar = SnackBarTokens.defaultDuration,
     bool clearBefore = false,
     String? actionLabel,
     VoidCallback? onAction,
@@ -82,6 +86,8 @@ class SaveResultBar {
     for (final msg in messages) {
       final message = msg.trim();
       if (message.isEmpty) continue;
+      // 이전 메시지를 기다리는 동안 화면이 사라졌으면 남은 메시지는 띄우지 않는다.
+      if (!context.mounted) return;
 
       messenger.showSnackBar(
         buildOne(
@@ -102,14 +108,14 @@ class SaveResultBar {
     }
   }
 
-  /// (요청하신 시그니처) build가 List<String>를 받게 하고 싶으면
+  /// (요청하신 시그니처) build가 `List<String>`를 받게 하고 싶으면
   /// "첫 번째 메시지"용 SnackBar 하나만 만들어 반환하도록 두고,
   /// 실제로 여러 개 띄우는 건 showAll을 쓰는 구조가 안전합니다.
   static SnackBar build(
     BuildContext context,
     String message, {
     SaveResultType type = SaveResultType.info,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = SnackBarTokens.defaultDuration,
     String? actionLabel,
     VoidCallback? onAction,
   }) {

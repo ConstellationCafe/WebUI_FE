@@ -1,11 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import 'package:constellation_cafe/core/network/discord_bot/socket/socket_interface.dart';
+
 import 'package:constellation_cafe/shared/data/dto/request/socket_model.dart';
 
+import '../../network_strings.dart';
+import '../../network_timeouts.dart';
+import 'socket_interface.dart';
+
+/// 빗자루 봇 router에 [SocketModel] envelope을 HTTP POST로 보낸다.
+///
+/// 실패하면 예외 대신 `{'status_code': false, 'message': ...}`를 돌려준다. 사용자에게
+/// 보여줄 수 있는 고정 문구만 담고 예외 원문(내부 정보)은 담지 않는다.
 class SocketClient extends SocketInterface {
   static const String routerUrl = String.fromEnvironment('ROUTE_URI');
-  static const int _timeout = 10;
 
   @override
   Future<Map<String, dynamic>> send(SocketModel model) async {
@@ -17,37 +26,32 @@ class SocketClient extends SocketInterface {
             headers: {'Content-type': 'application/json'},
             body: json.encode(model.toJson()),
           )
-          .timeout(
-            Duration(seconds: _timeout),
-            onTimeout: () {
-              throw Exception('요청 시간이 초과되었습니다.');
-            },
-          );
+          .timeout(NetworkTimeouts.botRouter);
 
-      // HTTP 상태 코드 확인
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
-      } else {
-        // 서버에서 에러 응답을 보낸 경우
-        final Map<String, dynamic> errorData = json.decode(response.body);
-        return {
-          'status_code': false,
-          'message':
-              errorData['message'] ?? '서버 오류가 발생했습니다. (${response.statusCode})',
-        };
       }
-    } on http.ClientException catch (e) {
-      return {'status_code': false, 'message': '네트워크 연결 오류: ${e.message}'};
-    } on FormatException catch (e) {
-      return {'status_code': false, 'message': '응답 데이터 형식 오류: ${e.message}'};
-    } on Exception catch (e) {
-      return {'status_code': false, 'message': e.toString()};
-    } catch (e) {
-      return {
-        'status_code': false,
-        'message': '알 수 없는 오류가 발생했습니다: ${e.toString()}',
-      };
+
+      // 서버에서 에러 응답을 보낸 경우
+      final Map<String, dynamic> errorData = json.decode(response.body);
+      return _failure(
+        errorData['message'] ??
+            NetworkStrings.botRouterStatusError(response.statusCode),
+      );
+    } on TimeoutException {
+      return _failure(NetworkStrings.botRouterTimeout);
+    } on http.ClientException {
+      return _failure(NetworkStrings.botRouterNetworkError);
+    } on FormatException {
+      return _failure(NetworkStrings.botRouterFormatError);
+    } catch (_) {
+      return _failure(NetworkStrings.botRouterUnknownError);
     }
   }
+
+  Map<String, dynamic> _failure(Object message) => {
+    'status_code': false,
+    'message': message,
+  };
 }

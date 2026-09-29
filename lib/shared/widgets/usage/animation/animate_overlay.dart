@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../painter/arrow_painter.dart';
+import '../constants/usage_constants.dart';
 import '../painter/hold_painter.dart';
+import '../usage_arrow.dart';
 import '../usage_content.dart';
 import '../usage_step.dart';
 
@@ -19,6 +20,7 @@ class AnimatedOverlay extends StatefulWidget {
   final bool isFirstStep;
 
   const AnimatedOverlay({
+    super.key,
     required this.holeRect,
     required this.top,
     required this.left,
@@ -47,15 +49,15 @@ class AnimatedOverlayState extends State<AnimatedOverlay>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 250),
+      duration: UsageConstants.overlayAnimationDuration,
     );
 
     _fade = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
 
     _slide = Tween<Offset>(
       begin: widget.isAbove
-          ? const Offset(0, 0.1) // 위에 있을 때 아래→위
-          : const Offset(0, -0.1), // 아래 있을 때 위→아래
+          ? const Offset(0, UsageConstants.overlaySlideOffset) // 위에 있을 때 아래→위
+          : const Offset(0, -UsageConstants.overlaySlideOffset), // 아래 있을 때 위→아래
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
@@ -96,7 +98,7 @@ class AnimatedOverlayState extends State<AnimatedOverlay>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (!widget.isAbove) _buildArrow(up: true),
+                      if (!widget.isAbove) const UsageArrow(up: true),
                       UsageContent(
                         message: widget.step.message,
                         onNext: widget.onNext,
@@ -104,7 +106,7 @@ class AnimatedOverlayState extends State<AnimatedOverlay>
                         isLastStep: widget.isLastStep,
                         isFirstStep: widget.isFirstStep,
                       ),
-                      if (widget.isAbove) _buildArrow(up: false),
+                      if (widget.isAbove) const UsageArrow(up: false),
                     ],
                   ),
                 ),
@@ -113,13 +115,6 @@ class AnimatedOverlayState extends State<AnimatedOverlay>
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildArrow({required bool up}) {
-    return CustomPaint(
-      size: const Size(20, 10),
-      painter: ArrowPainter(up: up),
     );
   }
 }

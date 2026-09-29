@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/semantics.dart';
 
 import 'package:constellation_cafe/shared/widgets/loading/button_loading.dart';
 import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
