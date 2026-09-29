@@ -1,12 +1,16 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
-import '../state/current_user_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:constellation_cafe/feature/auth/service/login.dart';
+
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
+
+import '../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
+import '../data/dto/response/current_user_response.dart';
+import '../state/current_user_state.dart';
 
 part 'current_user_state_notifier.g.dart';
 
-@Riverpod(keepAlive: true) // 새로고침해도 유지되게
+/// 로그인한 사용자는 화면을 오가도 다시 조회하지 않도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 로그인 확인 후 다시 불러온다.)
+@Riverpod(keepAlive: true)
 class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
   bool _isInitialized = false;
 
@@ -21,8 +25,9 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
       final loginApi = ref.read(loginApiProvider);
       final me = await loginApi.me();
 
-      if (me.response != null) {
-        state = CurrentUserState.fromJson(me.response!);
+      final body = me.response;
+      if (body is Map<String, dynamic>) {
+        state = CurrentUserResponse.fromJson(body).toState();
         _isInitialized = true;
       }
       await ref.read(academyPermissionProvider.notifier).initialize();
@@ -51,15 +56,6 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
       avatarUrl: avatarUrl ?? state.avatarUrl,
     );
   }
-
-  /// JSON으로부터 직접 세팅
-  void setFromJson(Map<String, dynamic> json) {
-    state = CurrentUserState.fromJson(json);
-    _isInitialized = true;
-  }
-
-  /// 상태를 JSON으로 변환
-  Map<String, dynamic> toJson() => state.toJson();
 
   /// 초기화
   void clear() {

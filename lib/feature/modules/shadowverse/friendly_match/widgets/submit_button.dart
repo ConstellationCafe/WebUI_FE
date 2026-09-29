@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/api/shadowverse_api.dart';
 import 'package:constellation_cafe/shared/widgets/snack_bar/save_result_bar.dart';
-import '../domain/friendly_match_template.dart';
+
+import '../../constants/shadowverse_strings.dart';
+import '../constants/friendly_match_constants.dart';
 import '../notifier/friendly_match_notifier.dart';
 
 class SubmitButton extends ConsumerStatefulWidget {
@@ -14,38 +15,23 @@ class SubmitButton extends ConsumerStatefulWidget {
 }
 
 class _SubmitButtonState extends ConsumerState<SubmitButton> {
+  /// 전송 중 중복 클릭을 막는 이 버튼만의 상태.
   bool _isLoading = false;
 
-  FriendlyMatchTemplate toTemplate() {
-    final state = ref.read(friendlyMatchProvider);
-    return FriendlyMatchTemplate(
-      version: state.version,
-      mode: state.mode,
-      platform: state.platform,
-      roomNumber: state.roomNumber,
-      message: state.message,
-      sender: state.sender,
-    );
-  }
-
   Future<void> _onPressed() async {
-    final api = ref.read(shadowverseApiProvider);
     setState(() => _isLoading = true);
     try {
-      final template = toTemplate();
-      final result = await api.friedlyMatch(
-        FriendlyMatchTemplate.toJson(template).args,
-      );
+      final result = await ref.read(friendlyMatchProvider.notifier).submit();
 
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SaveResultBar.build(context, result));
-    } catch (e) {
+    } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SaveResultBar.build(context, "전송 실패 : $e"));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SaveResultBar.build(context, ShadowverseStrings.submitFailed),
+      );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -58,18 +44,26 @@ class _SubmitButtonState extends ConsumerState<SubmitButton> {
     return ElevatedButton(
       onPressed: _isLoading ? null : _onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF444444),
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        backgroundColor: FriendlyMatchConstants.submitBackground,
+        foregroundColor: FriendlyMatchConstants.submitForeground,
+        padding: const EdgeInsets.symmetric(
+          vertical: FriendlyMatchConstants.submitVerticalPadding,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            FriendlyMatchConstants.submitRadius,
+          ),
+        ),
       ),
       child: _isLoading
           ? const SizedBox(
-              height: 16,
-              width: 16,
-              child: CircularProgressIndicator(strokeWidth: 2),
+              height: FriendlyMatchConstants.submitProgressSize,
+              width: FriendlyMatchConstants.submitProgressSize,
+              child: CircularProgressIndicator(
+                strokeWidth: FriendlyMatchConstants.submitProgressStrokeWidth,
+              ),
             )
-          : const Text('전송'),
+          : const Text(ShadowverseStrings.submit),
     );
   }
 }

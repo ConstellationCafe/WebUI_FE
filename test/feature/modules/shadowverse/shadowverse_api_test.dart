@@ -7,7 +7,8 @@ import 'package:http/testing.dart';
 
 import 'package:constellation_cafe/core/network/discord_bot/translator.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
-import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/api/shadowverse_api.dart';
+import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/data/api/shadowverse_api.dart';
+import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/data/dto/request/friendly_match_request.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/domain/friendly_match_template.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/domain/mode/s1/mode_type_s1.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/domain/platform/s1/platform_type_s1.dart';
@@ -29,7 +30,7 @@ FriendlyMatchTemplate template() => FriendlyMatchTemplate(
 void main() {
   group('친선전 전송 계약', () {
     test('템플릿은 check_match_form 요청 형식으로 변환된다', () {
-      final model = FriendlyMatchTemplate.toJson(template());
+      final model = FriendlyMatchRequest(template()).toSocketModel();
 
       expect(model.toJson()['dst'], 'ShadowverseAPI');
       expect(model.toJson()['payload']['sub'], 'friendlyMatch');
@@ -48,14 +49,14 @@ void main() {
           'payload': {'result': '3개 채팅방에 전송했습니다'},
         };
       });
-      final args = FriendlyMatchTemplate.toJson(template()).args;
+      final request = FriendlyMatchRequest(template());
 
-      final result = await ShadowverseAPI(translator).friedlyMatch(args);
+      final result = await ShadowverseAPI(translator).friendlyMatch(request);
 
       expect(result, '3개 채팅방에 전송했습니다');
       final call = translator.calls.single;
       expect(call.$1, '/ShadowverseAPI/friendlyMatch/check_match_form');
-      expect(call.$2, args);
+      expect(call.$2, request.args);
     });
 
     test('봇 라우터에는 경로를 목적지·모듈·함수로 나눈 JSON을 보낸다', () async {
@@ -107,14 +108,14 @@ void main() {
 
   group('친선전 선택지', () {
     test('버전과 모드 문자열을 enum으로 변환한다', () {
-      expect(GameVersionType.stringToType('s1'), GameVersionType.S1);
-      expect(GameVersionType.stringToType('unknown'), GameVersionType.S2);
+      expect(GameVersionType.stringToType('s1'), GameVersionType.s1);
+      expect(GameVersionType.stringToType('unknown'), GameVersionType.s2);
       expect(
         FriendlyMatchS1ModeType.stringToType('투픽'),
-        FriendlyMatchS1ModeType.two_pick,
+        FriendlyMatchS1ModeType.twoPick,
       );
       expect(FriendlyMatchS1PlatformType.bo7.typeToString(), 'bo3 1ban');
-      expect(FriendlyMatchS2PlatformType.two_decks_bo1.name, 'Bo1/2deck');
+      expect(FriendlyMatchS2PlatformType.twoDecksBo1.name, 'Bo1/2deck');
     });
 
     test('보낸 사람은 로그인 사용자 이름이고 버전을 바꾸면 방 정보가 초기화된다', () {

@@ -7,6 +7,7 @@ import 'package:constellation_cafe/core/constants/const_size.dart';
 
 import '../../guild_select/notifier/guild_state_notifier.dart';
 import '../constants/profile_constants.dart';
+import '../constants/profile_strings.dart';
 import '../notifier/membership_notifier.dart';
 import 'point_log_button.dart';
 
@@ -49,6 +50,11 @@ class ViewMembershipCard extends ConsumerWidget {
                     width: ProfileConstants.profileImageSize,
                     height: ProfileConstants.profileImageSize,
                     fit: BoxFit.cover,
+                    // 아바타 URL이 비었거나 깨지면 기본 사람 아이콘을 보여준다.
+                    errorBuilder: (_, _, _) => const Icon(
+                      Icons.person,
+                      size: ProfileConstants.profileImageSize,
+                    ),
                   ),
                 ),
                 const SizedBox(width: ConstSize.mediumSpacing),
@@ -56,7 +62,7 @@ class ViewMembershipCard extends ConsumerWidget {
                 // 닉네임
                 Expanded(
                   child: Text(
-                    '${state.username}님의 회원증',
+                    ProfileStrings.cardTitle(state.username),
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -78,6 +84,10 @@ class ViewMembershipCard extends ConsumerWidget {
                       width: ProfileConstants.mainIconSize,
                       height: ProfileConstants.mainIconSize,
                       fit: BoxFit.cover,
+                      // 채팅방 아이콘을 불러오지 못하면 자리만 비워 둔다.
+                      errorBuilder: (_, _, _) => const SizedBox.square(
+                        dimension: ProfileConstants.mainIconSize,
+                      ),
                     ),
                   ),
               ],
@@ -93,19 +103,18 @@ class ViewMembershipCard extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('UID', style: theme.textTheme.labelMedium),
                       Text(
-                        (state.uid1?.isNotEmpty ?? false)
-                            ? 's1 : ${state.uid1}'
-                            : 's1 : 미등록',
+                        ProfileStrings.uid,
+                        style: theme.textTheme.labelMedium,
+                      ),
+                      Text(
+                        ProfileStrings.uidLine('s1', state.uid1),
                         style: theme.textTheme.bodyMedium,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        (state.uid2?.isNotEmpty ?? false)
-                            ? 's2 : ${state.uid2}'
-                            : 's2 : 미등록',
+                        ProfileStrings.uidLine('s2', state.uid2),
                         style: theme.textTheme.bodyMedium,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -120,7 +129,10 @@ class ViewMembershipCard extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('역할', style: theme.textTheme.labelMedium),
+                        Text(
+                          ProfileStrings.role,
+                          style: theme.textTheme.labelMedium,
+                        ),
                         Text(
                           state.role!,
                           style: theme.textTheme.bodyMedium,
@@ -138,7 +150,10 @@ class ViewMembershipCard extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('길드', style: theme.textTheme.labelMedium),
+                        Text(
+                          ProfileStrings.guild,
+                          style: theme.textTheme.labelMedium,
+                        ),
                         Text(
                           state.guild!,
                           style: theme.textTheme.bodyMedium,
@@ -159,7 +174,10 @@ class ViewMembershipCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (state.s1Data?.isNotEmpty ?? false) ...[
-                  Text('s1 경력', style: theme.textTheme.labelMedium),
+                  Text(
+                    ProfileStrings.s1Career,
+                    style: theme.textTheme.labelMedium,
+                  ),
                   Text(
                     state.s1Data!,
                     style: theme.textTheme.bodyMedium,
@@ -169,7 +187,10 @@ class ViewMembershipCard extends ConsumerWidget {
 
                 if (state.s2Data?.isNotEmpty ?? false) ...[
                   const SizedBox(height: ConstSize.mediumSpacing),
-                  Text('s2 경력', style: theme.textTheme.labelMedium),
+                  Text(
+                    ProfileStrings.s2Career,
+                    style: theme.textTheme.labelMedium,
+                  ),
                   Text(
                     state.s2Data!,
                     style: theme.textTheme.bodyMedium,
@@ -195,7 +216,10 @@ class ViewMembershipCard extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('발급 일자', style: theme.textTheme.labelMedium),
+                      Text(
+                        ProfileStrings.joinAt,
+                        style: theme.textTheme.labelMedium,
+                      ),
                       Text(
                         state.joinAt,
                         style: theme.textTheme.bodyMedium,
@@ -211,7 +235,7 @@ class ViewMembershipCard extends ConsumerWidget {
             const SizedBox(height: ConstSize.mediumSpacing),
 
             Text(
-              '* UID의 허위 기재 및 도용시 처벌받을 수 있습니다',
+              ProfileStrings.uidWarning,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),

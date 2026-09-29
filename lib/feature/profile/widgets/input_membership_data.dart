@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_shadow.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/shared/widgets/snack_bar/save_result_bar.dart';
 
-import '../../../core/constants/const_shadow.dart';
 import '../constants/profile_constants.dart';
+import '../constants/profile_strings.dart';
 import '../notifier/membership_notifier.dart';
 import 'save_membership_button.dart';
 
@@ -55,12 +56,12 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
         durationPerBar: const Duration(seconds: 2),
         clearBefore: true,
       );
-    } catch (e) {
+    } catch (_) {
       if (!mounted) return; // 저장하는 동안 페이지가 닫혔다면 여기서 종료
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SaveResultBar.build(context, '저장 중 오류 발생: $e'));
+      ).showSnackBar(SaveResultBar.build(context, ProfileStrings.saveFailed));
     } finally {
       if (mounted) {
         setState(() {
@@ -91,7 +92,9 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
           children: [
             TextFormField(
               controller: _uid1Controller,
-              decoration: const InputDecoration(labelText: 'UID1'),
+              decoration: const InputDecoration(
+                labelText: ProfileStrings.uid1Label,
+              ),
               onChanged: (value) {
                 notifier.update(uid1: value);
               },
@@ -99,7 +102,9 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
             const SizedBox(height: ConstSize.mediumSpacing),
             TextFormField(
               controller: _uid2Controller,
-              decoration: const InputDecoration(labelText: 'UID2'),
+              decoration: const InputDecoration(
+                labelText: ProfileStrings.uid2Label,
+              ),
               onChanged: (value) {
                 notifier.update(uid2: value);
               },
@@ -107,7 +112,9 @@ class _InputMembershipDataState extends ConsumerState<InputMembershipData> {
             const SizedBox(height: ConstSize.mediumSpacing),
             TextFormField(
               controller: _guildController,
-              decoration: const InputDecoration(labelText: 'Guild'),
+              decoration: const InputDecoration(
+                labelText: ProfileStrings.guildLabel,
+              ),
               onChanged: (value) {
                 notifier.update(guild: value);
               },

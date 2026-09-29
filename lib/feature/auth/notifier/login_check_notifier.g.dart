@@ -34,7 +34,7 @@ final class LoginCheckNotifierProvider
 }
 
 String _$loginCheckNotifierHash() =>
-    r'f96549ea5ed51ef6ccd256150027fd1b3353e7cf';
+    r'dc46f779d2b17309c3aa40cfcb45146dc96b8f99';
 
 abstract class _$LoginCheckNotifier extends $AsyncNotifier<LoginStatus> {
   FutureOr<LoginStatus> build();

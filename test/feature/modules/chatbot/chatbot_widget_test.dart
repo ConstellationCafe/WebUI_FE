@@ -8,9 +8,9 @@ import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
 import 'package:constellation_cafe/feature/modules/chatbot/category/chatbot_category.dart';
-import 'package:constellation_cafe/feature/modules/chatbot/learning/pages/learning_list.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/learning/data/repository/learning_repository.dart';
 import 'package:constellation_cafe/feature/modules/chatbot/learning/domain/entity/learning_entity.dart';
-import 'package:constellation_cafe/feature/modules/chatbot/learning/repository/learning_repository.dart';
+import 'package:constellation_cafe/feature/modules/chatbot/learning/pages/learning_list.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 import 'package:constellation_cafe/shared/widgets/db_editor/editor_usage.dart';
 
@@ -47,7 +47,7 @@ void main() {
     }
 
     testWidgets('조회한 학습 데이터를 표로 보여준다', (tester) async {
-      await pumpList(tester, [UserRole.ADMIN]);
+      await pumpList(tester, [UserRole.admin]);
 
       expect(repository.requestedPages, [1]);
       expect(find.text('안녕'), findsOneWidget);
@@ -57,13 +57,13 @@ void main() {
     });
 
     testWidgets('관리자에게만 가르친 사람 컬럼을 보여준다', (tester) async {
-      await pumpList(tester, [UserRole.ADMIN]);
+      await pumpList(tester, [UserRole.admin]);
       expect(find.text('discordId'), findsWidgets);
       expect(find.text('900'), findsOneWidget);
     });
 
     testWidgets('일반 회원에게는 가르친 사람을 숨긴다', (tester) async {
-      await pumpList(tester, [UserRole.USER]);
+      await pumpList(tester, [UserRole.user]);
       expect(find.text('discordId'), findsNothing);
       expect(find.text('900'), findsNothing);
       expect(find.text('안녕'), findsOneWidget);

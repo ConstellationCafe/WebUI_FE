@@ -1,8 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
-import '../state/friendly_match_state.dart';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
+
+import '../data/api/shadowverse_api.dart';
+import '../data/dto/request/friendly_match_request.dart';
+import '../domain/friendly_match_template.dart';
+import '../state/friendly_match_state.dart';
 
 part 'friendly_match_notifier.g.dart';
 
@@ -10,7 +14,7 @@ part 'friendly_match_notifier.g.dart';
 class FriendlyMatchNotifier extends _$FriendlyMatchNotifier {
   @override
   FriendlyMatchState build() {
-    // globalStateProvider에서 이름을 감시하여 초기 sender 설정
+    // 로그인한 사용자 이름을 보낸 사람으로 쓴다.
     final globalName = ref.watch(
       currentUserStateProvider.select((s) => s.globalName),
     );
@@ -40,14 +44,19 @@ class FriendlyMatchNotifier extends _$FriendlyMatchNotifier {
     );
   }
 
-  /// JSON으로부터 상태 세팅
-  void setFromJson(Map<String, dynamic> json) {
-    state = FriendlyMatchState.fromJson(json);
-  }
-
-  /// 상태를 JSON으로 export
-  Map<String, dynamic> toJson() {
-    return state.toJson();
+  /// 입력한 모집 글을 보내고 봇의 결과 문구를 돌려준다.
+  Future<String> submit() {
+    final template = FriendlyMatchTemplate(
+      version: state.version,
+      mode: state.mode,
+      platform: state.platform,
+      roomNumber: state.roomNumber,
+      message: state.message,
+      sender: state.sender,
+    );
+    return ref
+        .read(shadowverseApiProvider)
+        .friendlyMatch(FriendlyMatchRequest(template));
   }
 
   /// 초기화

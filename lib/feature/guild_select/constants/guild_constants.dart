@@ -48,6 +48,25 @@ class GuildConstants {
   static const double emptyListTitleSpacing = 16.0;
   static const double emptyListDescriptionSpacing = 8.0;
 
+  // Header
+  static const double headerIconBoxSize = 64.0;
+  static const double headerIconBoxRadius = 16.0;
+  static const double headerIconSize = 34.0;
+  static const double headerShadowBlur = 12.0;
+  static const Offset headerShadowOffset = Offset(0, 4);
+  static const double headerTitleSpacing = 20.0;
+  static const double headerDescriptionSpacing = 8.0;
+
+  // Footer
+  static const double footerIconSize = 16.0;
+  static const double footerIconSpacing = 6.0;
+
   // Colors
   static const Color tileShadowColor = Color(0x1F000000);
+  static const Color headerShadowColor = Color.from(
+    alpha: 0.08,
+    red: 0,
+    green: 0,
+    blue: 0,
+  );
 }

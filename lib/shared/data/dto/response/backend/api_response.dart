@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart' as Dio;
-import 'package:http/http.dart' as Http;
+import 'package:dio/dio.dart' as dio;
+import 'package:http/http.dart' as http;
 
 class ApiResponse {
   final bool success;
@@ -14,7 +14,7 @@ class ApiResponse {
     required this.error,
   });
 
-  factory ApiResponse.fromHttpResponse(Http.Response res) {
+  factory ApiResponse.fromHttpResponse(http.Response res) {
     final Map<String, dynamic> json =
         jsonDecode(res.body) as Map<String, dynamic>;
 
@@ -27,7 +27,7 @@ class ApiResponse {
     );
   }
 
-  factory ApiResponse.fromDioResponse(Dio.Response res) {
+  factory ApiResponse.fromDioResponse(dio.Response res) {
     final Map<String, dynamic> json = res.data is String
         ? jsonDecode(res.data)
         : res.data as Map<String, dynamic>;

@@ -11,15 +11,15 @@ class GuildIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (guild.iconUrl != null && guild.iconUrl!.isNotEmpty) {
+    if (guild.iconUrl.isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(GuildConstants.guildIconRadius),
         child: Image.network(
-          guild.iconUrl!,
+          guild.iconUrl,
           width: GuildConstants.guildIconSize,
           height: GuildConstants.guildIconSize,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) {
+          errorBuilder: (_, _, _) {
             return const FallbackGuildIcon();
           },
         ),

@@ -7,12 +7,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:constellation_cafe/core/constants/theme_data.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/jwt.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
-import 'package:constellation_cafe/feature/auth/service/jwt.dart';
-import 'package:constellation_cafe/feature/auth/service/login.dart';
-import 'package:constellation_cafe/feature/guild_select/api/guild_api.dart';
 import 'package:constellation_cafe/feature/guild_select/constants/guild_select_strings.dart';
+import 'package:constellation_cafe/feature/guild_select/data/api/guild_api.dart';
+import 'package:constellation_cafe/feature/guild_select/data/dto/response/guild_response.dart';
 import 'package:constellation_cafe/feature/guild_select/domain/guild.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:constellation_cafe/feature/guild_select/pages/guild_select.dart';
@@ -52,7 +53,7 @@ class FakeGuildApi extends GuildApi {
 List<Guild> guilds(List<String> names) {
   return [
     for (final (index, name) in names.indexed)
-      Guild.fromJson(guildJson('${index + 1}', name)),
+      GuildResponse.fromJson(guildJson('${index + 1}', name)).toDomain(),
   ];
 }
 

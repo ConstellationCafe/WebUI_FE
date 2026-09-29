@@ -1,4 +1,4 @@
-import 'package:constellation_cafe/feature/auth/api/auth_interface.dart';
+import 'package:constellation_cafe/feature/auth/data/api/auth_interface.dart';
 import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart';
 import 'package:constellation_cafe/shared/data/dto/response/backend/api_response.dart';
 
@@ -34,6 +34,7 @@ class FakeAuthService implements AuthServiceInterface {
   int refreshCalls = 0;
   int meCalls = 0;
   int logoutCalls = 0;
+  Object? logoutError;
   final List<LoginMethodType> logins = [];
 
   @override
@@ -62,5 +63,7 @@ class FakeAuthService implements AuthServiceInterface {
   @override
   Future<void> logout() async {
     logoutCalls++;
+    final error = logoutError;
+    if (error != null) throw error;
   }
 }

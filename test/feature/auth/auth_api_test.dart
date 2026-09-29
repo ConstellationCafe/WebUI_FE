@@ -5,15 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
-import 'package:constellation_cafe/feature/auth/api/discord_login.dart';
-import 'package:constellation_cafe/feature/auth/api/oauth_service.dart';
+import 'package:constellation_cafe/feature/auth/data/api/discord_login.dart';
+import 'package:constellation_cafe/feature/auth/data/api/oauth_service.dart';
+import 'package:constellation_cafe/feature/auth/data/dto/response/current_user_response.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/jwt.dart';
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
 import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
-import 'package:constellation_cafe/feature/auth/service/jwt.dart';
-import 'package:constellation_cafe/feature/auth/service/login.dart';
-import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
 import 'package:constellation_cafe/feature/auth/state/login_status.dart';
+import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 
@@ -31,7 +32,7 @@ void main() {
       backend.reply('GET', '/auth/me', ok(meJson()));
 
       final response = await OAuthService(dio: backend.dio).me();
-      final user = CurrentUserState.fromJson(response.response);
+      final user = CurrentUserResponse.fromJson(response.response).toState();
 
       expect(backend.last.method, 'GET');
       expect(response.success, isTrue);
@@ -191,6 +192,22 @@ void main() {
 
       expect(status, LoginStatus.loggedOut);
       expect(auth.refreshCalls, 0);
+    });
+
+    test('로그아웃은 서버 세션 종료가 실패해도 사용자·채팅방 상태를 지운다', () async {
+      auth.checks.add(checkResponse(isLogin: true, roomSelected: true));
+      await checkLogin();
+      container
+          .read(currentGuildStateProvider.notifier)
+          .setGuild(guildId: '1', guildName: '별자리', guildIcon: '');
+      auth.logoutError = Exception('offline');
+
+      await container.read(loginCheckProvider.notifier).logout();
+
+      expect(container.read(loginCheckProvider).value, LoginStatus.loggedOut);
+      expect(auth.logoutCalls, 1);
+      expect(container.read(currentUserStateProvider).userId, isEmpty);
+      expect(container.read(currentGuildStateProvider).guildId, isEmpty);
     });
 
     test('강제 로그아웃 뒤 recheck는 서버를 다시 호출하지 않는다', () async {

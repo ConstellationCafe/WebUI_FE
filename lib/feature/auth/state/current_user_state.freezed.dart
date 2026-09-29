@@ -11,19 +11,16 @@ part of 'current_user_state.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$CurrentUserState {
 
-@JsonKey(name: 'discordId') String get userId; String get globalName; List<String> get roles;@JsonKey(name: 'avatar') String get avatarUrl;
+ String get userId; String get globalName; List<String> get roles; String get avatarUrl;
 /// Create a copy of CurrentUserState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $CurrentUserStateCopyWith<CurrentUserState> get copyWith => _$CurrentUserStateCopyWithImpl<CurrentUserState>(this as CurrentUserState, _$identity);
 
-  /// Serializes this CurrentUserState to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentUserState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.globalName, globalName) || other.globalName == globalName)&&const DeepCollectionEquality().equals(other.roles, roles)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,userId,globalName,const DeepCollectionEquality().hash(roles),avatarUrl);
 
@@ -48,7 +45,7 @@ abstract mixin class $CurrentUserStateCopyWith<$Res>  {
   factory $CurrentUserStateCopyWith(CurrentUserState value, $Res Function(CurrentUserState) _then) = _$CurrentUserStateCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'discordId') String userId, String globalName, List<String> roles,@JsonKey(name: 'avatar') String avatarUrl
+ String userId, String globalName, List<String> roles, String avatarUrl
 });
 
 
@@ -156,7 +153,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'discordId')  String userId,  String globalName,  List<String> roles, @JsonKey(name: 'avatar')  String avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String globalName,  List<String> roles,  String avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CurrentUserState() when $default != null:
 return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case _:
@@ -177,7 +174,7 @@ return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'discordId')  String userId,  String globalName,  List<String> roles, @JsonKey(name: 'avatar')  String avatarUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String globalName,  List<String> roles,  String avatarUrl)  $default,) {final _that = this;
 switch (_that) {
 case _CurrentUserState():
 return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case _:
@@ -197,7 +194,7 @@ return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'discordId')  String userId,  String globalName,  List<String> roles, @JsonKey(name: 'avatar')  String avatarUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String globalName,  List<String> roles,  String avatarUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _CurrentUserState() when $default != null:
 return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case _:
@@ -209,13 +206,13 @@ return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case 
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _CurrentUserState implements CurrentUserState {
-  const _CurrentUserState({@JsonKey(name: 'discordId') required this.userId, required this.globalName, required final  List<String> roles, @JsonKey(name: 'avatar') required this.avatarUrl}): _roles = roles;
-  factory _CurrentUserState.fromJson(Map<String, dynamic> json) => _$CurrentUserStateFromJson(json);
+  const _CurrentUserState({required this.userId, required this.globalName, required final  List<String> roles, required this.avatarUrl}): _roles = roles;
+  
 
-@override@JsonKey(name: 'discordId') final  String userId;
+@override final  String userId;
 @override final  String globalName;
  final  List<String> _roles;
 @override List<String> get roles {
@@ -224,7 +221,7 @@ class _CurrentUserState implements CurrentUserState {
   return EqualUnmodifiableListView(_roles);
 }
 
-@override@JsonKey(name: 'avatar') final  String avatarUrl;
+@override final  String avatarUrl;
 
 /// Create a copy of CurrentUserState
 /// with the given fields replaced by the non-null parameter values.
@@ -232,17 +229,14 @@ class _CurrentUserState implements CurrentUserState {
 @pragma('vm:prefer-inline')
 _$CurrentUserStateCopyWith<_CurrentUserState> get copyWith => __$CurrentUserStateCopyWithImpl<_CurrentUserState>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$CurrentUserStateToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentUserState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.globalName, globalName) || other.globalName == globalName)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,userId,globalName,const DeepCollectionEquality().hash(_roles),avatarUrl);
 
@@ -259,7 +253,7 @@ abstract mixin class _$CurrentUserStateCopyWith<$Res> implements $CurrentUserSta
   factory _$CurrentUserStateCopyWith(_CurrentUserState value, $Res Function(_CurrentUserState) _then) = __$CurrentUserStateCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'discordId') String userId, String globalName, List<String> roles,@JsonKey(name: 'avatar') String avatarUrl
+ String userId, String globalName, List<String> roles, String avatarUrl
 });
 
 

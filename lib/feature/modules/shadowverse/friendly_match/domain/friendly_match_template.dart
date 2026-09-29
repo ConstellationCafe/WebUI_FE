@@ -1,5 +1,4 @@
-import 'package:constellation_cafe/shared/data/dto/request/socket_model.dart';
-
+/// 친선전 모집 글 내용.
 class FriendlyMatchTemplate {
   FriendlyMatchTemplate({
     required this.version,
@@ -16,25 +15,4 @@ class FriendlyMatchTemplate {
   final String roomNumber;
   final String message;
   final String sender;
-
-  static SocketModel toJson(FriendlyMatchTemplate data) {
-    final SocketModel jsonBody = SocketModel(
-      dst: "ShadowverseAPI",
-      sub: "friendlyMatch",
-      targetFunc: "check_match_form",
-      args: [
-        "True",
-        [
-          data.version, // version
-          data.mode, // mode
-          data.platform, // platform
-          data.roomNumber, // room_number
-          data.message, // message
-        ],
-        "섀버 별자리 Cafe",
-        data.sender,
-      ],
-    );
-    return jsonBody;
-  }
 }

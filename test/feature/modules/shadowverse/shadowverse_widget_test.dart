@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
-import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/api/shadowverse_api.dart';
+import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/data/api/shadowverse_api.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/pages/friendly_match.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/widgets/friendly_match_usage.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/widgets/view_friendly_match.dart';
