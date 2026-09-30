@@ -4,9 +4,11 @@ import 'package:constellation_cafe/core/network/interceptors/error_interceptor.d
 
 import '../dto/request/competition_create_request.dart';
 import '../dto/request/competition_notice_request.dart';
+import '../dto/request/competition_winner_grant_request.dart';
 import '../dto/response/competition_board_response.dart';
 import '../dto/response/competition_permission_response.dart';
 import '../dto/response/competition_post_response.dart';
+import '../dto/response/competition_winner_response.dart';
 
 /// 대회 API(`/api/competitions`). 대회 매니저 또는 서버장만 쓸 수 있고, 권한 조회는 로그인한 회원 누구나 호출한다.
 class CompetitionApi {
@@ -71,6 +73,34 @@ class CompetitionApi {
       throw const FormatException('대회 공지 게시 응답 형식이 올바르지 않습니다.');
     }
     return CompetitionPostResponse.fromJson(body);
+  }
+
+  Future<CompetitionWinnerResponse> grantWinner(
+    CompetitionWinnerGrantRequest request,
+  ) async {
+    final response = await dio.post<Map<String, dynamic>>(
+      '$path/winners',
+      data: request.toJson(),
+      options: _silent(),
+    );
+    final body = _response(response.data);
+    if (body is! Map<String, dynamic>) {
+      throw const FormatException('우승 칭호 부여 응답 형식이 올바르지 않습니다.');
+    }
+    return CompetitionWinnerResponse.fromJson(body);
+  }
+
+  Future<CompetitionWinnerPageResponse> getWinners({required int page}) async {
+    final response = await dio.get<Map<String, dynamic>>(
+      '$path/winners',
+      queryParameters: {'page': page},
+      options: _silent(),
+    );
+    final body = _response(response.data);
+    if (body is! Map<String, dynamic>) {
+      throw const FormatException('우승 칭호 이력 응답 형식이 올바르지 않습니다.');
+    }
+    return CompetitionWinnerPageResponse.fromJson(body);
   }
 
   /// 화면이 오류를 직접 보여주므로 전역 오류 SnackBar를 띄우지 않는다.

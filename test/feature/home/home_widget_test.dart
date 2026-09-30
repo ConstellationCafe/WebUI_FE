@@ -174,6 +174,7 @@ void main() {
 
       expect(find.text('대회 메뉴'), findsOneWidget);
       expect(find.text('대회 개최'), findsOneWidget);
+      expect(find.text('우승 칭호 부여'), findsOneWidget);
       expect(find.text('ERP 메뉴'), findsNothing);
     });
 

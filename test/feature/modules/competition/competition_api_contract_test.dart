@@ -6,6 +6,8 @@ import 'package:constellation_cafe/feature/modules/competition/data/api/competit
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository.dart';
 import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_draft.dart';
 import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_failure.dart';
+import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_winner.dart';
+import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/domain/version/game_version_type.dart';
 
 void main() {
   late Dio dio;
@@ -181,6 +183,98 @@ void main() {
           draft: draft,
         );
       } on CompetitionException catch (error) {
+        failure = error;
+      }
+
+      expect(failure?.reason, entry.value);
+      expect(failure?.message, '서버 안내');
+    });
+  }
+
+  final winnerDraft = CompetitionWinnerDraft(
+    competitionName: ' 미니미 Bo1 대회 ',
+    version: GameVersionType.s2,
+    winnerDiscordId: '123',
+    acquisition: DateTime(2026, 9, 3),
+  );
+
+  test('우승 칭호 부여는 GameVersionType 값과 날짜만 보낸다', () async {
+    response = {
+      'success': true,
+      'response': {
+        'competitionName': '미니미 Bo1 대회',
+        'version': 's2',
+        'winnerDiscordId': '123',
+        'winnerName': '별',
+        'acquisition': '2026-09-03',
+      },
+    };
+
+    final winner = await repository().grantWinner(winnerDraft);
+
+    expect(request.method, 'POST');
+    expect(request.uri.path, '/api/competitions/winners');
+    expect(request.data, {
+      'competitionName': '미니미 Bo1 대회',
+      'version': 's2',
+      'winnerDiscordId': '123',
+      'acquisition': '2026-09-03',
+    });
+    expect(winner.version, GameVersionType.s2);
+    expect(winner.winnerName, '별');
+    expect(winner.acquisition, DateTime(2026, 9, 3));
+  });
+
+  test('우승 칭호 이력은 페이지 번호로 조회한다', () async {
+    response = {
+      'success': true,
+      'response': {
+        'items': [
+          {
+            'competitionName': '대회 A',
+            'version': 's2',
+            'winnerDiscordId': '123',
+            'winnerName': null,
+            'acquisition': '2026-09-30',
+          },
+        ],
+        'page': 2,
+        'size': 20,
+        'totalElements': 21,
+        'totalPages': 2,
+        'hasNext': false,
+      },
+    };
+
+    final page = await repository().getWinners(page: 2);
+
+    expect(request.method, 'GET');
+    expect(request.uri.path, '/api/competitions/winners');
+    expect(request.uri.queryParameters, {'page': '2'});
+    expect(page.page, 2);
+    expect(page.totalPages, 2);
+    expect(page.items.single.winnerName, isNull);
+  });
+
+  const winnerFailures = {
+    400: CompetitionWinnerFailure.invalid,
+    404: CompetitionWinnerFailure.notMember,
+    409: CompetitionWinnerFailure.conflict,
+    503: CompetitionWinnerFailure.unknown,
+  };
+  for (final entry in winnerFailures.entries) {
+    test('칭호 부여 실패 ${entry.key}는 ${entry.value}로 바꾼다', () async {
+      status = entry.key;
+      response = {
+        'success': false,
+        'response': null,
+        'error': {'message': '서버 안내', 'status': entry.key},
+      };
+
+      CompetitionWinnerException? failure;
+      try {
+        await repository().grantWinner(winnerDraft);
+      } on CompetitionWinnerException catch (error) {
         failure = error;
       }
 

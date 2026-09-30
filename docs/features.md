@@ -67,6 +67,14 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 - 개최 전 확인 다이얼로그로 게시판·대회명·일정과 봇이 자동으로 하는 일을 확인받습니다. 게시 시도마다 요청 ID를 만들고 결과를 모르는 실패 뒤 다시 누르면 같은 ID를 재사용합니다(서버가 Discord nonce로 몇 분 안의 중복 게시를 막음). 성공하면 폼을 비우고 SnackBar에서 디스코드 공지글을 열 수 있습니다.
 - 400·404·502 실패는 서버 안내 문구를 그대로 보여주고, API 호출은 `ErrorInterceptor.silentErrorKey`로 전역 SnackBar를 끕니다.
 
+### 우승 칭호 부여 (`/competition-winners`)
+
+- 대회 매니저가 현재 채팅방 재적 회원(Discord ID)에게 대회명·대회 개최 날짜로 우승 칭호를 부여합니다. WebUI_BE `/api/competitions/winners`(Competition.Winners)를 사용합니다.
+- 게임 버전은 폼의 `CompetitionWinnerForm.version`(= `GameVersionType.s2`, 친선전의 버전 type)을 쓰며 문자열로 적지 않습니다. 화면에는 읽기 전용으로 보여줍니다.
+- 대회 개최 날짜는 오늘까지(과거 5년) 고를 수 있고, 시각이 아닌 날짜라 UTC로 바꾸지 않고 `yyyy-MM-dd`로 보냅니다.
+- 같은 대회로 여러 명에게 연달아 부여할 수 있도록, 성공하면 우승자 ID만 비우고 대회명·날짜는 남깁니다. 비재적 회원(404)·중복 부여(409)는 폼 아래에 안내합니다.
+- 오른쪽(좁은 화면에서는 아래)에 현재 채팅방의 부여 이력(대회 날짜 최신순)을 페이지 단위로 보여줍니다.
+
 ## 알림 (`feature/notification`)
 
 - 설계 근거: WebUI_BE ADR-0004 (DB 저장 + Redis Pub/Sub + SSE)

@@ -1,12 +1,17 @@
 import 'package:dio/dio.dart';
 
+import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/domain/version/game_version_type.dart';
+
 import '../../domain/model/competition_board.dart';
 import '../../domain/model/competition_draft.dart';
 import '../../domain/model/competition_failure.dart';
 import '../../domain/model/competition_post_result.dart';
+import '../../domain/model/competition_winner.dart';
 import '../api/competition_api.dart';
 import '../dto/request/competition_create_request.dart';
 import '../dto/request/competition_notice_request.dart';
+import '../dto/request/competition_winner_grant_request.dart';
+import '../dto/response/competition_winner_response.dart';
 
 class CompetitionRepository {
   final CompetitionApi api;
@@ -68,6 +73,51 @@ class CompetitionRepository {
     } on DioException catch (error) {
       throw _exception(error);
     }
+  }
+
+  /// 실패는 [CompetitionWinnerException]으로 바꿔 던진다.
+  Future<CompetitionWinner> grantWinner(CompetitionWinnerDraft draft) async {
+    try {
+      final response = await api.grantWinner(
+        CompetitionWinnerGrantRequest(
+          competitionName: draft.competitionName,
+          version: draft.version.typeToString(),
+          winnerDiscordId: draft.winnerDiscordId,
+          acquisition: draft.acquisition,
+        ),
+      );
+      return _winner(response);
+    } on DioException catch (error) {
+      final reason = switch (error.response?.statusCode) {
+        400 => CompetitionWinnerFailure.invalid,
+        404 => CompetitionWinnerFailure.notMember,
+        409 => CompetitionWinnerFailure.conflict,
+        _ => CompetitionWinnerFailure.unknown,
+      };
+      throw CompetitionWinnerException(
+        reason,
+        _serverMessage(error.response?.data),
+      );
+    }
+  }
+
+  Future<CompetitionWinnerPage> getWinners({required int page}) async {
+    final response = await api.getWinners(page: page);
+    return CompetitionWinnerPage(
+      items: response.items.map(_winner).toList(),
+      page: response.page,
+      totalPages: response.totalPages,
+    );
+  }
+
+  CompetitionWinner _winner(CompetitionWinnerResponse response) {
+    return CompetitionWinner(
+      competitionName: response.competitionName,
+      version: GameVersionType.stringToType(response.version),
+      winnerDiscordId: response.winnerDiscordId,
+      winnerName: response.winnerName,
+      acquisition: response.acquisition,
+    );
   }
 
   CompetitionNoticeRequest _notice(CompetitionDraft draft) {

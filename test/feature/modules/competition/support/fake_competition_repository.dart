@@ -3,6 +3,7 @@ import 'package:constellation_cafe/feature/modules/competition/data/repository/c
 import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_board.dart';
 import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_draft.dart';
 import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_post_result.dart';
+import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_winner.dart';
 
 /// widget 테스트용 대회 repository. 네트워크 없이 등록한 값을 돌려준다.
 class FakeCompetitionRepository implements CompetitionRepository {
@@ -26,4 +27,12 @@ class FakeCompetitionRepository implements CompetitionRepository {
     required String boardKey,
     required CompetitionDraft draft,
   }) => throw UnimplementedError();
+
+  @override
+  Future<CompetitionWinner> grantWinner(CompetitionWinnerDraft draft) =>
+      throw UnimplementedError();
+
+  @override
+  Future<CompetitionWinnerPage> getWinners({required int page}) async =>
+      const CompetitionWinnerPage(items: [], page: 1, totalPages: 0);
 }

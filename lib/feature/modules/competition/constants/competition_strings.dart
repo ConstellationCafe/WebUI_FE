@@ -77,6 +77,40 @@ abstract final class CompetitionStrings {
       '게시 결과를 확인할 수 없습니다. 게시판을 확인한 뒤 다시 누르면 '
       '몇 분 안에는 중복 게시되지 않습니다.';
 
+  // 우승 칭호 부여
+  static const winnerMenu = '우승 칭호 부여';
+  static const winnerTitle = '우승 칭호 부여';
+  static const winnerFormSection = '칭호 정보';
+  static const winnerCompetitionLabel = '대회명';
+  static const winnerDiscordIdLabel = '우승자 Discord ID';
+  static const winnerDiscordIdHelper = '현재 채팅방의 재적 회원만 받을 수 있습니다.';
+  static const winnerVersionLabel = '게임 버전';
+  static const winnerAcquisitionLabel = '대회 개최 날짜';
+  static const selectDate = '날짜를 선택하세요';
+  static const grant = '칭호 부여';
+  static const granted = '우승 칭호를 부여했습니다.';
+  static const winnerDiscordIdInvalid = '숫자로 된 Discord ID를 입력하세요.';
+  static const acquisitionRequired = '대회 개최 날짜를 선택하세요.';
+  static const winnerNotMember = '현재 채팅방의 재적 회원이 아닙니다. Discord ID를 확인하세요.';
+  static const winnerConflict = '이미 같은 대회 우승 칭호가 부여된 회원입니다.';
+  static const grantUnknown = '부여 결과를 확인할 수 없습니다. 이력을 확인한 뒤 다시 시도하세요.';
+  static const winnerHistory = '부여 이력';
+  static const noWinnerHistory = '부여한 우승 칭호가 없습니다.';
+  static const winnerHistoryFailed = '부여 이력을 불러오지 못했습니다.';
+  static const unknownMember = '알 수 없는 회원';
+  static const previousPage = '이전 페이지';
+  static const nextPage = '다음 페이지';
+
+  static String pageIndicator(int page, int totalPages) =>
+      '$page / $totalPages';
+  /// 이력 한 줄의 보조 설명: "별 (123)" 다음 줄에 "S2 · 2026-09-30"
+  static String winnerSubtitle({
+    required String name,
+    required String discordId,
+    required String version,
+    required String date,
+  }) => '$name ($discordId)\n${version.toUpperCase()} · $date';
+
   static String tooLong(int max) => '$max자 이하로 입력하세요.';
   static String itemLimit(int max) => '$max개까지 추가할 수 있습니다.';
 

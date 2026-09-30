@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/categories/container/menu_category_section.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/categories/container/menu_container.dart';
 
@@ -24,6 +25,15 @@ class CompetitionCategory extends ConsumerWidget {
           ),
           menuName: CompetitionStrings.menu,
           callbackUrl: '/competitions',
+        ),
+        SizedBox(height: ConstSize.tinySpacing),
+        MenuContainer(
+          iconImage: Icon(
+            Icons.military_tech_outlined,
+            size: CompetitionTokens.menuIconSize,
+          ),
+          menuName: CompetitionStrings.winnerMenu,
+          callbackUrl: '/competition-winners',
         ),
       ],
     );

@@ -19,4 +19,7 @@ abstract final class CompetitionTokens {
 
   /// 날짜 선택기가 허용하는 범위(오늘 기준)
   static const selectableDays = 366;
+
+  /// 우승 칭호의 대회 개최 날짜를 고를 수 있는 과거 범위(년)
+  static const winnerYearsBack = 5;
 }
