@@ -13,7 +13,7 @@ class ModuleConfigApi {
   Future<List<ModuleConfigResponse>> getMenuConfigs() async {
     // HttpOnly 쿠키의 botId를 서버가 해석한다. 요청에 방 식별자를 넣지 않는다.
     final response = await dio.get<Map<String, dynamic>>(
-      '$base/api/me/module-configs',
+      '$base/api/bots/current/module-configs',
       options: Options(extra: {ErrorInterceptor.silentErrorKey: true}),
     );
     final data = response.data;

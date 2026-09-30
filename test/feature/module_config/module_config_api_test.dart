@@ -19,7 +19,7 @@ void main() {
   test('메뉴용 ModuleConfig DTO를 변환하며 요청에 botId를 넣지 않는다', () async {
     backend.reply(
       'GET',
-      '/api/me/module-configs',
+      '/api/bots/current/module-configs',
       ok([
         {'moduleId': 'chatbot', 'addOns': []},
         {'moduleId': 'shadowverse', 'addOns': []},
@@ -36,21 +36,21 @@ void main() {
     expect(modules.shadowverse, isTrue);
     expect(modules.academy, isTrue);
     expect(modules.competition, isTrue);
-    expect(backend.calls, ['GET /api/me/module-configs']);
+    expect(backend.calls, ['GET /api/bots/current/module-configs']);
     expect(backend.last.queryParameters, isEmpty);
     expect(backend.last.data, isNull);
     expect(backend.last.extra[ErrorInterceptor.silentErrorKey], isTrue);
   });
 
   test('설정이 없는 방은 모든 모듈 메뉴를 비활성화한다', () async {
-    backend.reply('GET', '/api/me/module-configs', ok([]));
+    backend.reply('GET', '/api/bots/current/module-configs', ok([]));
     expect((await repository.getAvailability()).isEmpty, isTrue);
   });
 
   test('network_operations 이외 모듈에 적힌 addOn은 사용하지 않는다', () async {
     backend.reply(
       'GET',
-      '/api/me/module-configs',
+      '/api/bots/current/module-configs',
       ok([
         {
           'moduleId': 'chatbot',
@@ -73,7 +73,7 @@ void main() {
     for (final addOn in ['academy', 'competition']) {
       backend.reply(
         'GET',
-        '/api/me/module-configs',
+        '/api/bots/current/module-configs',
         ok([
           {
             'moduleId': 'network_operations',
@@ -102,7 +102,7 @@ void main() {
       ]),
       failure(500, 'failed'),
     ]) {
-      backend.reply('GET', '/api/me/module-configs', body);
+      backend.reply('GET', '/api/bots/current/module-configs', body);
       await expectLater(repository.getAvailability(), throwsA(anything));
     }
   });
@@ -110,7 +110,7 @@ void main() {
   test('HTTP 조회 실패를 상위 상태에 전달한다', () async {
     backend.reply(
       'GET',
-      '/api/me/module-configs',
+      '/api/bots/current/module-configs',
       failure(503, 'failed'),
       status: 503,
     );

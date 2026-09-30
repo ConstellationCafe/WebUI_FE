@@ -26,7 +26,7 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 
 메뉴 숨김은 편의 기능이며, 권한 최종 판단은 서버가 합니다.
 
-- 로그인 후 채팅방 선택을 마친 경우에만 `ModuleConfigNotifier`가 `/api/me/module-configs`를 먼저 조회합니다. 서버는 JWT 필터의 `botId`로 config DB를 조회하고 원본 JSON 대신 `moduleId`, 메뉴용 `addOns` 이름만 반환합니다.
+- 로그인 후 채팅방 선택을 마친 경우에만 `ModuleConfigNotifier`가 `/api/bots/current/module-configs`를 먼저 조회합니다. 서버는 JWT 필터의 `botId`로 config DB를 조회하고 원본 JSON 대신 `moduleId`, 메뉴용 `addOns` 이름만 반환합니다.
 - 활성화된 아카데미·대회에 한해서 권한을 조회합니다. 모듈이 없으면 관련 권한 API를 호출하지 않습니다. ERP는 기존 서버장 권한을 따릅니다.
 - 조회 중에는 모듈 메뉴를 숨기고 진행 표시를, 설정이 비어 있으면 빈 상태 안내를 보여줍니다. 모듈 조회 실패는 메뉴 영역의 오류 안내와 다시 시도로 처리합니다.
 - 채팅방 변경·로그아웃은 메뉴 설정과 두 권한을 모두 비웁니다. 늦게 완료된 이전 채팅방의 모듈·권한 응답은 버립니다.
@@ -104,3 +104,9 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 
 - `/friendly_match`: 게임 매치 등록과 참가. WebUI_BE가 아니라 빗자루 봇 router를 호출합니다.
 - 요청 형식은 `FriendlyMatchRequest` DTO가 만들고, 전송은 `FriendlyMatchNotifier.submit`이 합니다. 실패하면 예외 원문 대신 고정 안내를 보여줍니다.
+
+### 봇 설정 리소스 계약 (2026-09-30)
+
+`GET /api/bots/current/module-configs`의 `current`는 인증된 요청에서 선택된 JWT `botId`를 뜻한다. 모듈 설정의 소유자는 사용자(`me`)가 아닌 봇/채팅방이다. 인증·재적 여부는 접근 조건이며, 조회 결과는 오직 `botId`로 결정된다. 같은 봇의 사용자·역할이 달라도 설정 응답은 같으며, 다른 봇의 설정은 섞이지 않는다. 사용자별 아카데미·대회 권한은 기존 권한 API에서 별도로 조회한다.
+
+기존 `/api/me/module-configs`는 미병합 초안 경로로 폐기하며 호환 alias를 제공하지 않는다. BE의 새 경로를 먼저 배포한 뒤 FE를 배포한다.

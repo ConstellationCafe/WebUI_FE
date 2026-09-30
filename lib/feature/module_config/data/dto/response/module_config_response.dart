@@ -1,4 +1,4 @@
-/// `GET /api/me/module-configs`의 메뉴용 설정. 설정 원문은 서버에 남는다.
+/// `GET /api/bots/current/module-configs`의 메뉴용 설정. 설정 원문은 서버에 남는다.
 class ModuleConfigResponse {
   final String moduleId;
   final List<String> addOns;

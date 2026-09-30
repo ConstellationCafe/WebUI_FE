@@ -134,7 +134,7 @@ void main() {
       backend = FakeBackend();
       backend.reply(
         'GET',
-        '/api/me/module-configs',
+        '/api/bots/current/module-configs',
         ok([
           {'moduleId': 'chatbot', 'addOns': []},
           {
@@ -185,7 +185,7 @@ void main() {
       expect(container.read(currentUserStateProvider).userId, '123');
       expect(container.read(academyPermissionProvider).isInitialized, isTrue);
       expect(backend.calls, [
-        'GET /api/me/module-configs',
+        'GET /api/bots/current/module-configs',
         'GET /api/academy/me/permissions',
       ]);
       expect(
