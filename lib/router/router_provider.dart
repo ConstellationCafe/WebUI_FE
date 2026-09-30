@@ -7,7 +7,7 @@ import 'package:constellation_cafe/feature/auth/pages/login.dart';
 import 'package:constellation_cafe/feature/home/frame/pages/home_frame.dart';
 import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
 import 'package:constellation_cafe/feature/modules/academy/routes/academy_routes.dart';
-import 'package:constellation_cafe/feature/modules/erp/competition/routes/competition_routes.dart';
+import 'package:constellation_cafe/feature/modules/competition/routes/competition_routes.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/routes/penalty_routes.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/routes/point_routes.dart';
 import 'package:constellation_cafe/feature/notification/routes/notification_routes.dart';

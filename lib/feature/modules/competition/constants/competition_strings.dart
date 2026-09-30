@@ -1,6 +1,7 @@
-/// 대회 개최 화면의 사용자 노출 문자열.
+/// 대회 기능의 사용자 노출 문자열.
 abstract final class CompetitionStrings {
   // 메뉴·화면
+  static const menuTitle = '대회 메뉴';
   static const menu = '대회 개최';
   static const title = '대회 개최';
   static const formSection = '대회 정보';

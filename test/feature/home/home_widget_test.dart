@@ -129,6 +129,7 @@ void main() {
       expect(find.text('섀도우버스 메뉴'), findsOneWidget);
       expect(find.text('아카데미 메뉴'), findsNothing);
       expect(find.text('ERP 메뉴'), findsNothing);
+      expect(find.text('대회 메뉴'), findsNothing);
       expect(find.text(HomeStrings.welcomeTo('별자리')), findsOneWidget);
       expect(find.text(HomeStrings.quickLinks), findsOneWidget);
     });
@@ -146,6 +147,8 @@ void main() {
       expect(find.text('교사 관리'), findsNothing, reason: '교사는 원장 메뉴를 보지 않는다');
       expect(find.text('ERP 메뉴'), findsOneWidget);
       expect(find.text('포인트 관리'), findsOneWidget);
+      expect(find.text('대회 메뉴'), findsOneWidget);
+      expect(find.text('대회 개최'), findsOneWidget);
     });
 
     testWidgets('메뉴를 누르면 해당 화면으로 이동한다', (tester) async {

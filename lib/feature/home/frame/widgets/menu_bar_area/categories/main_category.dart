@@ -5,6 +5,7 @@ import 'package:constellation_cafe/feature/auth/notifier/current_user_state_noti
 import 'package:constellation_cafe/feature/modules/academy/category/academy_category.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/chatbot/category/chatbot_category.dart';
+import 'package:constellation_cafe/feature/modules/competition/category/competition_category.dart';
 import 'package:constellation_cafe/feature/modules/erp/category/erp_category.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/category/shadowverse_category.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
@@ -29,7 +30,10 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
         if (!permissionState.isLoading && permissionState.isInitialized) ...[
           AcademyCategory(),
         ],
-        if (globalState.roles.contains(UserRole.admin)) ...[ErpCategory()],
+        if (globalState.roles.contains(UserRole.admin)) ...[
+          CompetitionCategory(),
+          ErpCategory(),
+        ],
       ],
     );
   }

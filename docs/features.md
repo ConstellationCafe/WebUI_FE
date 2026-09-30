@@ -20,7 +20,8 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 |---|---|
 | ChatBot, Shadowverse | 항상 |
 | Academy | Academy 권한 조회(`/api/academy/me/permissions`)가 끝난 뒤. 교사 관리는 학원장, 학생 관리는 교사 이상 |
-| ERP(포인트·벌점·알림 발행·대회 개최) | `UserRole.admin` (`ROLE_ADMIN`) |
+| ERP(포인트·벌점·알림 발행) | `UserRole.admin` (`ROLE_ADMIN`) |
+| 대회(대회 개최) | `UserRole.admin` (`ROLE_ADMIN`) |
 
 메뉴 숨김은 편의 기능이며, 권한 최종 판단은 서버가 합니다.
 
@@ -56,9 +57,9 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 - 부여 다이얼로그는 요청 UUID를 한 번 생성해 재시도에도 유지하고, 제출 중에는 중복 제출을 막습니다. API receive timeout은 15초입니다.
 - 탭 배경은 상하에만 안쪽 여백을 두어 탭 영역이 아래 목록(TabBarView)과 같은 너비를 차지합니다.
 
-## ERP 대회 개최 (`feature/modules/erp/competition`)
+## 대회 개최 (`feature/modules/competition`)
 
-- `/competitions`(관리자): 현재 채팅방의 대회 게시판에 평문 대회 공지를 게시합니다. WebUI_BE `/api/admin/competitions/**`를 사용합니다.
+- `/competitions`(관리자, 대회 메뉴): 현재 채팅방의 대회 게시판에 평문 대회 공지를 게시합니다. WebUI_BE `/api/admin/competitions/**`를 사용합니다.
 - 웹은 **글만 씁니다**. 서버가 봇 계정으로 디스코드에 게시하면, 빗자루 봇이 기존처럼 글을 감지해 대회 등록(스케줄러), 참가 이모지·참가자 역할·대회방 생성, WebUI 알림 발행을 처리합니다. 참가 이모지 등은 `joinable` 게시판(`inner_board`)에서만 만들어지며, 화면이 게시판을 고를 때 안내합니다.
 - 입력: 제목, 참가 방법, 진행 형식, 접수 시작·마감, 진행 시작(브라우저 현지 시각을 UTC로 전송), 선택 우승 상품·추가 입력란(각 10개). 진행 기간은 항상 `시작 ~ 종료시까지`로 게시됩니다.
 - 입력이 멈추면(600ms) `POST /preview`로 서버가 조립한 **실제 게시글**과 봇 파서 규칙 위반 안내를 미리보기에 보여줍니다. 늦게 도착한 이전 미리보기 결과는 버립니다.

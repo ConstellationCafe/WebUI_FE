@@ -2,10 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:test/test.dart';
 
 import 'package:constellation_cafe/core/network/interceptors/error_interceptor.dart';
-import 'package:constellation_cafe/feature/modules/erp/competition/data/api/competition_api.dart';
-import 'package:constellation_cafe/feature/modules/erp/competition/data/repository/competition_repository.dart';
-import 'package:constellation_cafe/feature/modules/erp/competition/domain/model/competition_draft.dart';
-import 'package:constellation_cafe/feature/modules/erp/competition/domain/model/competition_failure.dart';
+import 'package:constellation_cafe/feature/modules/competition/data/api/competition_api.dart';
+import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository.dart';
+import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_draft.dart';
+import 'package:constellation_cafe/feature/modules/competition/domain/model/competition_failure.dart';
 
 void main() {
   late Dio dio;
