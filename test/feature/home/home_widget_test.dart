@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +15,9 @@ import 'package:constellation_cafe/feature/home/frame/pages/home_frame.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/main_menu_bar.dart';
 import 'package:constellation_cafe/feature/home/frame/widgets/profile/profile_menu.dart';
 import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
+import 'package:constellation_cafe/feature/module_config/data/repository/module_config_repository_provider.dart';
+import 'package:constellation_cafe/feature/module_config/domain/model/module_availability.dart';
+import 'package:constellation_cafe/feature/module_config/notifier/module_config_notifier.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
@@ -22,6 +27,7 @@ import 'package:constellation_cafe/feature/notification/notifier/notification_ce
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
 import '../../support/fake_academy_api.dart';
+import '../../support/fake_module_config_repository.dart';
 import '../../support/screen.dart';
 import '../auth/support/fake_auth_service.dart';
 import '../modules/competition/support/fake_competition_repository.dart';
@@ -58,6 +64,7 @@ class HomeHarness {
         academyApiProvider.overrideWithValue(academyApi),
         notificationRepositoryProvider.overrideWithValue(notifications),
         competitionRepositoryProvider.overrideWithValue(competitions),
+        moduleConfigRepositoryProvider.overrideWithValue(modules),
       ],
     );
     router = GoRouter(
@@ -82,6 +89,7 @@ class HomeHarness {
   final FakeAuthService auth = FakeAuthService();
   final FakeNotificationRepository notifications = FakeNotificationRepository();
   final FakeCompetitionRepository competitions = FakeCompetitionRepository();
+  final FakeModuleConfigRepository modules = FakeModuleConfigRepository();
   late final ProviderContainer container;
   late final GoRouter router;
 
@@ -89,6 +97,7 @@ class HomeHarness {
     List<String> roles = const [],
     String academyRole = '',
     bool competitionManager = false,
+    ModuleAvailability? availability,
   }) async {
     final user = container.read(currentUserStateProvider.notifier);
     user.update(userId: '123', globalName: '별', roles: roles);
@@ -96,9 +105,9 @@ class HomeHarness {
     guild.setGuild(guildId: '1', guildName: '별자리', guildIcon: '');
     final permission = {'admin': false, 'academies': academiesFor(academyRole)};
     academyApi.permission = AcademyPermission.fromJson(permission);
-    await container.read(academyPermissionProvider.notifier).initialize();
     competitions.manager = competitionManager;
-    await container.read(competitionPermissionProvider.notifier).load();
+    if (availability != null) modules.availability = availability;
+    await container.read(moduleConfigProvider.notifier).load();
   }
 
   Widget app() => UncontrolledProviderScope(
@@ -119,6 +128,7 @@ Future<HomeHarness> pumpHome(
   List<String> roles = const [],
   String academyRole = '',
   bool competitionManager = false,
+  ModuleAvailability? availability,
 }) async {
   setScreenSize(tester, size);
   final harness = HomeHarness(frame: frame);
@@ -127,6 +137,7 @@ Future<HomeHarness> pumpHome(
     roles: roles,
     academyRole: academyRole,
     competitionManager: competitionManager,
+    availability: availability,
   );
   await tester.pumpWidget(harness.app());
   await tester.pumpAndSettle();
@@ -135,7 +146,7 @@ Future<HomeHarness> pumpHome(
 
 void main() {
   group('메뉴 바', () {
-    testWidgets('일반 회원에게는 공통 메뉴만 보여준다', (tester) async {
+    testWidgets('일반 회원에게는 활성 모듈 중 권한이 있는 메뉴만 보여준다', (tester) async {
       await pumpHome(tester, size: const Size(1400, 1000));
 
       expect(find.text('빗자루 메뉴'), findsOneWidget);
@@ -145,6 +156,90 @@ void main() {
       expect(find.text('대회 메뉴'), findsNothing);
       expect(find.text(HomeStrings.welcomeTo('별자리')), findsOneWidget);
       expect(find.text(HomeStrings.quickLinks), findsOneWidget);
+    });
+
+    testWidgets('설정이 없으면 권한이 있어도 모듈 메뉴를 숨긴다', (tester) async {
+      final harness = await pumpHome(
+        tester,
+        size: const Size(1400, 1000),
+        roles: [UserRole.admin],
+        academyRole: 'ACADEMY_OWNER',
+        competitionManager: true,
+        availability: const ModuleAvailability(),
+      );
+      expect(find.text('빗자루 메뉴'), findsNothing);
+      expect(find.text('섀도우버스 메뉴'), findsNothing);
+      expect(find.text('아카데미 메뉴'), findsNothing);
+      expect(find.text('대회 메뉴'), findsNothing);
+      expect(find.text('ERP 메뉴'), findsOneWidget);
+      expect(find.text(HomeStrings.noModules), findsOneWidget);
+      expect(harness.academyApi.permissionCalls, 0);
+      expect(harness.competitions.permissionCalls, 0);
+    });
+
+    testWidgets('chatbot만 활성화되면 빗자루 메뉴만 표시한다', (tester) async {
+      await pumpHome(
+        tester,
+        size: const Size(1400, 1000),
+        availability: const ModuleAvailability(chatbot: true),
+      );
+      expect(find.text('빗자루 메뉴'), findsOneWidget);
+      expect(find.text('섀도우버스 메뉴'), findsNothing);
+      expect(find.text('아카데미 메뉴'), findsNothing);
+      expect(find.text('대회 메뉴'), findsNothing);
+    });
+
+    testWidgets('shadowverse만 활성화되면 섀도우버스 메뉴만 표시한다', (tester) async {
+      await pumpHome(
+        tester,
+        size: const Size(1400, 1000),
+        availability: const ModuleAvailability(shadowverse: true),
+      );
+      expect(find.text('섀도우버스 메뉴'), findsOneWidget);
+      expect(find.text('빗자루 메뉴'), findsNothing);
+    });
+
+    testWidgets('메뉴 설정 재조회 중 이전 메뉴를 숨기고 실패 후 다시 시도한다', (tester) async {
+      final harness = await pumpHome(tester, size: const Size(1400, 1000));
+      final pending = Completer<ModuleAvailability>();
+      harness.modules.replies.add(pending.future);
+      final request = harness.container
+          .read(moduleConfigProvider.notifier)
+          .load();
+      await tester.pump();
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.text('빗자루 메뉴'), findsNothing);
+      pending.completeError(StateError('internal diagnostic'));
+      await request;
+      await tester.pump();
+      expect(find.text(HomeStrings.modulesLoadFailed), findsOneWidget);
+      expect(find.textContaining('internal diagnostic'), findsNothing);
+      final retry = find.widgetWithText(
+        ElevatedButton,
+        HomeStrings.retryModules,
+      );
+      final theme = Theme.of(tester.element(retry));
+      final style = theme.elevatedButtonTheme.style!;
+      for (final states in [
+        <WidgetState>{},
+        {WidgetState.hovered},
+        {WidgetState.focused},
+      ]) {
+        final foreground = style.foregroundColor!.resolve(states)!;
+        final background = style.backgroundColor!.resolve(states)!;
+        final ratio =
+            (foreground.computeLuminance() + 0.05) /
+            (background.computeLuminance() + 0.05);
+        expect(ratio, greaterThanOrEqualTo(4.5));
+      }
+      harness.modules.availability = const ModuleAvailability(
+        shadowverse: true,
+      );
+      await tester.tap(find.text(HomeStrings.retryModules));
+      await tester.pumpAndSettle();
+      expect(find.text(HomeStrings.modulesLoadFailed), findsNothing);
+      expect(find.text('섀도우버스 메뉴'), findsOneWidget);
+      expect(find.text('빗자루 메뉴'), findsNothing);
     });
 
     testWidgets('관리자와 교사 권한이 있으면 ERP와 아카데미 메뉴를 추가한다', (tester) async {
@@ -239,6 +334,9 @@ void main() {
       expect(harness.auth.logoutCalls, 1);
       expect(container.read(currentUserStateProvider).userId, isEmpty);
       expect(container.read(currentGuildStateProvider).guildId, isEmpty);
+      expect(container.read(moduleConfigProvider).value?.isEmpty, isTrue);
+      expect(container.read(academyPermissionProvider).isInitialized, isFalse);
+      expect(container.read(competitionPermissionProvider).isManager, isFalse);
       expect(find.text('login page'), findsOneWidget);
     });
 

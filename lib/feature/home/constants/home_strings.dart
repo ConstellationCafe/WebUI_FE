@@ -1,5 +1,9 @@
 abstract final class HomeStrings {
   static const menu = 'Menu';
+  static const loadingModules = '메뉴 설정을 불러오는 중입니다.';
+  static const modulesLoadFailed = '메뉴 설정을 불러오지 못했습니다.';
+  static const noModules = '활성화된 모듈 메뉴가 없습니다.';
+  static const retryModules = '다시 시도';
   static const welcome = '환영합니다';
   static String welcomeTo(String guildName) => '$guildName에 오신 것을 환영합니다';
   static const introduction = '필요한 기능을 왼쪽 메뉴에서 찾아보세요.';

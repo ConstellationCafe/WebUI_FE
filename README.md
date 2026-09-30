@@ -3,7 +3,7 @@
 > 상태: Active  
 > 적용 범위: `ConstellationCafe/WebUI_FE` Flutter Web 클라이언트 (`develope` 기준)  
 > 문서 담당자: 미정 — 프로젝트 책임자가 지정 필요  
-> 마지막 검토일: 2026-09-29
+> 마지막 검토일: 2026-09-30
 
 ## 1. 프로젝트 개요
 
@@ -95,6 +95,7 @@ flutter build web
 - `.env`/`flutter_dotenv`는 사용하지 않습니다(의존성에서도 제거).
 - Web 번들은 누구나 받을 수 있으므로 공개해도 되는 값만 넣습니다. 비밀값과 서버 권한 판단은 client에 두지 않습니다.
 - 인증 토큰은 백엔드의 HttpOnly 쿠키로만 다룹니다.
+- 채팅방 선택 후 `/api/me/module-configs`로 서버가 JWT의 `botId`에 맞춰 조회한 메뉴 설정을 받습니다. `shadowverse`·`chatbot` 모듈과 `network_operations.add_on`의 아카데미·대회 설정이 있는 기능만 표시하며, 아카데미·대회는 추가로 서버 권한을 조회합니다.
 - production 값은 GitHub Actions secrets로 CD가 Docker build arg에 전달합니다.
 
 ## 6. 구조 요약

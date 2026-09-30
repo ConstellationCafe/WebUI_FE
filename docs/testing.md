@@ -1,7 +1,7 @@
 # 테스트와 CI
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-29  
+> 마지막 검토일: 2026-09-30
 > 상위 문서: [README](../README.md) · 관련: [기능별 구현 노트](features.md)
 
 ## 1. 실행
@@ -28,6 +28,7 @@ flutter test --platform chrome test/feature/notification   # 특정 feature 예�
 | 로그인 | `test/feature/auth/` | `/auth/me`·check·refresh·logout 계약과 DTO, Discord 인증 URI, 로그인 상태 판정(채팅방 선택·refresh 힌트·401), 로그아웃 시 상태 정리, 로그인 화면·버튼·큰 글자 |
 | 채팅방 선택 | `test/feature/guild_select/` | 목록·선택 API(403 처리), 목록·빈 상태·오류, 선택 불가 안내, 선택 후 로그인 재확인과 홈 이동 |
 | 홈 | `test/feature/home/` | 권한별 메뉴(아카데미·ERP·대회), 메뉴 이동, 모바일 drawer, 로그아웃 후 상태 초기화 |
+| 메뉴 설정 | `test/feature/module_config/` | ModuleConfig DTO·경로·방 식별자 미전송, 모듈 조합별 활성 메뉴, 모듈 조회 이후 활성 기능만 권한 조회, 실패·재시도·부분 실패, 방 변경·로그아웃 중 이전 응답 무시 |
 | 프로필 | `test/feature/profile/` | 회원증·UID·길드 봇 명령과 `MembershipCardResponse` 순서, 포인트 내역 API, 변경분만 저장, 저장 결과·실패 안내, 회원증 조회 실패·다시 시도, 읽기 전용 내역 표 |
 | 아카데미 | `test/feature/modules/academy/` | 권한·학원·분반·수업 기록·학생/교사 상태 API, 권한별 선택지, 졸업 처리, 상태 조회 화면, 수업 기록 카드, 페이지 버튼, 메뉴 권한, 조회 실패 안내 |
 | 빗자루 | `test/feature/modules/chatbot/` | 가르치기·추천 저장소의 컬럼명 변환과 저장·삭제 본문, 관리자 전용 컬럼, 메뉴 이동 |

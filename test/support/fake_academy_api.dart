@@ -10,7 +10,15 @@ class FakeAcademyApi extends AcademyApi {
   FakeAcademyApi() : super(dio: Dio());
 
   AcademyPermission permission = AcademyPermission.initial();
+  int permissionCalls = 0;
+  Object? permissionError;
+  Future<AcademyPermission>? pendingPermission;
 
   @override
-  Future<AcademyPermission> getMyPermissions() async => permission;
+  Future<AcademyPermission> getMyPermissions() async {
+    permissionCalls++;
+    final error = permissionError;
+    if (error != null) throw error;
+    return pendingPermission ?? permission;
+  }
 }
