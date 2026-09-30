@@ -34,7 +34,7 @@ flutter test --platform chrome test/feature/notification   # 특정 feature 예�
 | 섀도우버스 | `test/feature/modules/shadowverse/` | 친선전 전송 형식, 봇 router 요청·오류, 미리보기·버전 전환·전송 결과, 모바일 배치 |
 | 포인트 | `test/feature/modules/erp/point/` | API 계약(직렬화·매핑), 검색·페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 버튼 대비, 빈 설명 |
 | 벌점 | `test/feature/modules/erp/penalty/` | API 계약, 30일 누적 계산, notifier, widget, 탭과 TabBarView 너비 일치 |
-| 대회 개최 | `test/feature/modules/competition/` | API 계약(경로·UTC 직렬화·요청 ID·게시판 키·실패 코드와 서버 안내 문구) |
+| 대회 개최 | `test/feature/modules/competition/` | 대회 권한 조회, API 계약(경로·UTC 직렬화·요청 ID·게시판 키·실패 코드와 서버 안내 문구) |
 | 알림 | `test/feature/notification/` | API 계약(경로·쿼리·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기·읽음 처리, loading·error·empty, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성 |
 
 아직 자동 테스트가 없는 영역: 대회 개최 화면 widget(폼 검증·미리보기·확인 다이얼로그), 라우팅 가드(`router_provider.dart`), 수업 기록 작성·수정 화면, 교사 상태 처리 화면.

@@ -5,16 +5,30 @@ import 'package:constellation_cafe/core/network/interceptors/error_interceptor.d
 import '../dto/request/competition_create_request.dart';
 import '../dto/request/competition_notice_request.dart';
 import '../dto/response/competition_board_response.dart';
+import '../dto/response/competition_permission_response.dart';
 import '../dto/response/competition_post_response.dart';
 
-/// 관리자 대회 공지 API(`/api/admin/competitions`, ADR-0002 경로 규칙).
+/// 대회 API(`/api/competitions`). 대회 매니저 또는 서버장만 쓸 수 있고, 권한 조회는 로그인한 회원 누구나 호출한다.
 class CompetitionApi {
   static const base = String.fromEnvironment('BACKEND_URI');
-  static const path = '$base/api/admin/competitions';
+  static const path = '$base/api/competitions';
 
   final Dio dio;
 
   const CompetitionApi({required this.dio});
+
+  /// 현재 채팅방에서 대회 매니저 기능을 쓸 수 있는지. 메뉴 표시용이며 최종 판단은 서버가 한다.
+  Future<CompetitionPermissionResponse> getMyPermission() async {
+    final response = await dio.get<Map<String, dynamic>>(
+      '$path/me/permissions',
+      options: _silent(),
+    );
+    final body = _response(response.data);
+    if (body is! Map<String, dynamic>) {
+      throw const FormatException('대회 권한 응답 형식이 올바르지 않습니다.');
+    }
+    return CompetitionPermissionResponse.fromJson(body);
+  }
 
   Future<List<CompetitionBoardResponse>> getBoards() async {
     final response = await dio.get<Map<String, dynamic>>(
@@ -34,7 +48,7 @@ class CompetitionApi {
   /// 게시하지 않고 검증과 평문 조립만 한다. 실제로 게시될 글을 돌려준다.
   Future<String> preview(CompetitionNoticeRequest request) async {
     final response = await dio.post<Map<String, dynamic>>(
-      '$path/preview',
+      '$path/notices/preview',
       data: request.toJson(),
       options: _silent(),
     );
@@ -48,7 +62,7 @@ class CompetitionApi {
 
   Future<CompetitionPostResponse> post(CompetitionCreateRequest request) async {
     final response = await dio.post<Map<String, dynamic>>(
-      path,
+      '$path/notices',
       data: request.toJson(),
       options: _silent(),
     );

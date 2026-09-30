@@ -6,6 +6,7 @@ import 'package:constellation_cafe/feature/modules/academy/category/academy_cate
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/chatbot/category/chatbot_category.dart';
 import 'package:constellation_cafe/feature/modules/competition/category/competition_category.dart';
+import 'package:constellation_cafe/feature/modules/competition/notifier/competition_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/erp/category/erp_category.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/category/shadowverse_category.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
@@ -22,6 +23,7 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
   Widget build(BuildContext build) {
     final globalState = ref.watch(currentUserStateProvider);
     final permissionState = ref.watch(academyPermissionProvider);
+    final competitionPermission = ref.watch(competitionPermissionProvider);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -30,10 +32,9 @@ class _MainCategoryState extends ConsumerState<MainCategory> {
         if (!permissionState.isLoading && permissionState.isInitialized) ...[
           AcademyCategory(),
         ],
-        if (globalState.roles.contains(UserRole.admin)) ...[
-          CompetitionCategory(),
-          ErpCategory(),
-        ],
+        // 대회 매니저 역할(또는 서버장)이 있으면 보인다. 최종 판단은 서버가 한다.
+        if (competitionPermission.isManager) CompetitionCategory(),
+        if (globalState.roles.contains(UserRole.admin)) ...[ErpCategory()],
       ],
     );
   }

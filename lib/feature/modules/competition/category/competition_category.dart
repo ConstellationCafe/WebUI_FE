@@ -7,7 +7,7 @@ import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/cate
 import '../constants/competition_strings.dart';
 import '../constants/competition_tokens.dart';
 
-/// 대회 메뉴. 현재는 관리자용 대회 개최만 있어 관리자에게만 보인다(MainCategory).
+/// 대회 메뉴. 대회 매니저 역할(또는 서버장)이 있을 때만 보인다(MainCategory, competitionPermissionProvider).
 class CompetitionCategory extends ConsumerWidget {
   const CompetitionCategory({super.key});
 

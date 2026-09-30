@@ -59,7 +59,21 @@ void main() {
     extraFields: const [CompetitionExtraField(key: '대회 규칙', value: '덱 공개 없음')],
   );
 
-  test('게시판 목록은 관리자 경로에서 받아 도메인 모델로 바꾼다', () async {
+  test('대회 권한은 본인 권한 경로에서 받는다', () async {
+    response = {
+      'success': true,
+      'response': {'manager': true},
+    };
+
+    final isManager = await repository().isManager();
+
+    expect(request.method, 'GET');
+    expect(request.uri.path, '/api/competitions/me/permissions');
+    expect(request.extra[ErrorInterceptor.silentErrorKey], isTrue);
+    expect(isManager, isTrue);
+  });
+
+  test('게시판 목록은 대회 경로에서 받아 도메인 모델로 바꾼다', () async {
     response = {
       'success': true,
       'response': [
@@ -81,7 +95,7 @@ void main() {
     final boards = await repository().getBoards();
 
     expect(request.method, 'GET');
-    expect(request.uri.path, '/api/admin/competitions/boards');
+    expect(request.uri.path, '/api/competitions/boards');
     expect(request.extra[ErrorInterceptor.silentErrorKey], isTrue);
     expect(boards.map((board) => board.key), ['inner_board', 'outer_board']);
     expect(boards.first.name, '내부대회게시판');
@@ -98,7 +112,7 @@ void main() {
     final content = await repository().preview(draft);
 
     expect(request.method, 'POST');
-    expect(request.uri.path, '/api/admin/competitions/preview');
+    expect(request.uri.path, '/api/competitions/notices/preview');
     expect(request.data, {
       'title': '미니미 Bo1 대회',
       'participantWay': 'https://tonamel.com/competition/XtzgX',
@@ -135,7 +149,7 @@ void main() {
     );
 
     expect(request.method, 'POST');
-    expect(request.uri.path, '/api/admin/competitions');
+    expect(request.uri.path, '/api/competitions/notices');
     final body = request.data as Map<String, dynamic>;
     expect(body['requestId'], 'req-1');
     expect(body['boardKey'], 'inner_board');

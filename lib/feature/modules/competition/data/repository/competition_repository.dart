@@ -13,6 +13,12 @@ class CompetitionRepository {
 
   const CompetitionRepository({required this.api});
 
+  /// 대회 매니저 기능을 쓸 수 있는지. 조회에 실패하면 false로 보고 메뉴를 숨긴다.
+  Future<bool> isManager() async {
+    final response = await api.getMyPermission();
+    return response.manager;
+  }
+
   Future<List<CompetitionBoard>> getBoards() async {
     try {
       final boards = await api.getBoards();

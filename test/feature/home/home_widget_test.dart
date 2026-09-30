@@ -16,12 +16,15 @@ import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.da
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
+import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
+import 'package:constellation_cafe/feature/modules/competition/notifier/competition_permission_notifier.dart';
 import 'package:constellation_cafe/feature/notification/notifier/notification_center_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
 import '../../support/fake_academy_api.dart';
 import '../../support/screen.dart';
 import '../auth/support/fake_auth_service.dart';
+import '../modules/competition/support/fake_competition_repository.dart';
 import '../notification/support/fake_notification_repository.dart';
 
 Widget page(String name) => Center(child: Text('$name page'));
@@ -54,6 +57,7 @@ class HomeHarness {
         loginApiProvider.overrideWithValue(Login(auth)),
         academyApiProvider.overrideWithValue(academyApi),
         notificationRepositoryProvider.overrideWithValue(notifications),
+        competitionRepositoryProvider.overrideWithValue(competitions),
       ],
     );
     router = GoRouter(
@@ -77,12 +81,14 @@ class HomeHarness {
   final FakeAcademyApi academyApi = FakeAcademyApi();
   final FakeAuthService auth = FakeAuthService();
   final FakeNotificationRepository notifications = FakeNotificationRepository();
+  final FakeCompetitionRepository competitions = FakeCompetitionRepository();
   late final ProviderContainer container;
   late final GoRouter router;
 
   Future<void> signIn({
     List<String> roles = const [],
     String academyRole = '',
+    bool competitionManager = false,
   }) async {
     final user = container.read(currentUserStateProvider.notifier);
     user.update(userId: '123', globalName: '별', roles: roles);
@@ -91,6 +97,8 @@ class HomeHarness {
     final permission = {'admin': false, 'academies': academiesFor(academyRole)};
     academyApi.permission = AcademyPermission.fromJson(permission);
     await container.read(academyPermissionProvider.notifier).initialize();
+    competitions.manager = competitionManager;
+    await container.read(competitionPermissionProvider.notifier).load();
   }
 
   Widget app() => UncontrolledProviderScope(
@@ -110,11 +118,16 @@ Future<HomeHarness> pumpHome(
   bool frame = false,
   List<String> roles = const [],
   String academyRole = '',
+  bool competitionManager = false,
 }) async {
   setScreenSize(tester, size);
   final harness = HomeHarness(frame: frame);
   addTearDown(harness.dispose);
-  await harness.signIn(roles: roles, academyRole: academyRole);
+  await harness.signIn(
+    roles: roles,
+    academyRole: academyRole,
+    competitionManager: competitionManager,
+  );
   await tester.pumpWidget(harness.app());
   await tester.pumpAndSettle();
   return harness;
@@ -140,6 +153,7 @@ void main() {
         size: const Size(1400, 1200),
         roles: [UserRole.admin],
         academyRole: 'TEACHER',
+        competitionManager: true,
       );
 
       expect(find.text('아카데미 메뉴'), findsOneWidget);
@@ -149,6 +163,18 @@ void main() {
       expect(find.text('포인트 관리'), findsOneWidget);
       expect(find.text('대회 메뉴'), findsOneWidget);
       expect(find.text('대회 개최'), findsOneWidget);
+    });
+
+    testWidgets('대회 매니저 역할만 있으면 ERP 없이 대회 메뉴를 보여준다', (tester) async {
+      await pumpHome(
+        tester,
+        size: const Size(1400, 1000),
+        competitionManager: true,
+      );
+
+      expect(find.text('대회 메뉴'), findsOneWidget);
+      expect(find.text('대회 개최'), findsOneWidget);
+      expect(find.text('ERP 메뉴'), findsNothing);
     });
 
     testWidgets('메뉴를 누르면 해당 화면으로 이동한다', (tester) async {

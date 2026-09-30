@@ -1,22 +1,15 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/core/network/dio_provider.dart';
-
-import '../data/api/competition_api.dart';
 import '../data/repository/competition_repository.dart';
+import '../data/repository/competition_repository_provider.dart';
 import '../domain/model/competition_draft.dart';
 import '../domain/model/competition_failure.dart';
 import '../domain/model/competition_post_result.dart';
 import '../state/admin_competition_state.dart';
 
 part 'admin_competition_notifier.g.dart';
-
-final competitionRepositoryProvider = Provider((ref) {
-  return CompetitionRepository(api: CompetitionApi(dio: ref.read(dioProvider)));
-});
 
 /// 게시 결과. 성공하면 [result], 실패하면 [failure]만 채워진다.
 typedef CompetitionPostOutcome = ({
