@@ -1,0 +1,182 @@
+import 'package:dio/dio.dart';
+import 'package:test/test.dart';
+
+import 'package:constellation_cafe/core/network/interceptors/error_interceptor.dart';
+import 'package:constellation_cafe/feature/modules/erp/competition/data/api/competition_api.dart';
+import 'package:constellation_cafe/feature/modules/erp/competition/data/repository/competition_repository.dart';
+import 'package:constellation_cafe/feature/modules/erp/competition/domain/model/competition_draft.dart';
+import 'package:constellation_cafe/feature/modules/erp/competition/domain/model/competition_failure.dart';
+
+void main() {
+  late Dio dio;
+  late RequestOptions request;
+  late Object? response;
+  int status = 200;
+
+  setUp(() {
+    status = 200;
+    response = {'success': true, 'response': <String, dynamic>{}};
+    dio = Dio(BaseOptions(baseUrl: 'https://example.invalid'));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          request = options;
+          final result = Response(
+            requestOptions: options,
+            statusCode: status,
+            data: response,
+          );
+          if (status >= 400) {
+            handler.reject(
+              DioException.badResponse(
+                statusCode: status,
+                requestOptions: options,
+                response: result,
+              ),
+            );
+            return;
+          }
+          handler.resolve(result);
+        },
+      ),
+    );
+  });
+
+  tearDown(() => dio.close());
+
+  CompetitionRepository repository() =>
+      CompetitionRepository(api: CompetitionApi(dio: dio));
+
+  // 브라우저 현지 시각. 서버에는 UTC로 보내야 한다.
+  final draft = CompetitionDraft(
+    title: ' 미니미 Bo1 대회 ',
+    participantWay: 'https://tonamel.com/competition/XtzgX',
+    format: '싱글 엘리미네이션 Bo1',
+    registrationStart: DateTime.utc(2026, 9, 29, 14),
+    registrationEnd: DateTime.utc(2026, 10, 2, 12, 30),
+    eventStart: DateTime.utc(2026, 10, 2, 13),
+    prizes: const [CompetitionPrize(rank: '1등', content: '치킨 기프티콘')],
+    extraFields: const [CompetitionExtraField(key: '대회 규칙', value: '덱 공개 없음')],
+  );
+
+  test('게시판 목록은 관리자 경로에서 받아 도메인 모델로 바꾼다', () async {
+    response = {
+      'success': true,
+      'response': [
+        {
+          'key': 'inner_board',
+          'channelId': '111',
+          'name': '내부대회게시판',
+          'joinable': true,
+        },
+        {
+          'key': 'outer_board',
+          'channelId': '222',
+          'name': 'outer_board',
+          'joinable': false,
+        },
+      ],
+    };
+
+    final boards = await repository().getBoards();
+
+    expect(request.method, 'GET');
+    expect(request.uri.path, '/api/admin/competitions/boards');
+    expect(request.extra[ErrorInterceptor.silentErrorKey], isTrue);
+    expect(boards.map((board) => board.key), ['inner_board', 'outer_board']);
+    expect(boards.first.name, '내부대회게시판');
+    expect(boards.first.joinable, isTrue);
+    expect(boards.last.joinable, isFalse);
+  });
+
+  test('미리보기는 입력을 UTC 시각으로 보내고 서버가 조립한 글을 돌려받는다', () async {
+    response = {
+      'success': true,
+      'response': {'content': '"미니미 Bo1 대회"가 개최되었습니다 !'},
+    };
+
+    final content = await repository().preview(draft);
+
+    expect(request.method, 'POST');
+    expect(request.uri.path, '/api/admin/competitions/preview');
+    expect(request.data, {
+      'title': '미니미 Bo1 대회',
+      'participantWay': 'https://tonamel.com/competition/XtzgX',
+      'format': '싱글 엘리미네이션 Bo1',
+      'registrationStart': '2026-09-29T14:00:00.000Z',
+      'registrationEnd': '2026-10-02T12:30:00.000Z',
+      'eventStart': '2026-10-02T13:00:00.000Z',
+      'prizes': [
+        {'rank': '1등', 'content': '치킨 기프티콘'},
+      ],
+      'extraFields': [
+        {'key': '대회 규칙', 'value': '덱 공개 없음'},
+      ],
+    });
+    expect(content, '"미니미 Bo1 대회"가 개최되었습니다 !');
+  });
+
+  test('게시는 요청 ID와 게시판 키를 보내고 공지글 주소를 돌려받는다', () async {
+    response = {
+      'success': true,
+      'response': {
+        'boardKey': 'inner_board',
+        'channelId': '111',
+        'messageId': '999',
+        'messageUrl': 'https://discord.com/channels/1/111/999',
+        'content': '공지',
+      },
+    };
+
+    final result = await repository().post(
+      requestId: 'req-1',
+      boardKey: 'inner_board',
+      draft: draft,
+    );
+
+    expect(request.method, 'POST');
+    expect(request.uri.path, '/api/admin/competitions');
+    final body = request.data as Map<String, dynamic>;
+    expect(body['requestId'], 'req-1');
+    expect(body['boardKey'], 'inner_board');
+    expect((body['notice'] as Map)['eventStart'], '2026-10-02T13:00:00.000Z');
+    expect(result.messageId, '999');
+    expect(result.messageUrl, 'https://discord.com/channels/1/111/999');
+  });
+
+  const failures = {
+    400: CompetitionFailureReason.invalid,
+    404: CompetitionFailureReason.notConfigured,
+    502: CompetitionFailureReason.discord,
+    503: CompetitionFailureReason.unknown,
+  };
+  for (final entry in failures.entries) {
+    test('게시 실패 ${entry.key}는 ${entry.value}로 바꾸고 서버 안내 문구를 담는다', () async {
+      status = entry.key;
+      response = {
+        'success': false,
+        'response': null,
+        'error': {'message': '서버 안내', 'status': entry.key},
+      };
+
+      CompetitionException? failure;
+      try {
+        await repository().post(
+          requestId: 'req-2',
+          boardKey: 'inner_board',
+          draft: draft,
+        );
+      } on CompetitionException catch (error) {
+        failure = error;
+      }
+
+      expect(failure?.reason, entry.value);
+      expect(failure?.message, '서버 안내');
+    });
+  }
+
+  test('실패 응답을 정상 목록으로 처리하지 않는다', () async {
+    response = {'success': false, 'response': null};
+    await expectLater(repository().getBoards(), throwsFormatException);
+  });
+}

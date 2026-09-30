@@ -8,6 +8,8 @@ import 'package:constellation_cafe/feature/home/frame/widgets/menu_bar_area/cate
 import 'package:constellation_cafe/feature/notification/constants/notification_strings.dart';
 import 'package:constellation_cafe/feature/notification/constants/notification_tokens.dart';
 
+import '../competition/constants/competition_strings.dart';
+import '../competition/constants/competition_tokens.dart';
 import '../constants/erp_strings.dart';
 
 class ErpCategory extends ConsumerWidget {
@@ -41,6 +43,15 @@ class ErpCategory extends ConsumerWidget {
           ),
           menuName: NotificationStrings.adminMenu,
           callbackUrl: '/notification',
+        ),
+        const SizedBox(height: ConstSize.tinySpacing),
+        MenuContainer(
+          iconImage: const Icon(
+            Icons.emoji_events_outlined,
+            size: CompetitionTokens.menuIconSize,
+          ),
+          menuName: CompetitionStrings.menu,
+          callbackUrl: '/competitions',
         ),
       ],
     );
