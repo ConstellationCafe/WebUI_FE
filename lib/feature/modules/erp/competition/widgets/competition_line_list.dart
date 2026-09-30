@@ -86,6 +86,10 @@ class CompetitionLineList extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
+            // 앱 theme의 primary가 흰색이라 기본 TextButton 글자가 배경에 묻힌다.
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.secondary,
+            ),
             onPressed: canAdd ? onAdd : null,
             icon: const Icon(Icons.add),
             label: Text(

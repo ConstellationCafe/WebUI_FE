@@ -252,6 +252,9 @@ class _CompetitionFormState extends State<CompetitionForm> {
         children: [
           const Expanded(child: Text(CompetitionStrings.boardsFailed)),
           TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.secondary,
+            ),
             onPressed: widget.onRetryBoards,
             child: const Text(CompetitionStrings.retry),
           ),

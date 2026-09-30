@@ -67,7 +67,8 @@ class _CompetitionConfirmDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        TextButton(
+        // 다른 관리자 다이얼로그처럼 취소도 ElevatedButton을 쓴다(흰색 TextButton은 보이지 않음).
+        ElevatedButton(
           onPressed: () => Navigator.of(context).pop(false),
           child: const Text(CompetitionStrings.cancel),
         ),
