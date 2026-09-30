@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
 
 import '../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
+import '../../modules/competition/notifier/competition_permission_notifier.dart';
 import '../data/dto/response/current_user_response.dart';
 import '../state/current_user_state.dart';
 
@@ -31,6 +32,7 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
         _isInitialized = true;
       }
       await ref.read(academyPermissionProvider.notifier).initialize();
+      await ref.read(competitionPermissionProvider.notifier).load();
     }
   }
 
@@ -62,5 +64,6 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
     state = CurrentUserState.initial();
     _isInitialized = false;
     ref.read(academyPermissionProvider.notifier).clear();
+    ref.read(competitionPermissionProvider.notifier).clear();
   }
 }

@@ -37,6 +37,7 @@ lib/
     └── modules/
         ├── academy/        # ★ 기준 feature 구조
         ├── chatbot/        # content·learning·menu·music
+        ├── competition/    # 대회 개최 (관리자)
         ├── erp/            # point, penalty (관리자)
         └── shadowverse/    # friendly_match
 ```

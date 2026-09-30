@@ -48,7 +48,7 @@ final class CurrentUserStateNotifierProvider
 }
 
 String _$currentUserStateNotifierHash() =>
-    r'1409cec9c92133ec5288992f7d06cc963b0a6aef';
+    r'eb4c12aa11671ea5f4ba0ef4010db8521c101fed';
 
 /// 로그인한 사용자는 화면을 오가도 다시 조회하지 않도록 앱 수명 동안 유지한다.
 /// (브라우저 새로고침은 앱을 다시 시작하므로 로그인 확인 후 다시 불러온다.)

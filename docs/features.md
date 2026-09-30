@@ -21,6 +21,7 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 | ChatBot, Shadowverse | 항상 |
 | Academy | Academy 권한 조회(`/api/academy/me/permissions`)가 끝난 뒤. 교사 관리는 학원장, 학생 관리는 교사 이상 |
 | ERP(포인트·벌점·알림 발행) | `UserRole.admin` (`ROLE_ADMIN`) |
+| 대회(대회 개최) | 대회 권한 조회(`/api/competitions/me/permissions`)의 `manager`. 현재 채팅방에서 `대회 매니저`가 들어간 역할이 있거나 서버장 |
 
 메뉴 숨김은 편의 기능이며, 권한 최종 판단은 서버가 합니다.
 
@@ -55,6 +56,24 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 - 요청·응답 DTO는 `data/dto`, 업무 데이터는 `domain/model`, 상태는 `state/`(Freezed)와 `notifier/`(생성형 Riverpod)로 분리합니다.
 - 부여 다이얼로그는 요청 UUID를 한 번 생성해 재시도에도 유지하고, 제출 중에는 중복 제출을 막습니다. API receive timeout은 15초입니다.
 - 탭 배경은 상하에만 안쪽 여백을 두어 탭 영역이 아래 목록(TabBarView)과 같은 너비를 차지합니다.
+
+## 대회 개최 (`feature/modules/competition`)
+
+- `/competitions`(대회 매니저, 대회 메뉴): 현재 채팅방의 대회 게시판에 평문 대회 공지를 게시합니다. WebUI_BE `/api/competitions/**`를 사용합니다.
+- 권한은 아카데미처럼 로그인 사용자 정보를 불러올 때(채팅방 선택·변경 포함) `CompetitionPermissionNotifier`(keepAlive)가 조회하고 로그아웃 시 비웁니다. 조회에 실패하면 메뉴를 숨깁니다.
+- 웹은 **글만 씁니다**. 서버가 봇 계정으로 디스코드에 게시하면, 빗자루 봇이 기존처럼 글을 감지해 대회 등록(스케줄러), 참가 이모지·참가자 역할·대회방 생성, WebUI 알림 발행을 처리합니다. 참가 이모지 등은 `joinable` 게시판(`inner_board`)에서만 만들어지며, 화면이 게시판을 고를 때 안내합니다.
+- 입력: 제목, 참가 방법, 진행 형식, 접수 시작·마감, 진행 시작(브라우저 현지 시각을 UTC로 전송), 선택 우승 상품·추가 입력란(각 10개). 진행 기간은 항상 `시작 ~ 종료시까지`로 게시됩니다.
+- 입력이 멈추면(600ms) `POST /notices/preview`로 서버가 조립한 **실제 게시글**과 봇 파서 규칙 위반 안내를 미리보기에 보여줍니다. 늦게 도착한 이전 미리보기 결과는 버립니다.
+- 개최 전 확인 다이얼로그로 게시판·대회명·일정과 봇이 자동으로 하는 일을 확인받습니다. 게시 시도마다 요청 ID를 만들고 결과를 모르는 실패 뒤 다시 누르면 같은 ID를 재사용합니다(서버가 Discord nonce로 몇 분 안의 중복 게시를 막음). 성공하면 폼을 비우고 SnackBar에서 디스코드 공지글을 열 수 있습니다.
+- 400·404·502 실패는 서버 안내 문구를 그대로 보여주고, API 호출은 `ErrorInterceptor.silentErrorKey`로 전역 SnackBar를 끕니다.
+
+### 우승 칭호 부여 (`/competition-winners`)
+
+- 대회 매니저가 현재 채팅방 재적 회원(Discord ID)에게 대회명·대회 개최 날짜로 우승 칭호를 부여합니다. WebUI_BE `/api/competitions/winners`(Competition.Winners)를 사용합니다.
+- 게임 버전은 폼의 `CompetitionWinnerForm.version`(= `GameVersionType.s2`, 친선전의 버전 type)을 쓰며 문자열로 적지 않습니다. 화면에는 읽기 전용으로 보여줍니다.
+- 대회 개최 날짜는 오늘까지(과거 5년) 고를 수 있고, 시각이 아닌 날짜라 UTC로 바꾸지 않고 `yyyy-MM-dd`로 보냅니다.
+- 같은 대회로 여러 명에게 연달아 부여할 수 있도록, 성공하면 우승자 ID만 비우고 대회명·날짜는 남깁니다. 비재적 회원(404)·중복 부여(409)는 폼 아래에 안내합니다.
+- 오른쪽(좁은 화면에서는 아래)에 현재 채팅방의 부여 이력(대회 날짜 최신순)을 페이지 단위로 보여줍니다.
 
 ## 알림 (`feature/notification`)
 

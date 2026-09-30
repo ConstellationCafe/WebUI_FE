@@ -17,8 +17,11 @@ import 'package:constellation_cafe/feature/auth/state/login_status.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
+import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
+import 'package:constellation_cafe/feature/modules/competition/notifier/competition_permission_notifier.dart';
 
 import '../../support/fake_backend.dart';
+import '../modules/competition/support/fake_competition_repository.dart';
 import 'support/fake_auth_service.dart';
 
 void main() {
@@ -135,6 +138,9 @@ void main() {
           jwtApiProvider.overrideWithValue(Jwt(auth)),
           loginApiProvider.overrideWithValue(Login(auth)),
           academyApiProvider.overrideWithValue(AcademyApi(dio: backend.dio)),
+          competitionRepositoryProvider.overrideWithValue(
+            FakeCompetitionRepository(),
+          ),
         ],
       );
     });
@@ -159,6 +165,10 @@ void main() {
       expect(auth.meCalls, 1);
       expect(container.read(currentUserStateProvider).userId, '123');
       expect(container.read(academyPermissionProvider).isInitialized, isTrue);
+      expect(
+        container.read(competitionPermissionProvider).isInitialized,
+        isTrue,
+      );
     });
 
     test('refresh 힌트가 있으면 토큰을 갱신한 뒤 다시 확인한다', () async {

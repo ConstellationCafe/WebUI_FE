@@ -19,10 +19,12 @@ import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_not
 import 'package:constellation_cafe/feature/guild_select/pages/guild_select.dart';
 import 'package:constellation_cafe/feature/guild_select/widgets/guild_tile/fallback_guild_icon.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
+import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
 
 import '../../support/fake_academy_api.dart';
 import '../../support/screen.dart';
 import '../auth/support/fake_auth_service.dart';
+import '../modules/competition/support/fake_competition_repository.dart';
 import 'support/guild_fixtures.dart';
 
 /// 위젯 테스트용 채팅방 API. HTTP 계약은 guild_select_api_test에서 검증한다.
@@ -66,6 +68,9 @@ class GuildHarness {
         jwtApiProvider.overrideWithValue(Jwt(auth)),
         loginApiProvider.overrideWithValue(Login(auth)),
         academyApiProvider.overrideWithValue(FakeAcademyApi()),
+        competitionRepositoryProvider.overrideWithValue(
+          FakeCompetitionRepository(),
+        ),
       ],
     );
   }
