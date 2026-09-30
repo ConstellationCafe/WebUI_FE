@@ -103,6 +103,7 @@ abstract final class CompetitionStrings {
 
   static String pageIndicator(int page, int totalPages) =>
       '$page / $totalPages';
+
   /// 이력 한 줄의 보조 설명: "별 (123)" 다음 줄에 "S2 · 2026-09-30"
   static String winnerSubtitle({
     required String name,

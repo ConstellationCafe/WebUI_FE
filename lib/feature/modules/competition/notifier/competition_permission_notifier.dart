@@ -20,7 +20,9 @@ class CompetitionPermissionNotifier extends _$CompetitionPermissionNotifier {
     final request = ++_request;
     state = state.copyWith(isLoading: true);
     try {
-      final isManager = await ref.read(competitionRepositoryProvider).isManager();
+      final isManager = await ref
+          .read(competitionRepositoryProvider)
+          .isManager();
       if (request != _request) return;
       state = CompetitionPermissionState(
         isInitialized: true,
