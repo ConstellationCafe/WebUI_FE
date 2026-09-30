@@ -504,7 +504,8 @@ class _CompetitionFormState extends State<CompetitionForm> {
         message ?? CompetitionStrings.noBoards,
       CompetitionFailureReason.discord =>
         message ?? CompetitionStrings.discordFailed,
-      CompetitionFailureReason.unknown || null => CompetitionStrings.postUnknown,
+      CompetitionFailureReason.unknown ||
+      null => CompetitionStrings.postUnknown,
     };
   }
 }

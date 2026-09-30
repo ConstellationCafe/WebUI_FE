@@ -49,7 +49,8 @@ abstract final class CompetitionStrings {
   static const confirmName = '대회명';
   static const confirmDeadline = '접수 마감';
   static const confirmStart = '진행 시작';
-  static const confirmJoinable = '게시하면 참가 이모지, 참가자 역할, 대회방이 자동으로 만들어지고 '
+  static const confirmJoinable =
+      '게시하면 참가 이모지, 참가자 역할, 대회방이 자동으로 만들어지고 '
       '채팅방 알림이 예약됩니다.';
   static const confirmNotJoinable = '게시하면 대회 일정 안내와 채팅방 알림이 예약됩니다.';
   static const confirmNoEdit = '게시 후 내용을 고치면 일정은 다시 등록되지 않습니다.';
@@ -71,7 +72,8 @@ abstract final class CompetitionStrings {
   static const boardRequired = '게시판을 선택하세요.';
   static const invalid = '입력한 내용을 확인해 주세요.';
   static const discordFailed = '디스코드에 공지를 게시하지 못했습니다. 잠시 후 다시 시도해 주세요.';
-  static const postUnknown = '게시 결과를 확인할 수 없습니다. 게시판을 확인한 뒤 다시 누르면 '
+  static const postUnknown =
+      '게시 결과를 확인할 수 없습니다. 게시판을 확인한 뒤 다시 누르면 '
       '몇 분 안에는 중복 게시되지 않습니다.';
 
   static String tooLong(int max) => '$max자 이하로 입력하세요.';
