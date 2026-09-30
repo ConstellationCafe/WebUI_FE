@@ -1,7 +1,7 @@
 # 기능별 구현 노트
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-29  
+> 마지막 검토일: 2026-09-30
 > 상위 문서: [README](../README.md) · 관련: [architecture](architecture.md), [테스트](testing.md)
 
 API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명세서`와 [WebUI_BE API 개요](https://github.com/ConstellationCafe/WebUI_BE/blob/develope/docs/api.md)를 기준으로 합니다.
@@ -18,12 +18,20 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 
 | 메뉴 | 표시 조건 |
 |---|---|
-| ChatBot, Shadowverse | 항상 |
-| Academy | Academy 권한 조회(`/api/academy/me/permissions`)가 끝난 뒤. 교사 관리는 학원장, 학생 관리는 교사 이상 |
+| ChatBot | 현재 채팅방에 `moduleId=chatbot` 설정이 있음 |
+| Shadowverse | 현재 채팅방에 `moduleId=shadowverse` 설정이 있음 |
+| Academy | `network_operations.config.add_on.academy`가 객체이고, Academy 권한 조회(`/api/academy/me/permissions`)가 끝난 뒤 교사 이상. 교사 관리는 학원장 |
 | ERP(포인트·벌점·알림 발행) | `UserRole.admin` (`ROLE_ADMIN`) |
-| 대회(대회 개최) | 대회 권한 조회(`/api/competitions/me/permissions`)의 `manager`. 현재 채팅방에서 `대회 매니저`가 들어간 역할이 있거나 서버장 |
+| 대회(대회 개최·우승 칭호) | `network_operations.config.add_on.competition`이 객체이고, 대회 권한 조회(`/api/competitions/me/permissions`)의 `manager`. 현재 채팅방에서 `대회 매니저`가 들어간 역할이 있거나 서버장 |
 
 메뉴 숨김은 편의 기능이며, 권한 최종 판단은 서버가 합니다.
+
+- 로그인 후 채팅방 선택을 마친 경우에만 `ModuleConfigNotifier`가 `/api/me/module-configs`를 먼저 조회합니다. 서버는 JWT 필터의 `botId`로 config DB를 조회하고 원본 JSON 대신 `moduleId`, 메뉴용 `addOns` 이름만 반환합니다.
+- 활성화된 아카데미·대회에 한해서 권한을 조회합니다. 모듈이 없으면 관련 권한 API를 호출하지 않습니다. ERP는 기존 서버장 권한을 따릅니다.
+- 조회 중에는 모듈 메뉴를 숨기고 진행 표시를, 설정이 비어 있으면 빈 상태 안내를 보여줍니다. 모듈 조회 실패는 메뉴 영역의 오류 안내와 다시 시도로 처리합니다.
+- 채팅방 변경·로그아웃은 메뉴 설정과 두 권한을 모두 비웁니다. 늦게 완료된 이전 채팅방의 모듈·권한 응답은 버립니다.
+
+화면 검증 예시(테스트 응답, 2026-09-30): [모든 모듈 활성·권한 있음](images/module-config-all.png), [ChatBot만 활성](images/module-config-chatbot.png), [모바일 설정 조회 실패·재시도](images/module-config-error.png).
 
 ## ChatBot 저장소 (`feature/modules/chatbot`)
 
@@ -60,7 +68,7 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 ## 대회 개최 (`feature/modules/competition`)
 
 - `/competitions`(대회 매니저, 대회 메뉴): 현재 채팅방의 대회 게시판에 평문 대회 공지를 게시합니다. WebUI_BE `/api/competitions/**`를 사용합니다.
-- 권한은 아카데미처럼 로그인 사용자 정보를 불러올 때(채팅방 선택·변경 포함) `CompetitionPermissionNotifier`(keepAlive)가 조회하고 로그아웃 시 비웁니다. 조회에 실패하면 메뉴를 숨깁니다.
+- 대회 모듈이 활성화된 채팅방에서는 로그인 사용자 정보를 불러올 때(채팅방 선택·변경 포함) `CompetitionPermissionNotifier`(keepAlive)가 권한을 조회하고 로그아웃 시 비웁니다. 조회에 실패하면 메뉴를 숨깁니다.
 - 웹은 **글만 씁니다**. 서버가 봇 계정으로 디스코드에 게시하면, 빗자루 봇이 기존처럼 글을 감지해 대회 등록(스케줄러), 참가 이모지·참가자 역할·대회방 생성, WebUI 알림 발행을 처리합니다. 참가 이모지 등은 `joinable` 게시판(`inner_board`)에서만 만들어지며, 화면이 게시판을 고를 때 안내합니다.
 - 입력: 제목, 참가 방법, 진행 형식, 접수 시작·마감, 진행 시작(브라우저 현지 시각을 UTC로 전송), 선택 우승 상품·추가 입력란(각 10개). 진행 기간은 항상 `시작 ~ 종료시까지`로 게시됩니다.
 - 입력이 멈추면(600ms) `POST /notices/preview`로 서버가 조립한 **실제 게시글**과 봇 파서 규칙 위반 안내를 미리보기에 보여줍니다. 늦게 도착한 이전 미리보기 결과는 버립니다.

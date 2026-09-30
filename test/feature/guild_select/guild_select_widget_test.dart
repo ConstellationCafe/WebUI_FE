@@ -18,10 +18,12 @@ import 'package:constellation_cafe/feature/guild_select/domain/guild.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:constellation_cafe/feature/guild_select/pages/guild_select.dart';
 import 'package:constellation_cafe/feature/guild_select/widgets/guild_tile/fallback_guild_icon.dart';
+import 'package:constellation_cafe/feature/module_config/data/repository/module_config_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
 
 import '../../support/fake_academy_api.dart';
+import '../../support/fake_module_config_repository.dart';
 import '../../support/screen.dart';
 import '../auth/support/fake_auth_service.dart';
 import '../modules/competition/support/fake_competition_repository.dart';
@@ -68,6 +70,9 @@ class GuildHarness {
         jwtApiProvider.overrideWithValue(Jwt(auth)),
         loginApiProvider.overrideWithValue(Login(auth)),
         academyApiProvider.overrideWithValue(FakeAcademyApi()),
+        moduleConfigRepositoryProvider.overrideWithValue(
+          FakeModuleConfigRepository(),
+        ),
         competitionRepositoryProvider.overrideWithValue(
           FakeCompetitionRepository(),
         ),

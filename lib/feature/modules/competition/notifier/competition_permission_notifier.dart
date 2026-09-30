@@ -18,18 +18,18 @@ class CompetitionPermissionNotifier extends _$CompetitionPermissionNotifier {
   /// 조회에 실패하면 권한 없음으로 두어 메뉴를 숨긴다.
   Future<void> load() async {
     final request = ++_request;
-    state = state.copyWith(isLoading: true);
+    state = const CompetitionPermissionState(isLoading: true);
     try {
       final isManager = await ref
           .read(competitionRepositoryProvider)
           .isManager();
-      if (request != _request) return;
+      if (!ref.mounted || request != _request) return;
       state = CompetitionPermissionState(
         isInitialized: true,
         isManager: isManager,
       );
     } catch (_) {
-      if (request != _request) return;
+      if (!ref.mounted || request != _request) return;
       state = const CompetitionPermissionState(isInitialized: true);
     }
   }

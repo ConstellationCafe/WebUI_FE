@@ -1,7 +1,7 @@
 # WebUI_FE Architecture
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-29  
+> 마지막 검토일: 2026-09-30
 > 상위 문서: [README](../README.md) · 관련: [기능별 구현 노트](features.md), [디자인 시스템](design-system.md)
 
 ## 1. 시스템 구성
@@ -31,6 +31,7 @@ lib/
 └── feature/
     ├── auth/               # 로그인, 로그인 상태 확인
     ├── guild_select/       # 채팅방 선택
+    ├── module_config/      # 메뉴용 모듈 설정·활성 기능 권한 조회
     ├── home/               # 공통 frame(앱바, drawer, 메뉴, 프로필), 홈 콘텐츠
     ├── profile/            # 프로필, 본인 포인트 내역
     ├── notification/       # 알림 종·패널, 관리자 알림 발행
@@ -67,7 +68,7 @@ lib/
 
 - notifier는 `@riverpod` code generation을 씁니다. 같은 feature 안에서 수동 provider와 섞지 않습니다. (API·repository 인스턴스를 만드는 `Provider`는 상태가 없는 의존성 주입용이라 예외입니다.)
 - 공용 DB 편집기도 `dbEditorProvider(repository)`(`shared/notifier/db_editor`)가 상태를 소유합니다. 표 데이터(`DBModel`)는 셀 입력마다 전체를 다시 그리지 않도록 가변 모델로 두고, 목록·선택·편집 모드가 바뀔 때 `revision`을 올려 알립니다.
-- `keepAlive`는 화면을 오가도 유지해야 하는 상태(로그인 사용자, 선택한 채팅방, 채팅방 목록, 아카데미 권한, 회원증)에만 쓰고 이유를 주석으로 남깁니다. 브라우저 새로고침은 앱을 다시 시작하므로 keepAlive로 유지되지 않습니다.
+- `keepAlive`는 화면을 오가도 유지해야 하는 상태(로그인 사용자, 선택한 채팅방, 채팅방 목록, 메뉴용 모듈 설정, 아카데미·대회 권한, 회원증)에만 쓰고 이유를 주석으로 남깁니다. 브라우저 새로고침은 앱을 다시 시작하므로 keepAlive로 유지되지 않습니다. 메뉴 설정은 단순 loading/error/data이므로 `AsyncValue<ModuleAvailability>`로 관리하며, 채팅방 변경·로그아웃 때 권한과 함께 비웁니다.
 - build에 필요한 값은 `ref.watch`, event handler에서는 `ref.read`, 상태 변화에 따른 side effect(SnackBar, navigation)는 `ref.listen`으로 처리합니다.
 - 단순 비동기 로딩은 `AsyncValue`, form·pagination·submitting처럼 상태가 여럿이면 `@freezed` state model을 씁니다. 모든 상태를 `isLoading` 하나로 표현하지 않습니다.
 - auto-dispose가 기본이며, 화면 종료 뒤 늦게 끝난 요청은 상태를 바꾸지 않습니다.

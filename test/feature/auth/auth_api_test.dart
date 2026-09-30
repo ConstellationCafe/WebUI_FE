@@ -15,6 +15,10 @@ import 'package:constellation_cafe/feature/auth/notifier/current_user_state_noti
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
 import 'package:constellation_cafe/feature/auth/state/login_status.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
+import 'package:constellation_cafe/feature/module_config/data/api/module_config_api.dart';
+import 'package:constellation_cafe/feature/module_config/data/repository/module_config_repository.dart';
+import 'package:constellation_cafe/feature/module_config/data/repository/module_config_repository_provider.dart';
+import 'package:constellation_cafe/feature/module_config/notifier/module_config_notifier.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
@@ -130,6 +134,18 @@ void main() {
       backend = FakeBackend();
       backend.reply(
         'GET',
+        '/api/me/module-configs',
+        ok([
+          {'moduleId': 'chatbot', 'addOns': []},
+          {
+            'moduleId': 'network_operations',
+            'addOns': ['academy', 'competition'],
+          },
+          {'moduleId': 'shadowverse', 'addOns': []},
+        ]),
+      );
+      backend.reply(
+        'GET',
         '/api/academy/me/permissions',
         ok({'admin': false, 'academies': []}),
       );
@@ -138,6 +154,9 @@ void main() {
           jwtApiProvider.overrideWithValue(Jwt(auth)),
           loginApiProvider.overrideWithValue(Login(auth)),
           academyApiProvider.overrideWithValue(AcademyApi(dio: backend.dio)),
+          moduleConfigRepositoryProvider.overrideWithValue(
+            ModuleConfigRepository(api: ModuleConfigApi(dio: backend.dio)),
+          ),
           competitionRepositoryProvider.overrideWithValue(
             FakeCompetitionRepository(),
           ),
@@ -165,6 +184,10 @@ void main() {
       expect(auth.meCalls, 1);
       expect(container.read(currentUserStateProvider).userId, '123');
       expect(container.read(academyPermissionProvider).isInitialized, isTrue);
+      expect(backend.calls, [
+        'GET /api/me/module-configs',
+        'GET /api/academy/me/permissions',
+      ]);
       expect(
         container.read(competitionPermissionProvider).isInitialized,
         isTrue,
@@ -184,6 +207,7 @@ void main() {
       expect(auth.refreshCalls, 1);
       expect(auth.checkCalls, 2);
       expect(auth.meCalls, 0, reason: '채팅방 선택 전에는 /auth/me를 부르지 않는다');
+      expect(backend.calls, isEmpty, reason: '채팅방 선택 전에는 모듈·권한 API를 부르지 않는다');
     });
 
     test('401 응답에서 refresh가 실패하면 로그아웃 상태가 된다', () async {
@@ -218,6 +242,7 @@ void main() {
       expect(auth.logoutCalls, 1);
       expect(container.read(currentUserStateProvider).userId, isEmpty);
       expect(container.read(currentGuildStateProvider).guildId, isEmpty);
+      expect(container.read(moduleConfigProvider).value?.isEmpty, isTrue);
     });
 
     test('강제 로그아웃 뒤 recheck는 서버를 다시 호출하지 않는다', () async {

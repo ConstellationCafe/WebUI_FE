@@ -52,7 +52,7 @@ final class CompetitionPermissionNotifierProvider
 }
 
 String _$competitionPermissionNotifierHash() =>
-    r'2edc25f2d3f76d5d79de8d182084c7fd4c53be6f';
+    r'1a5ca721271b6927476643fb32f26cd80b9f58f9';
 
 /// 대회 메뉴 표시 여부. 아카데미 권한처럼 화면을 오가도 유지하고,
 /// 로그인 사용자 정보를 불러오거나 채팅방을 바꿀 때 다시 조회한다(CurrentUserStateNotifier).

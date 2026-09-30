@@ -8,12 +8,20 @@ import 'package:constellation_cafe/feature/modules/competition/domain/model/comp
 /// widget 테스트용 대회 repository. 네트워크 없이 등록한 값을 돌려준다.
 class FakeCompetitionRepository implements CompetitionRepository {
   bool manager = false;
+  int permissionCalls = 0;
+  Object? permissionError;
+  Future<bool>? pendingPermission;
 
   @override
   CompetitionApi get api => throw UnimplementedError();
 
   @override
-  Future<bool> isManager() async => manager;
+  Future<bool> isManager() async {
+    permissionCalls++;
+    final error = permissionError;
+    if (error != null) throw error;
+    return pendingPermission ?? manager;
+  }
 
   @override
   Future<List<CompetitionBoard>> getBoards() async => const [];
