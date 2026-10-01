@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 
 class StatusSummaryItem extends StatelessWidget {
   final String label;
@@ -37,7 +38,7 @@ class StatusSummaryItem extends StatelessWidget {
               Text(label, style: theme.textTheme.bodyMedium),
               const SizedBox(height: ConstPadding.tinyPadding),
               Text(
-                '$count명',
+                AcademyStrings.peopleCount(count),
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),

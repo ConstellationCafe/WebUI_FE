@@ -1,13 +1,22 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:constellation_cafe/core/network/discordBot/Translator.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
+import 'package:constellation_cafe/core/network/discord_bot/translator.dart';
 
+import '../../domain/model/student_status/student_status_form.dart';
+import '../../domain/type/student_status_type.dart';
 import '../dto/request/status_query_request.dart';
 import '../dto/response/student_status_list_response.dart';
 import '../dto/response/student_status_response.dart';
 
-import '../../domain/model/student_status_form.dart';
-import '../../domain/type/student_status_type.dart';
+final studentStatusApiProvider = Provider((ref) {
+  final dio = ref.watch(dioProvider);
+  return StudentStatusApi(
+    translator: ref.watch(apiTranslatorProvider),
+    dio: dio,
+  );
+});
 
 class StudentStatusApi {
   static const base = String.fromEnvironment('BACKEND_URI');
@@ -22,7 +31,7 @@ class StudentStatusApi {
     int? classId,
   }) async {
     final response = await dio.get(
-      '$base/api/academy/student-status/options',
+      '$base/api/academy/students/options',
       queryParameters: {
         if (academyId != null) 'academyId': academyId,
         if (classId != null) 'classId': classId,
@@ -38,7 +47,7 @@ class StudentStatusApi {
     StatusQueryRequest request,
   ) async {
     final response = await dio.get(
-      '$base/api/academy/student-status',
+      '$base/api/academy/students',
       queryParameters: request.toJson(),
     );
 

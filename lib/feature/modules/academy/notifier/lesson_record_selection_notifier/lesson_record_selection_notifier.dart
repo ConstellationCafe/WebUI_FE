@@ -1,10 +1,10 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/state/current_user_state.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_permission.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/type/student_roster_status.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
 import '../../data/api/academy_api.dart';
 import '../../data/api/lesson_record_api.dart';
 import '../../data/repository/lesson_record_repository.dart';
@@ -89,7 +89,7 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
         repository.getSubjects(academy.id),
       ).wait;
       final operatingClasses = classes
-          .where((academyClass) => academyClass.state == "운영")
+          .where((academyClass) => academyClass.isOperating)
           .toList();
       final allowedClasses = permission.isOwnerWithAcademy(academy.id)
           ? operatingClasses

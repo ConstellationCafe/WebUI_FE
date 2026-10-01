@@ -1,10 +1,11 @@
-import 'package:constellation_cafe/di/ApiProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/feature/auth/notifier/login_check_notifier.dart';
+import 'package:constellation_cafe/feature/home/constants/home_constants.dart';
+import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
+
 import 'profile_icon.dart';
 
 class ProfileMenu extends ConsumerWidget {
@@ -12,28 +13,26 @@ class ProfileMenu extends ConsumerWidget {
 
   const ProfileMenu({super.key, this.onTap});
 
-  Future<void> performLogout(BuildContext context, WidgetRef ref) async {
-    ref.read(loginCheckProvider.notifier).forceLogout();
-
-    try {
-      final loginApi = ref.read(loginApiProvider);
-      await loginApi.logout();
-    } catch (_) {}
-
-    ref.read(currentUserStateProvider.notifier).clear();
-
-    if (!context.mounted) return;
-    context.go('/login');
-  }
-
-  Future<void> route(BuildContext context, WidgetRef ref, selected) async {
+  Future<void> route(
+    BuildContext context,
+    WidgetRef ref,
+    String? selected,
+  ) async {
     if (selected == null) return;
     switch (selected) {
       case 'profile':
         context.go('/profile');
         break;
+      case 'penalties':
+        context.go('/my-penalties');
+        break;
+      case 'select':
+        context.go('/select');
+        break;
       case 'logout':
-        await performLogout(context, ref);
+        await ref.read(loginCheckProvider.notifier).logout();
+        if (!context.mounted) return;
+        context.go('/login');
         break;
     }
   }
@@ -47,7 +46,7 @@ class ProfileMenu extends ConsumerWidget {
             Overlay.of(context).context.findRenderObject() as RenderBox;
 
         final topLeft = renderBox.localToGlobal(
-          Offset(0, renderBox.size.height + 18),
+          Offset(0, renderBox.size.height + HomeConstants.profileMenuOffset),
           ancestor: overlay,
         );
         final bottomRight = renderBox.localToGlobal(
@@ -65,13 +64,25 @@ class ProfileMenu extends ConsumerWidget {
           context: context,
           position: position,
           items: const [
-            PopupMenuItem(value: 'profile', child: Text('프로필 수정')),
-            PopupMenuItem(value: 'logout', child: Text('로그아웃')),
+            PopupMenuItem(
+              value: 'profile',
+              child: Text(HomeStrings.editProfile),
+            ),
+            PopupMenuItem(
+              value: 'penalties',
+              child: Text(HomeStrings.penalties),
+            ),
+            PopupMenuItem(
+              value: 'select',
+              child: Text(HomeStrings.selectGuild),
+            ),
+            PopupMenuItem(value: 'logout', child: Text(HomeStrings.logout)),
           ],
         );
+        if (!context.mounted) return;
         await route(context, ref, selected);
       },
-      child: ProfileIcon(),
+      child: const ProfileIcon(),
     );
   }
 }

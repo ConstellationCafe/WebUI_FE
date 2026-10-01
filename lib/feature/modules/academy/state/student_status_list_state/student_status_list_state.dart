@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/model/status_query/status_query.dart';
+import '../../domain/model/status_shared/status_query.dart';
 import '../../domain/model/student.dart';
-import '../../domain/model/student_status_list/student_status_list.dart';
+import '../../domain/model/student_status/student_status_list.dart';
 import '../../domain/type/student_roster_status.dart';
 
 part 'student_status_list_state.freezed.dart';

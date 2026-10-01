@@ -1,9 +1,10 @@
-import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../constants/home_constants.dart';
+import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
+import 'package:constellation_cafe/feature/home/constants/home_constants.dart';
+import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
 
 class MainAppBar extends ConsumerWidget {
   final bool showMenuButton;
@@ -30,7 +31,7 @@ class MainAppBar extends ConsumerWidget {
                     Icons.menu,
                     size: HomeConstants.mainAppBarMenuIconSize,
                   ),
-                  tooltip: 'Menu',
+                  tooltip: HomeStrings.menu,
                 );
               },
             )
@@ -51,6 +52,11 @@ class MainAppBar extends ConsumerWidget {
                   height: HomeConstants.mainAppBarGuildIconSize,
                   fit: BoxFit.cover,
                   filterQuality: FilterQuality.high,
+                  // 채팅방 아이콘이 없거나 깨지면 같은 크기의 기본 아이콘을 보여준다.
+                  errorBuilder: (_, _, _) => const Icon(
+                    Icons.forum_outlined,
+                    size: HomeConstants.mainAppBarGuildIconSize,
+                  ),
                 ),
               ),
             ),

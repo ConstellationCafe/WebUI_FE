@@ -1,9 +1,11 @@
 import 'package:constellation_cafe/feature/modules/academy/domain/type/status_type.dart';
 
+import '../../constants/academy_strings.dart';
+
 enum StudentStatusType implements StatusType {
-  graduation('졸업', 'GRADUATED'),
-  expulsion('퇴학', 'EXPELLED'),
-  withdrawal('자퇴', 'WITHDRAWN');
+  graduation(AcademyStrings.graduated, 'GRADUATED'),
+  expulsion(AcademyStrings.expelled, 'EXPELLED'),
+  withdrawal(AcademyStrings.withdrawn, 'WITHDRAWN');
 
   @override
   final String label;

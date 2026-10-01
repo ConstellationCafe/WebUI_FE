@@ -1,16 +1,17 @@
-import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_record/lesson_record_filter/subject_dropdown.dart';
-import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_record/lesson_record_filter/time_dropdown.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_constants.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_class.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 
-import '../../../constants/academy_constants.dart';
-import '../../../domain/model/academy.dart';
-import '../../../domain/model/academy_class.dart';
-import '../../../domain/model/subject.dart';
 import 'academy_dropdown.dart';
 import 'class_dropdown.dart';
 import 'date_field.dart';
+import 'subject_dropdown.dart';
+import 'time_dropdown.dart';
 
 class LessonRecordFilter extends StatelessWidget {
   final List<Academy> academies;
@@ -113,14 +114,14 @@ class LessonRecordFilter extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: isLoading ? null : onReset,
-              child: const Text('초기화'),
+              child: const Text(AcademyStrings.reset),
             ),
 
             const SizedBox(width: ConstPadding.smallPadding),
 
             ElevatedButton(
               onPressed: isLoading ? null : onSearch,
-              child: const Text('조회'),
+              child: const Text(AcademyStrings.search),
             ),
           ],
         ),

@@ -11,33 +11,31 @@ part of 'membership_state.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$MembershipState {
 
- bool get isLoading; String get username; String? get uid1; String? get uid2; String? get role; String get coin; String? get s1Data; String? get s2Data; String? get guild; String get joinAt; String get avatar;
+ bool get isLoading; bool get hasError; String get username; String? get uid1; String? get uid2; String? get role; String get coin; String? get s1Data; String? get s2Data; String? get guild; String get joinAt; String get avatar;/// 서버에 저장된 값. 입력값과 비교해 바뀐 항목만 저장한다.
+ String? get savedUid1; String? get savedUid2; String? get savedGuild;
 /// Create a copy of MembershipState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $MembershipStateCopyWith<MembershipState> get copyWith => _$MembershipStateCopyWithImpl<MembershipState>(this as MembershipState, _$identity);
 
-  /// Serializes this MembershipState to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MembershipState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.username, username) || other.username == username)&&(identical(other.uid1, uid1) || other.uid1 == uid1)&&(identical(other.uid2, uid2) || other.uid2 == uid2)&&(identical(other.role, role) || other.role == role)&&(identical(other.coin, coin) || other.coin == coin)&&(identical(other.s1Data, s1Data) || other.s1Data == s1Data)&&(identical(other.s2Data, s2Data) || other.s2Data == s2Data)&&(identical(other.guild, guild) || other.guild == guild)&&(identical(other.joinAt, joinAt) || other.joinAt == joinAt)&&(identical(other.avatar, avatar) || other.avatar == avatar));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MembershipState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.username, username) || other.username == username)&&(identical(other.uid1, uid1) || other.uid1 == uid1)&&(identical(other.uid2, uid2) || other.uid2 == uid2)&&(identical(other.role, role) || other.role == role)&&(identical(other.coin, coin) || other.coin == coin)&&(identical(other.s1Data, s1Data) || other.s1Data == s1Data)&&(identical(other.s2Data, s2Data) || other.s2Data == s2Data)&&(identical(other.guild, guild) || other.guild == guild)&&(identical(other.joinAt, joinAt) || other.joinAt == joinAt)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.savedUid1, savedUid1) || other.savedUid1 == savedUid1)&&(identical(other.savedUid2, savedUid2) || other.savedUid2 == savedUid2)&&(identical(other.savedGuild, savedGuild) || other.savedGuild == savedGuild));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,username,uid1,uid2,role,coin,s1Data,s2Data,guild,joinAt,avatar);
+int get hashCode => Object.hash(runtimeType,isLoading,hasError,username,uid1,uid2,role,coin,s1Data,s2Data,guild,joinAt,avatar,savedUid1,savedUid2,savedGuild);
 
 @override
 String toString() {
-  return 'MembershipState(isLoading: $isLoading, username: $username, uid1: $uid1, uid2: $uid2, role: $role, coin: $coin, s1Data: $s1Data, s2Data: $s2Data, guild: $guild, joinAt: $joinAt, avatar: $avatar)';
+  return 'MembershipState(isLoading: $isLoading, hasError: $hasError, username: $username, uid1: $uid1, uid2: $uid2, role: $role, coin: $coin, s1Data: $s1Data, s2Data: $s2Data, guild: $guild, joinAt: $joinAt, avatar: $avatar, savedUid1: $savedUid1, savedUid2: $savedUid2, savedGuild: $savedGuild)';
 }
 
 
@@ -48,7 +46,7 @@ abstract mixin class $MembershipStateCopyWith<$Res>  {
   factory $MembershipStateCopyWith(MembershipState value, $Res Function(MembershipState) _then) = _$MembershipStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, String username, String? uid1, String? uid2, String? role, String coin, String? s1Data, String? s2Data, String? guild, String joinAt, String avatar
+ bool isLoading, bool hasError, String username, String? uid1, String? uid2, String? role, String coin, String? s1Data, String? s2Data, String? guild, String joinAt, String avatar, String? savedUid1, String? savedUid2, String? savedGuild
 });
 
 
@@ -65,9 +63,10 @@ class _$MembershipStateCopyWithImpl<$Res>
 
 /// Create a copy of MembershipState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? username = null,Object? uid1 = freezed,Object? uid2 = freezed,Object? role = freezed,Object? coin = null,Object? s1Data = freezed,Object? s2Data = freezed,Object? guild = freezed,Object? joinAt = null,Object? avatar = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? hasError = null,Object? username = null,Object? uid1 = freezed,Object? uid2 = freezed,Object? role = freezed,Object? coin = null,Object? s1Data = freezed,Object? s2Data = freezed,Object? guild = freezed,Object? joinAt = null,Object? avatar = null,Object? savedUid1 = freezed,Object? savedUid2 = freezed,Object? savedGuild = freezed,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,hasError: null == hasError ? _self.hasError : hasError // ignore: cast_nullable_to_non_nullable
 as bool,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,uid1: freezed == uid1 ? _self.uid1 : uid1 // ignore: cast_nullable_to_non_nullable
 as String?,uid2: freezed == uid2 ? _self.uid2 : uid2 // ignore: cast_nullable_to_non_nullable
@@ -78,7 +77,10 @@ as String?,s2Data: freezed == s2Data ? _self.s2Data : s2Data // ignore: cast_nul
 as String?,guild: freezed == guild ? _self.guild : guild // ignore: cast_nullable_to_non_nullable
 as String?,joinAt: null == joinAt ? _self.joinAt : joinAt // ignore: cast_nullable_to_non_nullable
 as String,avatar: null == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
-as String,
+as String,savedUid1: freezed == savedUid1 ? _self.savedUid1 : savedUid1 // ignore: cast_nullable_to_non_nullable
+as String?,savedUid2: freezed == savedUid2 ? _self.savedUid2 : savedUid2 // ignore: cast_nullable_to_non_nullable
+as String?,savedGuild: freezed == savedGuild ? _self.savedGuild : savedGuild // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -163,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  String username,  String? uid1,  String? uid2,  String? role,  String coin,  String? s1Data,  String? s2Data,  String? guild,  String joinAt,  String avatar)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool hasError,  String username,  String? uid1,  String? uid2,  String? role,  String coin,  String? s1Data,  String? s2Data,  String? guild,  String joinAt,  String avatar,  String? savedUid1,  String? savedUid2,  String? savedGuild)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MembershipState() when $default != null:
-return $default(_that.isLoading,_that.username,_that.uid1,_that.uid2,_that.role,_that.coin,_that.s1Data,_that.s2Data,_that.guild,_that.joinAt,_that.avatar);case _:
+return $default(_that.isLoading,_that.hasError,_that.username,_that.uid1,_that.uid2,_that.role,_that.coin,_that.s1Data,_that.s2Data,_that.guild,_that.joinAt,_that.avatar,_that.savedUid1,_that.savedUid2,_that.savedGuild);case _:
   return orElse();
 
 }
@@ -184,10 +186,10 @@ return $default(_that.isLoading,_that.username,_that.uid1,_that.uid2,_that.role,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  String username,  String? uid1,  String? uid2,  String? role,  String coin,  String? s1Data,  String? s2Data,  String? guild,  String joinAt,  String avatar)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool hasError,  String username,  String? uid1,  String? uid2,  String? role,  String coin,  String? s1Data,  String? s2Data,  String? guild,  String joinAt,  String avatar,  String? savedUid1,  String? savedUid2,  String? savedGuild)  $default,) {final _that = this;
 switch (_that) {
 case _MembershipState():
-return $default(_that.isLoading,_that.username,_that.uid1,_that.uid2,_that.role,_that.coin,_that.s1Data,_that.s2Data,_that.guild,_that.joinAt,_that.avatar);case _:
+return $default(_that.isLoading,_that.hasError,_that.username,_that.uid1,_that.uid2,_that.role,_that.coin,_that.s1Data,_that.s2Data,_that.guild,_that.joinAt,_that.avatar,_that.savedUid1,_that.savedUid2,_that.savedGuild);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +206,10 @@ return $default(_that.isLoading,_that.username,_that.uid1,_that.uid2,_that.role,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  String username,  String? uid1,  String? uid2,  String? role,  String coin,  String? s1Data,  String? s2Data,  String? guild,  String joinAt,  String avatar)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool hasError,  String username,  String? uid1,  String? uid2,  String? role,  String coin,  String? s1Data,  String? s2Data,  String? guild,  String joinAt,  String avatar,  String? savedUid1,  String? savedUid2,  String? savedGuild)?  $default,) {final _that = this;
 switch (_that) {
 case _MembershipState() when $default != null:
-return $default(_that.isLoading,_that.username,_that.uid1,_that.uid2,_that.role,_that.coin,_that.s1Data,_that.s2Data,_that.guild,_that.joinAt,_that.avatar);case _:
+return $default(_that.isLoading,_that.hasError,_that.username,_that.uid1,_that.uid2,_that.role,_that.coin,_that.s1Data,_that.s2Data,_that.guild,_that.joinAt,_that.avatar,_that.savedUid1,_that.savedUid2,_that.savedGuild);case _:
   return null;
 
 }
@@ -216,13 +218,14 @@ return $default(_that.isLoading,_that.username,_that.uid1,_that.uid2,_that.role,
 }
 
 /// @nodoc
-@JsonSerializable()
 
-class _MembershipState implements MembershipState {
-  const _MembershipState({this.isLoading = true, required this.username, this.uid1, this.uid2, this.role, this.coin = "0", this.s1Data, this.s2Data, this.guild, required this.joinAt, required this.avatar});
-  factory _MembershipState.fromJson(Map<String, dynamic> json) => _$MembershipStateFromJson(json);
+
+class _MembershipState extends MembershipState {
+  const _MembershipState({this.isLoading = true, this.hasError = false, required this.username, this.uid1, this.uid2, this.role, this.coin = "0", this.s1Data, this.s2Data, this.guild, required this.joinAt, required this.avatar, this.savedUid1, this.savedUid2, this.savedGuild}): super._();
+  
 
 @override@JsonKey() final  bool isLoading;
+@override@JsonKey() final  bool hasError;
 @override final  String username;
 @override final  String? uid1;
 @override final  String? uid2;
@@ -233,6 +236,10 @@ class _MembershipState implements MembershipState {
 @override final  String? guild;
 @override final  String joinAt;
 @override final  String avatar;
+/// 서버에 저장된 값. 입력값과 비교해 바뀐 항목만 저장한다.
+@override final  String? savedUid1;
+@override final  String? savedUid2;
+@override final  String? savedGuild;
 
 /// Create a copy of MembershipState
 /// with the given fields replaced by the non-null parameter values.
@@ -240,23 +247,20 @@ class _MembershipState implements MembershipState {
 @pragma('vm:prefer-inline')
 _$MembershipStateCopyWith<_MembershipState> get copyWith => __$MembershipStateCopyWithImpl<_MembershipState>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$MembershipStateToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MembershipState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.username, username) || other.username == username)&&(identical(other.uid1, uid1) || other.uid1 == uid1)&&(identical(other.uid2, uid2) || other.uid2 == uid2)&&(identical(other.role, role) || other.role == role)&&(identical(other.coin, coin) || other.coin == coin)&&(identical(other.s1Data, s1Data) || other.s1Data == s1Data)&&(identical(other.s2Data, s2Data) || other.s2Data == s2Data)&&(identical(other.guild, guild) || other.guild == guild)&&(identical(other.joinAt, joinAt) || other.joinAt == joinAt)&&(identical(other.avatar, avatar) || other.avatar == avatar));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MembershipState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.hasError, hasError) || other.hasError == hasError)&&(identical(other.username, username) || other.username == username)&&(identical(other.uid1, uid1) || other.uid1 == uid1)&&(identical(other.uid2, uid2) || other.uid2 == uid2)&&(identical(other.role, role) || other.role == role)&&(identical(other.coin, coin) || other.coin == coin)&&(identical(other.s1Data, s1Data) || other.s1Data == s1Data)&&(identical(other.s2Data, s2Data) || other.s2Data == s2Data)&&(identical(other.guild, guild) || other.guild == guild)&&(identical(other.joinAt, joinAt) || other.joinAt == joinAt)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.savedUid1, savedUid1) || other.savedUid1 == savedUid1)&&(identical(other.savedUid2, savedUid2) || other.savedUid2 == savedUid2)&&(identical(other.savedGuild, savedGuild) || other.savedGuild == savedGuild));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,username,uid1,uid2,role,coin,s1Data,s2Data,guild,joinAt,avatar);
+int get hashCode => Object.hash(runtimeType,isLoading,hasError,username,uid1,uid2,role,coin,s1Data,s2Data,guild,joinAt,avatar,savedUid1,savedUid2,savedGuild);
 
 @override
 String toString() {
-  return 'MembershipState(isLoading: $isLoading, username: $username, uid1: $uid1, uid2: $uid2, role: $role, coin: $coin, s1Data: $s1Data, s2Data: $s2Data, guild: $guild, joinAt: $joinAt, avatar: $avatar)';
+  return 'MembershipState(isLoading: $isLoading, hasError: $hasError, username: $username, uid1: $uid1, uid2: $uid2, role: $role, coin: $coin, s1Data: $s1Data, s2Data: $s2Data, guild: $guild, joinAt: $joinAt, avatar: $avatar, savedUid1: $savedUid1, savedUid2: $savedUid2, savedGuild: $savedGuild)';
 }
 
 
@@ -267,7 +271,7 @@ abstract mixin class _$MembershipStateCopyWith<$Res> implements $MembershipState
   factory _$MembershipStateCopyWith(_MembershipState value, $Res Function(_MembershipState) _then) = __$MembershipStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, String username, String? uid1, String? uid2, String? role, String coin, String? s1Data, String? s2Data, String? guild, String joinAt, String avatar
+ bool isLoading, bool hasError, String username, String? uid1, String? uid2, String? role, String coin, String? s1Data, String? s2Data, String? guild, String joinAt, String avatar, String? savedUid1, String? savedUid2, String? savedGuild
 });
 
 
@@ -284,9 +288,10 @@ class __$MembershipStateCopyWithImpl<$Res>
 
 /// Create a copy of MembershipState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? username = null,Object? uid1 = freezed,Object? uid2 = freezed,Object? role = freezed,Object? coin = null,Object? s1Data = freezed,Object? s2Data = freezed,Object? guild = freezed,Object? joinAt = null,Object? avatar = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? hasError = null,Object? username = null,Object? uid1 = freezed,Object? uid2 = freezed,Object? role = freezed,Object? coin = null,Object? s1Data = freezed,Object? s2Data = freezed,Object? guild = freezed,Object? joinAt = null,Object? avatar = null,Object? savedUid1 = freezed,Object? savedUid2 = freezed,Object? savedGuild = freezed,}) {
   return _then(_MembershipState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,hasError: null == hasError ? _self.hasError : hasError // ignore: cast_nullable_to_non_nullable
 as bool,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,uid1: freezed == uid1 ? _self.uid1 : uid1 // ignore: cast_nullable_to_non_nullable
 as String?,uid2: freezed == uid2 ? _self.uid2 : uid2 // ignore: cast_nullable_to_non_nullable
@@ -297,7 +302,10 @@ as String?,s2Data: freezed == s2Data ? _self.s2Data : s2Data // ignore: cast_nul
 as String?,guild: freezed == guild ? _self.guild : guild // ignore: cast_nullable_to_non_nullable
 as String?,joinAt: null == joinAt ? _self.joinAt : joinAt // ignore: cast_nullable_to_non_nullable
 as String,avatar: null == avatar ? _self.avatar : avatar // ignore: cast_nullable_to_non_nullable
-as String,
+as String,savedUid1: freezed == savedUid1 ? _self.savedUid1 : savedUid1 // ignore: cast_nullable_to_non_nullable
+as String?,savedUid2: freezed == savedUid2 ? _self.savedUid2 : savedUid2 // ignore: cast_nullable_to_non_nullable
+as String?,savedGuild: freezed == savedGuild ? _self.savedGuild : savedGuild // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

@@ -1,4 +1,6 @@
-import '../../../../../shared/domain/entity/entity_interface.dart';
+import 'package:constellation_cafe/shared/domain/entity/entity_interface.dart';
+
+import '../../constants/point_log_columns.dart';
 
 class PointEntity extends Entity {
   String amount;
@@ -14,9 +16,9 @@ class PointEntity extends Entity {
 
   @override
   Map<String, dynamic> toJson() => {
-    '변동 금액': amount,
-    '변동 일자': at,
-    '변동 내용': description,
+    PointLogColumns.amount: amount,
+    PointLogColumns.at: at,
+    PointLogColumns.description: description,
   };
 
   factory PointEntity.init(List<Map<String, dynamic>> metadata) {

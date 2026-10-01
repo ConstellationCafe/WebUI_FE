@@ -1,10 +1,11 @@
-import 'package:constellation_cafe/shared/widgets/usage/constants/usage_constants.dart';
-import 'package:constellation_cafe/shared/widgets/usage/painter/hold_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/constants/screen_width.dart';
-import '../../../router/router_provider.dart';
+import 'package:constellation_cafe/core/constants/screen_width.dart';
+import 'package:constellation_cafe/router/router_provider.dart';
+import 'package:constellation_cafe/shared/widgets/usage/constants/usage_constants.dart';
+import 'package:constellation_cafe/shared/widgets/usage/painter/hold_painter.dart';
+
 import 'usage_content.dart';
 import 'usage_step.dart';
 
@@ -166,6 +167,12 @@ class _UsageState extends State<Usage> with RouteAware, WidgetsBindingObserver {
     await _ensureTargetVisible(targetContext);
 
     if (!mounted) {
+      return;
+    }
+
+    // 스크롤하는 동안 대상 화면이 사라졌으면 다음 frame에 다시 찾는다.
+    if (!targetContext.mounted) {
+      _scheduleShowStep();
       return;
     }
 

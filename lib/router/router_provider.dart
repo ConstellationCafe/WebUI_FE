@@ -1,30 +1,25 @@
 // flutter
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/shared/widgets/loading/PageLoading.dart';
-
-// auth
 import 'package:constellation_cafe/feature/auth/pages/login.dart';
-
-// home
 import 'package:constellation_cafe/feature/home/frame/pages/home_frame.dart';
 import 'package:constellation_cafe/feature/home/home_page/pages/home_contents.dart';
-
-// user
+import 'package:constellation_cafe/feature/modules/academy/routes/academy_routes.dart';
+import 'package:constellation_cafe/feature/modules/competition/routes/competition_routes.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/routes/penalty_routes.dart';
+import 'package:constellation_cafe/feature/modules/erp/point/routes/point_routes.dart';
+import 'package:constellation_cafe/feature/notification/routes/notification_routes.dart';
 import 'package:constellation_cafe/feature/profile/pages/profile.dart';
 import 'package:constellation_cafe/feature/profile/pages/view_point_log.dart';
-
-// contents
-import 'package:constellation_cafe/feature/modules/academy/routes/academy_routes.dart';
-import 'package:constellation_cafe/feature/modules/erp/point/routes/point_routes.dart';
+import 'package:constellation_cafe/shared/widgets/loading/page_loading.dart';
 
 import '../feature/auth/notifier/login_check_notifier.dart';
+import '../feature/auth/state/login_status.dart';
+import '../feature/guild_select/notifier/guild_list_provider.dart';
+import '../feature/guild_select/pages/guild_select.dart';
 import '../feature/modules/chatbot/routes/chatbot_routes.dart';
-import '../feature/guild_select/page/guild_select.dart';
-import '../feature/guild_select/provider/guild_list_provider.dart';
 import '../feature/modules/shadowverse/routes/shadowverse_routes.dart';
 import 'no_aim_page.dart';
 
@@ -93,6 +88,9 @@ GoRouter router(Ref ref) {
           ...shadowverseRoutes,
           ...academyRoutes,
           ...pointRoutes,
+          ...penaltyRoutes,
+          ...notificationRoutes,
+          ...competitionRoutes,
         ],
       ),
     ],
@@ -131,7 +129,8 @@ GoRouter router(Ref ref) {
         return null;
       }
 
-      final isLoggedIn = loginCheck.value ?? false;
+      final status = loginCheck.value ?? LoginStatus.loggedOut;
+      final isLoggedIn = status.isLoggedIn;
 
       /*
        * 로그인하지 않은 경우
@@ -155,6 +154,12 @@ GoRouter router(Ref ref) {
        * /home 진입
        */
       if (loc == '/home') {
+        // ADR-0001: botId(=채팅방)가 실린 토큰이 아니면 /api/**가 전부 401난다.
+        // guild_id 쿼리와 무관하게 우선 채팅방 선택을 완료시킨다.
+        if (!status.roomSelected) {
+          return '/select';
+        }
+
         final guildId = state.uri.queryParameters['guild_id'];
 
         // guild_id 자체가 없음
@@ -198,6 +203,10 @@ GoRouter router(Ref ref) {
        * /home 검증 대기용 /loading
        */
       if (loc == '/loading') {
+        if (!status.roomSelected) {
+          return '/select';
+        }
+
         final guildId = state.uri.queryParameters['guild_id'];
 
         // guild_id 없이 /loading 직접 접근

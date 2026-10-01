@@ -1,0 +1,23 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:constellation_cafe/core/keys/app_keys.dart';
+
+import 'interceptors/auth_interceptor.dart';
+import 'interceptors/error_interceptor.dart';
+import 'network_timeouts.dart';
+
+// Network
+final dioProvider = Provider<Dio>((ref) {
+  final dio = Dio(
+    BaseOptions(
+      connectTimeout: NetworkTimeouts.connect,
+      receiveTimeout: NetworkTimeouts.receive,
+    ),
+  );
+  // AuthInterceptor 먼저 추가
+  dio.interceptors.add(AuthInterceptor(dio));
+  // ErrorInterceptor 나중에 추가 (모든 에러를 캐치하기 위해)
+  dio.interceptors.add(ErrorInterceptor(AppKeys.scaffoldMessengerKey));
+  return dio;
+});

@@ -1,20 +1,19 @@
-// flutter
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// domain
-import '../domain/version/game_version_type.dart';
-// Provider
+
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/const_size.dart';
+
+import '../../constants/shadowverse_strings.dart';
+import '../constants/friendly_match_constants.dart';
 import '../domain/mode/s1/mode_type_s1.dart';
 import '../domain/mode/s2/mode_type_s2.dart';
 import '../domain/mode/type/mode_type.dart';
 import '../domain/platform/s1/platform_type_s1.dart';
 import '../domain/platform/s2/platform_type_s2.dart';
 import '../domain/platform/type/platform_type.dart';
+import '../domain/version/game_version_type.dart';
 import '../notifier/friendly_match_notifier.dart';
-
-// Const
-import 'package:constellation_cafe/core/constants/const_padding.dart';
-import 'package:constellation_cafe/core/constants/const_size.dart';
 
 class InputFriendlyMatch extends ConsumerStatefulWidget {
   final double width;
@@ -26,7 +25,6 @@ class InputFriendlyMatch extends ConsumerStatefulWidget {
 }
 
 class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _roomController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
 
@@ -60,26 +58,15 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
     });
   }
 
-  GameVersionType currentVersionType(String? value) {
-    switch (value) {
-      case "s1":
-        return GameVersionType.S1;
-      case "s2":
-        return GameVersionType.S2;
-      default:
-        return GameVersionType.S1;
-    }
-  }
-
   void _onVersionChanged(GameVersionType? value) {
     if (value != null) {
       setState(() {
         _selectedVersion = value;
         // 버전 변경 시 모드와 bo를 첫 번째 옵션으로 리셋
-        if (value == GameVersionType.S1) {
+        if (value == GameVersionType.s1) {
           _selectedMode = FriendlyMatchS1ModeType.values.first;
           _selectedPlatform = FriendlyMatchS1PlatformType.values.first;
-        } else if (value == GameVersionType.S2) {
+        } else if (value == GameVersionType.s2) {
           _selectedMode = FriendlyMatchS2ModeType.values.first;
           _selectedPlatform = FriendlyMatchS2PlatformType.values.first;
         }
@@ -99,7 +86,7 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
 
   // 현재 선택된 버전에 따라 모드 리스트 반환
   List<FriendlyMatchModeType> get _getCurrentModeList {
-    if (_selectedVersion == GameVersionType.S1) {
+    if (_selectedVersion == GameVersionType.s1) {
       return FriendlyMatchS1ModeType.values;
     } else {
       return FriendlyMatchS2ModeType.values;
@@ -108,7 +95,7 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
 
   // 현재 선택된 버전에 따라 BO 리스트 반환
   List<FriendlyMatchPlatformType> get _getCurrentPlatformList {
-    if (_selectedVersion == GameVersionType.S1) {
+    if (_selectedVersion == GameVersionType.s1) {
       return FriendlyMatchS1PlatformType.values;
     } else {
       return FriendlyMatchS2PlatformType.values;
@@ -123,26 +110,14 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
       width: widget.width,
       child: Container(
         padding: ConstPadding.largePaddingAll,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Color(
-                0xFF000D27,
-              ).withOpacity(0.12), // rgba(0, 13, 39, 0.12)
-              blurRadius: 24, // 24px 흐림
-              offset: Offset(0, 8), // 0px x, 8px y
-            ),
-          ],
-        ),
+        decoration: FriendlyMatchConstants.cardDecoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
             // Version 드롭다운
             SizedBox(
-              height: 40,
+              height: FriendlyMatchConstants.fieldHeight,
               child: DropdownButtonFormField<GameVersionType>(
                 initialValue: _selectedVersion,
                 isExpanded: true,
@@ -155,15 +130,17 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
                     )
                     .toList(),
                 onChanged: _onVersionChanged,
-                decoration: InputDecoration(labelText: 'version'),
-                style: const TextStyle(fontSize: ConstSize.bigTextSize),
+                decoration: const InputDecoration(
+                  labelText: ShadowverseStrings.versionLabel,
+                ),
+                style: const TextStyle(fontSize: ConstSize.largeTextSize),
               ),
             ),
-            const SizedBox(height: ConstSize.mediumHeight),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             // Mode 드롭다운
             SizedBox(
-              height: 40,
+              height: FriendlyMatchConstants.fieldHeight,
               child: DropdownButtonFormField<FriendlyMatchModeType>(
                 initialValue: _selectedMode,
                 items: _getCurrentModeList
@@ -182,15 +159,17 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
                     });
                   }
                 },
-                decoration: InputDecoration(labelText: 'mode'),
-                style: const TextStyle(fontSize: ConstSize.bigTextSize),
+                decoration: const InputDecoration(
+                  labelText: ShadowverseStrings.modeLabel,
+                ),
+                style: const TextStyle(fontSize: ConstSize.largeTextSize),
               ),
             ),
-            const SizedBox(height: ConstSize.mediumHeight),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             // Platform 드롭다운
             SizedBox(
-              height: 40,
+              height: FriendlyMatchConstants.fieldHeight,
               child: DropdownButtonFormField<FriendlyMatchPlatformType>(
                 initialValue: _selectedPlatform,
                 items: _getCurrentPlatformList
@@ -211,32 +190,38 @@ class _InputFriendlyMatchState extends ConsumerState<InputFriendlyMatch> {
                     });
                   }
                 },
-                decoration: InputDecoration(labelText: 'BoN'),
-                style: const TextStyle(fontSize: ConstSize.bigTextSize),
+                decoration: const InputDecoration(
+                  labelText: ShadowverseStrings.platformLabel,
+                ),
+                style: const TextStyle(fontSize: ConstSize.largeTextSize),
               ),
             ),
-            const SizedBox(height: ConstSize.mediumHeight),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             // Room 텍스트 입력
             SizedBox(
-              height: 40,
+              height: FriendlyMatchConstants.fieldHeight,
               child: TextFormField(
                 controller: _roomController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(labelText: 'Room'),
+                cursorColor: FriendlyMatchConstants.cursorColor,
+                decoration: const InputDecoration(
+                  labelText: ShadowverseStrings.roomLabel,
+                ),
                 onChanged: (value) {
                   notifier.update(roomNumber: value);
                 },
               ),
             ),
-            const SizedBox(height: ConstSize.mediumHeight),
+            const SizedBox(height: ConstSize.mediumSpacing),
 
             // Message 텍스트 입력
             TextFormField(
               controller: _messageController,
-              maxLines: 3,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(labelText: 'Message'),
+              maxLines: FriendlyMatchConstants.messageLines,
+              cursorColor: FriendlyMatchConstants.cursorColor,
+              decoration: const InputDecoration(
+                labelText: ShadowverseStrings.messageLabel,
+              ),
               onChanged: (value) {
                 notifier.update(message: value);
               },

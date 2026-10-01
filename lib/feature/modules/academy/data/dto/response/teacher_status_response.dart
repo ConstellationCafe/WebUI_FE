@@ -1,8 +1,7 @@
-import '../../../data/dto/response/option_response.dart';
+import 'package:constellation_cafe/feature/modules/academy/data/dto/response/option_response.dart';
 
 import 'academy_option_response.dart';
 import 'class_option_response.dart';
-import 'subject_option_response.dart';
 
 class TeacherStatusResponse {
   final List<AcademyOptionResponse> academies;

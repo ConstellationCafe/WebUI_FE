@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'friendly_match_state.freezed.dart';
-part 'friendly_match_state.g.dart';
 
+/// 친선전 모집 글 입력 상태.
 @freezed
 abstract class FriendlyMatchState with _$FriendlyMatchState {
   const factory FriendlyMatchState({
@@ -23,8 +23,4 @@ abstract class FriendlyMatchState with _$FriendlyMatchState {
     message: "",
     sender: "",
   );
-
-  /// JSON 역직렬화
-  factory FriendlyMatchState.fromJson(Map<String, dynamic> json) =>
-      _$FriendlyMatchStateFromJson(json);
 }

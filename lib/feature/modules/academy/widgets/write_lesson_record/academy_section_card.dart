@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
+import '../../constants/academy_constants.dart';
+
 class AcademySectionCard extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -30,13 +32,19 @@ class AcademySectionCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 32,
-                  height: 32,
+                  width: AcademyConstants.sectionIconBoxSize,
+                  height: AcademyConstants.sectionIconBoxSize,
                   decoration: BoxDecoration(
                     color: colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(
+                      AcademyConstants.sectionIconBoxRadius,
+                    ),
                   ),
-                  child: Icon(icon, size: 18, color: colorScheme.secondary),
+                  child: Icon(
+                    icon,
+                    size: AcademyConstants.sectionIconSize,
+                    color: colorScheme.secondary,
+                  ),
                 ),
                 const SizedBox(width: ConstPadding.smallPadding),
                 Expanded(

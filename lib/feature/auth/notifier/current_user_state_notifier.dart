@@ -1,14 +1,20 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
-import '../state/current_user_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:constellation_cafe/di/ApiProvider.dart';
+
+import 'package:constellation_cafe/feature/auth/data/repository/login.dart';
+
+import '../../module_config/notifier/module_config_notifier.dart';
+import '../data/dto/response/current_user_response.dart';
+import '../state/current_user_state.dart';
 
 part 'current_user_state_notifier.g.dart';
 
-@Riverpod(keepAlive: true) // 새로고침해도 유지되게
+/// 로그인한 사용자는 화면을 오가도 다시 조회하지 않도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 로그인 확인 후 다시 불러온다.)
+@Riverpod(keepAlive: true)
 class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
   bool _isInitialized = false;
+  int _request = 0;
+  Future<void>? _initialization;
 
   @override
   CurrentUserState build() {
@@ -16,17 +22,37 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
   }
 
   /// 초기화: 로그인 이후 명시적으로 호출
-  Future<void> initialize() async {
-    if (!_isInitialized) {
-      final loginApi = ref.read(loginApiProvider);
-      final me = await loginApi.me();
+  Future<void> initialize() {
+    if (_isInitialized) return Future.value();
+    final pending = _initialization;
+    if (pending != null) return pending;
+    final request = ++_request;
+    final initialization = _initialize(request);
+    _initialization = initialization;
+    return initialization.whenComplete(() {
+      if (request == _request) _initialization = null;
+    });
+  }
 
-      if (me.response != null) {
-        state = CurrentUserState.fromJson(me.response!);
-        _isInitialized = true;
-      }
-      await ref.read(academyPermissionProvider.notifier).initialize();
+  Future<void> _initialize(int request) async {
+    final me = await ref.read(loginApiProvider).me();
+    if (!ref.mounted || request != _request) return;
+    final body = me.response;
+    if (body is! Map<String, dynamic>) {
+      throw const FormatException('현재 사용자 응답 형식이 올바르지 않습니다.');
     }
+    state = CurrentUserResponse.fromJson(body).toState();
+    await ref.read(moduleConfigProvider.notifier).load();
+    if (!ref.mounted || request != _request) return;
+    _isInitialized = true;
+  }
+
+  /// ADR-0001: roles(관리자 여부)는 방(botId) 단위로 갈린다. 채팅방을
+  /// 새로 선택/변경했을 때는 이미 초기화되어 있어도 강제로 다시 불러와야
+  /// 이전 방의 roles가 남아있지 않다.
+  Future<void> refresh() async {
+    clear();
+    await initialize();
   }
 
   /// 상태 업데이트
@@ -44,19 +70,12 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
     );
   }
 
-  /// JSON으로부터 직접 세팅
-  void setFromJson(Map<String, dynamic> json) {
-    state = CurrentUserState.fromJson(json);
-    _isInitialized = true;
-  }
-
-  /// 상태를 JSON으로 변환
-  Map<String, dynamic> toJson() => state.toJson();
-
   /// 초기화
   void clear() {
+    _request++;
+    _initialization = null;
     state = CurrentUserState.initial();
     _isInitialized = false;
-    ref.read(academyPermissionProvider.notifier).clear();
+    ref.read(moduleConfigProvider.notifier).clear();
   }
 }

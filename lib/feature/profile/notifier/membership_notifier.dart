@@ -1,27 +1,25 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 
+import '../data/api/membership_api.dart';
+import '../domain/model/membership.dart';
 import '../state/membership_state.dart';
 
 part 'membership_notifier.g.dart';
 
+/// 회원증은 봇 명령으로 만들어지므로 프로필 화면을 오갈 때마다 다시 만들지 않도록
+/// 앱 수명 동안 유지한다.
 @Riverpod(keepAlive: true)
 class MembershipNotifier extends _$MembershipNotifier {
   String _membershipID = '';
 
-  String? _initialUid1;
-  String? _initialUid2;
-  String? _initialGuild;
-
   bool _initialized = false;
   bool _initializing = false;
 
-  bool get uid1Changed => state.uid1 != _initialUid1;
-  bool get uid2Changed => state.uid2 != _initialUid2;
-  bool get guildChanged => state.guild != _initialGuild;
+  bool get uid1Changed => state.uid1Changed;
+  bool get uid2Changed => state.uid2Changed;
+  bool get guildChanged => state.guildChanged;
 
   @override
   MembershipState build() {
@@ -33,35 +31,25 @@ class MembershipNotifier extends _$MembershipNotifier {
     return MembershipState.initial();
   }
 
+  /// 회원증을 조회한다. 실패하면 [MembershipState.hasError]로 알린다.
   Future<void> initialize() async {
     if (_initialized || _initializing) {
       return;
     }
     _initializing = true;
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, hasError: false);
     try {
       final membershipApi = ref.read(membershipApiProvider);
-      final globalState = ref.read(currentUserStateProvider);
-      _membershipID = globalState.userId;
+      final currentUser = ref.read(currentUserStateProvider);
+      _membershipID = currentUser.userId;
 
-      final data = await membershipApi.createCard([globalState.userId]);
-      final payload = data['payload'];
-      final raw = payload?['result'];
-
-      final List<String> result = List<String>.from(
-        raw.map((e) => e?.toString() ?? ''),
+      final card = await membershipApi.createCard([currentUser.userId]);
+      state = MembershipState.fromMembership(
+        card.toDomain(avatar: currentUser.avatarUrl),
       );
-      final avatar = globalState.avatarUrl;
-      result.add(avatar);
-
-      state = MembershipState.fromList(result).copyWith(isLoading: false);
-      _initialUid1 = state.uid1;
-      _initialUid2 = state.uid2;
-      _initialGuild = state.guild;
       _initialized = true;
-    } catch (e) {
-      state = state.copyWith(isLoading: false);
-      rethrow;
+    } catch (_) {
+      state = state.copyWith(isLoading: false, hasError: true);
     } finally {
       _initializing = false;
     }
@@ -69,9 +57,9 @@ class MembershipNotifier extends _$MembershipNotifier {
 
   void update({String? uid1, String? uid2, String? guild}) {
     state = state.copyWith(
-      uid1: _resolveField(uid1, state.uid1, _initialUid1),
-      uid2: _resolveField(uid2, state.uid2, _initialUid2),
-      guild: _resolveField(guild, state.guild, _initialGuild),
+      uid1: _resolveField(uid1, state.uid1, state.savedUid1),
+      uid2: _resolveField(uid2, state.uid2, state.savedUid2),
+      guild: _resolveField(guild, state.guild, state.savedGuild),
     );
   }
 
@@ -95,42 +83,39 @@ class MembershipNotifier extends _$MembershipNotifier {
     final membershipApi = ref.read(membershipApiProvider);
     final results = <String>[];
 
-    if (uid1Changed && (state.uid1?.isNotEmpty ?? false)) {
-      final result = await _saveUID(membershipApi, state.uid1!, state.username);
-
-      results.add(result);
-      _initialUid1 = state.uid1;
+    if (state.uid1Changed && (state.uid1?.isNotEmpty ?? false)) {
+      final uid = state.uid1!;
+      results.add(await _saveUID(membershipApi, uid, state.username));
+      state = state.copyWith(savedUid1: uid);
     }
 
-    if (uid2Changed && (state.uid2?.isNotEmpty ?? false)) {
-      final result = await _saveUID(membershipApi, state.uid2!, state.username);
-
-      results.add(result);
-      _initialUid2 = state.uid2;
+    if (state.uid2Changed && (state.uid2?.isNotEmpty ?? false)) {
+      final uid = state.uid2!;
+      results.add(await _saveUID(membershipApi, uid, state.username));
+      state = state.copyWith(savedUid2: uid);
     }
 
-    if (guildChanged && (state.guild?.isNotEmpty ?? false)) {
-      final result = await _saveGuild(
-        membershipApi,
-        state.guild!,
-        state.username,
-      );
-
-      results.add(result);
-      _initialGuild = state.guild;
+    if (state.guildChanged && (state.guild?.isNotEmpty ?? false)) {
+      final guild = state.guild!;
+      results.add(await _saveGuild(membershipApi, guild, state.username));
+      state = state.copyWith(savedGuild: guild);
     }
 
     return results;
   }
 
-  Future<String> _saveUID(dynamic api, String uid, String username) async {
-    final version = uid.length == 9 ? 's1' : 's2';
-
+  Future<String> _saveUID(MembershipAPI api, String uid, String username) {
+    final version = Membership.gameVersionOfUid(uid);
     return api.updateUID([_membershipID, version, uid, username]);
   }
 
-  Future<String> _saveGuild(dynamic api, String guild, String username) async {
-    return api.updateGuild([_membershipID, 's2', guild, username]);
+  Future<String> _saveGuild(MembershipAPI api, String guild, String username) {
+    return api.updateGuild([
+      _membershipID,
+      Membership.guildGameVersion,
+      guild,
+      username,
+    ]);
   }
 
   void clear() {
@@ -138,9 +123,5 @@ class MembershipNotifier extends _$MembershipNotifier {
 
     _initialized = false;
     _initializing = false;
-
-    _initialUid1 = null;
-    _initialUid2 = null;
-    _initialGuild = null;
   }
 }

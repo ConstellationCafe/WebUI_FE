@@ -1,4 +1,4 @@
-import '../type/LoginType.dart';
+import '../type/login_type.dart';
 
 enum LoginMethodType implements LoginType {
   discord("discord");

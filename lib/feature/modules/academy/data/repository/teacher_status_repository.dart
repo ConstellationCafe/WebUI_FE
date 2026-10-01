@@ -2,9 +2,9 @@ import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
 import '../../domain/model/teacher.dart';
 
-import '../../domain/model/teacher_status_form.dart';
-import '../../domain/model/teacher_status_list/teacher_status_list.dart';
-import '../../domain/model/status_view/status_view.dart';
+import '../../domain/model/teacher_status/teacher_status_form.dart';
+import '../../domain/model/teacher_status/teacher_status_list.dart';
+import '../../domain/model/status_shared/status_view.dart';
 
 import '../../domain/type/teacher_roster_status.dart';
 

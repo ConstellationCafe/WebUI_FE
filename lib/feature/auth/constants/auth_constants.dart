@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AuthConstants {
+  static const String logoAsset = 'assets/icons/main_icon.jpg';
+
   // Login Card
   static const double loginCardMaxWidth = 360.0;
   static const double loginCardHorizontalPadding = 36.0;

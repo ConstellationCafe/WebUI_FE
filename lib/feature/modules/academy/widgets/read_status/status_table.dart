@@ -1,14 +1,15 @@
-import 'status_badge.dart';
-import 'status_empty_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/utils/date_formatter.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../domain/model/academy_member.dart';
-import '../../domain/model/status_view/status_view.dart';
+import '../../domain/model/status_shared/status_view.dart';
 import '../../domain/type/roster_status.dart';
+import 'status_badge.dart';
+import 'status_empty_view.dart';
 
 class StatusTable<TMember extends AcademyMember, TStatus extends RosterStatus>
     extends StatelessWidget {
@@ -66,13 +67,17 @@ class StatusTable<TMember extends AcademyMember, TStatus extends RosterStatus>
                     dataRowMaxHeight: AcademyConstants.statusTableRowHeight,
                     columnSpacing: AcademyConstants.statusTableColumnSpacing,
                     columns: [
-                      const DataColumn(label: Text('번호')),
+                      const DataColumn(label: Text(AcademyStrings.number)),
                       DataColumn(label: Text(memberColumnLabel)),
-                      const DataColumn(label: Text('아카데미')),
-                      const DataColumn(label: Text('분반')),
-                      const DataColumn(label: Text('상태')),
-                      const DataColumn(label: Text('변경일')),
-                      const DataColumn(label: Text('변경 사유')),
+                      const DataColumn(label: Text(AcademyStrings.academy)),
+                      const DataColumn(
+                        label: Text(AcademyStrings.academyClass),
+                      ),
+                      const DataColumn(label: Text(AcademyStrings.status)),
+                      const DataColumn(label: Text(AcademyStrings.changedAt)),
+                      const DataColumn(
+                        label: Text(AcademyStrings.changeReason),
+                      ),
                     ],
                     rows: List.generate(items.length, (index) {
                       final item = items[index];
@@ -85,12 +90,18 @@ class StatusTable<TMember extends AcademyMember, TStatus extends RosterStatus>
                           DataCell(Text('$number')),
                           DataCell(Text(item.academyMember.name)),
                           DataCell(Text(item.academy.name)),
-                          DataCell(Text('${item.academyClass.classNumber}분반')),
+                          DataCell(
+                            Text(
+                              AcademyStrings.classNumber(
+                                item.academyClass.classNumber,
+                              ),
+                            ),
+                          ),
                           DataCell(StatusBadge<TStatus>(status: item.status)),
                           DataCell(
                             Text(
                               item.statusChangedAt == null
-                                  ? '-'
+                                  ? AcademyStrings.emptyValue
                                   : DateFormatter.toYyyyMmDd(
                                       item.statusChangedAt!,
                                     ),
@@ -100,7 +111,7 @@ class StatusTable<TMember extends AcademyMember, TStatus extends RosterStatus>
                             Text(
                               item.reason?.trim().isNotEmpty == true
                                   ? item.reason!
-                                  : '-',
+                                  : AcademyStrings.emptyValue,
                             ),
                           ),
                         ],

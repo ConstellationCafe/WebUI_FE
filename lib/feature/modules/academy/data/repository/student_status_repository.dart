@@ -1,11 +1,11 @@
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
-import '../../domain/model/status_view/status_view.dart';
+import '../../domain/model/status_shared/status_view.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/subject.dart';
 
-import '../../domain/model/student_status_form.dart';
-import '../../domain/model/student_status_list/student_status_list.dart';
+import '../../domain/model/student_status/student_status_form.dart';
+import '../../domain/model/student_status/student_status_list.dart';
 
 import '../../domain/type/student_roster_status.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/guild_constants.dart';
+import '../constants/guild_select_strings.dart';
 
 /// 사용할 수 있는 길드가 없을 때 표시하는 빈 상태 UI.
 class EmptyGuildList extends StatelessWidget {
@@ -24,10 +25,13 @@ class EmptyGuildList extends StatelessWidget {
             color: theme.colorScheme.onSurfaceVariant,
           ),
           const SizedBox(height: GuildConstants.emptyListTitleSpacing),
-          Text('사용할 수 있는 채팅방이 없습니다.', style: theme.textTheme.titleMedium),
+          Text(
+            GuildSelectStrings.emptyTitle,
+            style: theme.textTheme.titleMedium,
+          ),
           const SizedBox(height: GuildConstants.emptyListDescriptionSpacing),
           Text(
-            'ERP 서비스를 이용할 수 있는 채팅방이 없습니다.',
+            GuildSelectStrings.emptyDescription,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium,
           ),

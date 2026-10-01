@@ -2,6 +2,7 @@ import '../../domain/model/point_log.dart';
 import '../../domain/model/point_member.dart';
 import '../../domain/model/point_member_detail.dart';
 import '../../domain/model/point_member_page.dart';
+import '../../domain/point_input_rules.dart';
 import '../../domain/type/point_transaction_type.dart';
 import '../api/admin_point_api.dart';
 import '../dto/request/admin_point_history_request.dart';
@@ -19,7 +20,7 @@ class AdminPointRepository {
 
   Future<PointMemberPage> getMembers({
     required int page,
-    int size = 20,
+    int size = PointInputRules.pageSize,
     String? discordId,
   }) async {
     final response = await api.getMembers(
@@ -36,7 +37,7 @@ class AdminPointRepository {
     return _detail(
       await api.getMember(
         discordId,
-        AdminPointHistoryRequest(page: page, size: 20),
+        AdminPointHistoryRequest(page: page, size: PointInputRules.pageSize),
       ),
     );
   }

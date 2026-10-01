@@ -10,6 +10,7 @@ class GuildConstants {
   // Section Spacing
   static const double headerListSpacing = 36.0;
   static const double listFooterSpacing = 28.0;
+  static const double selectionMessageGap = 12.0;
 
   // Guild Tile
   static const double tileHorizontalPadding = 24.0;
@@ -29,6 +30,8 @@ class GuildConstants {
   static const double iconInformationSpacing = 20.0;
   static const double informationArrowSpacing = 16.0;
   static const double arrowIconSize = 30.0;
+  static const double tileProgressSize = 24.0;
+  static const double tileProgressStroke = 2.5;
 
   // Guild Information
   static const double memberIconSize = 17.0;
@@ -45,6 +48,25 @@ class GuildConstants {
   static const double emptyListTitleSpacing = 16.0;
   static const double emptyListDescriptionSpacing = 8.0;
 
+  // Header
+  static const double headerIconBoxSize = 64.0;
+  static const double headerIconBoxRadius = 16.0;
+  static const double headerIconSize = 34.0;
+  static const double headerShadowBlur = 12.0;
+  static const Offset headerShadowOffset = Offset(0, 4);
+  static const double headerTitleSpacing = 20.0;
+  static const double headerDescriptionSpacing = 8.0;
+
+  // Footer
+  static const double footerIconSize = 16.0;
+  static const double footerIconSpacing = 6.0;
+
   // Colors
   static const Color tileShadowColor = Color(0x1F000000);
+  static const Color headerShadowColor = Color.from(
+    alpha: 0.08,
+    red: 0,
+    green: 0,
+    blue: 0,
+  );
 }

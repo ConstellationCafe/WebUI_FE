@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/model/academy.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy.dart';
 
 class AcademyDropdown extends StatelessWidget {
   final List<Academy> academies;
@@ -20,9 +21,12 @@ class AcademyDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<int?>(
       initialValue: selectedAcademyId,
-      decoration: const InputDecoration(labelText: '아카데미'),
+      decoration: const InputDecoration(labelText: AcademyStrings.academy),
       items: [
-        const DropdownMenuItem<int?>(value: null, child: Text('전체')),
+        const DropdownMenuItem<int?>(
+          value: null,
+          child: Text(AcademyStrings.all),
+        ),
         ...academies.map(
           (academy) => DropdownMenuItem<int?>(
             value: academy.id,

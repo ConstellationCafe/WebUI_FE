@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/profile_constants.dart';
+import '../constants/profile_strings.dart';
 
 class SaveMembershipButton extends StatelessWidget {
   final bool isLoading;
@@ -28,7 +29,7 @@ class SaveMembershipButton extends StatelessWidget {
               ),
             )
           : Text(
-              '저장',
+              ProfileStrings.save,
               style: theme.textTheme.labelMedium?.copyWith(
                 color: theme.colorScheme.onSecondary,
               ),

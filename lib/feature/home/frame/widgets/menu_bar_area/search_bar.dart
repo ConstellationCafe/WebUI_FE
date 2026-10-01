@@ -1,62 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainSearchBar extends ConsumerStatefulWidget {
+import 'package:constellation_cafe/core/constants/const_size.dart';
+import 'package:constellation_cafe/feature/home/constants/home_constants.dart';
+
+class MainSearchBar extends StatefulWidget {
   const MainSearchBar({super.key});
 
   @override
-  ConsumerState<MainSearchBar> createState() => _MainSearchBar();
+  State<MainSearchBar> createState() => _MainSearchBarState();
 }
 
-class _MainSearchBar extends ConsumerState<MainSearchBar> {
-  @override
-  Widget build(BuildContext build) {
-    GlobalKey formKey = GlobalKey();
-    TextEditingController controller = TextEditingController();
+class _MainSearchBarState extends State<MainSearchBar> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _controller = TextEditingController();
 
-    return Container(
-      width: 180,
-      height: 50,
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  static OutlineInputBorder _border(Color color, double width) =>
+      OutlineInputBorder(
+        borderRadius: BorderRadius.circular(HomeConstants.searchFieldRadius),
+        borderSide: BorderSide(color: color, width: width),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final errorColor = Theme.of(context).colorScheme.onError;
+
+    return SizedBox(
+      width: HomeConstants.searchBarWidth,
+      height: HomeConstants.searchBarHeight,
       child: Form(
-        key: formKey,
+        key: _formKey,
         child: TextFormField(
-          controller: controller,
+          controller: _controller,
           style: const TextStyle(
-            color: Colors.black,
-            fontSize: 16,
+            color: HomeConstants.searchText,
+            fontSize: ConstSize.mediumTextSize,
             fontWeight: FontWeight.w400,
           ),
           decoration: InputDecoration(
             filled: false,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
+              horizontal: HomeConstants.searchFieldHorizontalPadding,
+              vertical: HomeConstants.searchFieldVerticalPadding,
             ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey[700]!, width: 1),
+            border: _border(
+              HomeConstants.searchBorder,
+              HomeConstants.searchBorderWidth,
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey[700]!, width: 1),
+            enabledBorder: _border(
+              HomeConstants.searchBorder,
+              HomeConstants.searchBorderWidth,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.blue[300]!, width: 2),
+            focusedBorder: _border(
+              HomeConstants.searchFocusedBorder,
+              HomeConstants.searchFocusedBorderWidth,
             ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Theme.of(build).colorScheme.onError,
-                width: 1,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Theme.of(build).colorScheme.onError,
-                width: 2,
-              ),
+            errorBorder: _border(errorColor, HomeConstants.searchBorderWidth),
+            focusedErrorBorder: _border(
+              errorColor,
+              HomeConstants.searchFocusedBorderWidth,
             ),
           ),
         ),

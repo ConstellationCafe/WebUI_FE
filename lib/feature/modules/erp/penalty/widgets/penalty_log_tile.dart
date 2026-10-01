@@ -1,0 +1,186 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../constants/penalty_formats.dart';
+import '../constants/penalty_strings.dart';
+import '../constants/penalty_tokens.dart';
+import '../domain/model/penalty_log.dart';
+import 'penalty_identity.dart';
+import 'penalty_score_badge.dart';
+
+class PenaltyLogTile extends StatelessWidget {
+  final PenaltyLog log;
+  final int? cumulativeScore;
+  final VoidCallback? onCancel;
+
+  const PenaltyLogTile({
+    super.key,
+    required this.log,
+    this.cumulativeScore,
+    this.onCancel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final date = DateFormat(PenaltyFormats.displayDateTime);
+    final channel = log.channelName?.trim().isNotEmpty == true
+        ? log.channelName!
+        : log.channelId;
+    final displayedCumulativeScore =
+        cumulativeScore ?? log.targetCumulativeScore30d;
+    final metadataStyle = theme.textTheme.bodySmall?.copyWith(
+      color: PenaltyTokens.metadataColor,
+      fontSize: PenaltyTokens.metadataTextSize,
+    );
+    final reasonStyle = theme.textTheme.titleMedium?.copyWith(
+      fontSize: PenaltyTokens.reasonTextSize,
+      fontWeight: FontWeight.w600,
+    );
+    final statusBackground = log.isCanceled
+        ? PenaltyTokens.canceledStatusBackground
+        : PenaltyTokens.activeStatusBackground;
+    final statusForeground = log.isCanceled
+        ? PenaltyTokens.canceledStatusForeground
+        : PenaltyTokens.activeStatusForeground;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(PenaltyTokens.cardPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PenaltyIdentity(
+                        username: log.targetUsername,
+                        discordId: log.targetDiscordId,
+                        child: Text(
+                          PenaltyStrings.identity(
+                            log.targetUsername,
+                            log.targetDiscordId,
+                          ),
+                          style: theme.textTheme.titleMedium,
+                        ),
+                      ),
+                      const SizedBox(height: PenaltyTokens.cardGap),
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: PenaltyTokens.cardGap,
+                        runSpacing: PenaltyTokens.cardGap,
+                        children: [
+                          Text(
+                            PenaltyStrings.scoreSummary(
+                              log.score,
+                              displayedCumulativeScore,
+                            ),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: statusBackground,
+                              borderRadius: BorderRadius.circular(
+                                PenaltyTokens.statusRadius,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    PenaltyTokens.statusHorizontalPadding,
+                                vertical: PenaltyTokens.statusVerticalPadding,
+                              ),
+                              child: Text(
+                                log.isCanceled
+                                    ? PenaltyStrings.canceled
+                                    : PenaltyStrings.active,
+                                style: metadataStyle?.copyWith(
+                                  color: statusForeground,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: PenaltyTokens.gap),
+                PenaltyScoreBadge(
+                  score: displayedCumulativeScore,
+                  compact: true,
+                ),
+              ],
+            ),
+            const SizedBox(height: PenaltyTokens.cardGap),
+            Text(log.reason, style: reasonStyle),
+            const SizedBox(height: PenaltyTokens.cardGap),
+            Wrap(
+              spacing: PenaltyTokens.gap,
+              runSpacing: PenaltyTokens.metadataTextSize / 2,
+              children: [
+                Text(
+                  PenaltyStrings.channelInfo(channel, log.channelId),
+                  style: metadataStyle,
+                ),
+                Text(
+                  PenaltyStrings.occurredAtInfo(
+                    date.format(log.occurredAt.toLocal()),
+                  ),
+                  style: metadataStyle,
+                ),
+                Text(
+                  PenaltyStrings.issuerInfo(log.issuerDiscordId),
+                  style: metadataStyle,
+                ),
+              ],
+            ),
+            if (log.isCanceled) ...[
+              const SizedBox(height: PenaltyTokens.metadataTextSize / 2),
+              Text(
+                PenaltyStrings.cancellationReasonInfo(
+                  log.cancellationReason ?? PenaltyStrings.emptyValue,
+                ),
+                style: metadataStyle,
+              ),
+              if (log.canceledAt != null)
+                Text(
+                  PenaltyStrings.canceledAtInfo(
+                    date.format(log.canceledAt!.toLocal()),
+                  ),
+                  style: metadataStyle,
+                ),
+            ],
+            if (onCancel != null) ...[
+              const SizedBox(height: PenaltyTokens.cardGap),
+              ElevatedButton.icon(
+                onPressed: onCancel,
+                icon: const Icon(
+                  Icons.undo,
+                  size: PenaltyTokens.cancelButtonIconSize,
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(0, PenaltyTokens.cancelButtonHeight),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PenaltyTokens.cancelButtonHorizontalPadding,
+                    vertical: PenaltyTokens.cancelButtonVerticalPadding,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.padded,
+                ),
+                label: const Text(PenaltyStrings.cancelPenalty),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}

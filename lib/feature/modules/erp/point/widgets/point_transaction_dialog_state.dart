@@ -88,7 +88,7 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
               TextFormField(
                 cursorColor: Theme.of(context).colorScheme.secondary,
                 controller: _descriptionController,
-                maxLength: 255,
+                maxLength: PointInputRules.descriptionMaxLength,
                 enabled: !_isSubmitting && !_hasError,
                 decoration: const InputDecoration(
                   labelText: PointStrings.description,
@@ -119,7 +119,7 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
                 ? SizedBox.square(
                     dimension: 18,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2,
+                      strokeWidth: PointTokens.progressStrokeWidth,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   )

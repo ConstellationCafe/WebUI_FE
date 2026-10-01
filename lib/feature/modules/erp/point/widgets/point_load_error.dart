@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/point_strings.dart';
+import '../constants/point_tokens.dart';
 
 class PointLoadError extends StatelessWidget {
   final String message;
@@ -12,7 +13,7 @@ class PointLoadError extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(PointTokens.panelPadding),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

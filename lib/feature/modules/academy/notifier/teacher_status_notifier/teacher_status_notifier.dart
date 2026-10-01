@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../di/ApiProvider.dart';
 import '../../data/api/teacher_status_api.dart';
 import '../../data/repository/teacher_status_repository.dart';
 import '../../domain/model/academy.dart';
@@ -8,7 +7,7 @@ import '../../domain/model/academy_class.dart';
 import '../../domain/model/academy_permission.dart';
 import '../../domain/model/teacher.dart';
 import '../../domain/model/teacher_status/teacher_status.dart';
-import '../../domain/model/teacher_status_form.dart';
+import '../../domain/model/teacher_status/teacher_status_form.dart';
 import '../../domain/type/teacher_status_type.dart';
 import '../../state/teacher_status_state/teacher_status_state.dart';
 import '../permission_notifier/academy_permission_notifier.dart';
@@ -98,10 +97,6 @@ class TeacherStatusNotifier extends _$TeacherStatusNotifier {
   /// 분반 선택
   Future<void> selectClass(AcademyClass academyClass) async {
     final int academyId = state.teacherStatus.selectedAcademy!.id;
-
-    if (academyId == null) {
-      return;
-    }
 
     state = state.copyWith(
       isLoading: true,

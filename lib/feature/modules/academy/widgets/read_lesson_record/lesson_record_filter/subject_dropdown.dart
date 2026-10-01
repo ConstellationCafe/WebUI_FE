@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/model/subject.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 
 class SubjectDropdown extends StatelessWidget {
   final List<Subject> subjects;
@@ -18,9 +19,12 @@ class SubjectDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<int?>(
       initialValue: selectedSubjectId,
-      decoration: const InputDecoration(labelText: '과목'),
+      decoration: const InputDecoration(labelText: AcademyStrings.subject),
       items: [
-        const DropdownMenuItem<int?>(value: null, child: Text('전체')),
+        const DropdownMenuItem<int?>(
+          value: null,
+          child: Text(AcademyStrings.all),
+        ),
         ...subjects.map(
           (subject) => DropdownMenuItem<int?>(
             value: subject.id,
@@ -36,7 +40,7 @@ class SubjectDropdown extends StatelessWidget {
               }
 
               final subject = subjects.firstWhere(
-                (subject) => subject.id.toString() == subjectId,
+                (subject) => subject.id == subjectId,
               );
 
               onChanged(subject);

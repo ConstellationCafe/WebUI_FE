@@ -8,12 +8,18 @@ part of 'current_user_state_notifier.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// 로그인한 사용자는 화면을 오가도 다시 조회하지 않도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 로그인 확인 후 다시 불러온다.)
 
 @ProviderFor(CurrentUserStateNotifier)
 final currentUserStateProvider = CurrentUserStateNotifierProvider._();
 
+/// 로그인한 사용자는 화면을 오가도 다시 조회하지 않도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 로그인 확인 후 다시 불러온다.)
 final class CurrentUserStateNotifierProvider
     extends $NotifierProvider<CurrentUserStateNotifier, CurrentUserState> {
+  /// 로그인한 사용자는 화면을 오가도 다시 조회하지 않도록 앱 수명 동안 유지한다.
+  /// (브라우저 새로고침은 앱을 다시 시작하므로 로그인 확인 후 다시 불러온다.)
   CurrentUserStateNotifierProvider._()
     : super(
         from: null,
@@ -42,7 +48,10 @@ final class CurrentUserStateNotifierProvider
 }
 
 String _$currentUserStateNotifierHash() =>
-    r'3ada373f9d09a1ec15d9d0304734966c6736f1dc';
+    r'35404ba92f0625036224004b38eea772604fd258';
+
+/// 로그인한 사용자는 화면을 오가도 다시 조회하지 않도록 앱 수명 동안 유지한다.
+/// (브라우저 새로고침은 앱을 다시 시작하므로 로그인 확인 후 다시 불러온다.)
 
 abstract class _$CurrentUserStateNotifier extends $Notifier<CurrentUserState> {
   CurrentUserState build();

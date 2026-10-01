@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../constants/guild_constants.dart';
+import '../constants/guild_select_strings.dart';
+
 class SelectPageFooter extends StatelessWidget {
   const SelectPageFooter({super.key});
 
@@ -12,12 +15,12 @@ class SelectPageFooter extends StatelessWidget {
       children: [
         Icon(
           Icons.lock_outline_rounded,
-          size: 16,
+          size: GuildConstants.footerIconSize,
           color: theme.colorScheme.onSurfaceVariant,
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: GuildConstants.footerIconSpacing),
         Text(
-          '안전한 ERP 서비스를 위해 인증된 채팅방만 표시됩니다.',
+          GuildSelectStrings.footer,
           textAlign: TextAlign.center,
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,

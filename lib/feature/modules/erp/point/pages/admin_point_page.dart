@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
+
+import '../../constants/erp_strings.dart';
 import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
 import '../domain/model/point_log.dart';
@@ -18,15 +21,21 @@ class AdminPointPage extends ConsumerWidget {
     final state = ref.watch(adminPointProvider);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(
+        vertical: PointTokens.pageVerticalPadding,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const AppBreadcrumb(
+            items: [ErpStrings.menuTitle, PointStrings.title],
+          ),
+          const SizedBox(height: PointTokens.panelGap / 2),
           Text(
             PointStrings.title,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: PointTokens.panelGap),
           Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -95,7 +104,10 @@ class AdminPointPage extends ConsumerWidget {
                           child: list,
                         ),
                         const SizedBox(height: PointTokens.panelGap),
-                        SizedBox(height: 600, child: detail),
+                        SizedBox(
+                          height: PointTokens.compactDetailHeight,
+                          child: detail,
+                        ),
                       ],
                     ),
                   );

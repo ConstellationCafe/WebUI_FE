@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/model/academy.dart';
-import '../../../domain/model/academy_class.dart';
-import '../../../domain/model/subject.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_class.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
+
+import 'academy_labeled_dropdown.dart';
 
 class AcademySelectionFields extends StatelessWidget {
   final List<Academy> academies;
@@ -35,10 +39,9 @@ class AcademySelectionFields extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _dropdown<Academy>(
-            context,
-            label: '아카데미 이름',
-            hint: '아카데미를 선택하세요',
+          child: AcademyLabeledDropdown<Academy>(
+            label: AcademyStrings.academyName,
+            hint: AcademyStrings.selectAcademy,
             value: selectedAcademy,
             items: academies
                 .map(
@@ -55,18 +58,19 @@ class AcademySelectionFields extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: ConstPadding.mediumPadding),
         Expanded(
-          child: _dropdown<AcademyClass>(
-            context,
-            label: '분반',
-            hint: '분반을 선택하세요',
+          child: AcademyLabeledDropdown<AcademyClass>(
+            label: AcademyStrings.academyClass,
+            hint: AcademyStrings.selectClass,
             value: selectedAcademyClass,
             items: classes
                 .map(
                   (academyClass) => DropdownMenuItem<AcademyClass>(
                     value: academyClass,
-                    child: Text('${academyClass.classNumber}분반'),
+                    child: Text(
+                      AcademyStrings.classNumber(academyClass.classNumber),
+                    ),
                   ),
                 )
                 .toList(),
@@ -77,12 +81,11 @@ class AcademySelectionFields extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: ConstPadding.mediumPadding),
         Expanded(
-          child: _dropdown<Subject>(
-            context,
-            label: '과목',
-            hint: '과목을 선택하세요',
+          child: AcademyLabeledDropdown<Subject>(
+            label: AcademyStrings.subject,
+            hint: AcademyStrings.selectSubject,
             value: selectedSubject,
             items: subjects
                 .map(
@@ -100,46 +103,6 @@ class AcademySelectionFields extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _dropdown<T>(
-    BuildContext context, {
-    required String label,
-    required String hint,
-    required T? value,
-    required List<DropdownMenuItem<T>> items,
-    required ValueChanged<T?> onChanged,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _label(context, label, required: true),
-        const SizedBox(height: 6),
-        DropdownButtonFormField<T>(
-          value: value,
-          hint: Text(hint),
-          items: items,
-          onChanged: onChanged,
-          decoration: const InputDecoration(),
-        ),
-      ],
-    );
-  }
-
-  Widget _label(BuildContext context, String text, {bool required = false}) {
-    return RichText(
-      text: TextSpan(
-        style: Theme.of(context).textTheme.labelLarge,
-        children: [
-          TextSpan(text: text),
-          if (required)
-            const TextSpan(
-              text: ' *',
-              style: TextStyle(color: Colors.red),
-            ),
-        ],
-      ),
     );
   }
 }

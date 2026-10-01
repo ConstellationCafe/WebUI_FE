@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
 
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_constants.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+
+import '../academy_field_label.dart';
+
 class AcademyDateField extends StatelessWidget {
   final DateTime? date;
   final ValueChanged<DateTime> onChanged;
+
+  /// 선택된 날짜가 없을 때 달력이 처음 보여줄 날짜. 테스트에서 주입한다.
+  final DateTime Function() clock;
 
   const AcademyDateField({
     super.key,
     required this.date,
     required this.onChanged,
+    this.clock = DateTime.now,
   });
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(context, '교육 일시', required: true),
-        const SizedBox(height: 6),
+        const AcademyFieldLabel(AcademyStrings.educationDate, isRequired: true),
+        const SizedBox(height: AcademyConstants.fieldLabelGap),
         InkWell(
           onTap: () async {
             final selectedDate = await showDatePicker(
               context: context,
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2100),
-              initialDate: date ?? DateTime.now(),
+              firstDate: AcademyConstants.firstSelectableDate,
+              lastDate: AcademyConstants.lastSelectableDate,
+              initialDate: date ?? clock(),
               builder: (context, child) {
                 final colorScheme = Theme.of(context).colorScheme;
                 return Theme(
@@ -39,7 +47,6 @@ class AcademyDateField extends StatelessWidget {
                 );
               },
             );
-            ;
             if (selectedDate != null) {
               onChanged(selectedDate);
             }
@@ -48,32 +55,14 @@ class AcademyDateField extends StatelessWidget {
             decoration: const InputDecoration(
               suffixIcon: Icon(Icons.calendar_today_outlined),
             ),
-            child: Text(date == null ? '날짜를 선택하세요' : _formatDate(date!)),
+            child: Text(
+              date == null
+                  ? AcademyStrings.selectDate
+                  : AcademyStrings.formatDate(date!),
+            ),
           ),
         ),
       ],
     );
-  }
-
-  Widget _label(BuildContext context, String text, {bool required = false}) {
-    return RichText(
-      text: TextSpan(
-        style: Theme.of(context).textTheme.labelLarge,
-        children: [
-          TextSpan(text: text),
-          if (required)
-            const TextSpan(
-              text: ' *',
-              style: TextStyle(color: Colors.red),
-            ),
-        ],
-      ),
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.year}. '
-        '${date.month.toString().padLeft(2, '0')}. '
-        '${date.day.toString().padLeft(2, '0')}';
   }
 }

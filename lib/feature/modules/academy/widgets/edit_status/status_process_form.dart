@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
+import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../domain/model/subject.dart';
 import '../../domain/type/status_type.dart';
+import 'status_radio_option.dart';
 
 class StatusProcessForm<T extends StatusType> extends StatelessWidget {
   final List<T> statuses;
@@ -32,8 +35,8 @@ class StatusProcessForm<T extends StatusType> extends StatelessWidget {
     required this.onSubjectChanged,
     required this.onReasonChanged,
     this.showSubjectsWhen,
-    this.subjectSectionTitle = '교과목',
-    this.subjectHelperText = '교과목은 선택하지 않아도 됩니다.',
+    this.subjectSectionTitle = AcademyStrings.subjects,
+    this.subjectHelperText = AcademyStrings.subjectOptionalHelper,
   });
 
   @override
@@ -45,15 +48,29 @@ class StatusProcessForm<T extends StatusType> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('처리 정보', style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          AcademyStrings.processInfo,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: ConstPadding.mediumPadding),
-        Text('처리 유형 *', style: Theme.of(context).textTheme.labelLarge),
+        Text(
+          AcademyStrings.processTypeRequired,
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
         const SizedBox(height: ConstPadding.smallPadding),
-        Wrap(
-          spacing: ConstPadding.mediumPadding,
-          children: statuses
-              .map((status) => _statusRadio(context, status))
-              .toList(),
+        RadioGroup<T>(
+          groupValue: selectedStatusType,
+          onChanged: (value) {
+            if (value != null) {
+              onStatusChanged(value);
+            }
+          },
+          child: Wrap(
+            spacing: ConstPadding.mediumPadding,
+            children: statuses
+                .map((status) => StatusRadioOption<T>(value: status))
+                .toList(),
+          ),
         ),
         if (showSubjects) ...[
           const SizedBox(height: ConstPadding.mediumPadding),
@@ -64,7 +81,7 @@ class StatusProcessForm<T extends StatusType> extends StatelessWidget {
           const SizedBox(height: ConstPadding.smallPadding),
           if (subjects.isEmpty)
             Text(
-              '선택 가능한 교과목이 없습니다.',
+              AcademyStrings.noSelectableSubjects,
               style: Theme.of(context).textTheme.bodySmall,
             )
           else
@@ -91,31 +108,12 @@ class StatusProcessForm<T extends StatusType> extends StatelessWidget {
         const SizedBox(height: ConstPadding.mediumPadding),
         TextField(
           onChanged: onReasonChanged,
-          maxLines: 4,
+          maxLines: AcademyConstants.statusReasonLines,
           decoration: const InputDecoration(
-            labelText: '처리 사유',
-            hintText: '처리 사유를 입력하세요',
+            labelText: AcademyStrings.processReason,
+            hintText: AcademyStrings.processReasonHint,
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _statusRadio(BuildContext context, T value) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Radio<T>(
-          value: value,
-          groupValue: selectedStatusType,
-          activeColor: Theme.of(context).colorScheme.secondary,
-          onChanged: (value) {
-            if (value != null) {
-              onStatusChanged(value);
-            }
-          },
-        ),
-        Text(value.label),
       ],
     );
   }

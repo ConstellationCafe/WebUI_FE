@@ -46,7 +46,7 @@ final class LessonRecordSelectionNotifierProvider
 }
 
 String _$lessonRecordSelectionNotifierHash() =>
-    r'b326b1ce5d5e30443a383cd961973e3ebf2d061c';
+    r'fed892fe4f1b667490b8f02ace47fb31ebbe0548';
 
 abstract class _$LessonRecordSelectionNotifier
     extends $Notifier<LessonRecordSelectionState> {

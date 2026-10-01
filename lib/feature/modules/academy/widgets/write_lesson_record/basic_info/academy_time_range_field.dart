@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/academy_constants.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_constants.dart';
+import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+
+import '../academy_field_label.dart';
+import 'academy_time_button.dart';
+import 'academy_time_picker_theme.dart';
 
 class AcademyTimeRangeField extends StatelessWidget {
   final DateTime? startTime;
@@ -9,153 +14,53 @@ class AcademyTimeRangeField extends StatelessWidget {
   final ValueChanged<DateTime> onStartTimeChanged;
   final ValueChanged<DateTime> onEndTimeChanged;
 
+  /// 선택한 시각을 붙일 날짜(오늘)를 정한다. 테스트에서 주입한다.
+  final DateTime Function() clock;
+
   const AcademyTimeRangeField({
     super.key,
     required this.startTime,
     required this.endTime,
     required this.onStartTimeChanged,
     required this.onEndTimeChanged,
+    this.clock = DateTime.now,
   });
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _label(context, '교육 시간', required: true),
-        const SizedBox(height: 6),
+        const AcademyFieldLabel(AcademyStrings.educationTime, isRequired: true),
+        const SizedBox(height: AcademyConstants.fieldLabelGap),
         Row(
           children: [
             Expanded(
-              child: _timeButton(
-                context,
+              child: AcademyTimeButton(
                 value: startTime,
-                onPressed: () async {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime: startTime != null
-                        ? TimeOfDay.fromDateTime(startTime!)
-                        : const TimeOfDay(hour: 10, minute: 0),
-                    builder: (context, child) {
-                      return Theme(
-                        data: Theme.of(context).copyWith(
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: colorScheme.secondary,
-                            ),
-                          ),
-                          timePickerTheme: TimePickerThemeData(
-                            backgroundColor: colorScheme.surface,
-
-                            dialBackgroundColor: Colors.grey.shade200,
-
-                            dayPeriodColor: WidgetStateColor.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return colorScheme.secondary;
-                              }
-                              return Colors.transparent;
-                            }),
-                            dayPeriodTextColor: WidgetStateColor.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return AcademyConstants
-                                    .timePickerSelectedTextColor;
-                              }
-                              return Colors.black;
-                            }),
-                          ),
-                        ),
-                        child: child!,
-                      );
-                    },
-                  );
-                  if (time != null) {
-                    final now = DateTime.now();
-                    onStartTimeChanged(
-                      DateTime(
-                        now.year,
-                        now.month,
-                        now.day,
-                        time.hour,
-                        time.minute,
-                      ),
-                    );
-                  }
-                },
+                onPressed: () => _pickTime(
+                  context,
+                  current: startTime,
+                  fallback: AcademyConstants.defaultLessonStartTime,
+                  onPicked: onStartTimeChanged,
+                ),
               ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('~'),
+              padding: EdgeInsets.symmetric(
+                horizontal: AcademyConstants.timeRangeSeparatorPadding,
+              ),
+              child: Text(AcademyStrings.timeRangeSeparator),
             ),
             Expanded(
-              child: _timeButton(
-                context,
+              child: AcademyTimeButton(
                 value: endTime,
-                onPressed: () async {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime: endTime != null
-                        ? TimeOfDay.fromDateTime(endTime!)
-                        : const TimeOfDay(hour: 12, minute: 0),
-                    builder: (context, child) {
-                      return Theme(
-                        data: Theme.of(context).copyWith(
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: colorScheme.secondary,
-                            ),
-                          ),
-                          timePickerTheme: TimePickerThemeData(
-                            backgroundColor: colorScheme.surface,
-
-                            dialBackgroundColor: Colors.grey.shade200,
-
-                            dayPeriodColor: WidgetStateColor.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return colorScheme.secondary;
-                              }
-
-                              return Colors.transparent;
-                            }),
-
-                            dayPeriodTextColor: WidgetStateColor.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return AcademyConstants
-                                    .timePickerSelectedTextColor;
-                              }
-
-                              return Colors.black;
-                            }),
-                          ),
-                        ),
-                        child: child!,
-                      );
-                    },
-                  );
-
-                  if (time != null) {
-                    final now = DateTime.now();
-
-                    onEndTimeChanged(
-                      DateTime(
-                        now.year,
-                        now.month,
-                        now.day,
-                        time.hour,
-                        time.minute,
-                      ),
-                    );
-                  }
-                },
+                onPressed: () => _pickTime(
+                  context,
+                  current: endTime,
+                  fallback: AcademyConstants.defaultLessonEndTime,
+                  onPicked: onEndTimeChanged,
+                ),
               ),
             ),
           ],
@@ -164,38 +69,19 @@ class AcademyTimeRangeField extends StatelessWidget {
     );
   }
 
-  Widget _timeButton(
+  Future<void> _pickTime(
     BuildContext context, {
-    required DateTime? value,
-    required VoidCallback onPressed,
-  }) {
-    return InkWell(
-      onTap: onPressed,
-      child: InputDecorator(
-        decoration: const InputDecoration(suffixIcon: Icon(Icons.access_time)),
-        child: Text(
-          value == null
-              ? '--:--'
-              : '${value.hour.toString().padLeft(2, '0')}:'
-                    '${value.minute.toString().padLeft(2, '0')}',
-        ),
-      ),
+    required DateTime? current,
+    required TimeOfDay fallback,
+    required ValueChanged<DateTime> onPicked,
+  }) async {
+    final time = await showTimePicker(
+      context: context,
+      initialTime: current != null ? TimeOfDay.fromDateTime(current) : fallback,
+      builder: (context, child) => AcademyTimePickerTheme(child: child!),
     );
-  }
-
-  Widget _label(BuildContext context, String text, {bool required = false}) {
-    return RichText(
-      text: TextSpan(
-        style: Theme.of(context).textTheme.labelLarge,
-        children: [
-          TextSpan(text: text),
-          if (required)
-            const TextSpan(
-              text: ' *',
-              style: TextStyle(color: Colors.red),
-            ),
-        ],
-      ),
-    );
+    if (time == null) return;
+    final now = clock();
+    onPicked(DateTime(now.year, now.month, now.day, time.hour, time.minute));
   }
 }

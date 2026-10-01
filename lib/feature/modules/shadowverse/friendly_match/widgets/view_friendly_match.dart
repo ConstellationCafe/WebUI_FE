@@ -1,45 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/core/constants/const_size.dart';
+
+import '../../constants/shadowverse_strings.dart';
+import '../constants/friendly_match_constants.dart';
 import '../notifier/friendly_match_notifier.dart';
 import 'submit_button.dart';
 
-class ViewFriendlyMatch extends ConsumerStatefulWidget {
+/// 입력한 친선전 모집 글 미리보기와 전송 버튼.
+class ViewFriendlyMatch extends ConsumerWidget {
   final double width;
   final GlobalKey? submitKey;
 
   const ViewFriendlyMatch({super.key, required this.width, this.submitKey});
 
-  @override
-  ConsumerState<ViewFriendlyMatch> createState() => _ViewFriendlyMatchState();
-}
-
-class _ViewFriendlyMatchState extends ConsumerState<ViewFriendlyMatch> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  static const _bold = TextStyle(fontWeight: FontWeight.bold);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(friendlyMatchProvider);
 
     return SizedBox(
-      width: widget.width,
+      width: width,
       child: Container(
-        padding: ConstPadding.bigPaddingAll,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          // border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Color(
-                0xFF000D27,
-              ).withOpacity(0.12), // rgba(0, 13, 39, 0.12)
-              blurRadius: 24, // 24px 흐림
-              offset: Offset(0, 8), // 0px x, 8px y
-            ),
-          ],
-        ),
+        padding: ConstPadding.largePaddingAll,
+        decoration: FriendlyMatchConstants.cardDecoration,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -50,76 +37,48 @@ class _ViewFriendlyMatchState extends ConsumerState<ViewFriendlyMatch> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "섀버 별자리 Cafe",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold, // 볼드체
-                      ),
-                    ),
-                    Text("${state.sender}님의 친선"),
+                    const Text(ShadowverseStrings.cafeName, style: _bold),
+                    Text(ShadowverseStrings.senderMatch(state.sender)),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(
+                    FriendlyMatchConstants.cafeIconRadius,
+                  ),
                   child: Image.asset(
-                    "assets/icons/main_icon.jpg",
-                    width: 40,
-                    height: 40,
+                    FriendlyMatchConstants.cafeIcon,
+                    width: FriendlyMatchConstants.cafeIconSize,
+                    height: FriendlyMatchConstants.cafeIconSize,
                     fit: BoxFit.cover,
                   ),
                 ),
               ],
             ),
-            Text(
-              "Version",
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // 볼드체
-              ),
-            ),
+            const Text(ShadowverseStrings.versionTitle, style: _bold),
             Text(state.version),
-            Text(
-              "Mode",
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // 볼드체
-              ),
-            ),
+            const Text(ShadowverseStrings.modeTitle, style: _bold),
             Text(state.mode),
-            Text(
-              "Platform",
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // 볼드체
-              ),
-            ),
+            const Text(ShadowverseStrings.platformTitle, style: _bold),
             Text(state.platform),
-            Text(
-              "Room",
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // 볼드체
-              ),
-            ),
+            const Text(ShadowverseStrings.roomTitle, style: _bold),
             Text(state.roomNumber),
             if (state.message.isNotEmpty) ...[
-              Text(
-                "Message",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold, // 볼드체
-                ),
-              ),
+              const Text(ShadowverseStrings.messageTitle, style: _bold),
               Text(state.message),
             ],
             Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: Text(
-                    "* 친선모집 방법 : 빗자루의 /친선모집 명령어나 인게임 모집글을 복사해서 붙여넣으세요 !",
+                    ShadowverseStrings.howToRecruit,
                     softWrap: true,
-                    maxLines: 2,
+                    maxLines: FriendlyMatchConstants.howToRecruitMaxLines,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                SizedBox(width: ConstSize.bigWidth),
-                SubmitButton(key: widget.submitKey),
+                const SizedBox(width: ConstSize.largeSpacing),
+                SubmitButton(key: submitKey),
               ],
             ),
           ],

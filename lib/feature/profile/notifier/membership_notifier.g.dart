@@ -8,12 +8,18 @@ part of 'membership_notifier.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// 회원증은 봇 명령으로 만들어지므로 프로필 화면을 오갈 때마다 다시 만들지 않도록
+/// 앱 수명 동안 유지한다.
 
 @ProviderFor(MembershipNotifier)
 final membershipProvider = MembershipNotifierProvider._();
 
+/// 회원증은 봇 명령으로 만들어지므로 프로필 화면을 오갈 때마다 다시 만들지 않도록
+/// 앱 수명 동안 유지한다.
 final class MembershipNotifierProvider
     extends $NotifierProvider<MembershipNotifier, MembershipState> {
+  /// 회원증은 봇 명령으로 만들어지므로 프로필 화면을 오갈 때마다 다시 만들지 않도록
+  /// 앱 수명 동안 유지한다.
   MembershipNotifierProvider._()
     : super(
         from: null,
@@ -42,7 +48,10 @@ final class MembershipNotifierProvider
 }
 
 String _$membershipNotifierHash() =>
-    r'400a0e785e0227c2b95ecbe51ab5a69aa8ba7de3';
+    r'1e6387c65cd8accb113c5c4202cc03417d3f67d3';
+
+/// 회원증은 봇 명령으로 만들어지므로 프로필 화면을 오갈 때마다 다시 만들지 않도록
+/// 앱 수명 동안 유지한다.
 
 abstract class _$MembershipNotifier extends $Notifier<MembershipState> {
   MembershipState build();

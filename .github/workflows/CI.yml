@@ -25,26 +25,50 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
+          # Dockerfile(FLUTTER_VERSION)과 같은 toolchain으로 생성 코드·검증·배포 빌드를 맞춘다.
+          flutter-version: 3.41.2
           channel: stable
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        # pubspec.lock과 다른 해석이 필요하면 실패시켜 lockfile 누락을 드러낸다.
+        run: flutter pub get --enforce-lockfile
+
+      - name: Verify generated code is committed
+        # @riverpod, @freezed, @JsonSerializable 결과가 source와 같은 commit에 있어야 한다.
+        run: |
+          dart run build_runner build --delete-conflicting-outputs
+          git status --porcelain -- lib test
+          test -z "$(git status --porcelain -- lib test)"
 
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze
-        # Existing warning/info debt is reported without blocking the build.
-        # New warnings should be removed as part of the corresponding change.
-        run: flutter analyze --no-fatal-warnings --no-fatal-infos
+        run: flutter analyze
 
       - name: Run tests
         # Web coverage collection is not supported reliably by the current Flutter toolchain.
-        run: flutter test --platform chrome
+        # The github reporter turns failing tests into PR annotations.
+        run: flutter test --platform chrome --reporter github
 
       - name: Build web
         run: flutter build web
+
+  secret-scan:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for verified secrets
+        uses: trufflesecurity/trufflehog@v3.97.9
+        with:
+          extra_args: --only-verified
 
   container:
     runs-on: ubuntu-22.04

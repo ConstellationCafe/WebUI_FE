@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'categories/main_category.dart';
+import '../../../constants/home_constants.dart';
 
 class MainMenuBar extends ConsumerStatefulWidget {
   const MainMenuBar({super.key});
@@ -13,14 +14,11 @@ class MainMenuBar extends ConsumerStatefulWidget {
 class _MainMenuBarState extends ConsumerState<MainMenuBar> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // MainSearchBar(),
-          // SizedBox(height: 10),
-          MainCategory(),
-        ],
+    return SizedBox(
+      width: HomeConstants.menuWidth,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: HomeConstants.menuBottomPadding),
+        child: const MainCategory(),
       ),
     );
   }

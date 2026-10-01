@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/usage_constants.dart';
+
 class ArrowPainter extends CustomPainter {
   final bool up;
 
@@ -7,7 +9,7 @@ class ArrowPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.white;
+    final paint = Paint()..color = UsageConstants.contentForeground;
 
     final path = Path();
 

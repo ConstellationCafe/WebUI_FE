@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
 import '../../domain/model/academy_member.dart';
@@ -71,7 +72,10 @@ class StatusQueryForm<
               children: [
                 const Icon(Icons.filter_alt_outlined),
                 const SizedBox(width: ConstPadding.smallPadding),
-                Text('조회 조건', style: theme.textTheme.titleLarge),
+                Text(
+                  AcademyStrings.queryConditions,
+                  style: theme.textTheme.titleLarge,
+                ),
               ],
             ),
 
@@ -84,12 +88,16 @@ class StatusQueryForm<
                 SizedBox(
                   width: AcademyConstants.statusFilterFieldWidth,
                   child: DropdownButtonFormField<Academy?>(
+                    // 선택 값은 notifier state가 소유하므로 controlled value를 유지한다.
+                    // ignore: deprecated_member_use
                     value: selectedAcademy,
-                    decoration: const InputDecoration(labelText: '아카데미'),
+                    decoration: const InputDecoration(
+                      labelText: AcademyStrings.academy,
+                    ),
                     items: [
                       const DropdownMenuItem<Academy?>(
                         value: null,
-                        child: Text('전체 아카데미'),
+                        child: Text(AcademyStrings.allAcademies),
                       ),
                       ...academies.map(
                         (academy) => DropdownMenuItem<Academy?>(
@@ -105,17 +113,24 @@ class StatusQueryForm<
                 SizedBox(
                   width: AcademyConstants.statusFilterFieldWidth,
                   child: DropdownButtonFormField<AcademyClass?>(
+                    // ignore: deprecated_member_use
                     value: selectedAcademyClass,
-                    decoration: const InputDecoration(labelText: '분반'),
+                    decoration: const InputDecoration(
+                      labelText: AcademyStrings.academyClass,
+                    ),
                     items: [
                       const DropdownMenuItem<AcademyClass?>(
                         value: null,
-                        child: Text('전체 분반'),
+                        child: Text(AcademyStrings.allClasses),
                       ),
                       ...classes.map(
                         (academyClass) => DropdownMenuItem<AcademyClass?>(
                           value: academyClass,
-                          child: Text('${academyClass.classNumber}분반'),
+                          child: Text(
+                            AcademyStrings.classNumber(
+                              academyClass.classNumber,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -128,12 +143,13 @@ class StatusQueryForm<
                 SizedBox(
                   width: AcademyConstants.statusFilterFieldWidth,
                   child: DropdownButtonFormField<TMember?>(
+                    // ignore: deprecated_member_use
                     value: selectedAcademyMember,
                     decoration: InputDecoration(labelText: memberLabel),
                     items: [
                       DropdownMenuItem<TMember?>(
                         value: null,
-                        child: Text('전체 $memberLabel'),
+                        child: Text(AcademyStrings.allOf(memberLabel)),
                       ),
                       ...academyMembers.map(
                         (academyMember) => DropdownMenuItem<TMember?>(
@@ -161,7 +177,7 @@ class StatusQueryForm<
               runSpacing: AcademyConstants.statusFilterRunSpacing,
               children: [
                 ChoiceChip(
-                  label: const Text('전체'),
+                  label: const Text(AcademyStrings.all),
                   selected: selectedStatus == null,
                   onSelected: isLoading
                       ? null
@@ -196,7 +212,7 @@ class StatusQueryForm<
                   ),
                   onPressed: isLoading ? null : onReset,
                   icon: const Icon(Icons.refresh),
-                  label: const Text('초기화'),
+                  label: const Text(AcademyStrings.reset),
                 ),
 
                 const SizedBox(width: ConstPadding.smallPadding),
@@ -217,7 +233,7 @@ class StatusQueryForm<
                           ),
                         )
                       : const Icon(Icons.search),
-                  label: const Text('조회'),
+                  label: const Text(AcademyStrings.search),
                 ),
               ],
             ),

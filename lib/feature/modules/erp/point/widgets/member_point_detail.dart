@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 
 import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
-import '../domain/model/point_member_detail.dart';
 import '../domain/model/point_log.dart';
+import '../domain/model/point_member_detail.dart';
 import 'point_load_error.dart';
 
 class MemberPointDetail extends StatelessWidget {
@@ -57,7 +57,7 @@ class MemberPointDetail extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(PointTokens.detailPadding),
         child: ListView(
           children: [
             Text(
@@ -65,7 +65,7 @@ class MemberPointDetail extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             Text('${data.member.discordId} · ${data.member.state}'),
-            const SizedBox(height: 24),
+            const SizedBox(height: PointTokens.sectionGap),
             Text(
               PointStrings.balance,
               style: Theme.of(context).textTheme.labelLarge,
@@ -74,7 +74,7 @@ class MemberPointDetail extends StatelessWidget {
               '${number.format(data.member.coin)} P',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: PointTokens.panelGap),
             Wrap(
               spacing: 12,
               children: [
@@ -90,7 +90,7 @@ class MemberPointDetail extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: PointTokens.sectionGap),
             Text(
               PointStrings.history,
               style: Theme.of(context).textTheme.titleMedium,
@@ -114,7 +114,7 @@ class MemberPointDetail extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: PointTokens.smallGap),
               Wrap(
                 spacing: 12,
                 runSpacing: 8,

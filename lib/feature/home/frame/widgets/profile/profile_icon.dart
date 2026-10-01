@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
+import 'package:constellation_cafe/feature/home/constants/home_constants.dart';
 
 class ProfileIcon extends ConsumerWidget {
   final VoidCallback? onTap;
@@ -15,19 +16,22 @@ class ProfileIcon extends ConsumerWidget {
     );
 
     return Container(
-      width: 40,
-      height: 40,
+      width: HomeConstants.profileIconSize,
+      height: HomeConstants.profileIconSize,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black,
+        color: HomeConstants.profileIconBackground,
       ),
       child: ClipOval(
         child: Image.network(
           avatarUrl,
-          width: 40,
-          height: 40,
+          width: HomeConstants.profileIconSize,
+          height: HomeConstants.profileIconSize,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 30),
+          errorBuilder: (_, _, _) => const Icon(
+            Icons.person,
+            size: HomeConstants.profileFallbackIconSize,
+          ),
         ),
       ),
     );

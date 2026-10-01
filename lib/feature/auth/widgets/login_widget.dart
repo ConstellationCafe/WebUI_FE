@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/const_padding.dart';
-import '../../../core/constants/screen_width.dart';
+import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/screen_width.dart';
+
 import '../constants/auth_constants.dart';
+import '../constants/auth_strings.dart';
 import 'discord_login_button.dart';
 
 class LoginWidget extends StatelessWidget {
@@ -46,7 +48,7 @@ class LoginWidget extends StatelessWidget {
                   AuthConstants.loginLogoRadius,
                 ),
                 child: Image.asset(
-                  'assets/icons/main_icon.jpg',
+                  AuthConstants.logoAsset,
                   width: AuthConstants.loginLogoSize,
                   height: AuthConstants.loginLogoSize,
                   fit: BoxFit.cover,
@@ -56,7 +58,7 @@ class LoginWidget extends StatelessWidget {
               const SizedBox(width: ConstPadding.smallPadding),
               Expanded(
                 child: Text(
-                  'ERP Web Service',
+                  AuthStrings.serviceName,
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

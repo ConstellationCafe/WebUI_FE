@@ -1,7 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:constellation_cafe/di/ApiProvider.dart';
-
 import '../../data/api/student_status_api.dart';
 import '../../data/repository/student_status_repository.dart';
 import '../../domain/model/academy.dart';

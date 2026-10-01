@@ -1,11 +1,19 @@
-import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/model/academy_permission.dart';
+import 'package:constellation_cafe/core/network/dio_provider.dart';
+import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
+
 import '../../domain/model/academy.dart';
 import '../../domain/model/academy_class.dart';
+import '../../domain/model/academy_permission.dart';
 import '../../domain/model/student.dart';
 import '../../domain/model/teacher.dart';
+
+final academyApiProvider = Provider((ref) {
+  final dio = ref.watch(dioProvider);
+  return AcademyApi(dio: dio);
+});
 
 class AcademyApi {
   static const base = String.fromEnvironment('BACKEND_URI');
@@ -39,9 +47,11 @@ class AcademyApi {
     return data.map((json) => Subject.fromJson(json)).toList();
   }
 
+  // 2026-09-26: BE의 getTeachers/getStudents가 TeacherController/
+  // StudentController로 이관되면서 경로가 바뀜.
   Future<List<Teacher>> getTeachers(int academyId, int classId) async {
     final response = await dio.get(
-      '$base/api/academy/$academyId/classes/$classId/teachers',
+      '$base/api/academy/teachers/$academyId/classes/$classId',
     );
     final List<dynamic> data = response.data['response'];
     return data.map((json) => Teacher.fromJson(json)).toList();
@@ -49,7 +59,7 @@ class AcademyApi {
 
   Future<List<Student>> getStudents(int academyId, int classId) async {
     final response = await dio.get(
-      '$base/api/academy/$academyId/classes/$classId/students',
+      '$base/api/academy/students/$academyId/classes/$classId',
     );
     final List<dynamic> data = response.data['response'];
     return data.map((json) => Student.fromJson(json)).toList();

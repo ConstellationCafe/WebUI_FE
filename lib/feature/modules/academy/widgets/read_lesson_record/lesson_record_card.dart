@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
 
 import '../../constants/academy_constants.dart';
-import '../../domain/model/lesson_record_view.dart';
-import '../../domain/model/lesson_record_update.dart';
+import '../../constants/academy_strings.dart';
+import '../../domain/model/lesson_record/lesson_record_update.dart';
+import '../../domain/model/lesson_record/lesson_record_view.dart';
+import 'lesson_record_delete_dialog.dart';
 import 'lesson_record_edit_dialog.dart';
 
 class LessonRecordCard extends StatelessWidget {
@@ -43,17 +45,17 @@ class LessonRecordCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  _formatDate(record.educationDate),
+                  AcademyStrings.formatCompactDate(record.educationDate),
                   style: textTheme.bodySmall,
                 ),
                 if (record.canModify) ...[
                   IconButton(
-                    tooltip: '수업 기록 수정',
+                    tooltip: AcademyStrings.editLessonRecord,
                     onPressed: () => _editRecord(context),
                     icon: const Icon(Icons.edit_outlined),
                   ),
                   IconButton(
-                    tooltip: '수업 기록 삭제',
+                    tooltip: AcademyStrings.deleteLessonRecord,
                     onPressed: () => _confirmDelete(context),
                     icon: const Icon(Icons.delete_outline),
                   ),
@@ -62,18 +64,23 @@ class LessonRecordCard extends StatelessWidget {
             ),
             const SizedBox(height: ConstPadding.smallPadding),
             Text(
-              '${record.academyName} · ${record.className}분반',
+              AcademyStrings.academyAndClass(
+                record.academyName,
+                record.className,
+              ),
               style: textTheme.bodyMedium,
             ),
             const SizedBox(height: ConstPadding.tinyPadding),
             Text(
-              '담당 교사: ${record.mainTeacherName}',
+              AcademyStrings.mainTeacherInfo(record.mainTeacherName),
               style: textTheme.bodySmall,
             ),
             const SizedBox(height: ConstPadding.tinyPadding),
             Text(
-              '수업 시간: ${_formatTimeRange(record)} · '
-              '${record.educationDuration.inMinutes}분',
+              AcademyStrings.lessonTimeInfo(
+                _formatTimeRange(record),
+                record.educationDuration.inMinutes,
+              ),
               style: textTheme.bodySmall,
             ),
             const SizedBox(height: ConstPadding.smallPadding),
@@ -81,7 +88,7 @@ class LessonRecordCard extends StatelessWidget {
             const SizedBox(height: ConstPadding.smallPadding),
             Text(
               record.description.isEmpty
-                  ? '작성된 수업 내용이 없습니다.'
+                  ? AcademyStrings.noLessonDescription
                   : record.description,
               style: textTheme.bodyMedium,
             ),
@@ -93,7 +100,10 @@ class LessonRecordCard extends StatelessWidget {
                   size: AcademyConstants.memberIconSize,
                 ),
                 const SizedBox(width: ConstPadding.tinyPadding),
-                Text('수강자: ${record.memberCount}명', style: textTheme.bodySmall),
+                Text(
+                  AcademyStrings.memberCountInfo(record.memberCount),
+                  style: textTheme.bodySmall,
+                ),
               ],
             ),
           ],
@@ -115,20 +125,7 @@ class LessonRecordCard extends StatelessWidget {
   Future<void> _confirmDelete(BuildContext context) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('수업 기록 삭제'),
-        content: const Text('이 수업 기록을 삭제할까요? 삭제한 기록은 복구할 수 없습니다.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('취소'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: const Text('삭제'),
-          ),
-        ],
-      ),
+      builder: (_) => const LessonRecordDeleteDialog(),
     );
     if (confirmed == true) {
       await onDelete(record);
@@ -137,19 +134,14 @@ class LessonRecordCard extends StatelessWidget {
 
   String _formatTimeRange(LessonRecordView record) {
     if (record.startTime == null || record.endTime == null) {
-      return '--:-- ~ --:--';
+      return AcademyStrings.timeRange(
+        AcademyStrings.emptyTime,
+        AcademyStrings.emptyTime,
+      );
     }
-    return '${_formatTime(record.startTime!)} ~ '
-        '${_formatTime(record.endTime!)}';
-  }
-
-  String _formatTime(DateTime time) =>
-      '${time.hour.toString().padLeft(2, '0')}:'
-      '${time.minute.toString().padLeft(2, '0')}';
-
-  String _formatDate(DateTime date) {
-    return '${date.year}.'
-        '${date.month.toString().padLeft(2, '0')}.'
-        '${date.day.toString().padLeft(2, '0')}';
+    return AcademyStrings.timeRange(
+      AcademyStrings.formatTime(record.startTime!),
+      AcademyStrings.formatTime(record.endTime!),
+    );
   }
 }

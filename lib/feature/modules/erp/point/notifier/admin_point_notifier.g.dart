@@ -42,7 +42,7 @@ final class AdminPointNotifierProvider
 }
 
 String _$adminPointNotifierHash() =>
-    r'8a14b9583754462546c1d83104c5dc1409d7e2b5';
+    r'f7b4719a8e32a6a29279582203d2267d8d5cc72d';
 
 abstract class _$AdminPointNotifier extends $Notifier<AdminPointState> {
   AdminPointState build();

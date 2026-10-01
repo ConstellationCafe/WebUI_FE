@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/usage_constants.dart';
+
 class HolePainter extends CustomPainter {
   final Rect rect;
 
@@ -7,7 +9,7 @@ class HolePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final backgroundPaint = Paint()..color = Colors.black.withOpacity(0.7);
+    final backgroundPaint = Paint()..color = UsageConstants.scrimColor;
 
     final clearPaint = Paint()..blendMode = BlendMode.clear;
 
@@ -19,7 +21,10 @@ class HolePainter extends CustomPainter {
     canvas.drawRect(layer, backgroundPaint);
 
     // 구멍 뚫기 (라운드 처리)
-    final rrect = RRect.fromRectAndRadius(rect.inflate(8), Radius.circular(12));
+    final rrect = RRect.fromRectAndRadius(
+      rect.inflate(UsageConstants.holeInflate),
+      const Radius.circular(UsageConstants.holeRadius),
+    );
     canvas.drawRRect(rrect, clearPaint);
 
     canvas.restore();

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/model/lesson_record_update.dart';
-import '../../domain/model/lesson_record_view.dart';
+import '../../constants/academy_constants.dart';
+import '../../constants/academy_strings.dart';
+import '../../domain/model/lesson_record/lesson_record_update.dart';
+import '../../domain/model/lesson_record/lesson_record_view.dart';
 
 class LessonRecordEditDialog extends StatefulWidget {
   final LessonRecordView record;
@@ -29,11 +31,11 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
     _educationDate = widget.record.educationDate;
     _startTime = widget.record.startTime != null
         ? TimeOfDay.fromDateTime(widget.record.startTime!)
-        : const TimeOfDay(hour: 10, minute: 0);
+        : AcademyConstants.defaultLessonStartTime;
     _endTime = widget.record.endTime != null
         ? TimeOfDay.fromDateTime(widget.record.endTime!)
         : TimeOfDay(
-            hour: (_startTime.hour + 1) % 24,
+            hour: (_startTime.hour + 1) % TimeOfDay.hoursPerDay,
             minute: _startTime.minute,
           );
   }
@@ -48,42 +50,46 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('수업 기록 수정'),
+      title: const Text(AcademyStrings.editLessonRecord),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _subjectController,
-              decoration: const InputDecoration(labelText: '과목'),
+              decoration: const InputDecoration(
+                labelText: AcademyStrings.subject,
+              ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AcademyConstants.editDialogFieldGap),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('수업 날짜'),
-              subtitle: Text(_formatDate(_educationDate)),
+              title: const Text(AcademyStrings.lessonDate),
+              subtitle: Text(AcademyStrings.formatCompactDate(_educationDate)),
               trailing: const Icon(Icons.calendar_today),
               onTap: _selectDate,
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('시작 시간'),
+              title: const Text(AcademyStrings.startTime),
               subtitle: Text(_startTime.format(context)),
               trailing: const Icon(Icons.access_time),
               onTap: _selectStartTime,
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('종료 시간'),
+              title: const Text(AcademyStrings.endTime),
               subtitle: Text(_endTime.format(context)),
               trailing: const Icon(Icons.access_time),
               onTap: _selectEndTime,
             ),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: '수업 내용'),
-              minLines: 3,
-              maxLines: 6,
+              decoration: const InputDecoration(
+                labelText: AcademyStrings.lessonContent,
+              ),
+              minLines: AcademyConstants.editDescriptionMinLines,
+              maxLines: AcademyConstants.editDescriptionMaxLines,
             ),
           ],
         ),
@@ -91,9 +97,12 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('취소'),
+          child: const Text(AcademyStrings.cancel),
         ),
-        FilledButton(onPressed: _save, child: const Text('저장')),
+        FilledButton(
+          onPressed: _save,
+          child: const Text(AcademyStrings.saveShort),
+        ),
       ],
     );
   }
@@ -102,8 +111,8 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
     final date = await showDatePicker(
       context: context,
       initialDate: _educationDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      firstDate: AcademyConstants.firstEditableDate,
+      lastDate: AcademyConstants.lastSelectableDate,
     );
     if (date != null) {
       setState(() => _educationDate = date);
@@ -128,11 +137,13 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   }
 
   void _save() {
-    final startMinutes = _startTime.hour * 60 + _startTime.minute;
-    final endMinutes = _endTime.hour * 60 + _endTime.minute;
+    final startMinutes =
+        _startTime.hour * TimeOfDay.minutesPerHour + _startTime.minute;
+    final endMinutes =
+        _endTime.hour * TimeOfDay.minutesPerHour + _endTime.minute;
     if (_subjectController.text.trim().isEmpty || endMinutes <= startMinutes) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('과목과 올바른 수업 시간 범위를 입력해주세요.')),
+        const SnackBar(content: Text(AcademyStrings.invalidLessonUpdate)),
       );
       return;
     }
@@ -155,8 +166,4 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
       ),
     );
   }
-
-  String _formatDate(DateTime date) =>
-      '${date.year}.${date.month.toString().padLeft(2, '0')}.'
-      '${date.day.toString().padLeft(2, '0')}';
 }
