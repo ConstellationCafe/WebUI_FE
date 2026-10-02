@@ -11,6 +11,7 @@ import '../../constants/academy_constants.dart';
 import '../../constants/academy_strings.dart';
 import '../../notifier/lesson_record_form_notifier/lesson_record_form_notifier.dart';
 import '../../notifier/lesson_record_selection_notifier/lesson_record_selection_notifier.dart';
+import '../../state/lesson_record_form_state/lesson_record_save_result.dart';
 import '../../widgets/academy_error_banner.dart';
 import '../../widgets/write_lesson_record/basic_info/academy_basic_info.dart';
 import '../../widgets/write_lesson_record/lesson_description.dart';
@@ -36,24 +37,24 @@ class LessonRecordPage extends ConsumerWidget {
     }
 
     Future<void> saveLesson() async {
-      final success = await notifier.saveLessonRecord();
+      final result = await notifier.saveLessonRecord();
 
       if (!context.mounted) {
         return;
       }
 
-      if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text(AcademyStrings.lessonRecordSaved)),
-        );
+      final message = switch (result) {
+        LessonRecordSaveResult.saved => AcademyStrings.lessonRecordSaved,
+        LessonRecordSaveResult.invalid => AcademyStrings.checkRequiredFields,
+        LessonRecordSaveResult.failed => AcademyStrings.lessonRecordSaveFailed,
+      };
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
 
+      if (result == LessonRecordSaveResult.saved) {
         context.pop();
-        return;
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AcademyStrings.checkRequiredFields)),
-      );
     }
 
     void cancel() {

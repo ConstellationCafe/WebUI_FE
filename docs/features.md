@@ -42,6 +42,8 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 ## Academy (`feature/modules/academy`)
 
 - `/academy/write_lesson_record`, `/academy/read_lesson_record`: 수업 기록 작성·조회
+  - 수업 시간은 교육 일자와 시작·종료 시:분으로 기록합니다. 종료가 시작보다 이르면 자정을 넘겨 다음 날 끝난 수업으로 보고(예: 22:30 ~ 02:00 → 210분), 시작과 종료가 같으면 저장하지 않습니다(`LessonTimeRange`). 작성·수정 화면과 조회 카드가 같은 규칙을 씁니다.
+  - 저장 시 입력 검증 실패는 `필수 항목을 확인해주세요.`, 저장 요청 실패는 별도 실패 안내로 구분해 보여줍니다.
 - `/academy/student_status`, `/academy/teacher_status`: 학생·강사 현황 수정 (빗자루 봇 router 경유)
 - `/academy/read_student_status`, `/academy/read_teacher_status`: 현황 조회
 - 새 feature의 기준 구조입니다([architecture](architecture.md#3-feature-구조-기준)).
