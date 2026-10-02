@@ -47,6 +47,9 @@ abstract final class AcademyStrings {
   static const emptyTime = '--:--';
   static const timeRangeSeparator = '~';
   static const checkRequiredFields = '필수 항목을 확인해주세요.';
+  static const lessonRecordSaveFailed = '수업 기록 저장에 실패했습니다. 잠시 후 다시 시도해주세요.';
+  static const endsNextDay = '자정을 넘기는 수업으로, 종료 시간은 다음 날로 기록됩니다.';
+  static const nextDay = '다음 날';
   static const selectAcademy = '아카데미를 선택하세요';
   static const selectClass = '분반을 선택하세요';
   static const selectSubject = '과목을 선택하세요';
@@ -146,6 +149,7 @@ abstract final class AcademyStrings {
   static String selectMember(String memberLabel) => '$memberLabel(을/를) 선택하세요';
   static String allOf(String label) => '전체 $label';
   static String timeRange(String start, String end) => '$start ~ $end';
+  static String nextDayTime(String time) => '$nextDay $time';
 
   /// 입력 필드에 표시하는 날짜. 예: 2026. 09. 29
   static String formatDate(DateTime date) =>

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:constellation_cafe/feature/modules/academy/constants/academy_constants.dart';
 import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
 
+import '../../../domain/model/lesson_record/lesson_time_range.dart';
 import '../academy_field_label.dart';
 import 'academy_time_button.dart';
 import 'academy_time_picker_theme.dart';
@@ -25,6 +26,11 @@ class AcademyTimeRangeField extends StatelessWidget {
     required this.onEndTimeChanged,
     this.clock = DateTime.now,
   });
+
+  bool get _endsNextDay =>
+      startTime != null &&
+      endTime != null &&
+      LessonTimeRange.endsNextDay(startTime!, endTime!);
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +71,13 @@ class AcademyTimeRangeField extends StatelessWidget {
             ),
           ],
         ),
+        if (_endsNextDay) ...[
+          const SizedBox(height: AcademyConstants.fieldLabelGap),
+          Text(
+            AcademyStrings.endsNextDay,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
       ],
     );
   }

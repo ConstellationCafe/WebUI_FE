@@ -5,6 +5,7 @@ import '../academy_class.dart';
 import '../student.dart';
 import '../subject.dart';
 import '../teacher.dart';
+import 'lesson_time_range.dart';
 
 part 'lesson_record_selection.freezed.dart';
 
@@ -37,7 +38,8 @@ extension LessonRecordSelectionValidation on LessonRecordSelection {
     if (educationDate == null) return false;
     if (startTime == null || endTime == null) return false;
     if (mainTeacher == null) return false;
-    if (!endTime!.isAfter(startTime!)) return false;
+    // 종료가 시작보다 이르면 자정을 넘긴 수업으로 본다.
+    if (!LessonTimeRange.isValid(startTime!, endTime!)) return false;
     return true;
   }
 }

@@ -6,6 +6,7 @@ import '../../constants/academy_constants.dart';
 import '../../constants/academy_strings.dart';
 import '../../domain/model/lesson_record/lesson_record_update.dart';
 import '../../domain/model/lesson_record/lesson_record_view.dart';
+import '../../domain/model/lesson_record/lesson_time_range.dart';
 import 'lesson_record_delete_dialog.dart';
 import 'lesson_record_edit_dialog.dart';
 
@@ -139,9 +140,12 @@ class LessonRecordCard extends StatelessWidget {
         AcademyStrings.emptyTime,
       );
     }
+    final end = AcademyStrings.formatTime(record.endTime!);
     return AcademyStrings.timeRange(
       AcademyStrings.formatTime(record.startTime!),
-      AcademyStrings.formatTime(record.endTime!),
+      LessonTimeRange.endsNextDay(record.startTime!, record.endTime!)
+          ? AcademyStrings.nextDayTime(end)
+          : end,
     );
   }
 }

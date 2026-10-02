@@ -4,6 +4,7 @@ import '../../constants/academy_constants.dart';
 import '../../constants/academy_strings.dart';
 import '../../domain/model/lesson_record/lesson_record_update.dart';
 import '../../domain/model/lesson_record/lesson_record_view.dart';
+import '../../domain/model/lesson_record/lesson_time_range.dart';
 
 class LessonRecordEditDialog extends StatefulWidget {
   final LessonRecordView record;
@@ -141,7 +142,9 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
         _startTime.hour * TimeOfDay.minutesPerHour + _startTime.minute;
     final endMinutes =
         _endTime.hour * TimeOfDay.minutesPerHour + _endTime.minute;
-    if (_subjectController.text.trim().isEmpty || endMinutes <= startMinutes) {
+    // 종료가 시작보다 이르면 자정을 넘긴 수업으로 본다.
+    if (_subjectController.text.trim().isEmpty ||
+        !LessonTimeRange.isValidMinutes(startMinutes, endMinutes)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text(AcademyStrings.invalidLessonUpdate)),
       );

@@ -1,3 +1,5 @@
+import 'lesson_time_range.dart';
+
 class LessonRecordUpdate {
   final String subject;
   final DateTime educationDate;
@@ -13,7 +15,8 @@ class LessonRecordUpdate {
     required this.description,
   });
 
-  int get educationDuration => endTime.difference(startTime).inMinutes;
+  int get educationDuration =>
+      LessonTimeRange.duration(startTime, endTime).inMinutes;
 
   Map<String, dynamic> toJson() {
     return {
