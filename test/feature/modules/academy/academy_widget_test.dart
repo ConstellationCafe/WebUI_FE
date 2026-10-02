@@ -148,6 +148,35 @@ void main() {
       expect(find.byTooltip('수업 기록 삭제'), findsNothing);
     });
 
+    testWidgets('자정을 넘긴 수업은 종료 시각에 다음 날을 표시한다', (tester) async {
+      final record = LessonRecordView(
+        id: '11',
+        academyName: '별빛 아카데미',
+        className: '1',
+        subjectName: '덱 빌딩',
+        educationDate: DateTime(2026, 10, 1),
+        startTime: DateTime(2026, 10, 1, 22, 30),
+        endTime: DateTime(2026, 10, 1, 2),
+        educationDuration: const Duration(minutes: 210),
+        mainTeacherName: '박해',
+        description: '',
+        memberCount: 4,
+        canModify: false,
+      );
+
+      await tester.pumpWidget(
+        material(
+          LessonRecordCard(
+            record: record,
+            onUpdate: noUpdate,
+            onDelete: noDelete,
+          ),
+        ),
+      );
+
+      expect(find.text('수업 시간: 22:30 ~ 다음 날 02:00 · 210분'), findsOneWidget);
+    });
+
     testWidgets('삭제를 확인하면 해당 기록 삭제를 요청한다', (tester) async {
       final deleted = <String>[];
       await tester.pumpWidget(

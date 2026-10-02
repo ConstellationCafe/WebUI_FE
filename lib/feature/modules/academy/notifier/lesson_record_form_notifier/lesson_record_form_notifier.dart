@@ -8,7 +8,9 @@ import '../../data/repository/lesson_record_repository.dart';
 import '../../domain/model/lesson_record/lesson_record.dart';
 import '../../domain/model/lesson_record/lesson_record_form.dart';
 import '../../domain/model/lesson_record/lesson_record_selection.dart';
+import '../../domain/model/lesson_record/lesson_time_range.dart';
 import '../../state/lesson_record_form_state/lesson_record_form_state.dart';
+import '../../state/lesson_record_form_state/lesson_record_save_result.dart';
 
 part 'lesson_record_form_notifier.g.dart';
 
@@ -34,7 +36,7 @@ class LessonRecordFormNotifier extends _$LessonRecordFormNotifier {
     );
   }
 
-  Future<bool> saveLessonRecord() async {
+  Future<LessonRecordSaveResult> saveLessonRecord() async {
     final LessonRecordSelectionState lessonRecordLessonSelectionState = ref
         .read(lessonRecordSelectionProvider);
 
@@ -42,7 +44,7 @@ class LessonRecordFormNotifier extends _$LessonRecordFormNotifier {
         lessonRecordLessonSelectionState.queryForm;
 
     if (!lessonRecordLessonSelection.isValid) {
-      return false;
+      return LessonRecordSaveResult.invalid;
     }
 
     state = state.copyWith(isSaving: true, errorMessage: null);
@@ -65,7 +67,7 @@ class LessonRecordFormNotifier extends _$LessonRecordFormNotifier {
 
       final mainTeacher = lessonRecordLessonSelection.mainTeacher!;
 
-      final duration = endTime.difference(startTime);
+      final duration = LessonTimeRange.duration(startTime, endTime);
 
       final LessonRecord record = LessonRecord(
         academyId: selectedAcademy.id,
@@ -89,11 +91,11 @@ class LessonRecordFormNotifier extends _$LessonRecordFormNotifier {
 
       state = state.copyWith(isSaving: false, errorMessage: null);
 
-      return true;
+      return LessonRecordSaveResult.saved;
     } catch (e) {
       state = state.copyWith(isSaving: false, errorMessage: e.toString());
 
-      return false;
+      return LessonRecordSaveResult.failed;
     }
   }
 }
