@@ -18,8 +18,9 @@ class HomeFrame extends StatefulWidget {
 }
 
 class _HomeFrameState extends State<HomeFrame> {
-  /// 헤더 아래 본문 영역. 알림 패널을 이 영역의 우측 상단에 띄운다.
-  final _contentAreaKey = GlobalKey();
+  /// 헤더 아래 구분선. 알림 패널은 구분선 오른쪽 끝과 화면 끝 사이 거리만큼
+  /// 구분선 아래·화면 오른쪽에서 띄운다.
+  final _dividerKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +48,13 @@ class _HomeFrameState extends State<HomeFrame> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HomeHeader(
-              isDesktop: isDesktop,
-              notificationAreaKey: _contentAreaKey,
-            ),
+            HomeHeader(isDesktop: isDesktop, dividerKey: _dividerKey),
             const SizedBox(height: ConstPadding.tinyPadding),
-            Divider(thickness: 1, color: theme.colorScheme.outline),
+            Divider(
+              key: _dividerKey,
+              thickness: 1,
+              color: theme.colorScheme.outline,
+            ),
             const SizedBox(height: ConstPadding.tinyPadding),
             Expanded(
               child: Row(
@@ -62,12 +64,7 @@ class _HomeFrameState extends State<HomeFrame> {
                     MainMenuBar(),
                     const SizedBox(width: ConstPadding.smallPadding),
                   ],
-                  Expanded(
-                    child: KeyedSubtree(
-                      key: _contentAreaKey,
-                      child: Center(child: widget.child!),
-                    ),
-                  ),
+                  Expanded(child: Center(child: widget.child!)),
                 ],
               ),
             ),

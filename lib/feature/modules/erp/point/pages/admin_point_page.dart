@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
+import 'package:constellation_cafe/shared/widgets/layout/page_width_limit.dart';
 
 import '../../constants/erp_strings.dart';
 import '../constants/point_strings.dart';
@@ -18,6 +19,11 @@ class AdminPointPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 넓은 화면에서 쓸데없이 넓어지지 않게 공용 최대 너비 안에서 가운데에 둔다.
+    return PageWidthLimit(child: _content(context, ref));
+  }
+
+  Widget _content(BuildContext context, WidgetRef ref) {
     final state = ref.watch(adminPointProvider);
 
     return Padding(

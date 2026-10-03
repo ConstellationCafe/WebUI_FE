@@ -64,8 +64,11 @@ Future<List<DateTime?>> _pump(
 }
 
 void main() {
-  testWidgets('값이 없으면 날짜·시간 선택 안내를 각각 보여준다', (tester) async {
+  testWidgets('날짜와 시간을 각각의 입력란으로 나눠 안내를 보여준다', (tester) async {
     await _pump(tester);
+
+    expect(find.text(DateTimePickerStrings.dateLabel('시각')), findsOneWidget);
+    expect(find.text(DateTimePickerStrings.timeLabel('시각')), findsOneWidget);
 
     expect(find.text(DateTimePickerStrings.selectDate), findsOneWidget);
     expect(find.text(DateTimePickerStrings.selectTime), findsOneWidget);
