@@ -6,12 +6,14 @@ import '../../constants/academy_constants.dart';
 import '../../constants/academy_strings.dart';
 
 class StatusSummaryItem extends StatelessWidget {
+  final double width;
   final String label;
   final int count;
   final IconData icon;
 
   const StatusSummaryItem({
     super.key,
+    required this.width,
     required this.label,
     required this.count,
     required this.icon,
@@ -22,7 +24,7 @@ class StatusSummaryItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: AcademyConstants.statusSummaryItemWidth,
+      width: width,
       padding: ConstPadding.mediumPaddingAll,
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
@@ -31,19 +33,29 @@ class StatusSummaryItem extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: theme.colorScheme.secondary),
-          const SizedBox(width: ConstPadding.mediumPadding),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: theme.textTheme.bodyMedium),
-              const SizedBox(height: ConstPadding.tinyPadding),
-              Text(
-                AcademyStrings.peopleCount(count),
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
+          const SizedBox(width: ConstPadding.smallPadding),
+          // 2열처럼 좁은 칸에서도 넘치지 않도록 남은 너비 안에서 말줄임 처리한다.
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium,
                 ),
-              ),
-            ],
+                const SizedBox(height: ConstPadding.tinyPadding),
+                Text(
+                  AcademyStrings.peopleCount(count),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
