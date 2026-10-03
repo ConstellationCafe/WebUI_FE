@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:constellation_cafe/feature/modules/erp/constants/erp_strings.dart';
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
+import 'package:constellation_cafe/shared/widgets/layout/page_width_limit.dart';
+
 import '../constants/notification_strings.dart';
 import '../constants/notification_tokens.dart';
 import '../notifier/admin_notification_notifier.dart';
@@ -39,23 +43,29 @@ class AdminNotificationPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(
             vertical: NotificationTokens.fieldGap,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Semantics(
-                header: true,
-                child: Text(
-                  NotificationStrings.adminTitle,
-                  style: Theme.of(context).textTheme.headlineMedium,
+          child: PageWidthLimit(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const AppBreadcrumb(
+                  items: [ErpStrings.menuTitle, NotificationStrings.adminTitle],
                 ),
-              ),
-              const SizedBox(height: NotificationTokens.fieldGap),
-              AdminNotificationLayout(
-                isCompact: isCompact,
-                form: form,
-                history: history,
-              ),
-            ],
+                const SizedBox(height: NotificationTokens.panelGap),
+                Semantics(
+                  header: true,
+                  child: Text(
+                    NotificationStrings.adminTitle,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ),
+                const SizedBox(height: NotificationTokens.fieldGap),
+                AdminNotificationLayout(
+                  isCompact: isCompact,
+                  form: form,
+                  history: history,
+                ),
+              ],
+            ),
           ),
         );
       },

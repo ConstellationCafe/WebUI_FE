@@ -52,10 +52,13 @@
 - 비어 있는 설명·내역은 빈 칸으로 두지 않고 `등록된 설명이 없습니다.`처럼 맥락에 맞는 안내 문구를 표시합니다.
 - dialog의 확인·취소 버튼은 app theme과 기존 feature의 버튼 convention을 따릅니다. 보조 action이라는 이유만으로 `OutlinedButton`을 쓰지 않고, 정상·hover·focus·disabled 상태에서 글자와 배경 대비를 확인합니다.
 - 제출 중인 버튼은 비활성화해 중복 실행을 막습니다.
-- 날짜·시간 입력은 `shared/widgets/date_time/DateTimePickerField`(날짜·시간을 따로 눌러 고르는 입력란)를 씁니다. 텍스트로 `YYYY-MM-DD HH:mm`을 직접 입력받지 않습니다.
+- 날짜·시간 입력은 `shared/widgets/date_time/DateTimePickerField`를 씁니다. 한 칸에서 날짜와 시간을 함께 고르면 헷갈리므로 `{라벨} 날짜`(`AppDateButton`)와 `{라벨} 시간`(`AppTimeButton`) 두 입력란으로 나눕니다. 텍스트로 `YYYY-MM-DD HH:mm`을 직접 입력받지 않습니다.
 - 시간 입력은 모두 `shared/widgets/date_time/app_time_picker.dart`의 `showAppTimePicker`(테마: `AppTimePickerTheme`)로 고릅니다. `showTimePicker`를 직접 부르지 않습니다. 시각만 고르는 버튼은 `AppTimeButton`을 씁니다(아카데미 수업 시간 선택기를 shared로 옮긴 것).
 - `showDatePicker`의 `builder`에는 `AppDatePickerTheme`을 씌웁니다. primary가 흰색이라 기본 선택기는 선택한 날짜·확인 버튼이 보이지 않으며, `AppDatePickerTheme`이 secondary 색을 적용합니다.
-- 셸(`HomeFrame`) 위에 뜨는 패널은 본문 영역 기준으로 배치합니다. 예: 알림 패널은 본문 영역 우측 상단에서 위쪽·오른쪽 간격을 같게 둡니다.
+- 셸(`HomeFrame`) 위에 뜨는 패널은 헤더 구분선 기준으로 배치합니다. 예: 알림 패널은 구분선 오른쪽 끝과 화면 오른쪽 끝 사이 거리를 그대로 간격으로 써서, 구분선 아래·화면 오른쪽에서 그만큼 띄웁니다.
+- 기능 화면 본문은 `shared/widgets/layout/PageWidthLimit`로 가로 폭을 `LayoutTokens.pageMaxWidth`(1200px)까지로 제한하고 가운데 정렬합니다(대회 개최·우승 칭호 부여·포인트·벌점·알림 발행). 스크롤 화면은 scroll view 안쪽에서 감쌉니다.
+- 메뉴 아래 기능 화면은 제목 위에 `AppBreadcrumb`(`메뉴 분류 > 화면 이름`)를 둡니다.
+- 여러 줄 입력란의 라벨은 `alignLabelWithHint`를 쓰지 않아 비어 있을 때 왼쪽 가운데에 둡니다(예: 알림 내용).
 - 조회 조건 묶음 옆에 조회·초기화 버튼을 두고, 조회 결과가 비면 빈 상태 안내를 조건 아래 남은 영역의 가운데에 둡니다(예: 수업 내용 조회).
 
 ## 5. 접근성

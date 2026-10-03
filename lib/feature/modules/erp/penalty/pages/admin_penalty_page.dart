@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:constellation_cafe/feature/auth/notifier/current_user_state_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
+import 'package:constellation_cafe/shared/widgets/layout/page_width_limit.dart';
 
 import '../../constants/erp_strings.dart';
 import '../constants/penalty_strings.dart';
@@ -42,6 +43,11 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 넓은 화면에서 쓸데없이 넓어지지 않게 공용 최대 너비 안에서 가운데에 둔다.
+    return PageWidthLimit(child: _content(context));
+  }
+
+  Widget _content(BuildContext context) {
     if (!ref.watch(currentUserStateProvider).roles.contains(UserRole.admin)) {
       return const Center(child: Text(PenaltyStrings.adminOnly));
     }

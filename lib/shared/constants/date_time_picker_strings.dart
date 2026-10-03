@@ -4,8 +4,9 @@ abstract final class DateTimePickerStrings {
   static const selectTime = '시간 선택';
   static const emptyTime = '--:--';
   static const clear = '지우기';
-  static const changeDate = '날짜 변경';
-  static const changeTime = '시간 변경';
+
+  static String dateLabel(String label) => '$label 날짜';
+  static String timeLabel(String label) => '$label 시간';
 
   /// 현지 시각 `yyyy-MM-dd`
   static String formatDate(DateTime value) =>
