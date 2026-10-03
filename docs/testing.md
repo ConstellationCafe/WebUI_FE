@@ -1,7 +1,7 @@
 # 테스트와 CI
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-30
+> 마지막 검토일: 2026-10-03
 > 상위 문서: [README](../README.md) · 관련: [기능별 구현 노트](features.md)
 
 ## 1. 실행
@@ -24,9 +24,9 @@ flutter test --platform chrome test/feature/notification   # 특정 feature 예�
 | 범위 | 위치 | 검증 내용 |
 |---|---|---|
 | core | `test/core/` | 401 토큰 갱신 후 재요청, 403·갱신 실패 처리, 오류 SnackBar 문구와 silent 요청 |
-| shared | `test/shared/` | 봇 router `SocketModel` 직렬화, `ApiResponse`·`RepositoryPageResponse`·`BotCommandResponse` 계약, DB 편집기 notifier(조회·행 추가·미저장 변경·셀 입력), 날짜 formatter, loading·padding·SnackBar widget |
+| shared | `test/shared/` | 봇 router `SocketModel` 직렬화, `ApiResponse`·`RepositoryPageResponse`·`BotCommandResponse` 계약, DB 편집기 notifier(조회·행 추가·미저장 변경·셀 입력), 날짜 formatter, loading·padding·SnackBar widget, 날짜·시간 입력란(날짜→시간 연속 선택·부분 변경·24시간제·지우기) |
 | 로그인 | `test/feature/auth/` | `/auth/me`·check·refresh·logout 계약과 DTO, Discord 인증 URI, 로그인 상태 판정(채팅방 선택·refresh 힌트·401), 로그아웃 시 상태 정리, 로그인 화면·버튼·큰 글자 |
-| 채팅방 선택 | `test/feature/guild_select/` | 목록·선택 API(403 처리), 목록·빈 상태·오류, 선택 불가 안내, 선택 후 로그인 재확인과 홈 이동 |
+| 채팅방 선택 | `test/feature/guild_select/` | 목록·선택 API(403 처리), 목록·빈 상태·오류, 선택 불가 안내, 선택 후 로그인 재확인과 홈 이동, 선택한 채팅방 저장·새로고침 후 복원·로그아웃 시 삭제 |
 | 홈 | `test/feature/home/` | 권한별 메뉴(아카데미·ERP·대회), 메뉴 이동, 모바일 drawer, 로그아웃 후 상태 초기화 |
 | 메뉴 설정 | `test/feature/module_config/` | ModuleConfig DTO·경로·방 식별자 미전송, 모듈 조합별 활성 메뉴, 모듈 조회 이후 활성 기능만 권한 조회, 실패·재시도·부분 실패, 방 변경·로그아웃 중 이전 응답 무시 |
 | 프로필 | `test/feature/profile/` | 회원증·UID·길드 봇 명령과 `MembershipCardResponse` 순서, 포인트 내역 API, 변경분만 저장, 저장 결과·실패 안내, 회원증 조회 실패·다시 시도, 읽기 전용 내역 표 |
@@ -36,7 +36,7 @@ flutter test --platform chrome test/feature/notification   # 특정 feature 예�
 | 포인트 | `test/feature/modules/erp/point/` | API 계약(직렬화·매핑), 검색·페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 버튼 대비, 빈 설명 |
 | 벌점 | `test/feature/modules/erp/penalty/` | API 계약, 30일 누적 계산, notifier, widget, 탭과 TabBarView 너비 일치 |
 | 대회 개최 | `test/feature/modules/competition/` | 대회 권한 조회, 우승 칭호 부여·이력 계약(버전 type 값, 날짜 직렬화, 실패 코드), API 계약(경로·UTC 직렬화·요청 ID·게시판 키·실패 코드와 서버 안내 문구) |
-| 알림 | `test/feature/notification/` | API 계약(경로·쿼리·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기·읽음 처리, loading·error·empty, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성 |
+| 알림 | `test/feature/notification/` | API 계약(경로·쿼리·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기·읽음 처리, 본문 영역 우측 상단 패널 배치, loading·error·empty, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성 |
 
 아직 자동 테스트가 없는 영역: 대회 개최·우승 칭호 화면 widget(폼 검증·미리보기·확인 다이얼로그), 라우팅 가드(`router_provider.dart`), 수업 기록 작성·수정 화면, 교사 상태 처리 화면.
 
