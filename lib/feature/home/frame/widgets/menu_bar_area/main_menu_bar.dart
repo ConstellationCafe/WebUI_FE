@@ -17,7 +17,11 @@ class _MainMenuBarState extends ConsumerState<MainMenuBar> {
     return SizedBox(
       width: HomeConstants.menuWidth,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: HomeConstants.menuBottomPadding),
+        // 오른쪽에 스크롤바 자리를 비워 메뉴 버튼과 겹치지 않게 한다.
+        padding: const EdgeInsets.only(
+          right: HomeConstants.menuScrollbarGutter,
+          bottom: HomeConstants.menuBottomPadding,
+        ),
         child: const MainCategory(),
       ),
     );
