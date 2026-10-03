@@ -46,7 +46,9 @@ class SentNotificationListBody extends StatelessWidget {
         child: Center(child: Text(NotificationStrings.noHistory)),
       );
     }
+    // 카드를 이력 영역 너비에 맞춰 늘려, "발행 이력" 제목과 같은 왼쪽 선에서 시작하게 한다.
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (final item in items) ...[
           SentNotificationCard(item: item),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:constellation_cafe/core/constants/const_size.dart';
 import 'package:constellation_cafe/feature/guild_select/notifier/guild_state_notifier.dart';
 import 'package:constellation_cafe/feature/home/constants/home_constants.dart';
 import 'package:constellation_cafe/feature/home/constants/home_strings.dart';
@@ -60,8 +61,16 @@ class MainAppBar extends ConsumerWidget {
                 ),
               ),
             ),
-          const Spacer(),
-          Text(guild.guildName),
+          const SizedBox(width: ConstSize.smallSpacing),
+          // 이름이 길어도 Row 밖으로 넘치지 않게 말줄임 처리한다.
+          Expanded(
+            child: Text(
+              guild.guildName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+            ),
+          ),
         ],
       ),
     );

@@ -50,7 +50,8 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
         ),
 
         child: Container(
-          width: HomeConstants.menuWidth,
+          // 고정 너비 대신 메뉴 영역에 맞춰 스크롤바 자리만큼 줄어들게 한다.
+          width: double.infinity,
           height: HomeConstants.menuItemHeight,
           decoration: BoxDecoration(
             color: isSelected
@@ -69,12 +70,16 @@ class _MenuContainerState extends ConsumerState<MenuContainer> {
                 child: widget.iconImage,
               ),
               const SizedBox(width: ConstSize.smallSpacing),
-              Text(
-                widget.menuName,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: isSelected
-                      ? theme.colorScheme.onPrimaryContainer
-                      : theme.colorScheme.onSurface,
+              Expanded(
+                child: Text(
+                  widget.menuName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: isSelected
+                        ? theme.colorScheme.onPrimaryContainer
+                        : theme.colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],

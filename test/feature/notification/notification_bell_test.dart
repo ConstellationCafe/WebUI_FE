@@ -184,6 +184,59 @@ void main() {
     _expectPanelInsideScreen(tester, 1280);
   });
 
+  testWidgets('본문 영역을 알려 주면 패널을 그 영역 우측 상단에 같은 여백으로 둔다', (tester) async {
+    _useScreen(tester, const Size(1280, 800));
+    final areaKey = GlobalKey();
+    const header = 64.0;
+    const sidePadding = 24.0;
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          notificationRepositoryProvider.overrideWithValue(
+            FakeNotificationRepository(),
+          ),
+        ],
+        child: MaterialApp(
+          theme: CustomTheme.themeData,
+          home: Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: sidePadding),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: header,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          NotificationBell(panelAreaKey: areaKey),
+                          const SizedBox(width: _profileSlotWidth),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(child: SizedBox.expand(key: areaKey)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(_bell));
+    await tester.pumpAndSettle();
+
+    final panel = tester.getRect(find.byType(NotificationPanel));
+    final area = tester.getRect(find.byKey(areaKey));
+    const inset = NotificationTokens.panelAreaInset;
+    expect(panel.top, moreOrLessEquals(area.top + inset));
+    expect(panel.right, moreOrLessEquals(area.right - inset));
+    expect(area.right - panel.right, moreOrLessEquals(panel.top - area.top));
+  });
+
   testWidgets('본문이 비어 있으면 안내 문구를 표시한다', (tester) async {
     final notification = AppNotification(
       id: 1,

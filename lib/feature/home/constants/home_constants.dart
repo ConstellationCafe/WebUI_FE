@@ -36,6 +36,7 @@ class HomeConstants {
   static const double drawerWidth = 228.0;
   static const double menuBottomPadding = 40.0;
   static const double menuTitleHorizontalPadding = 8.0;
+  static const double menuScrollbarGutter = 12.0;
 
   // Home
   static const double contentMaxWidth = 900.0;

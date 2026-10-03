@@ -18,6 +18,9 @@ class MenuCategorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // ExpansionTile은 펼쳤을 때 아이콘·제목을 colorScheme.primary(흰색)로 칠해
+    // 토글 화살표가 배경에 묻힌다. 접힘·펼침 모두 진한 secondary로 고정한다.
+    final foreground = theme.colorScheme.secondary;
     return ExpansionTile(
       key: PageStorageKey<String>(storageKey),
       title: Text(title, style: theme.textTheme.titleSmall),
@@ -27,6 +30,10 @@ class MenuCategorySection extends StatelessWidget {
         horizontal: HomeConstants.menuTitleHorizontalPadding,
       ),
       childrenPadding: EdgeInsets.zero,
+      iconColor: foreground,
+      collapsedIconColor: foreground,
+      textColor: foreground,
+      collapsedTextColor: foreground,
       backgroundColor: Colors.transparent,
       collapsedBackgroundColor: Colors.transparent,
       shape: const Border(),

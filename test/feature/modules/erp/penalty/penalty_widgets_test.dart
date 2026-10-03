@@ -19,6 +19,7 @@ import 'package:constellation_cafe/feature/modules/erp/penalty/pages/admin_penal
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_award_dialog.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_cancel_dialog.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_log_tile.dart';
+import 'package:constellation_cafe/shared/constants/date_time_picker_strings.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
 import 'support/fake_penalty_repository.dart';
@@ -207,6 +208,53 @@ void main() {
     pending.complete(false);
     await tester.pumpAndSettle();
     expect(find.text(PenaltyStrings.submitFailed), findsOneWidget);
+  });
+
+  testWidgets('발생 시각은 날짜·시간 선택기로 골라 함께 보낸다', (tester) async {
+    final now = DateTime(2026, 10, 3, 20, 35);
+    final submitted = <PenaltyCreateRequest>[];
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: CustomTheme.themeData,
+        home: Scaffold(
+          body: PenaltyAwardDialog(
+            clock: () => now,
+            onSubmit: (request) async {
+              submitted.add(request);
+              return false;
+            },
+          ),
+        ),
+      ),
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, PenaltyStrings.targetId),
+      '123',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, PenaltyStrings.channelId),
+      '999',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, PenaltyStrings.reason),
+      '도배',
+    );
+
+    final date = find.text(DateTimePickerStrings.selectDate);
+    await tester.ensureVisible(date);
+    await tester.tap(date);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(find.text('2026-10-03'), findsOneWidget);
+    expect(find.text('20:35'), findsOneWidget);
+
+    await tester.ensureVisible(find.text(PenaltyStrings.award).last);
+    await tester.tap(find.text(PenaltyStrings.award).last);
+    await tester.pumpAndSettle();
+    expect(submitted.single.occurredAt, now);
   });
 
   testWidgets('취소 사유 입력과 감사 기록 안내를 표시한다', (tester) async {

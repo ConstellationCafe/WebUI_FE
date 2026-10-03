@@ -38,40 +38,46 @@ class AdminCompetitionWinnerPage extends ConsumerWidget {
       builder: (context, constraints) {
         final isCompact =
             constraints.maxWidth < CompetitionTokens.compactBreakpoint;
+        // 넓은 화면에서 폼과 이력을 같은 너비로 나누고, 화면 전체 폭으로 퍼지지 않게
+        // 최대 너비 안에서 가운데에 둔다(이력 오른쪽에 큰 빈 공간이 생기지 않게).
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             vertical: CompetitionTokens.fieldGap,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Semantics(
-                header: true,
-                child: Text(
-                  CompetitionStrings.winnerTitle,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: CompetitionTokens.winnerPageMaxWidth,
               ),
-              const SizedBox(height: CompetitionTokens.fieldGap),
-              if (isCompact) ...[
-                form,
-                const SizedBox(height: CompetitionTokens.sectionGap),
-                history,
-              ] else
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: CompetitionTokens.formMaxWidth,
-                      ),
-                      child: form,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      CompetitionStrings.winnerTitle,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    const SizedBox(width: CompetitionTokens.sectionGap),
-                    Expanded(child: history),
-                  ],
-                ),
-            ],
+                  ),
+                  const SizedBox(height: CompetitionTokens.fieldGap),
+                  if (isCompact) ...[
+                    form,
+                    const SizedBox(height: CompetitionTokens.sectionGap),
+                    history,
+                  ] else
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: form),
+                        const SizedBox(
+                          width: CompetitionTokens.winnerColumnGap,
+                        ),
+                        Expanded(child: history),
+                      ],
+                    ),
+                ],
+              ),
+            ),
           ),
         );
       },

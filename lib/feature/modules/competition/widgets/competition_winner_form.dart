@@ -10,8 +10,9 @@ import 'competition_date_field.dart';
 
 /// 우승 칭호 부여 폼. 입력값과 컨트롤러는 이 위젯의 생명주기와 함께한다.
 class CompetitionWinnerForm extends StatefulWidget {
-  /// 칭호를 부여하는 게임 버전. 값은 [GameVersionType]에서만 가져온다.
-  static const version = GameVersionType.s2;
+  /// 칭호를 부여할 수 있는 게임 버전. 값은 [GameVersionType]에서만 가져오며,
+  /// 현재는 S2만 고를 수 있다. 버전이 늘면 이 목록에 추가한다.
+  static const selectableVersions = [GameVersionType.s2];
 
   final bool isSubmitting;
   final Future<CompetitionWinnerException?> Function(CompetitionWinnerDraft)
@@ -37,6 +38,7 @@ class _CompetitionWinnerFormState extends State<CompetitionWinnerForm> {
   final _formKey = GlobalKey<FormState>();
   final _competitionController = TextEditingController();
   final _discordIdController = TextEditingController();
+  GameVersionType _version = CompetitionWinnerForm.selectableVersions.first;
   DateTime? _acquisition;
   String? _dateError;
   String? _failureMessage;
@@ -88,14 +90,23 @@ class _CompetitionWinnerFormState extends State<CompetitionWinnerForm> {
             validator: _validateDiscordId,
           ),
           const SizedBox(height: CompetitionTokens.fieldGap),
-          InputDecorator(
+          DropdownButtonFormField<GameVersionType>(
+            initialValue: _version,
             decoration: const InputDecoration(
               labelText: CompetitionStrings.winnerVersionLabel,
-              enabled: false,
             ),
-            child: Text(
-              CompetitionWinnerForm.version.typeToString().toUpperCase(),
-            ),
+            items: [
+              for (final version in CompetitionWinnerForm.selectableVersions)
+                DropdownMenuItem(
+                  value: version,
+                  child: Text(version.typeToString().toUpperCase()),
+                ),
+            ],
+            onChanged: enabled
+                ? (version) {
+                    if (version != null) setState(() => _version = version);
+                  }
+                : null,
           ),
           const SizedBox(height: CompetitionTokens.fieldGap),
           CompetitionDateField(
@@ -164,7 +175,7 @@ class _CompetitionWinnerFormState extends State<CompetitionWinnerForm> {
 
     final draft = CompetitionWinnerDraft(
       competitionName: _competitionController.text.trim(),
-      version: CompetitionWinnerForm.version,
+      version: _version,
       winnerDiscordId: _discordIdController.text.trim(),
       acquisition: acquisition,
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/utils/date_formatter.dart';
+import 'package:constellation_cafe/shared/widgets/date_time/app_date_picker_theme.dart';
 
 import '../constants/competition_strings.dart';
 import '../constants/competition_tokens.dart';
@@ -60,20 +61,7 @@ class CompetitionDateField extends StatelessWidget {
       firstDate: firstDate,
       lastDate: today,
       initialDate: value ?? today,
-      builder: (context, child) {
-        // 앱 theme의 primary가 흰색이라 선택기 버튼 글자가 보이지 않으므로 secondary로 바꾼다.
-        final theme = Theme.of(context);
-        return Theme(
-          data: theme.copyWith(
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: theme.colorScheme.secondary,
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
+      builder: (context, child) => AppDatePickerTheme(child: child!),
     );
     if (date != null) onChanged(date);
   }

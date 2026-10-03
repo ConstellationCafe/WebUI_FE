@@ -18,6 +18,9 @@ class PenaltyTokens {
   static const compactRankingDetailHeight = 520.0;
 
   static const dialogWidth = 390.0;
+
+  /// 벌점 발생 시각을 고를 수 있는 과거 범위
+  static const occurredAtRange = Duration(days: 365);
   static const progressIndicatorSize = 18.0;
   static const progressIndicatorStrokeWidth = 2.0;
 
