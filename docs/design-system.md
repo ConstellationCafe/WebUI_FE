@@ -46,12 +46,21 @@
 
 `ScreenWidth.isDesktop()`은 laptop 이상입니다. 작은 화면과 큰 화면에서 핵심 action과 content 우선순위를 확인합니다.
 
+모바일 규칙
+
+- 나란히 놓는 입력란은 받은 너비가 좁으면 세로로 쌓습니다(예: 수업 내용 기록의 `AcademyResponsiveRow`, 560px 미만). 화면 폭이 아니라 실제로 받은 너비로 판단해 카드 안쪽 여백까지 반영합니다.
+- 같은 종류의 칸을 여러 개 놓는 영역은 들어가는 열 수를 계산하되 마지막 줄만 덜 차지 않게 항목 수의 약수로 맞춥니다(예: 교사·학생 현황 4칸은 넓으면 4열, 모바일은 2행 2열).
+- 모바일(`ScreenWidth.mobileWidth` 미만)에서는 카드 안쪽 여백과 칩 간격을 줄여 칩 묶음이 불필요하게 두 줄이 되지 않게 합니다.
+- 목록 화면에서 검색 조건이 화면에 고정되면 모바일에서 목록이 작아지므로, 좁은 화면에서는 제목·탭·검색 조건이 목록과 함께 스크롤되게 합니다(예: 벌점 관리의 `NestedScrollView`).
+- 로그인 카드는 모바일에서 화면 너비를 쓰고 로고·제목·버튼을 키웁니다.
+
 ## 4. 컴포넌트 규칙
 
 - 비동기 화면은 loading·empty·error·success를 구분하고, 필요하면 refreshing·submitting 상태를 추가합니다.
 - 비어 있는 설명·내역은 빈 칸으로 두지 않고 `등록된 설명이 없습니다.`처럼 맥락에 맞는 안내 문구를 표시합니다.
 - dialog의 확인·취소 버튼은 app theme과 기존 feature의 버튼 convention을 따릅니다. 보조 action이라는 이유만으로 `OutlinedButton`을 쓰지 않고, 정상·hover·focus·disabled 상태에서 글자와 배경 대비를 확인합니다.
 - 제출 중인 버튼은 비활성화해 중복 실행을 막습니다.
+- `Card` 안의 스크롤 목록에서 `ListTile` 선택 배경을 쓰면 `ClippedListSurface`로 목록을 감쌉니다. 감싸지 않으면 선택 배경이 바깥 Card에 그려져, 스크롤했을 때 검색창 뒤 등 목록 밖에 보입니다.
 - 날짜·시간 입력은 `shared/widgets/date_time/DateTimePickerField`를 씁니다. 한 칸에서 날짜와 시간을 함께 고르면 헷갈리므로 `{라벨} 날짜`(`AppDateButton`)와 `{라벨} 시간`(`AppTimeButton`) 두 입력란으로 나눕니다. 텍스트로 `YYYY-MM-DD HH:mm`을 직접 입력받지 않습니다.
 - 시간 입력은 모두 `shared/widgets/date_time/app_time_picker.dart`의 `showAppTimePicker`(테마: `AppTimePickerTheme`)로 고릅니다. `showTimePicker`를 직접 부르지 않습니다. 시각만 고르는 버튼은 `AppTimeButton`을 씁니다(아카데미 수업 시간 선택기를 shared로 옮긴 것).
 - `showDatePicker`의 `builder`에는 `AppDatePickerTheme`을 씌웁니다. primary가 흰색이라 기본 선택기는 선택한 날짜·확인 버튼이 보이지 않으며, `AppDatePickerTheme`이 secondary 색을 적용합니다.
