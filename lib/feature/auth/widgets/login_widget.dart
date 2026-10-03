@@ -13,19 +13,28 @@ class LoginWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final outerMargin = screenWidth < ScreenWidth.mobileWidth
-        ? ConstPadding.mediumPaddingAll
-        : EdgeInsets.zero;
+    final compact = screenWidth < ScreenWidth.mobileWidth;
+    final logoSize = compact
+        ? AuthConstants.loginLogoMobileSize
+        : AuthConstants.loginLogoSize;
 
+    // 모바일에서는 카드가 화면 너비를 쓰고 로고·제목·버튼을 키운다.
     return Container(
-      margin: outerMargin,
-      constraints: const BoxConstraints(
-        maxWidth: AuthConstants.loginCardMaxWidth,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AuthConstants.loginCardHorizontalPadding,
-        vertical: AuthConstants.loginCardVerticalPadding,
-      ),
+      margin: compact
+          ? const EdgeInsets.all(AuthConstants.loginCardMobileMargin)
+          : EdgeInsets.zero,
+      constraints: compact
+          ? null
+          : const BoxConstraints(maxWidth: AuthConstants.loginCardMaxWidth),
+      padding: compact
+          ? const EdgeInsets.symmetric(
+              horizontal: AuthConstants.loginCardMobileHorizontalPadding,
+              vertical: AuthConstants.loginCardMobileVerticalPadding,
+            )
+          : const EdgeInsets.symmetric(
+              horizontal: AuthConstants.loginCardHorizontalPadding,
+              vertical: AuthConstants.loginCardVerticalPadding,
+            ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(AuthConstants.loginCardRadius),
@@ -49,8 +58,8 @@ class LoginWidget extends StatelessWidget {
                 ),
                 child: Image.asset(
                   AuthConstants.logoAsset,
-                  width: AuthConstants.loginLogoSize,
-                  height: AuthConstants.loginLogoSize,
+                  width: logoSize,
+                  height: logoSize,
                   fit: BoxFit.cover,
                   filterQuality: FilterQuality.high,
                 ),
@@ -63,13 +72,19 @@ class LoginWidget extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontSize: AuthConstants.loginTitleFontSize,
+                    fontSize: compact
+                        ? AuthConstants.loginTitleMobileFontSize
+                        : AuthConstants.loginTitleFontSize,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: ConstPadding.mediumPadding),
+          SizedBox(
+            height: compact
+                ? AuthConstants.loginButtonMobileGap
+                : ConstPadding.mediumPadding,
+          ),
           const DiscordLoginButton(),
         ],
       ),
