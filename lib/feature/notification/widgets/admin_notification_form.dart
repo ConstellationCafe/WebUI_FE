@@ -142,8 +142,8 @@ class _AdminNotificationFormState extends State<AdminNotificationForm> {
             minLines: 3,
             maxLines: NotificationTokens.bodyMaxLines,
             decoration: const InputDecoration(
+              // 여러 줄 입력란에서도 라벨을 위가 아닌 왼쪽 가운데에 둔다.
               labelText: NotificationStrings.bodyLabel,
-              alignLabelWithHint: true,
             ),
             validator: _validateBody,
           ),
