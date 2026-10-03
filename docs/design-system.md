@@ -53,7 +53,8 @@
 - dialog의 확인·취소 버튼은 app theme과 기존 feature의 버튼 convention을 따릅니다. 보조 action이라는 이유만으로 `OutlinedButton`을 쓰지 않고, 정상·hover·focus·disabled 상태에서 글자와 배경 대비를 확인합니다.
 - 제출 중인 버튼은 비활성화해 중복 실행을 막습니다.
 - 날짜·시간 입력은 `shared/widgets/date_time/DateTimePickerField`(날짜·시간을 따로 눌러 고르는 입력란)를 씁니다. 텍스트로 `YYYY-MM-DD HH:mm`을 직접 입력받지 않습니다.
-- `showDatePicker`·`showTimePicker`의 `builder`에는 `AppPickerTheme`을 씌웁니다. primary가 흰색이라 기본 선택기는 시계 바늘·선택한 날짜·확인 버튼이 보이지 않으며, `AppPickerTheme`이 secondary 색과 24시간제를 적용합니다. (아카데미 수업 시간 선택은 기존 `AcademyTimePickerTheme`을 아직 사용합니다.)
+- 시간 입력은 모두 `shared/widgets/date_time/app_time_picker.dart`의 `showAppTimePicker`(테마: `AppTimePickerTheme`)로 고릅니다. `showTimePicker`를 직접 부르지 않습니다. 시각만 고르는 버튼은 `AppTimeButton`을 씁니다(아카데미 수업 시간 선택기를 shared로 옮긴 것).
+- `showDatePicker`의 `builder`에는 `AppDatePickerTheme`을 씌웁니다. primary가 흰색이라 기본 선택기는 선택한 날짜·확인 버튼이 보이지 않으며, `AppDatePickerTheme`이 secondary 색을 적용합니다.
 - 셸(`HomeFrame`) 위에 뜨는 패널은 본문 영역 기준으로 배치합니다. 예: 알림 패널은 본문 영역 우측 상단에서 위쪽·오른쪽 간격을 같게 둡니다.
 - 조회 조건 묶음 옆에 조회·초기화 버튼을 두고, 조회 결과가 비면 빈 상태 안내를 조건 아래 남은 영역의 가운데에 둡니다(예: 수업 내용 조회).
 

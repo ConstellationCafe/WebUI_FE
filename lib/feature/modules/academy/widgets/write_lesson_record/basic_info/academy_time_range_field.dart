@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/feature/modules/academy/constants/academy_constants.dart';
 import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import 'package:constellation_cafe/shared/widgets/date_time/app_time_button.dart';
+import 'package:constellation_cafe/shared/widgets/date_time/app_time_picker.dart';
 
 import '../../../domain/model/lesson_record/lesson_time_range.dart';
 import '../academy_field_label.dart';
-import 'academy_time_button.dart';
-import 'academy_time_picker_theme.dart';
 
 class AcademyTimeRangeField extends StatelessWidget {
   final DateTime? startTime;
@@ -42,7 +42,7 @@ class AcademyTimeRangeField extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: AcademyTimeButton(
+              child: AppTimeButton(
                 value: startTime,
                 onPressed: () => _pickTime(
                   context,
@@ -59,7 +59,7 @@ class AcademyTimeRangeField extends StatelessWidget {
               child: Text(AcademyStrings.timeRangeSeparator),
             ),
             Expanded(
-              child: AcademyTimeButton(
+              child: AppTimeButton(
                 value: endTime,
                 onPressed: () => _pickTime(
                   context,
@@ -88,10 +88,9 @@ class AcademyTimeRangeField extends StatelessWidget {
     required TimeOfDay fallback,
     required ValueChanged<DateTime> onPicked,
   }) async {
-    final time = await showTimePicker(
+    final time = await showAppTimePicker(
       context: context,
       initialTime: current != null ? TimeOfDay.fromDateTime(current) : fallback,
-      builder: (context, child) => AcademyTimePickerTheme(child: child!),
     );
     if (time == null) return;
     final now = clock();

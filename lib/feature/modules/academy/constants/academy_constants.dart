@@ -49,11 +49,6 @@ abstract final class AcademyConstants {
   static const double statusPaginationButtonSize = 40.0;
   static const double statusPaginationSpacing = 4.0;
 
-  // Time Picker
-  static const Color timePickerSelectedTextColor = Color(0xFFFFFFFF);
-  static const Color timePickerUnselectedTextColor = Color(0xFF000000);
-  static const Color timePickerDialBackground = Color(0xFFEEEEEE);
-
   // Form
   static const double fieldLabelGap = 6.0;
   static const Color requiredMarkColor = Color(0xFFF44336);

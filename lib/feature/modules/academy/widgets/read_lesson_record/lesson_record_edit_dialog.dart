@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:constellation_cafe/shared/widgets/date_time/app_time_picker.dart';
+
 import '../../constants/academy_constants.dart';
 import '../../constants/academy_strings.dart';
 import '../../domain/model/lesson_record/lesson_record_update.dart';
@@ -121,7 +123,7 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   }
 
   Future<void> _selectStartTime() async {
-    final time = await showTimePicker(
+    final time = await showAppTimePicker(
       context: context,
       initialTime: _startTime,
     );
@@ -131,7 +133,10 @@ class _LessonRecordEditDialogState extends State<LessonRecordEditDialog> {
   }
 
   Future<void> _selectEndTime() async {
-    final time = await showTimePicker(context: context, initialTime: _endTime);
+    final time = await showAppTimePicker(
+      context: context,
+      initialTime: _endTime,
+    );
     if (time != null) {
       setState(() => _endTime = time);
     }

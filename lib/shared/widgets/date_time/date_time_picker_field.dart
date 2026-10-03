@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../constants/date_time_picker_strings.dart';
 import '../../constants/date_time_picker_tokens.dart';
-import 'app_picker_theme.dart';
+import 'app_date_picker_theme.dart';
+import 'app_time_picker.dart';
 
 /// 날짜와 시간을 따로 눌러 고르는 입력란. 값은 브라우저 현지 시각이다.
 ///
@@ -75,7 +76,7 @@ class DateTimePickerField extends StatelessWidget {
           const SizedBox(width: DateTimePickerTokens.segmentGap),
           Expanded(
             child: _Segment(
-              icon: Icons.schedule,
+              icon: Icons.access_time,
               text: current == null
                   ? DateTimePickerStrings.selectTime
                   : DateTimePickerStrings.formatTime(current),
@@ -100,7 +101,7 @@ class DateTimePickerField extends StatelessWidget {
       initialDate: initial.isBefore(first)
           ? first
           : (initial.isAfter(last) ? last : initial),
-      builder: _theme,
+      builder: (context, child) => AppDatePickerTheme(child: child!),
     );
     if (date == null || !context.mounted) return;
 
@@ -123,18 +124,11 @@ class DateTimePickerField extends StatelessWidget {
   }
 
   Future<TimeOfDay?> _showTime(BuildContext context, TimeOfDay initial) {
-    return showTimePicker(
-      context: context,
-      initialTime: initial,
-      builder: _theme,
-    );
+    return showAppTimePicker(context: context, initialTime: initial);
   }
 
   static DateTime _combine(DateTime date, TimeOfDay time) =>
       DateTime(date.year, date.month, date.day, time.hour, time.minute);
-
-  static Widget _theme(BuildContext context, Widget? child) =>
-      AppPickerTheme(child: child!);
 }
 
 /// 날짜 또는 시간 한 칸. 눌러서 해당 선택기를 연다.

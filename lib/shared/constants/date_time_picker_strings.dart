@@ -2,6 +2,7 @@
 abstract final class DateTimePickerStrings {
   static const selectDate = '날짜 선택';
   static const selectTime = '시간 선택';
+  static const emptyTime = '--:--';
   static const clear = '지우기';
   static const changeDate = '날짜 변경';
   static const changeTime = '시간 변경';

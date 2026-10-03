@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/utils/date_formatter.dart';
-import 'package:constellation_cafe/shared/widgets/date_time/app_picker_theme.dart';
+import 'package:constellation_cafe/shared/widgets/date_time/app_date_picker_theme.dart';
 
 import '../constants/competition_strings.dart';
 import '../constants/competition_tokens.dart';
@@ -61,7 +61,7 @@ class CompetitionDateField extends StatelessWidget {
       firstDate: firstDate,
       lastDate: today,
       initialDate: value ?? today,
-      builder: (context, child) => AppPickerTheme(child: child!),
+      builder: (context, child) => AppDatePickerTheme(child: child!),
     );
     if (date != null) onChanged(date);
   }

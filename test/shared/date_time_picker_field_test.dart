@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/core/constants/theme_data.dart';
 import 'package:constellation_cafe/shared/constants/date_time_picker_strings.dart';
+import 'package:constellation_cafe/shared/widgets/date_time/app_time_button.dart';
+import 'package:constellation_cafe/shared/widgets/date_time/app_time_picker.dart';
 import 'package:constellation_cafe/shared/widgets/date_time/date_time_picker_field.dart';
 
 final _now = DateTime(2026, 10, 3, 20, 35);
@@ -50,7 +52,11 @@ Future<List<DateTime?>> _pump(
     MaterialApp(
       theme: CustomTheme.themeData,
       home: Scaffold(
-        body: _Host(initial: initial, clearable: clearable, record: changes.add),
+        body: _Host(
+          initial: initial,
+          clearable: clearable,
+          record: changes.add,
+        ),
       ),
     ),
   );
@@ -84,14 +90,14 @@ void main() {
     expect(find.text('20:35'), findsOneWidget);
   });
 
-  testWidgets('시간 선택기는 24시간제로 열린다', (tester) async {
+  testWidgets('시간은 앱 공용 시간 선택기로 고른다', (tester) async {
     await _pump(tester, initial: _now);
 
     await tester.tap(find.text('20:35'));
     await tester.pumpAndSettle();
 
-    final context = tester.element(find.byType(TimePickerDialog));
-    expect(MediaQuery.of(context).alwaysUse24HourFormat, isTrue);
+    expect(find.byType(TimePickerDialog), findsOneWidget);
+    expect(find.byType(AppTimePickerTheme), findsOneWidget);
   });
 
   testWidgets('값이 있으면 시간을 바꿔도 날짜는 유지한다', (tester) async {
@@ -115,5 +121,19 @@ void main() {
 
     expect(changes, [null]);
     expect(find.text(DateTimePickerStrings.selectDate), findsOneWidget);
+  });
+
+  testWidgets('공용 시간 버튼은 값이 없으면 빈 시각, 있으면 HH:mm을 보여준다', (tester) async {
+    Widget button(DateTime? value) => MaterialApp(
+      home: Scaffold(
+        body: AppTimeButton(value: value, onPressed: () {}),
+      ),
+    );
+
+    await tester.pumpWidget(button(null));
+    expect(find.text(DateTimePickerStrings.emptyTime), findsOneWidget);
+
+    await tester.pumpWidget(button(DateTime(2026, 10, 3, 9, 5)));
+    expect(find.text('09:05'), findsOneWidget);
   });
 }
