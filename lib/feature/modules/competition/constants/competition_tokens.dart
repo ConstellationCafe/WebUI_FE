@@ -5,6 +5,10 @@ abstract final class CompetitionTokens {
   static const rowGap = 8.0;
   static const sectionGap = 24.0;
   static const formMaxWidth = 560.0;
+
+  /// 우승 칭호 화면: 폼과 이력을 나란히 둘 때의 전체 최대 너비와 두 열 사이 간격
+  static const winnerPageMaxWidth = 1200.0;
+  static const winnerColumnGap = 48.0;
   static const compactBreakpoint = 960.0;
   static const previewPadding = 16.0;
   static const previewRadius = 8.0;
