@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_class.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 
+import '../academy_responsive_row.dart';
 import 'academy_labeled_dropdown.dart';
 
 class AcademySelectionFields extends StatelessWidget {
@@ -36,71 +36,64 @@ class AcademySelectionFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    // 모바일처럼 좁으면 세 선택란을 세로로 쌓는다.
+    return AcademyResponsiveRow(
       children: [
-        Expanded(
-          child: AcademyLabeledDropdown<Academy>(
-            label: AcademyStrings.academyName,
-            hint: AcademyStrings.selectAcademy,
-            value: selectedAcademy,
-            items: academies
-                .map(
-                  (academy) => DropdownMenuItem<Academy>(
-                    value: academy,
-                    child: Text(academy.name),
-                  ),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (value != null) {
-                onAcademyChanged(value);
-              }
-            },
-          ),
+        AcademyLabeledDropdown<Academy>(
+          label: AcademyStrings.academyName,
+          hint: AcademyStrings.selectAcademy,
+          value: selectedAcademy,
+          items: academies
+              .map(
+                (academy) => DropdownMenuItem<Academy>(
+                  value: academy,
+                  child: Text(academy.name),
+                ),
+              )
+              .toList(),
+          onChanged: (value) {
+            if (value != null) {
+              onAcademyChanged(value);
+            }
+          },
         ),
-        const SizedBox(width: ConstPadding.mediumPadding),
-        Expanded(
-          child: AcademyLabeledDropdown<AcademyClass>(
-            label: AcademyStrings.academyClass,
-            hint: AcademyStrings.selectClass,
-            value: selectedAcademyClass,
-            items: classes
-                .map(
-                  (academyClass) => DropdownMenuItem<AcademyClass>(
-                    value: academyClass,
-                    child: Text(
-                      AcademyStrings.classNumber(academyClass.classNumber),
-                    ),
+        AcademyLabeledDropdown<AcademyClass>(
+          label: AcademyStrings.academyClass,
+          hint: AcademyStrings.selectClass,
+          value: selectedAcademyClass,
+          items: classes
+              .map(
+                (academyClass) => DropdownMenuItem<AcademyClass>(
+                  value: academyClass,
+                  child: Text(
+                    AcademyStrings.classNumber(academyClass.classNumber),
                   ),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (value != null) {
-                onClassChanged(value);
-              }
-            },
-          ),
+                ),
+              )
+              .toList(),
+          onChanged: (value) {
+            if (value != null) {
+              onClassChanged(value);
+            }
+          },
         ),
-        const SizedBox(width: ConstPadding.mediumPadding),
-        Expanded(
-          child: AcademyLabeledDropdown<Subject>(
-            label: AcademyStrings.subject,
-            hint: AcademyStrings.selectSubject,
-            value: selectedSubject,
-            items: subjects
-                .map(
-                  (subject) => DropdownMenuItem<Subject>(
-                    value: subject,
-                    child: Text(subject.name),
-                  ),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (value != null) {
-                onSubjectChanged(value);
-              }
-            },
-          ),
+        AcademyLabeledDropdown<Subject>(
+          label: AcademyStrings.subject,
+          hint: AcademyStrings.selectSubject,
+          value: selectedSubject,
+          items: subjects
+              .map(
+                (subject) => DropdownMenuItem<Subject>(
+                  value: subject,
+                  child: Text(subject.name),
+                ),
+              )
+              .toList(),
+          onChanged: (value) {
+            if (value != null) {
+              onSubjectChanged(value);
+            }
+          },
         ),
       ],
     );

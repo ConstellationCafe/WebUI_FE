@@ -6,6 +6,7 @@ import 'package:constellation_cafe/feature/modules/academy/domain/model/academy.
 import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_class.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/subject.dart';
 
+import '../academy_responsive_row.dart';
 import '../academy_section_card.dart';
 import 'academy_date_field.dart';
 import 'academy_selection_fields.dart';
@@ -70,22 +71,17 @@ class AcademyBasicInfo extends StatelessWidget {
             onSubjectChanged: onSubjectChanged,
           ),
           const SizedBox(height: ConstPadding.mediumPadding),
-          Row(
+          AcademyResponsiveRow(
             children: [
-              Expanded(
-                child: AcademyDateField(
-                  date: educationDate,
-                  onChanged: onEducationDateChanged,
-                ),
+              AcademyDateField(
+                date: educationDate,
+                onChanged: onEducationDateChanged,
               ),
-              const SizedBox(width: ConstPadding.mediumPadding),
-              Expanded(
-                child: AcademyTimeRangeField(
-                  startTime: startTime,
-                  endTime: endTime,
-                  onStartTimeChanged: onStartTimeChanged,
-                  onEndTimeChanged: onEndTimeChanged,
-                ),
+              AcademyTimeRangeField(
+                startTime: startTime,
+                endTime: endTime,
+                onStartTimeChanged: onStartTimeChanged,
+                onEndTimeChanged: onEndTimeChanged,
               ),
             ],
           ),
