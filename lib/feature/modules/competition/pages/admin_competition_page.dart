@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:constellation_cafe/shared/widgets/breadcrumb/app_breadcrumb.dart';
+import 'package:constellation_cafe/shared/widgets/layout/page_width_limit.dart';
+
 import '../constants/competition_strings.dart';
 import '../constants/competition_tokens.dart';
 import '../notifier/admin_competition_notifier.dart';
@@ -46,36 +49,45 @@ class AdminCompetitionPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(
             vertical: CompetitionTokens.fieldGap,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Semantics(
-                header: true,
-                child: Text(
-                  CompetitionStrings.title,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ),
-              const SizedBox(height: CompetitionTokens.fieldGap),
-              if (isCompact) ...[
-                form,
-                const SizedBox(height: CompetitionTokens.sectionGap),
-                preview,
-              ] else
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: CompetitionTokens.formMaxWidth,
-                      ),
-                      child: form,
-                    ),
-                    const SizedBox(width: CompetitionTokens.sectionGap),
-                    Expanded(child: preview),
+          child: PageWidthLimit(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const AppBreadcrumb(
+                  items: [
+                    CompetitionStrings.menuTitle,
+                    CompetitionStrings.title,
                   ],
                 ),
-            ],
+                const SizedBox(height: CompetitionTokens.rowGap),
+                Semantics(
+                  header: true,
+                  child: Text(
+                    CompetitionStrings.title,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ),
+                const SizedBox(height: CompetitionTokens.fieldGap),
+                if (isCompact) ...[
+                  form,
+                  const SizedBox(height: CompetitionTokens.sectionGap),
+                  preview,
+                ] else
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: CompetitionTokens.formMaxWidth,
+                        ),
+                        child: form,
+                      ),
+                      const SizedBox(width: CompetitionTokens.sectionGap),
+                      Expanded(child: preview),
+                    ],
+                  ),
+              ],
+            ),
           ),
         );
       },
