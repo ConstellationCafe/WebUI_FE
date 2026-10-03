@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import '../../constants/date_time_picker_strings.dart';
 import '../../constants/date_time_picker_tokens.dart';
 import 'app_date_picker_theme.dart';
+import 'app_time_button.dart';
 import 'app_time_picker.dart';
 
-/// 날짜와 시간을 따로 눌러 고르는 입력란. 값은 브라우저 현지 시각이다.
+/// 날짜 입력란과 시간 입력란을 나란히 둔 입력. 값은 브라우저 현지 시각이다.
 ///
+/// 한 칸에서 날짜와 시간을 함께 고르면 헷갈리므로 `{label} 날짜`, `{label} 시간` 두 칸으로
+/// 나눈다. 시간 칸은 앱 공용 [AppTimeButton]과 `showAppTimePicker`를 쓴다.
 /// - 값이 없을 때 날짜를 고르면 이어서 시간 선택기가 열린다.
 /// - 값이 있으면 날짜만, 또는 시간만 바꿀 수 있다(나머지는 유지).
 /// - [clearable]이면 값을 지울 수 있고, 지우면 [onChanged]에 null을 넘긴다.
@@ -44,49 +47,53 @@ class DateTimePickerField extends StatelessWidget {
   Widget build(BuildContext context) {
     final current = value;
     final canClear = clearable && enabled && current != null;
-    return InputDecorator(
-      // 라벨을 항상 위에 두어, 값이 없을 때 안내 문구와 라벨이 겹치지 않게 한다.
-      decoration: InputDecoration(
-        labelText: label,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        enabled: enabled,
-        errorText: errorText,
-        helperText: helperText,
-        suffixIcon: canClear
-            ? IconButton(
+    final theme = Theme.of(context);
+    final error = errorText;
+    final helper = helperText;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: AppDateButton(
+                label: DateTimePickerStrings.dateLabel(label),
+                value: current,
+                onPressed: enabled ? () => _pickDate(context) : null,
+              ),
+            ),
+            const SizedBox(width: DateTimePickerTokens.segmentGap),
+            Expanded(
+              child: AppTimeButton(
+                label: DateTimePickerStrings.timeLabel(label),
+                value: current,
+                placeholder: DateTimePickerStrings.selectTime,
+                onPressed: enabled ? () => _pickTime(context) : null,
+              ),
+            ),
+            if (canClear)
+              IconButton(
                 tooltip: DateTimePickerStrings.clear,
                 onPressed: () => onChanged(null),
                 icon: const Icon(Icons.close),
-              )
-            : null,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _Segment(
-              icon: Icons.event_outlined,
-              text: current == null
-                  ? DateTimePickerStrings.selectDate
-                  : DateTimePickerStrings.formatDate(current),
-              semanticLabel: '$label ${DateTimePickerStrings.changeDate}',
-              isEmpty: current == null,
-              onTap: enabled ? () => _pickDate(context) : null,
+              ),
+          ],
+        ),
+        if (error != null || helper != null)
+          Padding(
+            padding: const EdgeInsets.only(
+              top: DateTimePickerTokens.subtextTopGap,
+              left: DateTimePickerTokens.subtextHorizontalPadding,
+            ),
+            child: Text(
+              error ?? helper!,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: error != null ? theme.colorScheme.error : null,
+              ),
             ),
           ),
-          const SizedBox(width: DateTimePickerTokens.segmentGap),
-          Expanded(
-            child: _Segment(
-              icon: Icons.access_time,
-              text: current == null
-                  ? DateTimePickerStrings.selectTime
-                  : DateTimePickerStrings.formatTime(current),
-              semanticLabel: '$label ${DateTimePickerStrings.changeTime}',
-              isEmpty: current == null,
-              onTap: enabled ? () => _pickTime(context) : null,
-            ),
-          ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -111,73 +118,24 @@ class DateTimePickerField extends StatelessWidget {
       return;
     }
     // 처음 고를 때는 시간도 이어서 고른다. 시간 선택을 취소하면 값을 바꾸지 않는다.
-    final time = await _showTime(context, TimeOfDay.fromDateTime(clock()));
+    final time = await showAppTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(clock()),
+    );
     if (time == null) return;
     onChanged(_combine(date, time));
   }
 
   Future<void> _pickTime(BuildContext context) async {
     final base = value ?? clock();
-    final time = await _showTime(context, TimeOfDay.fromDateTime(base));
+    final time = await showAppTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(base),
+    );
     if (time == null) return;
     onChanged(_combine(base, time));
   }
 
-  Future<TimeOfDay?> _showTime(BuildContext context, TimeOfDay initial) {
-    return showAppTimePicker(context: context, initialTime: initial);
-  }
-
   static DateTime _combine(DateTime date, TimeOfDay time) =>
       DateTime(date.year, date.month, date.day, time.hour, time.minute);
-}
-
-/// 날짜 또는 시간 한 칸. 눌러서 해당 선택기를 연다.
-class _Segment extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final String semanticLabel;
-  final bool isEmpty;
-  final VoidCallback? onTap;
-
-  const _Segment({
-    required this.icon,
-    required this.text,
-    required this.semanticLabel,
-    required this.isEmpty,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = isEmpty ? theme.inputDecorationTheme.hintStyle : null;
-    return Semantics(
-      button: true,
-      enabled: onTap != null,
-      label: semanticLabel,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(DateTimePickerTokens.segmentRadius),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: DateTimePickerTokens.segmentVerticalPadding,
-          ),
-          child: Row(
-            children: [
-              Icon(icon, size: DateTimePickerTokens.segmentIconSize),
-              const SizedBox(width: DateTimePickerTokens.segmentIconGap),
-              Flexible(
-                child: Text(
-                  text,
-                  style: style,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

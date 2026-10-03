@@ -21,8 +21,8 @@ class PenaltyStrings {
   static const channelId = '채널 ID';
   static const channelName = '채널 이름 (선택)';
   static const reason = '사유';
-  static const occurredAt = '발생 시각 (선택)';
-  static const occurredAtHelper = '현지 시각 기준 · 비워 두면 부여하는 시각으로 기록';
+  static const occurredAt = '발생';
+  static const occurredAtHelper = '선택 입력 · 현지 시각 기준 · 비워 두면 부여하는 시각으로 기록';
   static const active = '유효';
   static const canceled = '취소됨';
   static const currentScore = '현재 30일 누적';
