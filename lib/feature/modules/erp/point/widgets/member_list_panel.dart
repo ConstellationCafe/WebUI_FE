@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:constellation_cafe/shared/widgets/layout/clipped_list_surface.dart';
+
 import '../constants/point_strings.dart';
 import '../constants/point_tokens.dart';
 import '../domain/model/point_member.dart';
@@ -77,27 +79,31 @@ class MemberListPanel extends StatelessWidget {
                     )
                   : members.isEmpty
                   ? const Center(child: Text(PointStrings.noMembers))
-                  : ListView.separated(
-                      itemCount: members.length,
-                      separatorBuilder: (_, _) =>
-                          const Divider(height: PointTokens.dividerHeight),
-                      itemBuilder: (context, index) {
-                        final member = members[index];
-                        return ListTile(
-                          selected: member.discordId == selectedDiscordId,
-                          selectedColor: Theme.of(
-                            context,
-                          ).colorScheme.onSecondaryContainer,
-                          selectedTileColor: Theme.of(
-                            context,
-                          ).colorScheme.secondaryContainer,
-                          title: Text(member.username),
-                          subtitle: Text(
-                            '${member.discordId}\n${NumberFormat.decimalPattern().format(member.coin)} P',
-                          ),
-                          onTap: isSubmitting ? null : () => onSelected(member),
-                        );
-                      },
+                  : ClippedListSurface(
+                      child: ListView.separated(
+                        itemCount: members.length,
+                        separatorBuilder: (_, _) =>
+                            const Divider(height: PointTokens.dividerHeight),
+                        itemBuilder: (context, index) {
+                          final member = members[index];
+                          return ListTile(
+                            selected: member.discordId == selectedDiscordId,
+                            selectedColor: Theme.of(
+                              context,
+                            ).colorScheme.onSecondaryContainer,
+                            selectedTileColor: Theme.of(
+                              context,
+                            ).colorScheme.secondaryContainer,
+                            title: Text(member.username),
+                            subtitle: Text(
+                              '${member.discordId}\n${NumberFormat.decimalPattern().format(member.coin)} P',
+                            ),
+                            onTap: isSubmitting
+                                ? null
+                                : () => onSelected(member),
+                          );
+                        },
+                      ),
                     ),
             ),
             Row(
