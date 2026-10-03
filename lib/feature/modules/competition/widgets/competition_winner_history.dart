@@ -71,23 +71,32 @@ class CompetitionWinnerHistory extends StatelessWidget {
     if (items.isEmpty) {
       return const Text(CompetitionStrings.noWinnerHistory);
     }
+    // 이력 한 건을 흰 배경 카드로 구분한다(알림 발행 이력 카드와 같은 Card theme).
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (final winner in items)
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.emoji_events_outlined),
-            title: Text(winner.competitionName),
-            subtitle: Text(
-              CompetitionStrings.winnerSubtitle(
-                name: winner.winnerName ?? CompetitionStrings.unknownMember,
-                discordId: winner.winnerDiscordId,
-                version: winner.version.typeToString(),
-                date: DateFormatter.toYyyyMmDd(winner.acquisition),
+        for (final winner in items) ...[
+          Card(
+            margin: EdgeInsets.zero,
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: CompetitionTokens.winnerCardPadding,
               ),
+              leading: const Icon(Icons.emoji_events_outlined),
+              title: Text(winner.competitionName),
+              subtitle: Text(
+                CompetitionStrings.winnerSubtitle(
+                  name: winner.winnerName ?? CompetitionStrings.unknownMember,
+                  discordId: winner.winnerDiscordId,
+                  version: winner.version.typeToString(),
+                  date: DateFormatter.toYyyyMmDd(winner.acquisition),
+                ),
+              ),
+              isThreeLine: true,
             ),
-            isThreeLine: true,
           ),
+          const SizedBox(height: CompetitionTokens.rowGap),
+        ],
       ],
     );
   }
