@@ -26,7 +26,6 @@ abstract final class CompetitionStrings {
   static const registrationEndLabel = '접수 마감';
   static const eventStartLabel = '진행 시작';
   static const eventEndNote = '진행 기간은 "시작 ~ 종료시까지"로 게시됩니다.';
-  static const selectDateTime = '날짜와 시간을 선택하세요';
   static const prizeSection = '우승 상품';
   static const prizeRankLabel = '순위';
   static const prizeContentLabel = '상품';

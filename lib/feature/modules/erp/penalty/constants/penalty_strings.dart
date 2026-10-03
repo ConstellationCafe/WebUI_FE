@@ -21,8 +21,8 @@ class PenaltyStrings {
   static const channelId = '채널 ID';
   static const channelName = '채널 이름 (선택)';
   static const reason = '사유';
-  static const occurredAt = '발생 시각 (선택, 현지 시각)';
-  static const occurredAtHint = 'YYYY-MM-DD HH:mm · 비우면 현재 시각';
+  static const occurredAt = '발생 시각 (선택)';
+  static const occurredAtHelper = '현지 시각 기준 · 비워 두면 부여하는 시각으로 기록';
   static const active = '유효';
   static const canceled = '취소됨';
   static const currentScore = '현재 30일 누적';
@@ -35,7 +35,7 @@ class PenaltyStrings {
   static const invalidId = 'Discord ID는 숫자 1~20자리여야 합니다.';
   static const invalidReason = '사유를 1~255자로 입력하세요.';
   static const invalidChannelName = '채널 이름은 100자 이하여야 합니다.';
-  static const invalidOccurredAt = '미래가 아닌 날짜와 시각을 입력하세요.';
+  static const invalidOccurredAt = '미래가 아닌 날짜와 시각을 선택하세요.';
   static const cancellationNotice = '취소 기록은 이력에 남고 누적 점수에서 제외됩니다.';
   static const previousPage = '이전 페이지';
   static const nextPage = '다음 페이지';

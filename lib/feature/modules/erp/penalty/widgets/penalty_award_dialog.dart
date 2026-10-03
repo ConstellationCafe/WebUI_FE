@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-import '../constants/penalty_formats.dart';
+import 'package:constellation_cafe/shared/widgets/date_time/date_time_picker_field.dart';
+
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../data/dto/request/penalty_create_request.dart';
@@ -34,7 +34,7 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
   final _channel = TextEditingController();
   final _channelName = TextEditingController();
   final _reason = TextEditingController();
-  final _occurredAt = TextEditingController();
+  DateTime? _occurredAt;
   bool _submitting = false;
   bool _uncertain = false;
 
@@ -50,19 +50,14 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
     _channel.dispose();
     _channelName.dispose();
     _reason.dispose();
-    _occurredAt.dispose();
     super.dispose();
   }
 
-  DateTime? _parseOccurredAt() {
-    if (_occurredAt.text.trim().isEmpty) return null;
-    try {
-      return DateFormat(
-        PenaltyFormats.occurredAtInput,
-      ).parseStrict(_occurredAt.text.trim());
-    } on FormatException {
-      return null;
-    }
+  /// 비워 두면 서버가 현재 시각으로 기록한다. 미래 시각은 고를 수 없다.
+  String? _validateOccurredAt() {
+    final occurredAt = _occurredAt;
+    if (occurredAt == null || !occurredAt.isAfter(widget.clock())) return null;
+    return PenaltyStrings.invalidOccurredAt;
   }
 
   @override
@@ -136,19 +131,27 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
                     : PenaltyStrings.invalidReason,
               ),
               const SizedBox(height: PenaltyTokens.fieldGap),
-              TextFormField(
-                controller: _occurredAt,
-                enabled: !_submitting && !_uncertain,
-                decoration: const InputDecoration(
-                  labelText: PenaltyStrings.occurredAt,
-                  hintText: PenaltyStrings.occurredAtHint,
-                ),
-                validator: (value) =>
-                    (value ?? '').trim().isEmpty ||
-                        (_parseOccurredAt() != null &&
-                            !_parseOccurredAt()!.isAfter(widget.clock()))
-                    ? null
-                    : PenaltyStrings.invalidOccurredAt,
+              FormField<DateTime>(
+                validator: (_) => _validateOccurredAt(),
+                builder: (field) {
+                  final now = widget.clock();
+                  return DateTimePickerField(
+                    label: PenaltyStrings.occurredAt,
+                    helperText: PenaltyStrings.occurredAtHelper,
+                    value: _occurredAt,
+                    firstDate: now.subtract(PenaltyTokens.occurredAtRange),
+                    lastDate: now,
+                    clearable: true,
+                    enabled: !_submitting && !_uncertain,
+                    errorText: field.errorText,
+                    clock: widget.clock,
+                    onChanged: (value) {
+                      setState(() => _occurredAt = value);
+                      field.didChange(value);
+                      if (field.hasError) field.validate();
+                    },
+                  );
+                },
               ),
               const SizedBox(height: PenaltyTokens.fieldGap),
               const Text(PenaltyStrings.fixedScore),
@@ -192,7 +195,7 @@ class _PenaltyAwardDialogState extends State<PenaltyAwardDialog> {
             ? null
             : _channelName.text.trim(),
         reason: _reason.text.trim(),
-        occurredAt: _parseOccurredAt(),
+        occurredAt: _occurredAt,
       ),
     );
     if (!mounted) return;

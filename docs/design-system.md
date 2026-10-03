@@ -1,7 +1,7 @@
 # 디자인 시스템과 UI 규칙
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-29  
+> 마지막 검토일: 2026-10-03  
 > 상위 문서: [README](../README.md) · 관련: [architecture](architecture.md)
 
 ## 1. theme
@@ -28,6 +28,7 @@
 | `core/constants/const_color.dart` | theme 밖 공통 색 |
 | `shared/constants/db_editor_*.dart` | DB 편집기 색·크기·문구 |
 | `shared/constants/snack_bar_tokens.dart`, `loading_tokens.dart` | 공용 SnackBar·진행 표시 |
+| `shared/constants/date_time_picker_tokens.dart`, `date_time_picker_strings.dart` | 공용 날짜·시간 입력란과 선택기 색·문구 |
 | `shared/widgets/usage/constants/` | 튜토리얼 안내 token·문구 |
 | `feature/**/constants/*_tokens.dart`, `*_strings.dart`, `*_constants.dart` | feature 전용 token·문자열 |
 
@@ -51,6 +52,11 @@
 - 비어 있는 설명·내역은 빈 칸으로 두지 않고 `등록된 설명이 없습니다.`처럼 맥락에 맞는 안내 문구를 표시합니다.
 - dialog의 확인·취소 버튼은 app theme과 기존 feature의 버튼 convention을 따릅니다. 보조 action이라는 이유만으로 `OutlinedButton`을 쓰지 않고, 정상·hover·focus·disabled 상태에서 글자와 배경 대비를 확인합니다.
 - 제출 중인 버튼은 비활성화해 중복 실행을 막습니다.
+- 날짜·시간 입력은 `shared/widgets/date_time/DateTimePickerField`(날짜·시간을 따로 눌러 고르는 입력란)를 씁니다. 텍스트로 `YYYY-MM-DD HH:mm`을 직접 입력받지 않습니다.
+- 시간 입력은 모두 `shared/widgets/date_time/app_time_picker.dart`의 `showAppTimePicker`(테마: `AppTimePickerTheme`)로 고릅니다. `showTimePicker`를 직접 부르지 않습니다. 시각만 고르는 버튼은 `AppTimeButton`을 씁니다(아카데미 수업 시간 선택기를 shared로 옮긴 것).
+- `showDatePicker`의 `builder`에는 `AppDatePickerTheme`을 씌웁니다. primary가 흰색이라 기본 선택기는 선택한 날짜·확인 버튼이 보이지 않으며, `AppDatePickerTheme`이 secondary 색을 적용합니다.
+- 셸(`HomeFrame`) 위에 뜨는 패널은 본문 영역 기준으로 배치합니다. 예: 알림 패널은 본문 영역 우측 상단에서 위쪽·오른쪽 간격을 같게 둡니다.
+- 조회 조건 묶음 옆에 조회·초기화 버튼을 두고, 조회 결과가 비면 빈 상태 안내를 조건 아래 남은 영역의 가운데에 둡니다(예: 수업 내용 조회).
 
 ## 5. 접근성
 

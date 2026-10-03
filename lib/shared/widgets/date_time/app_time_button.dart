@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
+import '../../constants/date_time_picker_strings.dart';
 
-/// 수업 시작·종료 시각 표시와 선택 버튼.
-class AcademyTimeButton extends StatelessWidget {
+/// 시각 표시와 선택 버튼. 누르면 호출부가 `showAppTimePicker`로 시간을 고른다.
+class AppTimeButton extends StatelessWidget {
   final DateTime? value;
   final VoidCallback onPressed;
 
-  const AcademyTimeButton({
+  const AppTimeButton({
     super.key,
     required this.value,
     required this.onPressed,
@@ -21,8 +21,8 @@ class AcademyTimeButton extends StatelessWidget {
         decoration: const InputDecoration(suffixIcon: Icon(Icons.access_time)),
         child: Text(
           value == null
-              ? AcademyStrings.emptyTime
-              : AcademyStrings.formatTime(value!),
+              ? DateTimePickerStrings.emptyTime
+              : DateTimePickerStrings.formatTime(value!),
         ),
       ),
     );

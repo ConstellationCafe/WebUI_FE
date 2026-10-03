@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:constellation_cafe/core/constants/const_color.dart';
 import 'package:constellation_cafe/core/constants/const_padding.dart';
@@ -9,13 +8,21 @@ import '../widgets/home_header.dart';
 import '../widgets/menu_bar_area/main_menu_bar.dart';
 import '../widgets/drawer/home_drawer.dart';
 
-class HomeFrame extends ConsumerWidget {
+class HomeFrame extends StatefulWidget {
   final Widget? child;
 
   const HomeFrame({super.key, this.child});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<HomeFrame> createState() => _HomeFrameState();
+}
+
+class _HomeFrameState extends State<HomeFrame> {
+  /// 헤더 아래 본문 영역. 알림 패널을 이 영역의 우측 상단에 띄운다.
+  final _contentAreaKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = ScreenWidth.isDesktop(width);
 
@@ -40,7 +47,10 @@ class HomeFrame extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HomeHeader(isDesktop: isDesktop),
+            HomeHeader(
+              isDesktop: isDesktop,
+              notificationAreaKey: _contentAreaKey,
+            ),
             const SizedBox(height: ConstPadding.tinyPadding),
             Divider(thickness: 1, color: theme.colorScheme.outline),
             const SizedBox(height: ConstPadding.tinyPadding),
@@ -52,7 +62,12 @@ class HomeFrame extends ConsumerWidget {
                     MainMenuBar(),
                     const SizedBox(width: ConstPadding.smallPadding),
                   ],
-                  Expanded(child: Center(child: child!)),
+                  Expanded(
+                    child: KeyedSubtree(
+                      key: _contentAreaKey,
+                      child: Center(child: widget.child!),
+                    ),
+                  ),
                 ],
               ),
             ),

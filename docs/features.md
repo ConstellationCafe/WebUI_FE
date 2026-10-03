@@ -1,7 +1,7 @@
 # 기능별 구현 노트
 
 > 상태: Active  
-> 마지막 검토일: 2026-09-30
+> 마지막 검토일: 2026-10-03
 > 상위 문서: [README](../README.md) · 관련: [architecture](architecture.md), [테스트](testing.md)
 
 API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명세서`와 [WebUI_BE API 개요](https://github.com/ConstellationCafe/WebUI_BE/blob/develope/docs/api.md)를 기준으로 합니다.
@@ -13,6 +13,7 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 - 로그인만으로는 `/api/**`를 쓸 수 없습니다. `/select`에서 채팅방을 고르면 `POST /auth/guild/select`로 방이 담긴 토큰을 다시 받습니다(WebUI_BE ADR-0001).
 - `/home?guild_id=`는 선택이 끝났고 `guild_id`가 사용자 길드 목록에 있을 때만 열립니다.
 - 채팅방 선택 요청·상태 초기화·로그인 재확인은 `CurrentGuildStateNotifier.select`가 하고, 화면은 결과(`GuildSelectionResult`)에 따라 안내·이동만 합니다.
+- 선택한 채팅방(ID·이름·아이콘 URL)은 `SelectedGuildStorage`(shared_preferences, 웹은 localStorage)에 보관합니다. 새로고침하면 토큰은 그 방을 가리키지만 메모리 상태는 비어 헤더의 채팅방 로고·이름이 사라졌으므로, `selectedGuildPersistenceProvider`(`MyApp`에서 구독)가 앱 시작 시 복원하고, 채팅방을 고르면 저장하며, 로그아웃 등으로 상태가 비면 지웁니다. 비밀값은 담지 않습니다.
 
 ## 메뉴와 권한 (`feature/home/frame`)
 
@@ -66,6 +67,7 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 - 요청·응답 DTO는 `data/dto`, 업무 데이터는 `domain/model`, 상태는 `state/`(Freezed)와 `notifier/`(생성형 Riverpod)로 분리합니다.
 - 부여 다이얼로그는 요청 UUID를 한 번 생성해 재시도에도 유지하고, 제출 중에는 중복 제출을 막습니다. API receive timeout은 15초입니다.
 - 탭 배경은 상하에만 안쪽 여백을 두어 탭 영역이 아래 목록(TabBarView)과 같은 너비를 차지합니다.
+- 부여 다이얼로그의 발생 시각은 공용 `DateTimePickerField`로 날짜·시간을 골라 입력합니다(선택, 지우기 가능). 비워 두면 서버가 부여 시각으로 기록하고, 최근 1년 안에서 고르며 미래 시각은 검증에서 막습니다.
 
 ## 대회 개최 (`feature/modules/competition`)
 
@@ -73,6 +75,7 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 - 대회 모듈이 활성화된 채팅방에서는 로그인 사용자 정보를 불러올 때(채팅방 선택·변경 포함) `CompetitionPermissionNotifier`(keepAlive)가 권한을 조회하고 로그아웃 시 비웁니다. 조회에 실패하면 메뉴를 숨깁니다.
 - 웹은 **글만 씁니다**. 서버가 봇 계정으로 디스코드에 게시하면, 빗자루 봇이 기존처럼 글을 감지해 대회 등록(스케줄러), 참가 이모지·참가자 역할·대회방 생성, WebUI 알림 발행을 처리합니다. 참가 이모지 등은 `joinable` 게시판(`inner_board`)에서만 만들어지며, 화면이 게시판을 고를 때 안내합니다.
 - 입력: 제목, 참가 방법, 진행 형식, 접수 시작·마감, 진행 시작(브라우저 현지 시각을 UTC로 전송), 선택 우승 상품·추가 입력란(각 10개). 진행 기간은 항상 `시작 ~ 종료시까지`로 게시됩니다.
+- 접수·진행 시각은 공용 `DateTimePickerField`로 날짜와 시간을 따로 눌러 바꿉니다(처음에는 날짜 다음 시간 선택기가 이어서 열림). 날짜 선택기는 `AppDatePickerTheme`, 시간 선택기는 공용 `showAppTimePicker`(아카데미 수업 시간 선택기를 shared로 옮긴 것)를 씁니다.
 - 입력이 멈추면(600ms) `POST /notices/preview`로 서버가 조립한 **실제 게시글**과 봇 파서 규칙 위반 안내를 미리보기에 보여줍니다. 늦게 도착한 이전 미리보기 결과는 버립니다.
 - 개최 전 확인 다이얼로그로 게시판·대회명·일정과 봇이 자동으로 하는 일을 확인받습니다. 게시 시도마다 요청 ID를 만들고 결과를 모르는 실패 뒤 다시 누르면 같은 ID를 재사용합니다(서버가 Discord nonce로 몇 분 안의 중복 게시를 막음). 성공하면 폼을 비우고 SnackBar에서 디스코드 공지글을 열 수 있습니다.
 - 400·404·502 실패는 서버 안내 문구를 그대로 보여주고, API 호출은 `ErrorInterceptor.silentErrorKey`로 전역 SnackBar를 끕니다.
@@ -80,15 +83,16 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 ### 우승 칭호 부여 (`/competition-winners`)
 
 - 대회 매니저가 현재 채팅방 재적 회원(Discord ID)에게 대회명·대회 개최 날짜로 우승 칭호를 부여합니다. WebUI_BE `/api/competitions/winners`(Competition.Winners)를 사용합니다.
-- 게임 버전은 폼의 `CompetitionWinnerForm.version`(= `GameVersionType.s2`, 친선전의 버전 type)을 쓰며 문자열로 적지 않습니다. 화면에는 읽기 전용으로 보여줍니다.
+- 게임 버전은 드롭다운으로 고르며, 선택지는 `CompetitionWinnerForm.selectableVersions`(현재 `GameVersionType.s2`만, 친선전의 버전 type)입니다. 문자열로 적지 않으며, 버전이 늘면 이 목록에 추가합니다.
 - 대회 개최 날짜는 오늘까지(과거 5년) 고를 수 있고, 시각이 아닌 날짜라 UTC로 바꾸지 않고 `yyyy-MM-dd`로 보냅니다.
 - 같은 대회로 여러 명에게 연달아 부여할 수 있도록, 성공하면 우승자 ID만 비우고 대회명·날짜는 남깁니다. 비재적 회원(404)·중복 부여(409)는 폼 아래에 안내합니다.
-- 오른쪽(좁은 화면에서는 아래)에 현재 채팅방의 부여 이력(대회 날짜 최신순)을 페이지 단위로 보여줍니다.
+- 오른쪽(좁은 화면에서는 아래)에 현재 채팅방의 부여 이력(대회 날짜 최신순)을 페이지 단위로 보여줍니다. 넓은 화면에서는 최대 1200px 안에서 폼과 이력을 같은 너비로 나눠 가운데 정렬합니다.
 
 ## 알림 (`feature/notification`)
 
 - 설계 근거: WebUI_BE ADR-0004 (DB 저장 + Redis Pub/Sub + SSE)
 - 헤더 프로필 아이콘 왼쪽의 `NotificationBell`이 읽지 않은 알림이 있으면 우측 하단에 빨간 점을 표시합니다. 누르면 패널이 열리고, 최신 알림까지 읽음 처리(`PUT /api/me/notifications/read-cursor`)되어 빨간 점이 사라집니다. 이번에 새로 본 알림은 배경색과 "새 알림" 문구로 구분합니다.
+- 패널은 `HomeFrame`의 본문 영역(헤더 아래 `Expanded`) 우측 상단에, 위쪽·오른쪽 벽과 같은 간격(`NotificationTokens.panelAreaInset`)을 두고 열립니다. 본문 영역을 모르면 종 아이콘 기준으로 열고 화면 양옆 여백을 지킵니다.
 - 실시간 수신은 `EventSource`(SSE, `GET /api/me/notifications/stream`)이며 인증은 HttpOnly 쿠키로 합니다(토큰을 URL에 넣지 않음). 브라우저 구현은 `data/realtime/`에서 conditional import로 격리했고(`package:web`), 그 외 platform은 REST 조회만 합니다.
 - 연결 직후 서버가 보내는 `ready` 이벤트로 읽지 않은 개수를 다시 맞추므로, 오프라인이던 동안의 알림도 접속하면 표시됩니다.
 - 서버가 연결을 끝내면(토큰 만료 등) 읽지 않은 개수를 REST로 먼저 다시 받아 토큰 갱신을 거친 뒤, 2초에서 시작해 최대 60초 간격(±20% jitter)으로 재연결합니다.
