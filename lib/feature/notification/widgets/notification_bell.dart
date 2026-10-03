@@ -15,8 +15,13 @@ import 'notification_unread_dot.dart';
 /// 읽지 않은 알림이 있으면 우측 하단에 빨간 점을 표시한다. 누르면 알림 패널이 열리고,
 /// 패널이 최신 알림을 읽음 처리하면 빨간 점이 사라진다. 색만으로 의미를 전달하지 않도록
 /// 스크린 리더에는 읽지 않은 개수를 함께 알린다.
+///
+/// [panelAreaKey]가 가리키는 영역(헤더 아래 본문)이 있으면 패널을 그 영역의 우측 상단에
+/// 위쪽·오른쪽 여백을 같게 두고 연다.
 class NotificationBell extends ConsumerStatefulWidget {
-  const NotificationBell({super.key});
+  final GlobalKey? panelAreaKey;
+
+  const NotificationBell({super.key, this.panelAreaKey});
 
   @override
   ConsumerState<NotificationBell> createState() => _NotificationBellState();
@@ -81,8 +86,9 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
     }
   }
 
-  /// 종 아이콘의 실제 위치로 패널 위치를 정한다. 헤더에서 종 오른쪽에 프로필 아이콘이
-  /// 있어도 좁은 화면에서 패널이 화면 밖으로 밀리지 않게 하기 위해서다.
+  /// 종 아이콘과 본문 영역의 실제 위치로 패널 위치를 정한다. 본문 영역을 모르면 종 아이콘
+  /// 기준으로 두되, 종 오른쪽에 프로필 아이콘이 있어도 좁은 화면에서 패널이 화면 밖으로
+  /// 밀리지 않게 한다.
   Offset? _panelPosition() {
     final bell = context.findRenderObject();
     final overlay = Overlay.maybeOf(context)?.context.findRenderObject();
@@ -92,7 +98,15 @@ class _NotificationBellState extends ConsumerState<NotificationBell> {
     return notificationPanelOffset(
       anchor: topLeft & bell.size,
       screenWidth: overlay.size.width,
+      area: _panelArea(overlay),
     );
+  }
+
+  Rect? _panelArea(RenderBox overlay) {
+    final area = widget.panelAreaKey?.currentContext?.findRenderObject();
+    if (area is! RenderBox || !area.hasSize) return null;
+    final topLeft = area.localToGlobal(Offset.zero, ancestor: overlay);
+    return topLeft & area.size;
   }
 
   void _close() => _menuController.close();

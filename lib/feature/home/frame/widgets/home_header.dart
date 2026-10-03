@@ -8,7 +8,14 @@ import 'appbar/main_app_bar.dart';
 class HomeHeader extends StatelessWidget {
   final bool isDesktop;
 
-  const HomeHeader({super.key, required this.isDesktop});
+  /// 알림 패널을 우측 상단에 띄울 본문 영역
+  final GlobalKey? notificationAreaKey;
+
+  const HomeHeader({
+    super.key,
+    required this.isDesktop,
+    this.notificationAreaKey,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,7 @@ class HomeHeader extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const NotificationBell(),
+            NotificationBell(panelAreaKey: notificationAreaKey),
             const SizedBox(width: NotificationTokens.bellGap),
             ProfileMenu(),
           ],

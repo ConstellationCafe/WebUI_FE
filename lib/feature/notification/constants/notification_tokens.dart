@@ -15,6 +15,9 @@ class NotificationTokens {
   static const panelWidth = 360.0;
   static const panelScreenMargin = 16.0;
   static const panelBelowHeaderGap = 20.0;
+
+  /// 본문 영역 우측 상단에 패널을 둘 때 위쪽·오른쪽 벽과의 같은 간격
+  static const panelAreaInset = 16.0;
   static const panelRadius = 12.0;
   static const panelGap = 8.0;
   static const dividerInset = 16.0;
