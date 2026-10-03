@@ -184,9 +184,9 @@ void main() {
     _expectPanelInsideScreen(tester, 1280);
   });
 
-  testWidgets('본문 영역을 알려 주면 패널을 그 영역 우측 상단에 같은 여백으로 둔다', (tester) async {
+  testWidgets('구분선과 화면 끝 사이 거리만큼 구분선 아래·화면 오른쪽에서 띄운다', (tester) async {
     _useScreen(tester, const Size(1280, 800));
-    final areaKey = GlobalKey();
+    final dividerKey = GlobalKey();
     const header = 64.0;
     const sidePadding = 24.0;
 
@@ -211,13 +211,13 @@ void main() {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          NotificationBell(panelAreaKey: areaKey),
+                          NotificationBell(dividerKey: dividerKey),
                           const SizedBox(width: _profileSlotWidth),
                         ],
                       ),
                     ),
                   ),
-                  Expanded(child: SizedBox.expand(key: areaKey)),
+                  Divider(key: dividerKey, thickness: 1),
                 ],
               ),
             ),
@@ -230,11 +230,12 @@ void main() {
     await tester.pumpAndSettle();
 
     final panel = tester.getRect(find.byType(NotificationPanel));
-    final area = tester.getRect(find.byKey(areaKey));
-    const inset = NotificationTokens.panelAreaInset;
-    expect(panel.top, moreOrLessEquals(area.top + inset));
-    expect(panel.right, moreOrLessEquals(area.right - inset));
-    expect(area.right - panel.right, moreOrLessEquals(panel.top - area.top));
+    final divider = tester.getRect(find.byKey(dividerKey));
+    const screenWidth = 1280.0;
+    final gap = screenWidth - divider.right;
+    expect(gap, moreOrLessEquals(sidePadding));
+    expect(panel.right, moreOrLessEquals(screenWidth - gap));
+    expect(panel.top, moreOrLessEquals(divider.center.dy + gap));
   });
 
   testWidgets('본문이 비어 있으면 안내 문구를 표시한다', (tester) async {
