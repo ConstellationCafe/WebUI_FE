@@ -22,10 +22,7 @@ class PenaltyPermissionNotifier extends _$PenaltyPermissionNotifier {
     try {
       final isManager = await ref.read(penaltyRepositoryProvider).isManager();
       if (!ref.mounted || request != _request) return;
-      state = PenaltyPermissionState(
-        isInitialized: true,
-        isManager: isManager,
-      );
+      state = PenaltyPermissionState(isInitialized: true, isManager: isManager);
     } catch (_) {
       if (!ref.mounted || request != _request) return;
       state = const PenaltyPermissionState(isInitialized: true);
