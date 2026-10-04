@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:constellation_cafe/core/constants/const_padding.dart';
 import 'package:constellation_cafe/feature/modules/academy/constants/academy_strings.dart';
 import 'package:constellation_cafe/feature/modules/academy/domain/model/teacher.dart';
 
+import '../academy_responsive_row.dart';
 import '../academy_section_card.dart';
 import 'co_teacher_field.dart';
 import 'main_teacher_field.dart';
@@ -32,28 +32,21 @@ class AcademyTeacherInfo extends StatelessWidget {
     return AcademySectionCard(
       title: AcademyStrings.teacherInfo,
       icon: Icons.person_outline_rounded,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: MainTeacherField(
-                teachers: teachers,
-                selectedTeacher: mainTeacher,
-                onChanged: onMainTeacherChanged,
-              ),
-            ),
-            const SizedBox(width: ConstPadding.mediumPadding),
-            Expanded(
-              child: CoTeacherField(
-                teachers: coTeachers,
-                mainTeacher: mainTeacher,
-                selectedCoTeachers: selectedCoTeachers,
-                onChanged: onCoTeacherToggle,
-              ),
-            ),
-          ],
-        ),
+      child: AcademyResponsiveRow(
+        equalHeight: true,
+        children: [
+          MainTeacherField(
+            teachers: teachers,
+            selectedTeacher: mainTeacher,
+            onChanged: onMainTeacherChanged,
+          ),
+          CoTeacherField(
+            teachers: coTeachers,
+            mainTeacher: mainTeacher,
+            selectedCoTeachers: selectedCoTeachers,
+            onChanged: onCoTeacherToggle,
+          ),
+        ],
       ),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:constellation_cafe/shared/widgets/layout/clipped_list_surface.dart';
+
 import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../notifier/admin_penalty_notifier.dart';
@@ -58,18 +60,20 @@ class PenaltyRankingList extends ConsumerWidget {
                     )
                   : members == null || members.items.isEmpty
                   ? const Center(child: Text(PenaltyStrings.noRanking))
-                  : ListView.builder(
-                      itemCount: members.items.length,
-                      itemBuilder: (context, index) {
-                        final member = members.items[index];
-                        return PenaltyRankingTile(
-                          member: member,
-                          selected: state.selectedId == member.discordId,
-                          onTap: state.isSubmitting
-                              ? null
-                              : () => notifier.selectMember(member.discordId),
-                        );
-                      },
+                  : ClippedListSurface(
+                      child: ListView.builder(
+                        itemCount: members.items.length,
+                        itemBuilder: (context, index) {
+                          final member = members.items[index];
+                          return PenaltyRankingTile(
+                            member: member,
+                            selected: state.selectedId == member.discordId,
+                            onTap: state.isSubmitting
+                                ? null
+                                : () => notifier.selectMember(member.discordId),
+                          );
+                        },
+                      ),
                     ),
             ),
             PenaltyPager(

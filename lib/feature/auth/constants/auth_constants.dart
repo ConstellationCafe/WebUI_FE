@@ -26,4 +26,16 @@ class AuthConstants {
   static const double discordLoginButtonIconSize = 18.0;
   static const Color discordLoginButtonColor = Colors.blueAccent;
   static const Color discordLoginButtonTextColor = Colors.white;
+
+  // 모바일(ScreenWidth.mobileWidth 미만): 화면 너비를 쓰고 요소를 키워 손가락으로 누르기
+  // 쉽게 한다.
+  static const double loginCardMobileMargin = 24.0;
+  static const double loginCardMobileHorizontalPadding = 24.0;
+  static const double loginCardMobileVerticalPadding = 32.0;
+  static const double loginLogoMobileSize = 64.0;
+  static const double loginTitleMobileFontSize = 28.0;
+  static const double loginButtonMobileGap = 24.0;
+  static const double discordLoginButtonMobileHeight = 52.0;
+  static const double discordLoginButtonMobileIconSize = 22.0;
+  static const double discordLoginButtonMobileFontSize = 18.0;
 }
