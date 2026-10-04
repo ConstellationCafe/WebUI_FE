@@ -11,6 +11,7 @@ import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../domain/model/penalty_log.dart';
 import '../notifier/admin_penalty_notifier.dart';
+import '../notifier/penalty_permission_notifier.dart';
 import '../state/admin_penalty_state.dart';
 import '../widgets/admin_penalty_history_panel.dart';
 import '../widgets/admin_penalty_ranking_panel.dart';
@@ -19,7 +20,8 @@ import '../widgets/penalty_award_dialog.dart';
 import '../widgets/penalty_cancel_dialog.dart';
 import '../widgets/penalty_context_menu_scope.dart';
 
-/// 관리자 벌점 화면. 화면 조합과 다이얼로그 navigation만 담당한다.
+/// 벌점 관리 화면. 화면 조합과 다이얼로그 navigation만 담당한다.
+/// 운영 매니저·운영 본부원 역할 또는 서버장만 볼 수 있다(최종 판단은 서버).
 ///
 /// 검색 입력 controller는 탭을 오가도 입력값이 유지되도록 page가 소유하고 각 탭에 전달한다.
 class AdminPenaltyPage extends ConsumerStatefulWidget {
@@ -49,8 +51,18 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
   }
 
   Widget _content(BuildContext context) {
-    if (!ref.watch(currentUserStateProvider).roles.contains(UserRole.admin)) {
-      return const Center(child: Text(PenaltyStrings.adminOnly));
+    final isAdmin = ref.watch(
+      currentUserStateProvider.select(
+        (state) => state.roles.contains(UserRole.admin),
+      ),
+    );
+    final permission = ref.watch(penaltyPermissionProvider);
+    if (!isAdmin && !permission.isManager) {
+      // 새로고침 직후처럼 권한을 아직 확인하지 못했으면 안내 대신 기다린다.
+      if (permission.isLoading || !permission.isInitialized) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      return const Center(child: Text(PenaltyStrings.managerOnly));
     }
     final state = ref.watch(adminPenaltyProvider);
     return PenaltyContextMenuScope(

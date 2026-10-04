@@ -9,13 +9,15 @@ part of 'module_config_notifier.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// 채팅방의 메뉴 설정은 화면 이동 중 유지하고, 로그인·방 변경 때 다시 읽는다.
-/// 활성화된 모듈에 한해서 별도 권한을 조회한다.
+/// 활성화된 모듈에 한해서 별도 권한을 조회한다. ERP 벌점 관리는 모듈 설정 대상이
+/// 아니므로 설정 결과를 기다리지 않고 함께 조회한다.
 
 @ProviderFor(ModuleConfigNotifier)
 final moduleConfigProvider = ModuleConfigNotifierProvider._();
 
 /// 채팅방의 메뉴 설정은 화면 이동 중 유지하고, 로그인·방 변경 때 다시 읽는다.
-/// 활성화된 모듈에 한해서 별도 권한을 조회한다.
+/// 활성화된 모듈에 한해서 별도 권한을 조회한다. ERP 벌점 관리는 모듈 설정 대상이
+/// 아니므로 설정 결과를 기다리지 않고 함께 조회한다.
 final class ModuleConfigNotifierProvider
     extends
         $NotifierProvider<
@@ -23,7 +25,8 @@ final class ModuleConfigNotifierProvider
           AsyncValue<ModuleAvailability>
         > {
   /// 채팅방의 메뉴 설정은 화면 이동 중 유지하고, 로그인·방 변경 때 다시 읽는다.
-  /// 활성화된 모듈에 한해서 별도 권한을 조회한다.
+  /// 활성화된 모듈에 한해서 별도 권한을 조회한다. ERP 벌점 관리는 모듈 설정 대상이
+  /// 아니므로 설정 결과를 기다리지 않고 함께 조회한다.
   ModuleConfigNotifierProvider._()
     : super(
         from: null,
@@ -54,10 +57,11 @@ final class ModuleConfigNotifierProvider
 }
 
 String _$moduleConfigNotifierHash() =>
-    r'219dcd0fa702e143399a19eecea890bcbb3a64ac';
+    r'f9ec0c680966762e13caa856a1f8ef311a099dbf';
 
 /// 채팅방의 메뉴 설정은 화면 이동 중 유지하고, 로그인·방 변경 때 다시 읽는다.
-/// 활성화된 모듈에 한해서 별도 권한을 조회한다.
+/// 활성화된 모듈에 한해서 별도 권한을 조회한다. ERP 벌점 관리는 모듈 설정 대상이
+/// 아니므로 설정 결과를 기다리지 않고 함께 조회한다.
 
 abstract class _$ModuleConfigNotifier
     extends $Notifier<AsyncValue<ModuleAvailability>> {
