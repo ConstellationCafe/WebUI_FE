@@ -23,6 +23,10 @@ import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/competition/notifier/competition_permission_notifier.dart';
+import 'package:constellation_cafe/feature/modules/erp/constants/erp_strings.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/notifier/penalty_permission_notifier.dart';
+import 'package:constellation_cafe/feature/notification/constants/notification_strings.dart';
 import 'package:constellation_cafe/feature/notification/notifier/notification_center_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
@@ -31,6 +35,7 @@ import '../../support/fake_module_config_repository.dart';
 import '../../support/screen.dart';
 import '../auth/support/fake_auth_service.dart';
 import '../modules/competition/support/fake_competition_repository.dart';
+import '../modules/erp/penalty/support/fake_penalty_repository.dart';
 import '../notification/support/fake_notification_repository.dart';
 
 Widget page(String name) => Center(child: Text('$name page'));
@@ -64,6 +69,7 @@ class HomeHarness {
         academyApiProvider.overrideWithValue(academyApi),
         notificationRepositoryProvider.overrideWithValue(notifications),
         competitionRepositoryProvider.overrideWithValue(competitions),
+        penaltyRepositoryProvider.overrideWithValue(penalties),
         moduleConfigRepositoryProvider.overrideWithValue(modules),
       ],
     );
@@ -89,6 +95,7 @@ class HomeHarness {
   final FakeAuthService auth = FakeAuthService();
   final FakeNotificationRepository notifications = FakeNotificationRepository();
   final FakeCompetitionRepository competitions = FakeCompetitionRepository();
+  final FakePenaltyRepository penalties = FakePenaltyRepository();
   final FakeModuleConfigRepository modules = FakeModuleConfigRepository();
   late final ProviderContainer container;
   late final GoRouter router;
@@ -97,6 +104,7 @@ class HomeHarness {
     List<String> roles = const [],
     String academyRole = '',
     bool competitionManager = false,
+    bool penaltyManager = false,
     ModuleAvailability? availability,
   }) async {
     final user = container.read(currentUserStateProvider.notifier);
@@ -106,6 +114,7 @@ class HomeHarness {
     final permission = {'admin': false, 'academies': academiesFor(academyRole)};
     academyApi.permission = AcademyPermission.fromJson(permission);
     competitions.manager = competitionManager;
+    penalties.manager = penaltyManager;
     if (availability != null) modules.availability = availability;
     await container.read(moduleConfigProvider.notifier).load();
   }
@@ -128,6 +137,7 @@ Future<HomeHarness> pumpHome(
   List<String> roles = const [],
   String academyRole = '',
   bool competitionManager = false,
+  bool penaltyManager = false,
   ModuleAvailability? availability,
 }) async {
   setScreenSize(tester, size);
@@ -137,6 +147,7 @@ Future<HomeHarness> pumpHome(
     roles: roles,
     academyRole: academyRole,
     competitionManager: competitionManager,
+    penaltyManager: penaltyManager,
     availability: availability,
   );
   await tester.pumpWidget(harness.app());
@@ -273,6 +284,51 @@ void main() {
       expect(find.text('ERP 메뉴'), findsNothing);
     });
 
+    testWidgets('운영 매니저·운영 본부원은 ERP 메뉴에서 벌점 관리만 본다', (tester) async {
+      await pumpHome(
+        tester,
+        size: const Size(1400, 1000),
+        penaltyManager: true,
+      );
+
+      expect(find.text(ErpStrings.menuTitle), findsOneWidget);
+      expect(find.text(ErpStrings.penaltyMenu), findsOneWidget);
+      expect(find.text(ErpStrings.pointMenu), findsNothing);
+      expect(find.text(NotificationStrings.adminMenu), findsNothing);
+    });
+
+    testWidgets('관리자는 벌점 권한 조회가 실패해도 ERP 기능을 모두 본다', (tester) async {
+      final harness = HomeHarness(frame: false);
+      addTearDown(harness.dispose);
+      harness.penalties.permissionError = StateError('offline');
+      setScreenSize(tester, const Size(1400, 1200));
+      await harness.signIn(roles: [UserRole.admin]);
+      await tester.pumpWidget(harness.app());
+      await tester.pumpAndSettle();
+
+      expect(find.text(ErpStrings.pointMenu), findsOneWidget);
+      expect(find.text(ErpStrings.penaltyMenu), findsOneWidget);
+      expect(find.text(NotificationStrings.adminMenu), findsOneWidget);
+    });
+
+    testWidgets('ERP 기능 권한이 하나도 없으면 ERP 카테고리를 숨긴다', (tester) async {
+      final harness = await pumpHome(tester, size: const Size(1400, 1000));
+
+      expect(harness.penalties.permissionCalls, 1);
+      expect(find.text(ErpStrings.menuTitle), findsNothing);
+      expect(find.text(ErpStrings.penaltyMenu), findsNothing);
+    });
+
+    testWidgets('대회 모듈이 켜져 있어도 매니저 권한이 없으면 대회 카테고리를 숨긴다', (tester) async {
+      await pumpHome(
+        tester,
+        size: const Size(1400, 1000),
+        availability: const ModuleAvailability(competition: true),
+      );
+
+      expect(find.text('대회 메뉴'), findsNothing);
+    });
+
     testWidgets('메뉴를 누르면 해당 화면으로 이동한다', (tester) async {
       await pumpHome(tester, size: const Size(1400, 1000));
 
@@ -337,6 +393,7 @@ void main() {
       expect(container.read(moduleConfigProvider).value?.isEmpty, isTrue);
       expect(container.read(academyPermissionProvider).isInitialized, isFalse);
       expect(container.read(competitionPermissionProvider).isManager, isFalse);
+      expect(container.read(penaltyPermissionProvider).isManager, isFalse);
       expect(find.text('login page'), findsOneWidget);
     });
 

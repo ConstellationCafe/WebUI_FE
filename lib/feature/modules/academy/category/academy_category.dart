@@ -16,7 +16,11 @@ class AcademyCategory extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final permissionState = ref.watch(academyPermissionProvider);
     final permission = permissionState.permission;
-    if (!(permission?.isTeacherOrAbove() ?? false)) {
+    // 교사 이상이 아니면 보여줄 기능이 하나도 없으므로 카테고리째 숨긴다.
+    // 권한을 다시 조회하는 동안에도 이전 방의 메뉴를 보이지 않는다.
+    if (permissionState.isLoading ||
+        !permissionState.isInitialized ||
+        !(permission?.isTeacherOrAbove() ?? false)) {
       return const SizedBox.shrink();
     }
     return MenuCategorySection(
