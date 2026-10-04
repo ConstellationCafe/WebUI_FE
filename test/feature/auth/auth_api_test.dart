@@ -23,9 +23,11 @@ import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/competition/notifier/competition_permission_notifier.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
 
 import '../../support/fake_backend.dart';
 import '../modules/competition/support/fake_competition_repository.dart';
+import '../modules/erp/penalty/support/fake_penalty_repository.dart';
 import 'support/fake_auth_service.dart';
 
 void main() {
@@ -160,6 +162,7 @@ void main() {
           competitionRepositoryProvider.overrideWithValue(
             FakeCompetitionRepository(),
           ),
+          penaltyRepositoryProvider.overrideWithValue(FakePenaltyRepository()),
         ],
       );
     });

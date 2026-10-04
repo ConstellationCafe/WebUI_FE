@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:test/test.dart';
 
+import 'package:constellation_cafe/core/network/interceptors/error_interceptor.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/api/penalty_api.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/dto/request/penalty_create_request.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository.dart';
@@ -73,7 +74,7 @@ void main() {
       sort: 'OCCURRED_AT_ASC',
     );
     expect(request.method, 'GET');
-    expect(request.path, PenaltyApi.adminPath);
+    expect(request.path, PenaltyApi.managePath);
     expect(request.queryParameters, {
       'channelId': '999',
       'discordId': '123',
@@ -98,14 +99,14 @@ void main() {
       },
     ]);
     final ranked = await repository.members(discordId: '12');
-    expect(request.path, '${PenaltyApi.adminPath}/members');
+    expect(request.path, '${PenaltyApi.managePath}/members');
     expect(request.queryParameters['discordId'], '12');
     expect(ranked.items.single.penaltyCount30d, 2);
     expect(ranked.items.single.lastOccurredAt.isUtc, isTrue);
 
     response['response'] = detail(status: 'CANCELED');
     final member = await repository.member('123', page: 1);
-    expect(request.path, '${PenaltyApi.adminPath}/members/123');
+    expect(request.path, '${PenaltyApi.managePath}/members/123');
     expect(member.history.items.single.isCanceled, isTrue);
     expect(member.history.items.single.cancellationReason, '잘못 부여');
     expect(member.cumulativeScore30d, 1);
@@ -146,7 +147,7 @@ void main() {
     response['response'] = detail(status: 'CANCELED');
     await repository.cancel(42, ' 오입력 ');
     expect(request.method, 'PATCH');
-    expect(request.path, '${PenaltyApi.adminPath}/42/cancel');
+    expect(request.path, '${PenaltyApi.managePath}/42/cancel');
     expect(request.data, {'reason': '오입력'});
 
     await repository.mine();
@@ -157,5 +158,16 @@ void main() {
   test('공통 응답 래퍼가 실패하면 성공으로 해석하지 않는다', () async {
     response['success'] = false;
     await expectLater(repository.mine(), throwsFormatException);
+  });
+
+  test('벌점 관리 권한을 오류 안내 없이 조회하고 manager 값으로 해석한다', () async {
+    response['response'] = {'manager': true};
+    expect(await repository.isManager(), isTrue);
+    expect(request.method, 'GET');
+    expect(request.path, '${PenaltyApi.managePath}/me/permissions');
+    expect(request.extra[ErrorInterceptor.silentErrorKey], isTrue);
+
+    response['response'] = {'manager': false};
+    expect(await repository.isManager(), isFalse);
   });
 }

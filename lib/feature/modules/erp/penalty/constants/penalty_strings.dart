@@ -41,7 +41,7 @@ class PenaltyStrings {
   static const nextPage = '다음 페이지';
   static const previousHistory = '이전 내역';
   static const nextHistory = '다음 내역';
-  static const adminOnly = '관리자만 접근할 수 있습니다.';
+  static const managerOnly = '운영 매니저·운영 본부원 또는 관리자만 접근할 수 있습니다.';
   static const sortNewest = '최신순';
   static const sortOldest = '오래된순';
   static const awarded = '벌점이 부여되었습니다.';
