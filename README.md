@@ -23,7 +23,7 @@
 | ChatBot | `/content`, `/learning`, `/menu`, `/music` | 회원 | 추천 콘텐츠·학습 자료·메뉴·음악 DB 편집기 |
 | Shadowverse | `/friendly_match` | 회원 | 친선전 게시판(빗자루 봇 router 경유) |
 | Academy | `/academy/*` | Academy 권한 보유자 | 수업 기록 작성·조회, 학생·강사 현황 조회·수정 |
-| ERP (관리자) | `/point`, `/penalties`, `/notification` | `ADMIN` | 포인트 입·출금, 벌점 부여·취소, 알림 발행 |
+| ERP | `/point`, `/penalties`, `/notification` | 포인트·알림: `ADMIN` / 벌점: 운영 매니저·운영 본부원·`ADMIN` | 포인트 입·출금, 벌점 부여·취소, 알림 발행. 권한 있는 기능이 없으면 메뉴를 숨김 |
 
 기능별 동작과 구현 규칙: [features](docs/features.md)
 

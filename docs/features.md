@@ -22,15 +22,17 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 | ChatBot | 현재 채팅방에 `moduleId=chatbot` 설정이 있음 |
 | Shadowverse | 현재 채팅방에 `moduleId=shadowverse` 설정이 있음 |
 | Academy | `network_operations.config.add_on.academy`가 객체이고, Academy 권한 조회(`/api/academy/me/permissions`)가 끝난 뒤 교사 이상. 교사 관리는 학원장 |
-| ERP(포인트·벌점·알림 발행) | `UserRole.admin` (`ROLE_ADMIN`) |
+| ERP | 기능별 권한 중 하나라도 있을 때. 포인트 관리·알림 발행은 `UserRole.admin`(`ROLE_ADMIN`), 벌점 관리는 벌점 권한 조회(`/api/penalties/me/permissions`)의 `manager` 또는 `ROLE_ADMIN`. 현재 채팅방에서 `운영 매니저`·`운영 본부원`이 들어간 역할이 있거나 서버장 |
 | 대회(대회 개최·우승 칭호) | `network_operations.config.add_on.competition`이 객체이고, 대회 권한 조회(`/api/competitions/me/permissions`)의 `manager`. 현재 채팅방에서 `대회 매니저`가 들어간 역할이 있거나 서버장 |
 
 메뉴 숨김은 편의 기능이며, 권한 최종 판단은 서버가 합니다.
 
+- `MainCategory`는 ModuleConfig로 활성화된 모듈인지만 확인하고, 권한에 맞는 기능이 하나라도 있는지는 각 카테고리(`AcademyCategory`, `CompetitionCategory`, `ErpCategory`)가 판단합니다. 보여줄 기능이 없으면 카테고리 제목까지 숨깁니다. 기능을 추가할 때는 해당 카테고리 안에서만 권한 조건을 맞추면 됩니다.
+
 - 로그인 후 채팅방 선택을 마친 경우에만 `ModuleConfigNotifier`가 `/api/bots/current/module-configs`를 먼저 조회합니다. 서버는 JWT 필터의 `botId`로 config DB를 조회하고 원본 JSON 대신 `moduleId`, 메뉴용 `addOns` 이름만 반환합니다.
-- 활성화된 아카데미·대회에 한해서 권한을 조회합니다. 모듈이 없으면 관련 권한 API를 호출하지 않습니다. ERP는 기존 서버장 권한을 따릅니다.
+- 활성화된 아카데미·대회에 한해서 권한을 조회합니다. 모듈이 없으면 관련 권한 API를 호출하지 않습니다. ERP는 ModuleConfig 대상이 아니므로 벌점 관리 권한을 모듈 설정 조회와 함께 조회하고, 조회에 실패하면 권한 없음으로 둡니다(서버장은 그대로 표시).
 - 조회 중에는 모듈 메뉴를 숨기고 진행 표시를, 설정이 비어 있으면 빈 상태 안내를 보여줍니다. 모듈 조회 실패는 메뉴 영역의 오류 안내와 다시 시도로 처리합니다.
-- 채팅방 변경·로그아웃은 메뉴 설정과 두 권한을 모두 비웁니다. 늦게 완료된 이전 채팅방의 모듈·권한 응답은 버립니다.
+- 채팅방 변경·로그아웃은 메뉴 설정과 아카데미·대회·벌점 권한을 모두 비웁니다. 늦게 완료된 이전 채팅방의 모듈·권한 응답은 버립니다.
 
 화면 검증 예시(테스트 응답, 2026-09-30): [모든 모듈 활성·권한 있음](images/module-config-all.png), [ChatBot만 활성](images/module-config-chatbot.png), [모바일 설정 조회 실패·재시도](images/module-config-error.png).
 
@@ -61,7 +63,7 @@ API 계약은 Notion `섀버 별자리 Cafe 개발 본부 / 명세서 / API 명�
 
 ## ERP 벌점 관리 (`feature/modules/erp/penalty`)
 
-- `/penalties`(관리자): 채널·대상별 이력, 조회 시점 기준 30일 누적 점수, 재적 회원 순위와 상세, 부여·취소
+- `/penalties`(운영 매니저·운영 본부원·서버장): 채널·대상별 이력, 조회 시점 기준 30일 누적 점수, 재적 회원 순위와 상세, 부여·취소. 관리 API는 `/api/penalties/**`이며, 권한을 확인하는 동안에는 로딩을, 권한이 없으면 접근 안내를 보여줍니다(BE ADR-0006).
 - `/my-penalties`(프로필 메뉴): 본인 벌점 이력
 - 서버가 JWT에서 현재 채팅방 `botId`를 꺼내므로 `botId`나 `sk`를 보내지 않습니다. 대상은 숫자 Discord ID, 점수는 1점 고정, 발생 시각은 브라우저 현지 시각을 UTC로 변환합니다.
 - 요청·응답 DTO는 `data/dto`, 업무 데이터는 `domain/model`, 상태는 `state/`(Freezed)와 `notifier/`(생성형 Riverpod)로 분리합니다.
