@@ -49,6 +49,18 @@ class FakePenaltyRepository extends Fake implements PenaltyRepository {
   Future<PenaltyDetail> Function(PenaltyCreateRequest)? awardHandler;
   Future<PenaltyDetail> Function(int, String)? cancelHandler;
   int awards = 0;
+  bool manager = false;
+  int permissionCalls = 0;
+  Object? permissionError;
+  Future<bool>? pendingPermission;
+
+  @override
+  Future<bool> isManager() async {
+    permissionCalls++;
+    final error = permissionError;
+    if (error != null) throw error;
+    return pendingPermission ?? manager;
+  }
 
   @override
   Future<PenaltyPage<PenaltyLog>> history({

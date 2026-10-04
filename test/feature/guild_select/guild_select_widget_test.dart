@@ -21,12 +21,14 @@ import 'package:constellation_cafe/feature/guild_select/widgets/guild_tile/fallb
 import 'package:constellation_cafe/feature/module_config/data/repository/module_config_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.dart';
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
 
 import '../../support/fake_academy_api.dart';
 import '../../support/fake_module_config_repository.dart';
 import '../../support/screen.dart';
 import '../auth/support/fake_auth_service.dart';
 import '../modules/competition/support/fake_competition_repository.dart';
+import '../modules/erp/penalty/support/fake_penalty_repository.dart';
 import 'support/guild_fixtures.dart';
 
 /// 위젯 테스트용 채팅방 API. HTTP 계약은 guild_select_api_test에서 검증한다.
@@ -76,6 +78,7 @@ class GuildHarness {
         competitionRepositoryProvider.overrideWithValue(
           FakeCompetitionRepository(),
         ),
+        penaltyRepositoryProvider.overrideWithValue(FakePenaltyRepository()),
       ],
     );
   }

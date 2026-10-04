@@ -11,15 +11,19 @@ import 'package:constellation_cafe/feature/modules/academy/domain/model/academy_
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/competition/notifier/competition_permission_notifier.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/notifier/penalty_permission_notifier.dart';
 
 import '../../support/fake_academy_api.dart';
 import '../../support/fake_module_config_repository.dart';
 import '../modules/competition/support/fake_competition_repository.dart';
+import '../modules/erp/penalty/support/fake_penalty_repository.dart';
 
 void main() {
   late FakeModuleConfigRepository repository;
   late FakeAcademyApi academy;
   late FakeCompetitionRepository competition;
+  late FakePenaltyRepository penalty;
   late ProviderContainer container;
   late ModuleConfigNotifier notifier;
 
@@ -27,11 +31,13 @@ void main() {
     repository = FakeModuleConfigRepository();
     academy = FakeAcademyApi();
     competition = FakeCompetitionRepository()..manager = true;
+    penalty = FakePenaltyRepository()..manager = true;
     container = ProviderContainer(
       overrides: [
         moduleConfigRepositoryProvider.overrideWithValue(repository),
         academyApiProvider.overrideWithValue(academy),
         competitionRepositoryProvider.overrideWithValue(competition),
+        penaltyRepositoryProvider.overrideWithValue(penalty),
       ],
     );
     notifier = container.read(moduleConfigProvider.notifier);
@@ -150,5 +156,44 @@ void main() {
     expect(container.read(moduleConfigProvider).requireValue.isEmpty, isTrue);
     expect(academy.permissionCalls, 0);
     expect(competition.permissionCalls, 0);
+  });
+
+  test('벌점 관리 권한은 모듈 설정과 무관하게 함께 조회한다', () async {
+    final pending = Completer<ModuleAvailability>();
+    repository.replies.add(pending.future);
+    final load = notifier.load();
+    await Future<void>.delayed(Duration.zero);
+    expect(penalty.permissionCalls, 1);
+    pending.complete(const ModuleAvailability());
+    await load;
+    expect(container.read(penaltyPermissionProvider).isManager, isTrue);
+
+    repository.error = StateError('offline');
+    await notifier.load();
+    expect(container.read(moduleConfigProvider).hasError, isTrue);
+    expect(penalty.permissionCalls, 2);
+    expect(container.read(penaltyPermissionProvider).isManager, isTrue);
+  });
+
+  test('벌점 권한 조회가 실패하면 권한 없음으로 두고 다른 메뉴는 유지한다', () async {
+    penalty.permissionError = StateError('offline');
+    await notifier.load();
+    final permission = container.read(penaltyPermissionProvider);
+    expect(permission.isInitialized, isTrue);
+    expect(permission.isManager, isFalse);
+    expect(container.read(competitionPermissionProvider).isManager, isTrue);
+  });
+
+  test('채팅방 변경·로그아웃 후 이전 벌점 권한 응답이 상태를 덮지 않는다', () async {
+    final oldPenalty = Completer<bool>();
+    penalty.pendingPermission = oldPenalty.future;
+    final load = notifier.load();
+    await Future<void>.delayed(Duration.zero);
+    notifier.clear();
+    expect(container.read(penaltyPermissionProvider).isInitialized, isFalse);
+
+    oldPenalty.complete(true);
+    await load;
+    expect(container.read(penaltyPermissionProvider).isManager, isFalse);
   });
 }

@@ -15,7 +15,9 @@ import 'package:constellation_cafe/feature/modules/erp/penalty/data/dto/request/
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_page.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/notifier/penalty_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/pages/admin_penalty_page.dart';
+import 'package:constellation_cafe/feature/modules/erp/penalty/state/penalty_permission_state.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_award_dialog.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_cancel_dialog.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_log_tile.dart';
@@ -37,7 +39,75 @@ Widget adminApp(FakePenaltyRepository repository) => ProviderScope(
   ),
 );
 
+Widget memberApp(
+  FakePenaltyRepository repository,
+  PenaltyPermissionState permission,
+) => ProviderScope(
+  overrides: [
+    currentUserStateProvider.overrideWithValue(
+      CurrentUserState.initial().copyWith(roles: [UserRole.user]),
+    ),
+    penaltyPermissionProvider.overrideWithValue(permission),
+    penaltyRepositoryProvider.overrideWithValue(repository),
+  ],
+  child: MaterialApp(
+    theme: CustomTheme.themeData,
+    home: const Scaffold(body: AdminPenaltyPage()),
+  ),
+);
+
 void main() {
+  group('벌점 관리 화면 권한', () {
+    testWidgets('운영 매니저·운영 본부원은 관리자가 아니어도 벌점 이력을 본다', (tester) async {
+      await tester.pumpWidget(
+        memberApp(
+          FakePenaltyRepository(),
+          const PenaltyPermissionState(isInitialized: true, isManager: true),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(PenaltyStrings.managerOnly), findsNothing);
+      expect(find.text(PenaltyStrings.cancelPenalty), findsWidgets);
+    });
+
+    testWidgets('권한이 없으면 목록을 조회하지 않고 접근 안내를 보여준다', (tester) async {
+      var historyCalls = 0;
+      final repository = FakePenaltyRepository()
+        ..historyHandler = (_, _, _) async {
+          historyCalls++;
+          return const PenaltyPage<PenaltyLog>(
+            items: [],
+            page: 1,
+            size: 20,
+            totalElements: 0,
+            totalPages: 0,
+            hasNext: false,
+          );
+        };
+      await tester.pumpWidget(
+        memberApp(
+          repository,
+          const PenaltyPermissionState(isInitialized: true),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(PenaltyStrings.managerOnly), findsOneWidget);
+      expect(historyCalls, 0);
+    });
+
+    testWidgets('권한을 확인하는 동안에는 안내 대신 로딩을 보여준다', (tester) async {
+      await tester.pumpWidget(
+        memberApp(
+          FakePenaltyRepository(),
+          const PenaltyPermissionState(isLoading: true),
+        ),
+      );
+      await tester.pump();
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.text(PenaltyStrings.managerOnly), findsNothing);
+    });
+  });
+
   testWidgets('이력에서 대상의 현재 30일 누적 점수와 취소 기능을 본다', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 750));
     addTearDown(() => tester.binding.setSurfaceSize(null));

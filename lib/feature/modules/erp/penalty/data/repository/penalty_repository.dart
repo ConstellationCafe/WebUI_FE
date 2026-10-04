@@ -21,6 +21,9 @@ class PenaltyRepository {
 
   const PenaltyRepository({required this.api});
 
+  /// 벌점 관리 기능을 쓸 수 있는지. 조회에 실패하면 예외를 그대로 던져 notifier가 권한 없음으로 처리한다.
+  Future<bool> isManager() async => (await api.permission()).manager;
+
   Future<PenaltyPage<PenaltyLog>> history({
     String? channelId,
     String? discordId,
