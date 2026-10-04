@@ -17,11 +17,14 @@ class DiscordLoginButton extends ConsumerWidget {
     final loginApi = ref.read(loginApiProvider);
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = ScreenWidth.isDesktop(width);
+    final compact = width < ScreenWidth.mobileWidth;
     return SizedBox(
       width: isDesktop
           ? AuthConstants.discordLoginButtonDesktopWidth
           : double.infinity,
-      height: AuthConstants.discordLoginButtonHeight,
+      height: compact
+          ? AuthConstants.discordLoginButtonMobileHeight
+          : AuthConstants.discordLoginButtonHeight,
       child: ElevatedButton.icon(
         onPressed: loginApi.discordLogin,
         style: ElevatedButton.styleFrom(
@@ -37,9 +40,11 @@ class DiscordLoginButton extends ConsumerWidget {
             ),
           ),
         ),
-        icon: const Icon(
+        icon: Icon(
           Icons.discord,
-          size: AuthConstants.discordLoginButtonIconSize,
+          size: compact
+              ? AuthConstants.discordLoginButtonMobileIconSize
+              : AuthConstants.discordLoginButtonIconSize,
         ),
         label: Text(
           AuthStrings.discordLogin,
@@ -47,7 +52,9 @@ class DiscordLoginButton extends ConsumerWidget {
           overflow: TextOverflow.ellipsis,
           softWrap: false,
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            fontSize: ConstSize.mediumTextSize,
+            fontSize: compact
+                ? AuthConstants.discordLoginButtonMobileFontSize
+                : ConstSize.mediumTextSize,
             color: AuthConstants.discordLoginButtonTextColor,
           ),
         ),

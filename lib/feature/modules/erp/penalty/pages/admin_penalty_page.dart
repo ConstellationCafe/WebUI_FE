@@ -11,6 +11,7 @@ import '../constants/penalty_strings.dart';
 import '../constants/penalty_tokens.dart';
 import '../domain/model/penalty_log.dart';
 import '../notifier/admin_penalty_notifier.dart';
+import '../state/admin_penalty_state.dart';
 import '../widgets/admin_penalty_history_panel.dart';
 import '../widgets/admin_penalty_ranking_panel.dart';
 import '../widgets/admin_penalty_tab_bar.dart';
@@ -57,53 +58,77 @@ class _AdminPenaltyPageState extends ConsumerState<AdminPenaltyPage> {
         padding: const EdgeInsets.all(PenaltyTokens.gap),
         child: DefaultTabController(
           length: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const AppBreadcrumb(
-                items: [ErpStrings.menuTitle, PenaltyStrings.title],
-              ),
-              const SizedBox(height: PenaltyTokens.cardGap),
-              Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: PenaltyTokens.gap,
-                runSpacing: PenaltyTokens.gap,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final compact = constraints.maxWidth < PenaltyTokens.breakpoint;
+              final tabs = TabBarView(
                 children: [
-                  Text(
-                    PenaltyStrings.title,
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  AdminPenaltyHistoryPanel(
+                    state: state,
+                    channelController: _channel,
+                    discordController: _discord,
+                    onCancel: _showCancel,
+                    scrollsWithPage: compact,
                   ),
-                  ElevatedButton.icon(
-                    onPressed: state.isSubmitting ? null : _showAward,
-                    icon: const Icon(Icons.add),
-                    label: const Text(PenaltyStrings.award),
+                  AdminPenaltyRankingPanel(
+                    state: state,
+                    searchController: _ranking,
+                    onCancel: _showCancel,
                   ),
                 ],
-              ),
-              const SizedBox(height: PenaltyTokens.headerToTabsGap),
-              const AdminPenaltyTabBar(),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    AdminPenaltyHistoryPanel(
-                      state: state,
-                      channelController: _channel,
-                      discordController: _discord,
-                      onCancel: _showCancel,
-                    ),
-                    AdminPenaltyRankingPanel(
-                      state: state,
-                      searchController: _ranking,
-                      onCancel: _showCancel,
-                    ),
+              );
+              if (compact) {
+                // 좁은 화면에서는 제목·탭도 목록과 함께 스크롤되어 이력이 화면을 넓게 쓴다.
+                return NestedScrollView(
+                  headerSliverBuilder: (context, _) => [
+                    SliverToBoxAdapter(child: _header(context, state)),
                   ],
-                ),
-              ),
-            ],
+                  body: tabs,
+                );
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _header(context, state),
+                  Expanded(child: tabs),
+                ],
+              );
+            },
           ),
         ),
       ),
+    );
+  }
+
+  Widget _header(BuildContext context, AdminPenaltyState state) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const AppBreadcrumb(
+          items: [ErpStrings.menuTitle, PenaltyStrings.title],
+        ),
+        const SizedBox(height: PenaltyTokens.cardGap),
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: PenaltyTokens.gap,
+          runSpacing: PenaltyTokens.gap,
+          children: [
+            Text(
+              PenaltyStrings.title,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            ElevatedButton.icon(
+              onPressed: state.isSubmitting ? null : _showAward,
+              icon: const Icon(Icons.add),
+              label: const Text(PenaltyStrings.award),
+            ),
+          ],
+        ),
+        const SizedBox(height: PenaltyTokens.headerToTabsGap),
+        const AdminPenaltyTabBar(),
+      ],
     );
   }
 

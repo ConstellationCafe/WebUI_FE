@@ -29,8 +29,14 @@ abstract final class AcademyConstants {
   static const double statusFilterSpacing = 16.0;
   static const double statusFilterRunSpacing = 16.0;
 
+  // Read Status - Compact(모바일) 조회 조건·현황 카드
+  static const double statusCompactCardPadding = 16.0;
+  static const double statusCompactChipSpacing = 8.0;
+  static const double statusCompactChipPadding = 4.0;
+
   // Read Student Status - Summary
-  static const double statusSummaryItemWidth = 180.0;
+  /// 현황 항목 한 칸의 최소 너비. 이 너비로 들어가는 열 수를 계산한다.
+  static const double statusSummaryItemMinWidth = 120.0;
   static const double statusSummarySpacing = 12.0;
   static const double statusSummaryRunSpacing = 12.0;
 
@@ -64,6 +70,9 @@ abstract final class AcademyConstants {
   static const int lessonDescriptionLines = 7;
   static const int lessonDescriptionMaxLength = 1000;
   static const int statusReasonLines = 4;
+
+  // Write Lesson Record - 이 너비보다 좁으면 나란한 입력란을 세로로 쌓는다.
+  static const double formStackBreakpoint = 560.0;
 
   // Write Lesson Record - Section card
   static const double sectionIconBoxSize = 32.0;

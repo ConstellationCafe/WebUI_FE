@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:constellation_cafe/core/constants/const_padding.dart';
+import 'package:constellation_cafe/core/constants/screen_width.dart';
 
 import '../../constants/academy_constants.dart';
 import '../../constants/academy_strings.dart';
@@ -61,10 +62,26 @@ class StatusQueryForm<
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // 모바일에서는 카드 안쪽 여백과 상태 칩 간격을 줄여 칩이 한 줄에 들어가게 하고,
+    // 조회 조건 입력란은 카드 너비를 모두 쓴다.
+    final compact = MediaQuery.sizeOf(context).width < ScreenWidth.mobileWidth;
+    final fieldWidth = compact
+        ? double.infinity
+        : AcademyConstants.statusFilterFieldWidth;
+    final chipSpacing = compact
+        ? AcademyConstants.statusCompactChipSpacing
+        : AcademyConstants.statusFilterSpacing;
+    final chipPadding = compact
+        ? const EdgeInsets.symmetric(
+            horizontal: AcademyConstants.statusCompactChipPadding,
+          )
+        : null;
 
     return Card(
       child: Padding(
-        padding: ConstPadding.largePaddingAll,
+        padding: compact
+            ? const EdgeInsets.all(AcademyConstants.statusCompactCardPadding)
+            : ConstPadding.largePaddingAll,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,7 +103,7 @@ class StatusQueryForm<
               runSpacing: AcademyConstants.statusFilterRunSpacing,
               children: [
                 SizedBox(
-                  width: AcademyConstants.statusFilterFieldWidth,
+                  width: fieldWidth,
                   child: DropdownButtonFormField<Academy?>(
                     // 선택 값은 notifier state가 소유하므로 controlled value를 유지한다.
                     // ignore: deprecated_member_use
@@ -111,7 +128,7 @@ class StatusQueryForm<
                 ),
 
                 SizedBox(
-                  width: AcademyConstants.statusFilterFieldWidth,
+                  width: fieldWidth,
                   child: DropdownButtonFormField<AcademyClass?>(
                     // ignore: deprecated_member_use
                     value: selectedAcademyClass,
@@ -141,7 +158,7 @@ class StatusQueryForm<
                 ),
 
                 SizedBox(
-                  width: AcademyConstants.statusFilterFieldWidth,
+                  width: fieldWidth,
                   child: DropdownButtonFormField<TMember?>(
                     // ignore: deprecated_member_use
                     value: selectedAcademyMember,
@@ -173,11 +190,13 @@ class StatusQueryForm<
             const SizedBox(height: ConstPadding.smallPadding),
 
             Wrap(
-              spacing: AcademyConstants.statusFilterSpacing,
-              runSpacing: AcademyConstants.statusFilterRunSpacing,
+              spacing: chipSpacing,
+              runSpacing: chipSpacing,
               children: [
                 ChoiceChip(
                   label: const Text(AcademyStrings.all),
+                  padding: chipPadding,
+                  labelPadding: chipPadding,
                   selected: selectedStatus == null,
                   onSelected: isLoading
                       ? null
@@ -189,6 +208,8 @@ class StatusQueryForm<
                 ...statuses.map(
                   (status) => ChoiceChip(
                     label: Text(status.label),
+                    padding: chipPadding,
+                    labelPadding: chipPadding,
                     selected: selectedStatus == status,
                     onSelected: isLoading
                         ? null

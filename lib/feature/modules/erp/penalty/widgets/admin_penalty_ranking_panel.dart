@@ -52,7 +52,9 @@ class AdminPenaltyRankingPanel extends ConsumerWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < PenaltyTokens.breakpoint) {
+            // 좁은 화면에서는 화면의 NestedScrollView와 이어서 스크롤한다.
             return SingleChildScrollView(
+              primary: true,
               child: Column(
                 children: [
                   SizedBox(
