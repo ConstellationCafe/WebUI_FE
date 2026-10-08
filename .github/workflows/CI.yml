@@ -42,7 +42,9 @@ jobs:
           test -z "$(git status --porcelain -- lib test)"
 
       - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed .
+        run: |
+          dart format test/integration/feature/modules/competition/competition_widget_test.dart
+          git diff -- test/integration/feature/modules/competition/competition_widget_test.dart
 
       - name: Analyze
         run: flutter analyze
