@@ -1,7 +1,7 @@
 # 테스트와 CI
 
 > 상태: Active  
-> 마지막 검토일: 2026-10-03
+> 마지막 검토일: 2026-10-08
 > 상위 문서: [README](../README.md) · 관련: [기능별 구현 노트](features.md)
 
 ## 1. 실행
@@ -38,7 +38,7 @@ flutter test --platform chrome test/unit                         # 단위 테스
 | 섀도우버스 | `test/integration/feature/modules/shadowverse/` | 친선전 전송 형식, 봇 router 요청·오류, 미리보기·버전 전환·전송 결과, 모바일 배치 |
 | 포인트 | `test/integration/feature/modules/erp/point/` · `test/unit/feature/modules/erp/point/` | API 계약(직렬화·매핑), 검색·페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 버튼 대비, 빈 설명 |
 | 벌점 | `test/integration/feature/modules/erp/penalty/` · `test/unit/feature/modules/erp/penalty/` | API 계약(권한 조회 포함), 30일 누적 계산, notifier, 화면 권한(운영 역할·로딩·권한 없음), widget, 탭과 TabBarView 너비 일치 |
-| 대회 개최 | `test/integration/feature/modules/competition/` | 대회 권한 조회, 우승 칭호 부여·이력 계약(버전 type 값, 날짜 직렬화, 실패 코드), API 계약(경로·UTC 직렬화·요청 ID·게시판 키·실패 코드와 서버 안내 문구), 우승 칭호 폼의 게임 버전 드롭다운(S2만)과 부여 draft |
+| 대회 개최 | `test/integration/feature/modules/competition/` | 대회 권한 조회, 우승 칭호 부여·이력 계약(버전 type 값, 날짜 직렬화, 실패 코드), API 계약(경로·UTC 직렬화·요청 ID·게시판 키·실패 코드와 서버 안내 문구), 우승 칭호 폼의 게임 버전 드롭다운(S2만)과 부여 draft, 개최 화면 필수 입력·날짜 검증 |
 | 알림 | `test/integration/feature/notification/` · `test/unit/feature/notification/` | API 계약(경로·쿼리·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기·읽음 처리, 구분선·화면 끝 거리 기준 패널 배치, loading·error·empty, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성 |
 
 자동 테스트가 추가로 필요한 영역: 대회 개최 화면의 미리보기·확인 다이얼로그, 우승 칭호 폼 검증 오류 안내, 라우팅 가드(`router_provider.dart`), 수업 기록 작성·수정 화면, 교사 상태 처리 화면. 대회 개최 화면의 필수 입력 검증과 필수 날짜 검증은 `test/integration/feature/modules/competition/competition_widget_test.dart`에서 확인합니다.

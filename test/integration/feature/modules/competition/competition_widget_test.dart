@@ -20,7 +20,11 @@ void main() {
         overrides: [competitionRepositoryProvider.overrideWithValue(repository)],
         child: MaterialApp(
           theme: CustomTheme.themeData,
-          home: Scaffold(body: AdminCompetitionPage(clock: () => DateTime(2026, 10, 1, 9))),
+          home: Scaffold(
+            body: AdminCompetitionPage(
+              clock: () => DateTime(2026, 10, 1, 9),
+            ),
+          ),
         ),
       ),
     );
