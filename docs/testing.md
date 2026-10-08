@@ -1,7 +1,7 @@
 # 테스트와 CI
 
 > 상태: Active  
-> 마지막 검토일: 2026-10-03
+> 마지막 검토일: 2026-10-08
 > 상위 문서: [README](../README.md) · 관련: [기능별 구현 노트](features.md)
 
 ## 1. 실행
@@ -11,34 +11,37 @@ flutter pub get
 dart run build_runner build --delete-conflicting-outputs   # 생성 코드가 바뀐 경우
 
 flutter test --platform chrome                        # 전체
-flutter test --platform chrome test/feature/notification   # 특정 feature 예시
+flutter test --platform chrome test/integration/feature/notification   # 특정 통합 테스트 예시
+flutter test --platform chrome test/unit                         # 단위 테스트
 ```
 
 `package:web`을 쓰는 코드가 있어 CI와 같이 `--platform chrome`으로 실행합니다. 웹 coverage 수집은 현재 toolchain에서 안정적이지 않아 CI에서 켜지 않습니다.
 
 ## 2. 범위
 
-`test/`는 `lib/`와 같은 경로로 나눕니다. 예: `lib/feature/auth` → `test/feature/auth`, `lib/core` → `test/core`.
+`test/unit/`에는 순수 계산·상태 전이처럼 빠르고 결정적인 테스트를, `test/integration/`에는 API/직렬화 경계와 provider·widget 흐름을 둡니다. 공용 fake와 fixture는 `test/support/`에 둡니다.
+
+`test/`는 `lib/`와 같은 경로로 나눕니다. 예: `lib/feature/auth` → `test/integration/feature/auth`, `lib/core` → `test/integration/core`.
 기능마다 API 테스트(`*_api_test.dart`, `*_api_contract_test.dart`)와 widget 테스트를 둡니다. 화면만 있는 기능(`home`)은 widget 테스트만 둡니다.
 
 | 범위 | 위치 | 검증 내용 |
 |---|---|---|
-| core | `test/core/` | 401 토큰 갱신 후 재요청, 403·갱신 실패 처리, 오류 SnackBar 문구와 silent 요청 |
-| shared | `test/shared/` | 봇 router `SocketModel` 직렬화, `ApiResponse`·`RepositoryPageResponse`·`BotCommandResponse` 계약, DB 편집기 notifier(조회·행 추가·미저장 변경·셀 입력), 날짜 formatter, loading·padding·SnackBar widget, 날짜·시간 입력란(날짜→시간 연속 선택·부분 변경·공용 시간 선택기·지우기), 공용 시간 버튼 |
-| 로그인 | `test/feature/auth/` | `/auth/me`·check·refresh·logout 계약과 DTO, Discord 인증 URI, 로그인 상태 판정(채팅방 선택·refresh 힌트·401), 로그아웃 시 상태 정리, 로그인 화면·버튼(모바일 크기)·큰 글자 |
-| 채팅방 선택 | `test/feature/guild_select/` | 목록·선택 API(403 처리), 목록·빈 상태·오류, 선택 불가 안내, 선택 후 로그인 재확인과 홈 이동, 선택한 채팅방 저장·새로고침 후 복원·로그아웃 시 삭제 |
-| 홈 | `test/feature/home/` | 권한별 메뉴(아카데미·ERP·대회), 기능이 없는 카테고리 숨김, 메뉴 이동, 모바일 drawer, 로그아웃 후 상태 초기화 |
-| 메뉴 설정 | `test/feature/module_config/` | ModuleConfig DTO·경로·방 식별자 미전송, 모듈 조합별 활성 메뉴, 모듈 조회 이후 활성 기능만 권한 조회, 실패·재시도·부분 실패, 방 변경·로그아웃 중 이전 응답 무시 |
-| 프로필 | `test/feature/profile/` | 회원증·UID·길드 봇 명령과 `MembershipCardResponse` 순서, 포인트 내역 API, 변경분만 저장, 저장 결과·실패 안내, 회원증 조회 실패·다시 시도, 읽기 전용 내역 표 |
-| 아카데미 | `test/feature/modules/academy/` | 권한·학원·분반·수업 기록·학생/교사 상태 API, 권한별 선택지, 졸업 처리, 상태 조회 화면, 수업 기록 카드, 페이지 버튼, 메뉴 권한, 조회 실패 안내, 현황 열 수 계산(4열·2행 2열·1열), 입력란 세로 쌓기 |
-| 빗자루 | `test/feature/modules/chatbot/` | 가르치기·추천 저장소의 컬럼명 변환과 저장·삭제 본문, 관리자 전용 컬럼, 메뉴 이동 |
-| 섀도우버스 | `test/feature/modules/shadowverse/` | 친선전 전송 형식, 봇 router 요청·오류, 미리보기·버전 전환·전송 결과, 모바일 배치 |
-| 포인트 | `test/feature/modules/erp/point/` | API 계약(직렬화·매핑), 검색·페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 버튼 대비, 빈 설명 |
-| 벌점 | `test/feature/modules/erp/penalty/` | API 계약(권한 조회 포함), 30일 누적 계산, notifier, 화면 권한(운영 역할·로딩·권한 없음), widget, 탭과 TabBarView 너비 일치 |
-| 대회 개최 | `test/feature/modules/competition/` | 대회 권한 조회, 우승 칭호 부여·이력 계약(버전 type 값, 날짜 직렬화, 실패 코드), API 계약(경로·UTC 직렬화·요청 ID·게시판 키·실패 코드와 서버 안내 문구), 우승 칭호 폼의 게임 버전 드롭다운(S2만)과 부여 draft |
-| 알림 | `test/feature/notification/` | API 계약(경로·쿼리·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기·읽음 처리, 구분선·화면 끝 거리 기준 패널 배치, loading·error·empty, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성 |
+| core | `test/integration/core/` | 401 토큰 갱신 후 재요청, 403·갱신 실패 처리, 오류 SnackBar 문구와 silent 요청 |
+| shared | `test/integration/shared/` · `test/unit/shared/` | 봇 router `SocketModel` 직렬화, `ApiResponse`·`RepositoryPageResponse`·`BotCommandResponse` 계약, 날짜 formatter, DB 편집기 notifier(조회·행 추가·미저장 변경·셀 입력), loading·padding·SnackBar widget, 날짜·시간 입력란(날짜→시간 연속 선택·부분 변경·공용 시간 선택기·지우기), 공용 시간 버튼 |
+| 로그인 | `test/integration/feature/auth/` | `/auth/me`·check·refresh·logout 계약과 DTO, Discord 인증 URI, 로그인 상태 판정(채팅방 선택·refresh 힌트·401), 로그아웃 시 상태 정리, 로그인 화면·버튼(모바일 크기)·큰 글자 |
+| 채팅방 선택 | `test/integration/feature/guild_select/` | 목록·선택 API(403 처리), 목록·빈 상태·오류, 선택 불가 안내, 선택 후 로그인 재확인과 홈 이동, 선택한 채팅방 저장·새로고침 후 복원·로그아웃 시 삭제 |
+| 홈 | `test/integration/feature/home/` | 권한별 메뉴(아카데미·ERP·대회), 기능이 없는 카테고리 숨김, 메뉴 이동, 모바일 drawer, 로그아웃 후 상태 초기화 |
+| 메뉴 설정 | `test/integration/feature/module_config/` · `test/unit/feature/module_config/` | ModuleConfig DTO·경로·방 식별자 미전송, 모듈 조합별 활성 메뉴, 모듈 조회 이후 활성 기능만 권한 조회, 실패·재시도·부분 실패, 방 변경·로그아웃 중 이전 응답 무시 |
+| 프로필 | `test/integration/feature/profile/` | 회원증·UID·길드 봇 명령과 `MembershipCardResponse` 순서, 포인트 내역 API, 변경분만 저장, 저장 결과·실패 안내, 회원증 조회 실패·다시 시도, 읽기 전용 내역 표 |
+| 아카데미 | `test/integration/feature/modules/academy/` | 권한·학원·분반·수업 기록·학생/교사 상태 API, 권한별 선택지, 졸업 처리, 상태 조회 화면, 수업 기록 카드, 페이지 버튼, 메뉴 권한, 조회 실패 안내, 현황 열 수 계산(4열·2행 2열·1열), 입력란 세로 쌓기 |
+| 빗자루 | `test/integration/feature/modules/chatbot/` | 가르치기·추천 저장소의 컬럼명 변환과 저장·삭제 본문, 관리자 전용 컬럼, 메뉴 이동 |
+| 섀도우버스 | `test/integration/feature/modules/shadowverse/` | 친선전 전송 형식, 봇 router 요청·오류, 미리보기·버전 전환·전송 결과, 모바일 배치 |
+| 포인트 | `test/integration/feature/modules/erp/point/` · `test/unit/feature/modules/erp/point/` | API 계약(직렬화·매핑), 검색·페이지 이동, 요청 경합·화면 종료·중복 제출, 작은 화면과 큰 글자, 버튼 대비, 빈 설명 |
+| 벌점 | `test/integration/feature/modules/erp/penalty/` · `test/unit/feature/modules/erp/penalty/` | API 계약(권한 조회 포함), 30일 누적 계산, notifier, 화면 권한(운영 역할·로딩·권한 없음), widget, 탭과 TabBarView 너비 일치 |
+| 대회 개최 | `test/integration/feature/modules/competition/` | 대회 권한 조회, 우승 칭호 부여·이력 계약(버전 type 값, 날짜 직렬화, 실패 코드), API 계약(경로·UTC 직렬화·요청 ID·게시판 키·실패 코드와 서버 안내 문구), 우승 칭호 폼의 게임 버전 드롭다운(S2만)과 부여 draft, 개최 화면 필수 입력·날짜 검증 |
+| 알림 | `test/integration/feature/notification/` · `test/unit/feature/notification/` | API 계약(경로·쿼리·UTC·요청 ID·실패 코드), 실시간 이벤트 변환·중복 제거, 패널 열기·읽음 처리, 구분선·화면 끝 거리 기준 패널 배치, loading·error·empty, 작은 화면과 큰 글자, 발행 폼 검증과 재전송 멱등성 |
 
-아직 자동 테스트가 없는 영역: 대회 개최 화면 widget(폼 검증·미리보기·확인 다이얼로그), 우승 칭호 폼 검증 오류 안내, 라우팅 가드(`router_provider.dart`), 수업 기록 작성·수정 화면, 교사 상태 처리 화면.
+자동 테스트가 추가로 필요한 영역: 대회 개최 화면의 미리보기·확인 다이얼로그, 우승 칭호 폼 검증 오류 안내, 라우팅 가드(`router_provider.dart`), 수업 기록 작성·수정 화면, 교사 상태 처리 화면. 대회 개최 화면의 필수 입력 검증과 필수 날짜 검증은 `test/integration/feature/modules/competition/competition_widget_test.dart`에서 확인합니다.
 
 ## 3. 작성 규칙
 
