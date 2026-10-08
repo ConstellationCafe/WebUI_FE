@@ -24,7 +24,7 @@ import 'package:constellation_cafe/feature/modules/erp/penalty/widgets/penalty_l
 import 'package:constellation_cafe/shared/constants/date_time_picker_strings.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
-import 'package:constellation_cafe/test/support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
+import '../../../../../support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
 
 Widget adminApp(FakePenaltyRepository repository) => ProviderScope(
   overrides: [

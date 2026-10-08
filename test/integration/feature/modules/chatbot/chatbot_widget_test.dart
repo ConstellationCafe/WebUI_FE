@@ -14,9 +14,9 @@ import 'package:constellation_cafe/feature/modules/chatbot/learning/pages/learni
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 import 'package:constellation_cafe/shared/widgets/db_editor/editor_usage.dart';
 
-import 'package:constellation_cafe/test/support/fake_page_repository.dart';
-import 'package:constellation_cafe/test/support/screen.dart';
-import 'package:constellation_cafe/test/support/feature/modules/chatbot/support/chatbot_fixtures.dart';
+import '../../../../support/fake_page_repository.dart';
+import '../../../../support/screen.dart';
+import '../../../../support/feature/modules/chatbot/support/chatbot_fixtures.dart';
 
 void main() {
   group('가르치기 목록', () {

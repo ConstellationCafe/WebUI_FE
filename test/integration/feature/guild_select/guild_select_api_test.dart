@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:constellation_cafe/feature/guild_select/data/api/guild_api.dart';
 import 'package:constellation_cafe/feature/guild_select/data/dto/response/guild_response.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
-import 'package:constellation_cafe/test/support/feature/guild_select/support/guild_fixtures.dart';
+import '../../../support/fake_backend.dart';
+import '../../../support/feature/guild_select/support/guild_fixtures.dart';
 
 void main() {
   late FakeBackend backend;

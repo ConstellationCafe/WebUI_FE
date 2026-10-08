@@ -25,10 +25,10 @@ import 'package:constellation_cafe/feature/modules/competition/data/repository/c
 import 'package:constellation_cafe/feature/modules/competition/notifier/competition_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
-import 'package:constellation_cafe/test/support/feature/modules/competition/support/fake_competition_repository.dart';
-import 'package:constellation_cafe/test/support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
-import 'package:constellation_cafe/test/support/feature/auth/support/fake_auth_service.dart';
+import '../../../support/fake_backend.dart';
+import '../../../support/feature/modules/competition/support/fake_competition_repository.dart';
+import '../../../support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
+import '../../../support/feature/auth/support/fake_auth_service.dart';
 
 void main() {
   group('OAuthService 계약', () {

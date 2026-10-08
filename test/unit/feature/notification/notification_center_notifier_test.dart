@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:constellation_cafe/feature/notification/domain/model/notification_realtime_event.dart';
 import 'package:constellation_cafe/feature/notification/notifier/notification_center_notifier.dart';
 
-import 'package:constellation_cafe/test/support/feature/notification/support/fake_notification_repository.dart';
+import '../../../support/feature/notification/support/fake_notification_repository.dart';
 
 void main() {
   late FakeNotificationRepository repository;

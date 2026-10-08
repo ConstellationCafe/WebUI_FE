@@ -11,7 +11,7 @@ import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/pa
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/widgets/friendly_match_usage.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/widgets/view_friendly_match.dart';
 
-import 'package:constellation_cafe/test/support/fake_translator.dart';
+import '../../../../support/fake_translator.dart';
 
 Future<FakeTranslator> pumpFriendlyMatch(
   WidgetTester tester, {

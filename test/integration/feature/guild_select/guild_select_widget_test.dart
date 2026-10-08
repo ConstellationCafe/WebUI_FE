@@ -23,13 +23,13 @@ import 'package:constellation_cafe/feature/modules/academy/data/api/academy_api.
 import 'package:constellation_cafe/feature/modules/competition/data/repository/competition_repository_provider.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/penalty_repository_provider.dart';
 
-import 'package:constellation_cafe/test/support/fake_academy_api.dart';
-import 'package:constellation_cafe/test/support/fake_module_config_repository.dart';
-import 'package:constellation_cafe/test/support/screen.dart';
-import 'package:constellation_cafe/test/support/feature/auth/support/fake_auth_service.dart';
-import 'package:constellation_cafe/test/support/feature/modules/competition/support/fake_competition_repository.dart';
-import 'package:constellation_cafe/test/support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
-import 'package:constellation_cafe/test/support/feature/guild_select/support/guild_fixtures.dart';
+import '../../../support/fake_academy_api.dart';
+import '../../../support/fake_module_config_repository.dart';
+import '../../../support/screen.dart';
+import '../../../support/feature/auth/support/fake_auth_service.dart';
+import '../../../support/feature/modules/competition/support/fake_competition_repository.dart';
+import '../../../support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
+import '../../../support/feature/guild_select/support/guild_fixtures.dart';
 
 /// 위젯 테스트용 채팅방 API. HTTP 계약은 guild_select_api_test에서 검증한다.
 class FakeGuildApi extends GuildApi {

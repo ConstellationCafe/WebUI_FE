@@ -6,8 +6,8 @@ import 'package:constellation_cafe/feature/modules/chatbot/menu/data/repository/
 import 'package:constellation_cafe/feature/modules/chatbot/music/data/repository/music_repository.dart';
 import 'package:constellation_cafe/shared/domain/repository/repository_interface.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
-import 'package:constellation_cafe/test/support/feature/modules/chatbot/support/chatbot_fixtures.dart';
+import '../../../../support/fake_backend.dart';
+import '../../../../support/feature/modules/chatbot/support/chatbot_fixtures.dart';
 
 /// 추천 저장소(콘텐츠·메뉴·노래)는 값 컬럼 하나와 추천자 컬럼을 가진 같은 계약이다.
 class RecommendCase {

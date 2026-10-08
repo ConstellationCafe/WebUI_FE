@@ -4,7 +4,7 @@ import 'package:constellation_cafe/core/network/interceptors/error_interceptor.d
 import 'package:constellation_cafe/feature/module_config/data/api/module_config_api.dart';
 import 'package:constellation_cafe/feature/module_config/data/repository/module_config_repository.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
+import '../../../support/fake_backend.dart';
 
 void main() {
   late FakeBackend backend;

@@ -23,9 +23,9 @@ import 'package:constellation_cafe/feature/modules/academy/notifier/lesson_recor
 import 'package:constellation_cafe/feature/modules/academy/notifier/permission_notifier/academy_permission_notifier.dart';
 import 'package:constellation_cafe/feature/modules/academy/notifier/student_status_notifier/student_status_notifier.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
-import 'package:constellation_cafe/test/support/fake_translator.dart';
-import 'package:constellation_cafe/test/support/feature/modules/academy/support/academy_fixtures.dart';
+import '../../../../support/fake_backend.dart';
+import '../../../../support/fake_translator.dart';
+import '../../../../support/feature/modules/academy/support/academy_fixtures.dart';
 
 void main() {
   late FakeBackend backend;

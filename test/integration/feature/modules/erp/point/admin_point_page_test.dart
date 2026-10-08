@@ -8,7 +8,7 @@ import 'package:constellation_cafe/feature/modules/erp/point/notifier/admin_poin
 import 'package:constellation_cafe/feature/modules/erp/point/pages/admin_point_page.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/widgets/point_transaction_dialog.dart';
 
-import 'package:constellation_cafe/test/support/feature/modules/erp/point/support/fake_admin_point_repository.dart';
+import '../../../../../support/feature/modules/erp/point/support/fake_admin_point_repository.dart';
 
 void main() {
   testWidgets('작은 화면과 큰 글자에서도 회원 선택과 입금 창을 사용할 수 있다', (tester) async {

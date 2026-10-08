@@ -8,9 +8,9 @@ import 'package:constellation_cafe/feature/profile/data/repository/point_reposit
 import 'package:constellation_cafe/feature/profile/domain/model/membership.dart';
 import 'package:constellation_cafe/feature/profile/notifier/membership_notifier.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
-import 'package:constellation_cafe/test/support/fake_translator.dart';
-import 'package:constellation_cafe/test/support/feature/profile/support/membership_fixtures.dart';
+import '../../../support/fake_backend.dart';
+import '../../../support/fake_translator.dart';
+import '../../../support/feature/profile/support/membership_fixtures.dart';
 
 void main() {
   group('MembershipAPI', () {

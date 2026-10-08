@@ -16,7 +16,7 @@ import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/do
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/domain/version/game_version_type.dart';
 import 'package:constellation_cafe/feature/modules/shadowverse/friendly_match/notifier/friendly_match_notifier.dart';
 
-import 'package:constellation_cafe/test/support/fake_translator.dart';
+import '../../../../support/fake_translator.dart';
 
 FriendlyMatchTemplate template() => FriendlyMatchTemplate(
   version: 's2',

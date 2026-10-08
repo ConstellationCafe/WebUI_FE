@@ -6,7 +6,7 @@ import 'package:constellation_cafe/shared/constants/db_editor_strings.dart';
 import 'package:constellation_cafe/shared/domain/pagination/page_result.dart';
 import 'package:constellation_cafe/shared/notifier/db_editor/db_editor_notifier.dart';
 
-import 'package:constellation_cafe/test/support/fake_page_repository.dart';
+import '../../support/fake_page_repository.dart';
 
 PageResult<LearningEntity> learningPage({bool hasNext = false}) {
   final metadata = [

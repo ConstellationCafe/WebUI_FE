@@ -6,7 +6,7 @@ import 'package:constellation_cafe/feature/modules/erp/point/constants/point_str
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_log.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/widgets/point_log_delete_dialog.dart';
 
-import 'package:constellation_cafe/test/support/feature/modules/erp/point/support/fake_admin_point_repository.dart';
+import '../../../../../support/feature/modules/erp/point/support/fake_admin_point_repository.dart';
 
 Future<void> openDeleteDialog(
   WidgetTester tester, {

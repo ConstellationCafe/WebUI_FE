@@ -30,13 +30,13 @@ import 'package:constellation_cafe/feature/notification/constants/notification_s
 import 'package:constellation_cafe/feature/notification/notifier/notification_center_notifier.dart';
 import 'package:constellation_cafe/shared/domain/user/user_role.dart';
 
-import 'package:constellation_cafe/test/support/fake_academy_api.dart';
-import 'package:constellation_cafe/test/support/fake_module_config_repository.dart';
-import 'package:constellation_cafe/test/support/screen.dart';
-import 'package:constellation_cafe/test/support/feature/auth/support/fake_auth_service.dart';
-import 'package:constellation_cafe/test/support/feature/modules/competition/support/fake_competition_repository.dart';
-import 'package:constellation_cafe/test/support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
-import 'package:constellation_cafe/test/support/feature/notification/support/fake_notification_repository.dart';
+import '../../../support/fake_academy_api.dart';
+import '../../../support/fake_module_config_repository.dart';
+import '../../../support/screen.dart';
+import '../../../support/feature/auth/support/fake_auth_service.dart';
+import '../../../support/feature/modules/competition/support/fake_competition_repository.dart';
+import '../../../support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
+import '../../../support/feature/notification/support/fake_notification_repository.dart';
 
 Widget page(String name) => Center(child: Text('$name page'));
 

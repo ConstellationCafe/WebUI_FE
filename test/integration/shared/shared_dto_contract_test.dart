@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:constellation_cafe/shared/data/dto/response/backend/repository_page_response.dart';
 import 'package:constellation_cafe/shared/data/dto/response/bot/bot_command_response.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
+import '../../support/fake_backend.dart';
 
 void main() {
   group('RepositoryPageResponse', () {

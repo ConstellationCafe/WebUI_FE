@@ -12,7 +12,7 @@ import 'package:constellation_cafe/feature/notification/widgets/notification_bel
 import 'package:constellation_cafe/feature/notification/widgets/notification_panel.dart';
 import 'package:constellation_cafe/feature/notification/widgets/notification_tile.dart';
 
-import 'package:constellation_cafe/test/support/feature/notification/support/fake_notification_repository.dart';
+import '../../../support/feature/notification/support/fake_notification_repository.dart';
 
 const _dot = ValueKey('notification-unread-dot');
 const _bell = ValueKey('notification-bell');

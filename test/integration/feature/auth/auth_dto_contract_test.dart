@@ -4,7 +4,7 @@ import 'package:constellation_cafe/feature/auth/data/dto/response/auth_check_res
 import 'package:constellation_cafe/feature/auth/data/dto/response/current_user_response.dart';
 import 'package:constellation_cafe/shared/data/dto/response/backend/api_response.dart';
 
-import 'package:constellation_cafe/test/support/feature/auth/support/fake_auth_service.dart';
+import '../../../support/feature/auth/support/fake_auth_service.dart';
 
 void main() {
   group('AuthCheckResponse', () {

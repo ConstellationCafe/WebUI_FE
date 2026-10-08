@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:constellation_cafe/core/network/interceptors/auth_interceptor.dart';
 
-import 'package:constellation_cafe/test/support/fake_backend.dart';
+import '../../support/fake_backend.dart';
 
 void main() {
   late FakeBackend backend;

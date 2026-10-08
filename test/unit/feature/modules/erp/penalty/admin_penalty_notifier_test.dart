@@ -8,7 +8,7 @@ import 'package:constellation_cafe/feature/modules/erp/penalty/data/repository/p
 import 'package:constellation_cafe/feature/modules/erp/penalty/domain/model/penalty_detail.dart';
 import 'package:constellation_cafe/feature/modules/erp/penalty/notifier/admin_penalty_notifier.dart';
 
-import 'package:constellation_cafe/test/support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
+import '../../../../../support/feature/modules/erp/penalty/support/fake_penalty_repository.dart';
 
 void main() {
   late FakePenaltyRepository repository;

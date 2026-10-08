@@ -9,8 +9,8 @@ import 'package:constellation_cafe/feature/auth/domain/method/login_method.dart'
 import 'package:constellation_cafe/feature/auth/pages/login.dart';
 import 'package:constellation_cafe/feature/auth/widgets/discord_login_button.dart';
 
-import 'package:constellation_cafe/test/support/screen.dart';
-import 'package:constellation_cafe/test/support/feature/auth/support/fake_auth_service.dart';
+import '../../../support/screen.dart';
+import '../../../support/feature/auth/support/fake_auth_service.dart';
 
 Widget loginApp(FakeAuthService auth) => ProviderScope(
   overrides: [loginApiProvider.overrideWithValue(Login(auth))],

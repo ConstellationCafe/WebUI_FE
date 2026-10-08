@@ -16,10 +16,10 @@ import 'package:constellation_cafe/feature/profile/widgets/profile_usage.dart';
 import 'package:constellation_cafe/feature/profile/widgets/save_membership_button.dart';
 import 'package:constellation_cafe/shared/widgets/db_editor/editor_bar.dart';
 
-import 'package:constellation_cafe/test/support/fake_page_repository.dart';
-import 'package:constellation_cafe/test/support/fake_translator.dart';
-import 'package:constellation_cafe/test/support/screen.dart';
-import 'package:constellation_cafe/test/support/feature/profile/support/membership_fixtures.dart';
+import '../../../support/fake_page_repository.dart';
+import '../../../support/fake_translator.dart';
+import '../../../support/screen.dart';
+import '../../../support/feature/profile/support/membership_fixtures.dart';
 
 Future<ProviderContainer> signedIn(FakeTranslator translator) async {
   final container = ProviderContainer(

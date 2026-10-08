@@ -20,9 +20,9 @@ import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_r
 import 'package:constellation_cafe/feature/modules/academy/widgets/read_lesson_record/lesson_record_list.dart';
 import 'package:constellation_cafe/feature/modules/academy/widgets/read_status/status_pagination.dart';
 
-import 'package:constellation_cafe/test/support/fake_translator.dart';
-import 'package:constellation_cafe/test/support/screen.dart';
-import 'package:constellation_cafe/test/support/feature/modules/academy/support/academy_fixtures.dart';
+import '../../../../support/fake_translator.dart';
+import '../../../../support/screen.dart';
+import '../../../../support/feature/modules/academy/support/academy_fixtures.dart';
 
 /// 위젯 테스트용 학생 상태 API. HTTP 계약은 academy_api_test에서 검증한다.
 class FakeStudentStatusApi extends StudentStatusApi {
