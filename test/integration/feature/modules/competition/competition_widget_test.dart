@@ -17,7 +17,9 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [competitionRepositoryProvider.overrideWithValue(repository)],
+        overrides: [
+          competitionRepositoryProvider.overrideWithValue(repository),
+        ],
         child: MaterialApp(
           theme: CustomTheme.themeData,
           home: Scaffold(
