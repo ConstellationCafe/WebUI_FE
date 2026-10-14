@@ -108,7 +108,7 @@ class HomeHarness {
     ModuleAvailability? availability,
   }) async {
     final user = container.read(currentUserStateProvider.notifier);
-    user.update(userId: '123', globalName: '별', roles: roles);
+    user.update(discordId: '123', globalName: '별', roles: roles);
     final guild = container.read(currentGuildStateProvider.notifier);
     guild.setGuild(guildId: '1', guildName: '별자리', guildIcon: '');
     final permission = {'admin': false, 'academies': academiesFor(academyRole)};
@@ -388,7 +388,7 @@ void main() {
 
       final container = harness.container;
       expect(harness.auth.logoutCalls, 1);
-      expect(container.read(currentUserStateProvider).userId, isEmpty);
+      expect(container.read(currentUserStateProvider).discordId, isEmpty);
       expect(container.read(currentGuildStateProvider).guildId, isEmpty);
       expect(container.read(moduleConfigProvider).value?.isEmpty, isTrue);
       expect(container.read(academyPermissionProvider).isInitialized, isFalse);
@@ -412,7 +412,7 @@ void main() {
       expect(find.text('select page'), findsOneWidget);
       expect(harness.auth.logoutCalls, 0);
       expect(harness.container.read(currentGuildStateProvider).guildId, '1');
-      expect(harness.container.read(currentUserStateProvider).userId, '123');
+      expect(harness.container.read(currentUserStateProvider).discordId, '123');
     });
   });
 }

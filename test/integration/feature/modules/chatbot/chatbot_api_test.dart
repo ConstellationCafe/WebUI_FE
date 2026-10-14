@@ -104,7 +104,7 @@ void main() {
         await repository.deleteAll(rows);
 
         final expected = [
-          {c.column: '새 값', 'recommender': '901'},
+          {c.column: '새 값', 'recommenderDiscordId': '901'},
         ];
         expect(saved, expected);
         expect(backend.last.data, expected);
@@ -140,13 +140,13 @@ void main() {
       expect(entity.toJson(), {
         'lnKey': '안녕',
         'lnValue': '반가워',
-        'teacher': '900',
+        'teacherDiscordId': '900',
       });
       expect(entity.toDisplayJson()['discordId'], '900');
       expect(result.hasNext, isTrue);
     });
 
-    test('저장 요청은 discordId를 teacher 필드로 보낸다', () async {
+    test('저장 요청은 discordId를 teacherDiscordId 필드로 보낸다', () async {
       backend.reply('POST', '/api/repository/learning/save_all', ok([]));
 
       final repository = LearningRepository(dio: backend.dio);
@@ -155,7 +155,7 @@ void main() {
       ]);
 
       expect(backend.last.data, [
-        {'lnKey': '안녕', 'lnValue': '반가워', 'teacher': '900'},
+        {'lnKey': '안녕', 'lnValue': '반가워', 'teacherDiscordId': '900'},
       ]);
     });
   });

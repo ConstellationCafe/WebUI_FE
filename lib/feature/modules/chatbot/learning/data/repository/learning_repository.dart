@@ -104,7 +104,7 @@ class LearningRepository implements RepositoryInterface<LearningEntity> {
       'lnValue': row['lnValue'] ?? '',
 
       // DBEditor -> API
-      'teacher': row['discordId'] ?? '',
+      'teacherDiscordId': row['discordId'] ?? '',
     };
   }
 

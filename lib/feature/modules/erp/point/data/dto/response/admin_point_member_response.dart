@@ -1,12 +1,12 @@
 class AdminPointMemberResponse {
   final String discordId;
-  final String? username;
+  final String? displayName;
   final String state;
   final int coin;
 
   const AdminPointMemberResponse({
     required this.discordId,
-    required this.username,
+    required this.displayName,
     required this.state,
     required this.coin,
   });
@@ -14,7 +14,7 @@ class AdminPointMemberResponse {
   factory AdminPointMemberResponse.fromJson(Map<String, dynamic> json) {
     return AdminPointMemberResponse(
       discordId: json['discordId'] as String,
-      username: json['username'] as String?,
+      displayName: json['displayName'] as String?,
       state: json['state'] as String,
       coin: (json['coin'] as num).toInt(),
     );

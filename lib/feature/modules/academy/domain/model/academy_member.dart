@@ -1,14 +1,14 @@
 abstract class AcademyMember {
   final String sk;
-  final String discordID;
-  final String name;
+  final String discordId;
+  final String displayName;
   final String state;
   final String? profileImageUrl;
 
   const AcademyMember({
     required this.sk,
-    required this.discordID,
-    required this.name,
+    required this.discordId,
+    required this.displayName,
     required this.state,
     this.profileImageUrl,
   });

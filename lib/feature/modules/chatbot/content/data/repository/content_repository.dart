@@ -103,7 +103,7 @@ class ContentRepository implements RepositoryInterface<ContentEntity> {
   Map<String, dynamic> _toApiJson(Map<String, dynamic> json) {
     return {
       'cnValue': json['cnValue'] ?? '',
-      'recommender': json['discordId'] ?? '',
+      'recommenderDiscordId': json['discordId'] ?? '',
     };
   }
 }

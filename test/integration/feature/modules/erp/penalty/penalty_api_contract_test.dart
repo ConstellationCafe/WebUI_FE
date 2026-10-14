@@ -12,7 +12,7 @@ Map<String, dynamic> historyItem({String status = 'ACTIVE'}) => {
   'channelId': '999',
   'channelName': null,
   'targetDiscordId': '123',
-  'targetUsername': '별',
+  'targetDisplayName': '별',
   'reason': '도배',
   'score': 1,
   'issuerDiscordId': '900',
@@ -36,7 +36,7 @@ Map<String, dynamic> page(List<Map<String, dynamic>> items) => {
 
 Map<String, dynamic> detail({String status = 'ACTIVE'}) => {
   'discordId': '123',
-  'username': '별',
+  'displayName': '별',
   'state': '재적',
   'cumulativeScore30d': status == 'ACTIVE' ? 2 : 1,
   'history': page([historyItem(status: status)]),
@@ -92,7 +92,7 @@ void main() {
     response['response'] = page([
       {
         'discordId': '123',
-        'username': '별',
+        'displayName': '별',
         'cumulativeScore30d': 2,
         'penaltyCount30d': 2,
         'lastOccurredAt': '2026-09-28T00:30:00Z',

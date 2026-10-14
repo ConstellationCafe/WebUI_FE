@@ -85,36 +85,40 @@ class MembershipNotifier extends _$MembershipNotifier {
 
     if (state.uid1Changed && (state.uid1?.isNotEmpty ?? false)) {
       final uid = state.uid1!;
-      results.add(await _saveUID(membershipApi, uid, state.username));
+      results.add(await _saveUID(membershipApi, uid, state.displayName));
       state = state.copyWith(savedUid1: uid);
     }
 
     if (state.uid2Changed && (state.uid2?.isNotEmpty ?? false)) {
       final uid = state.uid2!;
-      results.add(await _saveUID(membershipApi, uid, state.username));
+      results.add(await _saveUID(membershipApi, uid, state.displayName));
       state = state.copyWith(savedUid2: uid);
     }
 
     if (state.guildChanged && (state.guild?.isNotEmpty ?? false)) {
       final guild = state.guild!;
-      results.add(await _saveGuild(membershipApi, guild, state.username));
+      results.add(await _saveGuild(membershipApi, guild, state.displayName));
       state = state.copyWith(savedGuild: guild);
     }
 
     return results;
   }
 
-  Future<String> _saveUID(MembershipAPI api, String uid, String username) {
+  Future<String> _saveUID(MembershipAPI api, String uid, String displayName) {
     final version = Membership.gameVersionOfUid(uid);
-    return api.updateUID([_membershipID, version, uid, username]);
+    return api.updateUID([_membershipID, version, uid, displayName]);
   }
 
-  Future<String> _saveGuild(MembershipAPI api, String guild, String username) {
+  Future<String> _saveGuild(
+    MembershipAPI api,
+    String guild,
+    String displayName,
+  ) {
     return api.updateGuild([
       _membershipID,
       Membership.guildGameVersion,
       guild,
-      username,
+      displayName,
     ]);
   }
 

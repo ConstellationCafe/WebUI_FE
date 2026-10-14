@@ -191,7 +191,7 @@ class StudentStatusNotifier extends _$StudentStatusNotifier {
       final StudentStatusForm form = StudentStatusForm(
         academyName: status.selectedAcademy!.name,
         className: status.selectedAcademyClass!.classNumber,
-        studentDiscordId: status.selectedStudent!.discordID,
+        studentDiscordId: status.selectedStudent!.discordId,
         statusType: status.selectedStatusType!,
         subjectNames: status.selectedStatusType == StudentStatusType.graduation
             ? status.selectedSubjects.map((subject) => subject.name).toList()

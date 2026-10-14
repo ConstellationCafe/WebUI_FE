@@ -103,7 +103,7 @@ class MenuRepository implements RepositoryInterface<MenuEntity> {
   Map<String, dynamic> _toApiJson(Map<String, dynamic> json) {
     return {
       'mnValue': json['mnValue'] ?? '',
-      'recommender': json['discordId'] ?? '',
+      'recommenderDiscordId': json['discordId'] ?? '',
     };
   }
 }

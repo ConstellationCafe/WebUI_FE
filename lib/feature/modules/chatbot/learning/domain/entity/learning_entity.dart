@@ -31,14 +31,14 @@ class LearningEntity extends Entity {
       lnValue: (json['lnValue'] ?? '').toString(),
 
       // BE teacher에는 Discord ID가 담겨있다.
-      discordId: (json['teacher'] ?? '').toString(),
+      discordId: (json['teacherDiscordId'] ?? '').toString(),
     );
   }
 
   /// API 기준 JSON
   @override
   Map<String, dynamic> toJson() {
-    return {'lnKey': lnKey, 'lnValue': lnValue, 'teacher': discordId};
+    return {'lnKey': lnKey, 'lnValue': lnValue, 'teacherDiscordId': discordId};
   }
 
   /// DBEditor 표시 기준 JSON

@@ -171,7 +171,7 @@ class StatusQueryForm<
                       ...academyMembers.map(
                         (academyMember) => DropdownMenuItem<TMember?>(
                           value: academyMember,
-                          child: Text(academyMember.name),
+                          child: Text(academyMember.displayName),
                         ),
                       ),
                     ],

@@ -1,7 +1,7 @@
 Map<String, dynamic> memberJson(String sk, String name, {String? state}) => {
   'sk': sk,
-  'discordID': 'd$sk',
-  'name': name,
+  'discordId': 'd$sk',
+  'displayName': name,
   'state': state ?? '재적',
   'profileImageUrl': null,
 };
@@ -90,7 +90,7 @@ Map<String, dynamic> lessonRecordJson({bool canModify = true}) => {
   'startTime': '19:00:00',
   'endTime': '20:30:00',
   'educationDuration': 90,
-  'mainTeacherName': '박해',
+  'mainTeacherDisplayName': '박해',
   'description': '',
   'memberCount': 4,
   'canModify': canModify,

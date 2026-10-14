@@ -6,13 +6,13 @@ import '../constants/penalty_strings.dart';
 enum _CopyValue { nickname, discordId }
 
 class PenaltyIdentity extends StatelessWidget {
-  final String username;
+  final String displayName;
   final String discordId;
   final Widget child;
 
   const PenaltyIdentity({
     super.key,
-    required this.username,
+    required this.displayName,
     required this.discordId,
     required this.child,
   });
@@ -54,7 +54,7 @@ class PenaltyIdentity extends StatelessWidget {
     if (choice == null) return;
     final isNickname = choice == _CopyValue.nickname;
     await Clipboard.setData(
-      ClipboardData(text: isNickname ? username : discordId),
+      ClipboardData(text: isNickname ? displayName : discordId),
     );
     if (context.mounted) {
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(

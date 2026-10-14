@@ -45,7 +45,7 @@ class _PenaltyCancelDialogState extends State<PenaltyCancelDialog> {
           children: [
             Text(
               PenaltyStrings.identity(
-                widget.log.targetUsername,
+                widget.log.targetDisplayName,
                 widget.log.targetDiscordId,
               ),
             ),

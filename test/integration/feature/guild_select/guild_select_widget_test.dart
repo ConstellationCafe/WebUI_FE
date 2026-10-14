@@ -177,7 +177,7 @@ void main() {
     expect(guild.guildName, '별자리');
     expect(harness.auth.checkCalls, 2);
     expect(harness.auth.meCalls, 1);
-    expect(harness.container.read(currentUserStateProvider).userId, '123');
+    expect(harness.container.read(currentUserStateProvider).discordId, '123');
     expect(find.text('home 1'), findsOneWidget);
   });
 

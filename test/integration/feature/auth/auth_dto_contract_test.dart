@@ -47,10 +47,10 @@ void main() {
   });
 
   group('CurrentUserResponse', () {
-    test('discordId·avatar를 사용자 상태의 userId·avatarUrl로 옮긴다', () {
+    test('discordId·avatar를 사용자 상태의 discordId·avatarUrl로 옮긴다', () {
       final state = CurrentUserResponse.fromJson(meJson()).toState();
 
-      expect(state.userId, '123');
+      expect(state.discordId, '123');
       expect(state.globalName, '별');
       expect(state.roles, ['ROLE_ADMIN']);
       expect(state.avatarUrl, 'https://cdn.example.invalid/a.png');

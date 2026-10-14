@@ -11,7 +11,7 @@ Map<String, dynamic> column(String name, {int isPrimary = 0}) => {
 Map<String, dynamic> recommendPage(String dbColumn, String field) {
   final metadata = [column(dbColumn, isPrimary: 1), column('recommender')];
   final entities = [
-    {field: '추천 값', 'recommender': '900'},
+    {field: '추천 값', 'recommenderDiscordId': '900'},
   ];
   return {
     'metadata': metadata,
@@ -31,7 +31,7 @@ Map<String, dynamic> learningPage() {
     column('teacher'),
   ];
   final entities = [
-    {'lnKey': '안녕', 'lnValue': '반가워', 'teacher': '900'},
+    {'lnKey': '안녕', 'lnValue': '반가워', 'teacherDiscordId': '900'},
   ];
   return {
     'metadata': metadata,
@@ -51,7 +51,7 @@ PageResult<LearningEntity> learningResult() {
     {'colName': 'lnValue', 'dbName': 'ln_value'},
     {'colName': 'discordId', 'dbName': 'teacher'},
   ];
-  final json = {'lnKey': '안녕', 'lnValue': '반가워', 'teacher': '900'};
+  final json = {'lnKey': '안녕', 'lnValue': '반가워', 'teacherDiscordId': '900'};
   return PageResult(
     items: [LearningEntity.fromJson(metadata, json)],
     metadata: metadata,

@@ -19,7 +19,7 @@ class HomeContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final guildName = ref.watch(currentGuildStateProvider).guildName;
-    final username = ref.watch(currentUserStateProvider).globalName;
+    final displayName = ref.watch(currentUserStateProvider).globalName;
     final title = guildName.isEmpty
         ? HomeStrings.welcome
         : HomeStrings.welcomeTo(guildName);
@@ -73,12 +73,12 @@ class HomeContent extends ConsumerWidget {
                                           ),
                                     ),
                                   ),
-                                  if (username.isNotEmpty) ...[
+                                  if (displayName.isNotEmpty) ...[
                                     const SizedBox(
                                       height: ConstSize.smallSpacing,
                                     ),
                                     Text(
-                                      username,
+                                      displayName,
                                       style: theme.textTheme.titleMedium,
                                     ),
                                   ],

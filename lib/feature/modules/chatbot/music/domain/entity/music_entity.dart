@@ -30,7 +30,7 @@ class MusicEntity extends Entity {
     return MusicEntity(
       metadata: metadata,
       videoId: (json['videoId'] ?? '').toString(),
-      discordId: (json['recommender'] ?? '').toString(),
+      discordId: (json['recommenderDiscordId'] ?? '').toString(),
     );
   }
 }

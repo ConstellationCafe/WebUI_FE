@@ -13,7 +13,7 @@ PenaltyLog exampleLog({int score = 2}) => PenaltyLog(
   channelId: '999',
   channelName: '자유채팅',
   targetDiscordId: '123',
-  targetUsername: '별',
+  targetDisplayName: '별',
   reason: '도배',
   score: 1,
   issuerDiscordId: '900',
@@ -28,7 +28,7 @@ PenaltyLog exampleLog({int score = 2}) => PenaltyLog(
 
 PenaltyDetail exampleDetail(String discordId) => PenaltyDetail(
   discordId: discordId,
-  username: '별',
+  displayName: '별',
   state: '재적',
   cumulativeScore30d: 2,
   history: PenaltyPage(
@@ -91,7 +91,7 @@ class FakePenaltyRepository extends Fake implements PenaltyRepository {
           items: [
             PenaltyMember(
               discordId: '123',
-              username: '별',
+              displayName: '별',
               cumulativeScore30d: 2,
               penaltyCount30d: 2,
               lastOccurredAt: DateTime.utc(2026, 9, 28),

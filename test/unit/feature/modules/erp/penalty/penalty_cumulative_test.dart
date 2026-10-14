@@ -12,7 +12,7 @@ PenaltyLog penaltyLog({
   channelId: '999',
   channelName: '자유채팅',
   targetDiscordId: targetDiscordId,
-  targetUsername: '별',
+  targetDisplayName: '별',
   reason: '도배',
   score: 1,
   issuerDiscordId: '900',

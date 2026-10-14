@@ -42,7 +42,7 @@ class _PointTransactionDialogState extends State<PointTransactionDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('${widget.member.username} · ${widget.member.discordId}'),
+              Text('${widget.member.displayName} · ${widget.member.discordId}'),
               const SizedBox(height: PointTokens.fieldGap),
               TextFormField(
                 cursorColor: Theme.of(context).colorScheme.secondary,

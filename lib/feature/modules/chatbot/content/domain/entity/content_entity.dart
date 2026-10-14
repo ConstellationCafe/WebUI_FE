@@ -30,7 +30,7 @@ class ContentEntity extends Entity {
     return ContentEntity(
       metadata: metadata,
       cnValue: (json['cnValue'] ?? '').toString(),
-      discordId: (json['recommender'] ?? '').toString(),
+      discordId: (json['recommenderDiscordId'] ?? '').toString(),
     );
   }
 }

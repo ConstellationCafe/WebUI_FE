@@ -7,7 +7,7 @@ class LessonRecordQueryResponse {
   final DateTime? startTime;
   final DateTime? endTime;
   final Duration educationDuration;
-  final String mainTeacherName;
+  final String mainTeacherDisplayName;
   final String description;
   final int memberCount;
   final bool canModify;
@@ -21,7 +21,7 @@ class LessonRecordQueryResponse {
     required this.startTime,
     required this.endTime,
     required this.educationDuration,
-    required this.mainTeacherName,
+    required this.mainTeacherDisplayName,
     required this.description,
     required this.memberCount,
     required this.canModify,
@@ -37,7 +37,7 @@ class LessonRecordQueryResponse {
       startTime: _parseTime(json['startTime']),
       endTime: _parseTime(json['endTime']),
       educationDuration: Duration(minutes: json['educationDuration'] ?? 0),
-      mainTeacherName: json['mainTeacherName'] ?? '',
+      mainTeacherDisplayName: json['mainTeacherDisplayName'] ?? '',
       description: json['description'] ?? '',
       memberCount: json['memberCount'] ?? 0,
       canModify: json['canModify'] as bool? ?? false,

@@ -205,7 +205,7 @@ void main() {
         'competitionName': '미니미 Bo1 대회',
         'version': 's2',
         'winnerDiscordId': '123',
-        'winnerName': '별',
+        'winnerDisplayName': '별',
         'acquisition': '2026-09-03',
       },
     };
@@ -221,7 +221,7 @@ void main() {
       'acquisition': '2026-09-03',
     });
     expect(winner.version, GameVersionType.s2);
-    expect(winner.winnerName, '별');
+    expect(winner.winnerDisplayName, '별');
     expect(winner.acquisition, DateTime(2026, 9, 3));
   });
 
@@ -234,7 +234,7 @@ void main() {
             'competitionName': '대회 A',
             'version': 's2',
             'winnerDiscordId': '123',
-            'winnerName': null,
+            'winnerDisplayName': null,
             'acquisition': '2026-09-30',
           },
         ],
@@ -253,7 +253,7 @@ void main() {
     expect(request.uri.queryParameters, {'page': '2'});
     expect(page.page, 2);
     expect(page.totalPages, 2);
-    expect(page.items.single.winnerName, isNull);
+    expect(page.items.single.winnerDisplayName, isNull);
   });
 
   const winnerFailures = {

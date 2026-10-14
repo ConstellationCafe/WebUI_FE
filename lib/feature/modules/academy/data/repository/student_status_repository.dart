@@ -57,8 +57,8 @@ class StudentStatusRepository {
         .map(
           (student) => Student(
             sk: student.sk,
-            discordID: student.discordID,
-            name: student.name,
+            discordId: student.discordId,
+            displayName: student.displayName,
             state: student.state,
           ),
         )

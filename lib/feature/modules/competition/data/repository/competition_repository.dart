@@ -115,7 +115,7 @@ class CompetitionRepository {
       competitionName: response.competitionName,
       version: GameVersionType.stringToType(response.version),
       winnerDiscordId: response.winnerDiscordId,
-      winnerName: response.winnerName,
+      winnerDisplayName: response.winnerDisplayName,
       acquisition: response.acquisition,
     );
   }

@@ -56,8 +56,8 @@ void main() {
         selectedSubject: const Subject(id: 1, name: '덱 빌딩'),
         mainTeacher: const Teacher(
           sk: 't1',
-          discordID: 'd1',
-          name: '박해',
+          discordId: 'd1',
+          displayName: '박해',
           state: '재적',
         ),
         educationDate: DateTime(2026, 10, 1),

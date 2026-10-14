@@ -40,7 +40,7 @@ class _AcademyMemberSelectorState extends State<AcademyMemberSelector> {
     final keyword = _searchController.text.trim().toLowerCase();
 
     final filteredStudents = widget.students.where(
-      (student) => student.name.toLowerCase().contains(keyword),
+      (student) => student.displayName.toLowerCase().contains(keyword),
     );
 
     return AcademySectionCard(
@@ -72,7 +72,7 @@ class _AcademyMemberSelectorState extends State<AcademyMemberSelector> {
 
               return FilterChip(
                 selected: selected,
-                label: Text(student.name),
+                label: Text(student.displayName),
                 onSelected: (_) {
                   widget.onStudentToggle(student);
                 },

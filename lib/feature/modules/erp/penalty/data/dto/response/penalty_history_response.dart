@@ -3,7 +3,7 @@ class PenaltyHistoryResponse {
   final String channelId;
   final String? channelName;
   final String targetDiscordId;
-  final String targetUsername;
+  final String targetDisplayName;
   final String reason;
   final int score;
   final String issuerDiscordId;
@@ -20,7 +20,7 @@ class PenaltyHistoryResponse {
     required this.channelId,
     required this.channelName,
     required this.targetDiscordId,
-    required this.targetUsername,
+    required this.targetDisplayName,
     required this.reason,
     required this.score,
     required this.issuerDiscordId,
@@ -39,7 +39,7 @@ class PenaltyHistoryResponse {
         channelId: json['channelId'] as String,
         channelName: json['channelName'] as String?,
         targetDiscordId: json['targetDiscordId'] as String,
-        targetUsername: json['targetUsername'] as String,
+        targetDisplayName: json['targetDisplayName'] as String,
         reason: json['reason'] as String,
         score: (json['score'] as num).toInt(),
         issuerDiscordId: json['issuerDiscordId'] as String,

@@ -94,7 +94,7 @@ class MemberListPanel extends StatelessWidget {
                             selectedTileColor: Theme.of(
                               context,
                             ).colorScheme.secondaryContainer,
-                            title: Text(member.username),
+                            title: Text(member.displayName),
                             subtitle: Text(
                               '${member.discordId}\n${NumberFormat.decimalPattern().format(member.coin)} P',
                             ),

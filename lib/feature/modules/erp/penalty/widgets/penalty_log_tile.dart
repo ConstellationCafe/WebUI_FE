@@ -59,11 +59,11 @@ class PenaltyLogTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PenaltyIdentity(
-                        username: log.targetUsername,
+                        displayName: log.targetDisplayName,
                         discordId: log.targetDiscordId,
                         child: Text(
                           PenaltyStrings.identity(
-                            log.targetUsername,
+                            log.targetDisplayName,
                             log.targetDiscordId,
                           ),
                           style: theme.textTheme.titleMedium,

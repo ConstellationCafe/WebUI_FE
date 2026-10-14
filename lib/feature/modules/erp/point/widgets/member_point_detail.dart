@@ -61,7 +61,7 @@ class MemberPointDetail extends StatelessWidget {
         child: ListView(
           children: [
             Text(
-              data.member.username,
+              data.member.displayName,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             Text('${data.member.discordId} · ${data.member.state}'),
