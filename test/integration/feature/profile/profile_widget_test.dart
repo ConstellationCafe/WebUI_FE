@@ -29,7 +29,7 @@ Future<ProviderContainer> signedIn(FakeTranslator translator) async {
   );
   addTearDown(container.dispose);
   final user = container.read(currentUserStateProvider.notifier);
-  user.update(userId: '123', globalName: '별');
+  user.update(discordId: '123', globalName: '별');
   await container.read(membershipProvider.notifier).initialize();
   return container;
 }
@@ -125,7 +125,7 @@ void main() {
     addTearDown(container.dispose);
     container
         .read(currentUserStateProvider.notifier)
-        .update(userId: '123', globalName: '별');
+        .update(discordId: '123', globalName: '별');
     setScreenSize(tester, const Size(1200, 900));
 
     await tester.pumpWidget(scoped(container, const Profile()));

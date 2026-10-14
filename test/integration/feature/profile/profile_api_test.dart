@@ -116,7 +116,7 @@ void main() {
         ],
       );
       final user = container.read(currentUserStateProvider.notifier);
-      user.update(userId: '123', globalName: '별', avatarUrl: 'avatar');
+      user.update(discordId: '123', globalName: '별', avatarUrl: 'avatar');
       notifier = container.read(membershipProvider.notifier);
       await notifier.initialize();
     });
