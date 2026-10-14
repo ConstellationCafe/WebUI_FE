@@ -19,7 +19,7 @@ abstract final class ProfileStrings {
   static const usageInput = '여기에서 변경할 값을 입력하고 저장 버튼을 누르면 수정 할 수 있어요';
   static const usagePointLog = '또한 해당 버튼을 누르면 포인트 입출 내역를 확인 할 수 있어요';
 
-  static String cardTitle(String displayName) => '$username님의 회원증';
+  static String cardTitle(String displayName) => '$displayName님의 회원증';
   static String uidLine(String version, String? uid) =>
       '$version : ${(uid?.isNotEmpty ?? false) ? uid : unregistered}';
 }

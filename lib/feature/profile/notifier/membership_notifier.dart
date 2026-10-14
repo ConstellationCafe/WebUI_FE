@@ -41,9 +41,9 @@ class MembershipNotifier extends _$MembershipNotifier {
     try {
       final membershipApi = ref.read(membershipApiProvider);
       final currentUser = ref.read(currentUserStateProvider);
-      _membershipID = currentUser.userId;
+      _membershipID = currentUser.discordId;
 
-      final card = await membershipApi.createCard([currentUser.userId]);
+      final card = await membershipApi.createCard([currentUser.discordId]);
       state = MembershipState.fromMembership(
         card.toDomain(avatar: currentUser.avatarUrl),
       );
