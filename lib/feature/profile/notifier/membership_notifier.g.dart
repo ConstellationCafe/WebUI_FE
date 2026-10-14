@@ -48,7 +48,7 @@ final class MembershipNotifierProvider
 }
 
 String _$membershipNotifierHash() =>
-    r'1e6387c65cd8accb113c5c4202cc03417d3f67d3';
+    r'a65447a13a949fcc4a680625e1821b7e8c1c006d';
 
 /// 회원증은 봇 명령으로 만들어지므로 프로필 화면을 오갈 때마다 다시 만들지 않도록
 /// 앱 수명 동안 유지한다.
