@@ -53,8 +53,8 @@ class PenaltyStrings {
   static String scoreSemantics(String label, int points) => '$label $points점';
   static String scoreSummary(int points, int cumulativePoints) =>
       '$score $points점 · $cumulativeScoreInline $cumulativePoints점';
-  static String identity(String username, String discordId) =>
-      '$username · $discordId';
+  static String identity(String displayName, String discordId) =>
+      '$displayName · $discordId';
   static String memberStatus(String discordId, String state) =>
       '$discordId · $state';
   static String rankingSummary(String discordId, int count, String lastAt) =>

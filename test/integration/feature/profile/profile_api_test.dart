@@ -29,7 +29,7 @@ void main() {
         cardPayload(),
       ).toDomain(avatar: 'avatar');
 
-      expect(membership.username, '별');
+      expect(membership.displayName, '별');
       expect(membership.uid1, '111111111');
       expect(membership.uid2, '');
       expect(membership.role, '운영진');
@@ -116,7 +116,7 @@ void main() {
         ],
       );
       final user = container.read(currentUserStateProvider.notifier);
-      user.update(userId: '123', globalName: '별', avatarUrl: 'avatar');
+      user.update(discordId: '123', globalName: '별', avatarUrl: 'avatar');
       notifier = container.read(membershipProvider.notifier);
       await notifier.initialize();
     });
@@ -127,7 +127,7 @@ void main() {
       final state = container.read(membershipProvider);
 
       expect(state.isLoading, isFalse);
-      expect(state.username, '별');
+      expect(state.displayName, '별');
       expect(state.uid1, '111111111');
       expect(state.coin, '1200');
       expect(state.guild, '은하수');

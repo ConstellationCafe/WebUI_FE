@@ -161,7 +161,7 @@ class TeacherStatusNotifier extends _$TeacherStatusNotifier {
       final TeacherStatusForm form = TeacherStatusForm(
         academyName: status.selectedAcademy!.name,
         className: status.selectedAcademyClass!.classNumber,
-        teacherDiscordId: status.selectedTeacher!.discordID,
+        teacherDiscordId: status.selectedTeacher!.discordId,
         statusType: status.selectedStatusType!,
         reason: status.reason.trim(),
       );

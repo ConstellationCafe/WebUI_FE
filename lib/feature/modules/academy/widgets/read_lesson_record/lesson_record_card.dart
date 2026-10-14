@@ -73,7 +73,7 @@ class LessonRecordCard extends StatelessWidget {
             ),
             const SizedBox(height: ConstPadding.tinyPadding),
             Text(
-              AcademyStrings.mainTeacherInfo(record.mainTeacherName),
+              AcademyStrings.mainTeacherInfo(record.mainTeacherDisplayName),
               style: textTheme.bodySmall,
             ),
             const SizedBox(height: ConstPadding.tinyPadding),

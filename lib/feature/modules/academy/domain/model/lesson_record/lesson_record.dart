@@ -8,10 +8,10 @@ class LessonRecord {
   final DateTime endTime;
   final Duration educationDuration;
 
-  final String mainTeacherId;
-  final List<String> coTeacherIds;
+  final String mainTeacherSk;
+  final List<String> coTeacherSks;
 
-  final List<String> memberIds;
+  final List<String> memberSks;
 
   final String description;
 
@@ -23,9 +23,9 @@ class LessonRecord {
     required this.startTime,
     required this.endTime,
     required this.educationDuration,
-    required this.mainTeacherId,
-    required this.coTeacherIds,
-    required this.memberIds,
+    required this.mainTeacherSk,
+    required this.coTeacherSks,
+    required this.memberSks,
     required this.description,
   });
 
@@ -41,9 +41,9 @@ class LessonRecord {
       'startTime': _formatTime(startTime),
       'endTime': _formatTime(endTime),
       'educationDuration': educationDuration.inMinutes,
-      'mainTeacherId': mainTeacherId,
-      'coTeacherIds': coTeacherIds,
-      'memberIds': memberIds,
+      'mainTeacherSk': mainTeacherSk,
+      'coTeacherSks': coTeacherSks,
+      'memberSks': memberSks,
       'description': description,
     };
   }

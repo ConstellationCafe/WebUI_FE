@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CurrentUserState {
 
- String get userId; String get globalName; List<String> get roles; String get avatarUrl;
+ String get discordId; String get globalName; List<String> get roles; String get avatarUrl;
 /// Create a copy of CurrentUserState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CurrentUserStateCopyWith<CurrentUserState> get copyWith => _$CurrentUserStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentUserState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.globalName, globalName) || other.globalName == globalName)&&const DeepCollectionEquality().equals(other.roles, roles)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentUserState&&(identical(other.discordId, discordId) || other.discordId == discordId)&&(identical(other.globalName, globalName) || other.globalName == globalName)&&const DeepCollectionEquality().equals(other.roles, roles)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,globalName,const DeepCollectionEquality().hash(roles),avatarUrl);
+int get hashCode => Object.hash(runtimeType,discordId,globalName,const DeepCollectionEquality().hash(roles),avatarUrl);
 
 @override
 String toString() {
-  return 'CurrentUserState(userId: $userId, globalName: $globalName, roles: $roles, avatarUrl: $avatarUrl)';
+  return 'CurrentUserState(discordId: $discordId, globalName: $globalName, roles: $roles, avatarUrl: $avatarUrl)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CurrentUserStateCopyWith<$Res>  {
   factory $CurrentUserStateCopyWith(CurrentUserState value, $Res Function(CurrentUserState) _then) = _$CurrentUserStateCopyWithImpl;
 @useResult
 $Res call({
- String userId, String globalName, List<String> roles, String avatarUrl
+ String discordId, String globalName, List<String> roles, String avatarUrl
 });
 
 
@@ -62,9 +62,9 @@ class _$CurrentUserStateCopyWithImpl<$Res>
 
 /// Create a copy of CurrentUserState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? globalName = null,Object? roles = null,Object? avatarUrl = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? discordId = null,Object? globalName = null,Object? roles = null,Object? avatarUrl = null,}) {
   return _then(_self.copyWith(
-userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+discordId: null == discordId ? _self.discordId : discordId // ignore: cast_nullable_to_non_nullable
 as String,globalName: null == globalName ? _self.globalName : globalName // ignore: cast_nullable_to_non_nullable
 as String,roles: null == roles ? _self.roles : roles // ignore: cast_nullable_to_non_nullable
 as List<String>,avatarUrl: null == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
@@ -153,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String globalName,  List<String> roles,  String avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String discordId,  String globalName,  List<String> roles,  String avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CurrentUserState() when $default != null:
-return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case _:
+return $default(_that.discordId,_that.globalName,_that.roles,_that.avatarUrl);case _:
   return orElse();
 
 }
@@ -174,10 +174,10 @@ return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String globalName,  List<String> roles,  String avatarUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String discordId,  String globalName,  List<String> roles,  String avatarUrl)  $default,) {final _that = this;
 switch (_that) {
 case _CurrentUserState():
-return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case _:
+return $default(_that.discordId,_that.globalName,_that.roles,_that.avatarUrl);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +194,10 @@ return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String globalName,  List<String> roles,  String avatarUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String discordId,  String globalName,  List<String> roles,  String avatarUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _CurrentUserState() when $default != null:
-return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case _:
+return $default(_that.discordId,_that.globalName,_that.roles,_that.avatarUrl);case _:
   return null;
 
 }
@@ -209,10 +209,10 @@ return $default(_that.userId,_that.globalName,_that.roles,_that.avatarUrl);case 
 
 
 class _CurrentUserState implements CurrentUserState {
-  const _CurrentUserState({required this.userId, required this.globalName, required final  List<String> roles, required this.avatarUrl}): _roles = roles;
+  const _CurrentUserState({required this.discordId, required this.globalName, required final  List<String> roles, required this.avatarUrl}): _roles = roles;
   
 
-@override final  String userId;
+@override final  String discordId;
 @override final  String globalName;
  final  List<String> _roles;
 @override List<String> get roles {
@@ -233,16 +233,16 @@ _$CurrentUserStateCopyWith<_CurrentUserState> get copyWith => __$CurrentUserStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentUserState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.globalName, globalName) || other.globalName == globalName)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentUserState&&(identical(other.discordId, discordId) || other.discordId == discordId)&&(identical(other.globalName, globalName) || other.globalName == globalName)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,globalName,const DeepCollectionEquality().hash(_roles),avatarUrl);
+int get hashCode => Object.hash(runtimeType,discordId,globalName,const DeepCollectionEquality().hash(_roles),avatarUrl);
 
 @override
 String toString() {
-  return 'CurrentUserState(userId: $userId, globalName: $globalName, roles: $roles, avatarUrl: $avatarUrl)';
+  return 'CurrentUserState(discordId: $discordId, globalName: $globalName, roles: $roles, avatarUrl: $avatarUrl)';
 }
 
 
@@ -253,7 +253,7 @@ abstract mixin class _$CurrentUserStateCopyWith<$Res> implements $CurrentUserSta
   factory _$CurrentUserStateCopyWith(_CurrentUserState value, $Res Function(_CurrentUserState) _then) = __$CurrentUserStateCopyWithImpl;
 @override @useResult
 $Res call({
- String userId, String globalName, List<String> roles, String avatarUrl
+ String discordId, String globalName, List<String> roles, String avatarUrl
 });
 
 
@@ -270,9 +270,9 @@ class __$CurrentUserStateCopyWithImpl<$Res>
 
 /// Create a copy of CurrentUserState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? globalName = null,Object? roles = null,Object? avatarUrl = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? discordId = null,Object? globalName = null,Object? roles = null,Object? avatarUrl = null,}) {
   return _then(_CurrentUserState(
-userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+discordId: null == discordId ? _self.discordId : discordId // ignore: cast_nullable_to_non_nullable
 as String,globalName: null == globalName ? _self.globalName : globalName // ignore: cast_nullable_to_non_nullable
 as String,roles: null == roles ? _self._roles : roles // ignore: cast_nullable_to_non_nullable
 as List<String>,avatarUrl: null == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable

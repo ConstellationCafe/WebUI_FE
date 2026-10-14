@@ -106,7 +106,7 @@ class StatusBasicInfo<T extends AcademyMember> extends StatelessWidget {
               .map(
                 (member) => DropdownMenuItem<T>(
                   value: member,
-                  child: Text(member.name),
+                  child: Text(member.displayName),
                 ),
               )
               .toList(),

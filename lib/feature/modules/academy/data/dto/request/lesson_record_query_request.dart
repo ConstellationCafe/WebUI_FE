@@ -4,7 +4,7 @@ class LessonRecordQueryRequest {
   final DateTime? date;
   final String? time;
   final String? subject;
-  final String? teacherId;
+  final String? teacherSk;
 
   const LessonRecordQueryRequest({
     this.academyId,
@@ -12,7 +12,7 @@ class LessonRecordQueryRequest {
     this.date,
     this.time,
     this.subject,
-    this.teacherId,
+    this.teacherSk,
   });
 
   factory LessonRecordQueryRequest.fromJson(Map<String, dynamic> json) {
@@ -24,7 +24,7 @@ class LessonRecordQueryRequest {
           : null,
       time: json['time'] as String?,
       subject: json['subject'] as String?,
-      teacherId: json['teacherId'] as String?,
+      teacherSk: json['teacherSk'] as String?,
     );
   }
 
@@ -35,7 +35,7 @@ class LessonRecordQueryRequest {
       if (date != null) 'date': _formatDate(date!),
       if (time != null) 'time': time,
       if (subject != null) 'subject': subject,
-      if (teacherId != null) 'teacherId': teacherId,
+      if (teacherSk != null) 'teacherSk': teacherSk,
     };
   }
 

@@ -86,7 +86,9 @@ class CompetitionWinnerHistory extends StatelessWidget {
               title: Text(winner.competitionName),
               subtitle: Text(
                 CompetitionStrings.winnerSubtitle(
-                  name: winner.winnerName ?? CompetitionStrings.unknownMember,
+                  name:
+                      winner.winnerDisplayName ??
+                      CompetitionStrings.unknownMember,
                   discordId: winner.winnerDiscordId,
                   version: winner.version.typeToString(),
                   date: DateFormatter.toYyyyMmDd(winner.acquisition),

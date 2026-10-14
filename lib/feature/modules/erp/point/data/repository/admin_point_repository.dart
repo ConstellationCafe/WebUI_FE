@@ -102,7 +102,7 @@ class AdminPointRepository {
     return PointMemberDetail(
       member: PointMember(
         discordId: response.discordId,
-        username: response.username ?? '',
+        displayName: response.displayName ?? '',
         state: response.state,
         coin: response.coin,
       ),
@@ -124,7 +124,7 @@ class AdminPointRepository {
   PointMember _member(AdminPointMemberResponse response) {
     return PointMember(
       discordId: response.discordId,
-      username: response.username ?? '',
+      displayName: response.displayName ?? '',
       state: response.state,
       coin: response.coin,
     );

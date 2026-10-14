@@ -45,7 +45,7 @@ void main() {
 
       expect(backend.last.method, 'GET');
       expect(response.success, isTrue);
-      expect(user.userId, '123');
+      expect(user.discordId, '123');
       expect(user.roles, ['ROLE_ADMIN']);
       expect(user.avatarUrl, 'https://cdn.example.invalid/a.png');
     });
@@ -185,7 +185,7 @@ void main() {
 
       expect(status, const LoginStatus(isLoggedIn: true, roomSelected: true));
       expect(auth.meCalls, 1);
-      expect(container.read(currentUserStateProvider).userId, '123');
+      expect(container.read(currentUserStateProvider).discordId, '123');
       expect(container.read(academyPermissionProvider).isInitialized, isTrue);
       expect(backend.calls, [
         'GET /api/bots/current/module-configs',
@@ -243,7 +243,7 @@ void main() {
 
       expect(container.read(loginCheckProvider).value, LoginStatus.loggedOut);
       expect(auth.logoutCalls, 1);
-      expect(container.read(currentUserStateProvider).userId, isEmpty);
+      expect(container.read(currentUserStateProvider).discordId, isEmpty);
       expect(container.read(currentGuildStateProvider).guildId, isEmpty);
       expect(container.read(moduleConfigProvider).value?.isEmpty, isTrue);
     });

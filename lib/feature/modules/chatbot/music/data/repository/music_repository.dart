@@ -103,7 +103,7 @@ class MusicRepository implements RepositoryInterface<MusicEntity> {
   Map<String, dynamic> _toApiJson(Map<String, dynamic> json) {
     return {
       'videoId': json['videoId'] ?? '',
-      'recommender': json['discordId'] ?? '',
+      'recommenderDiscordId': json['discordId'] ?? '',
     };
   }
 }

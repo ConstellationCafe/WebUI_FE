@@ -6,8 +6,12 @@ import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_member_detail.dart';
 import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_member_page.dart';
 
-PointMember pointMember(String discordId, {int coin = 1200}) =>
-    PointMember(discordId: discordId, username: '별자리', state: '재적', coin: coin);
+PointMember pointMember(String discordId, {int coin = 1200}) => PointMember(
+  discordId: discordId,
+  displayName: '별자리',
+  state: '재적',
+  coin: coin,
+);
 
 PointMemberDetail pointDetail(String discordId, {int coin = 1200}) =>
     PointMemberDetail(

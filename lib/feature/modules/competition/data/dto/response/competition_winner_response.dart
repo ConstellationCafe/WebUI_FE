@@ -3,7 +3,7 @@ class CompetitionWinnerResponse {
   final String competitionName;
   final String version;
   final String winnerDiscordId;
-  final String? winnerName;
+  final String? winnerDisplayName;
 
   /// 대회 개최 날짜(`yyyy-MM-dd`, 한국 날짜)
   final DateTime acquisition;
@@ -12,7 +12,7 @@ class CompetitionWinnerResponse {
     required this.competitionName,
     required this.version,
     required this.winnerDiscordId,
-    required this.winnerName,
+    required this.winnerDisplayName,
     required this.acquisition,
   });
 
@@ -21,7 +21,7 @@ class CompetitionWinnerResponse {
       competitionName: json['competitionName'] as String,
       version: json['version'] as String,
       winnerDiscordId: json['winnerDiscordId'] as String,
-      winnerName: json['winnerName'] as String?,
+      winnerDisplayName: json['winnerDisplayName'] as String?,
       // 날짜만 있는 값이라 현지 날짜로 그대로 해석한다(UTC 변환 없음).
       acquisition: DateTime.parse(json['acquisition'] as String),
     );

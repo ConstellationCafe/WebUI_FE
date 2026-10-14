@@ -1,6 +1,6 @@
 /// 회원증 정보.
 class Membership {
-  final String username;
+  final String displayName;
   final String? uid1;
   final String? uid2;
   final String? role;
@@ -12,7 +12,7 @@ class Membership {
   final String avatar;
 
   const Membership({
-    required this.username,
+    required this.displayName,
     this.uid1,
     this.uid2,
     this.role,

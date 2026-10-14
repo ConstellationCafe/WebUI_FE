@@ -62,7 +62,7 @@ class ViewMembershipCard extends ConsumerWidget {
                 // 닉네임
                 Expanded(
                   child: Text(
-                    ProfileStrings.cardTitle(state.username),
+                    ProfileStrings.cardTitle(state.displayName),
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

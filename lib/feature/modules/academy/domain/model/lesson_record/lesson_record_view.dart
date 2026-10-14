@@ -7,7 +7,7 @@ class LessonRecordView {
   final DateTime? startTime;
   final DateTime? endTime;
   final Duration educationDuration;
-  final String mainTeacherName;
+  final String mainTeacherDisplayName;
   final String description;
   final int memberCount;
   final bool canModify;
@@ -21,7 +21,7 @@ class LessonRecordView {
     required this.startTime,
     required this.endTime,
     required this.educationDuration,
-    required this.mainTeacherName,
+    required this.mainTeacherDisplayName,
     required this.description,
     required this.memberCount,
     required this.canModify,

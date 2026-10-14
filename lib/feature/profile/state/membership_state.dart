@@ -12,7 +12,7 @@ abstract class MembershipState with _$MembershipState {
   const factory MembershipState({
     @Default(true) bool isLoading,
     @Default(false) bool hasError,
-    required String username,
+    required String displayName,
     String? uid1,
     String? uid2,
     String? role,
@@ -31,7 +31,7 @@ abstract class MembershipState with _$MembershipState {
 
   factory MembershipState.initial() => const MembershipState(
     isLoading: true,
-    username: "",
+    displayName: "",
     joinAt: "",
     avatar: "",
   );
@@ -39,7 +39,7 @@ abstract class MembershipState with _$MembershipState {
   factory MembershipState.fromMembership(Membership membership) {
     return MembershipState(
       isLoading: false,
-      username: membership.username,
+      displayName: membership.displayName,
       uid1: membership.uid1,
       uid2: membership.uid2,
       role: membership.role,

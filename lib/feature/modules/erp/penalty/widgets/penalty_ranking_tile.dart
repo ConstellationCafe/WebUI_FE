@@ -40,12 +40,12 @@ class PenaltyRankingTile extends StatelessWidget {
         ),
       ),
       title: PenaltyIdentity(
-        username: member.username,
+        displayName: member.displayName,
         discordId: member.discordId,
-        child: Text(member.username, style: textTheme.titleMedium),
+        child: Text(member.displayName, style: textTheme.titleMedium),
       ),
       subtitle: PenaltyIdentity(
-        username: member.username,
+        displayName: member.displayName,
         discordId: member.discordId,
         child: Text(
           PenaltyStrings.rankingSummary(

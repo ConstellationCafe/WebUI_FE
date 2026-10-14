@@ -4,7 +4,7 @@ import 'package:constellation_cafe/shared/data/dto/response/bot/bot_command_resp
 /// 빗자루 봇 `MembershipAPI.create_card` 응답.
 ///
 /// `payload.result`는 순서가 정해진 문자열 목록이다:
-/// `[username, uid1, uid2, role, coin, s1Data, s2Data, guild, joinAt]`
+/// `[displayName, uid1, uid2, role, coin, s1Data, s2Data, guild, joinAt]`
 class MembershipCardResponse {
   final List<String> fields;
 
@@ -18,7 +18,7 @@ class MembershipCardResponse {
   }
 
   Membership toDomain({required String avatar}) => Membership(
-    username: fields[0],
+    displayName: fields[0],
     uid1: fields[1],
     uid2: fields[2],
     role: fields[3],

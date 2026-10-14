@@ -34,7 +34,7 @@ class MainTeacherField extends StatelessWidget {
               .map(
                 (teacher) => DropdownMenuItem<Teacher>(
                   value: teacher,
-                  child: Text(teacher.name),
+                  child: Text(teacher.displayName),
                 ),
               )
               .toList(),

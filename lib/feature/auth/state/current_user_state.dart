@@ -6,14 +6,14 @@ part 'current_user_state.freezed.dart';
 @freezed
 abstract class CurrentUserState with _$CurrentUserState {
   const factory CurrentUserState({
-    required String userId,
+    required String discordId,
     required String globalName,
     required List<String> roles,
     required String avatarUrl,
   }) = _CurrentUserState;
 
   factory CurrentUserState.initial() => const CurrentUserState(
-    userId: "",
+    discordId: "",
     globalName: "",
     roles: [],
     avatarUrl: "",

@@ -96,7 +96,7 @@ class PenaltyRepository {
 
   PenaltyDetail _detail(PenaltyDetailResponse response) => PenaltyDetail(
     discordId: response.discordId,
-    username: response.username,
+    displayName: response.displayName,
     state: response.state,
     cumulativeScore30d: response.cumulativeScore30d,
     history: _page(response.history, _log),
@@ -104,7 +104,7 @@ class PenaltyRepository {
 
   PenaltyMember _member(PenaltyMemberResponse response) => PenaltyMember(
     discordId: response.discordId,
-    username: response.username,
+    displayName: response.displayName,
     cumulativeScore30d: response.cumulativeScore30d,
     penaltyCount30d: response.penaltyCount30d,
     lastOccurredAt: response.lastOccurredAt,
@@ -115,7 +115,7 @@ class PenaltyRepository {
     channelId: response.channelId,
     channelName: response.channelName,
     targetDiscordId: response.targetDiscordId,
-    targetUsername: response.targetUsername,
+    targetDisplayName: response.targetDisplayName,
     reason: response.reason,
     score: response.score,
     issuerDiscordId: response.issuerDiscordId,

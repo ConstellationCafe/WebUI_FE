@@ -24,7 +24,7 @@ class CurrentUserResponse {
   }
 
   CurrentUserState toState() => CurrentUserState(
-    userId: discordId,
+    discordId: discordId,
     globalName: globalName,
     roles: roles,
     avatarUrl: avatar,

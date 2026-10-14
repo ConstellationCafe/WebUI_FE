@@ -57,7 +57,7 @@ class LessonRecordRepository {
     DateTime? date,
     DateTime? time,
     String? subject,
-    String? teacherId,
+    String? teacherSk,
   }) async {
     final request = LessonRecordQueryRequest(
       academyId: academyId,
@@ -65,7 +65,7 @@ class LessonRecordRepository {
       date: date,
       time: time?.toString(),
       subject: subject,
-      teacherId: teacherId,
+      teacherSk: teacherSk,
     );
 
     return await lessonRecordApi.getLessonRecords(request);

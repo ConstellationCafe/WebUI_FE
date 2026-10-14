@@ -77,11 +77,11 @@ class LessonRecordFormNotifier extends _$LessonRecordFormNotifier {
         startTime: startTime,
         endTime: endTime,
         educationDuration: duration,
-        mainTeacherId: mainTeacher.sk,
-        coTeacherIds: lessonRecordLessonSelection.selectedCoTeachers
+        mainTeacherSk: mainTeacher.sk,
+        coTeacherSks: lessonRecordLessonSelection.selectedCoTeachers
             .map((teacher) => teacher.sk)
             .toList(),
-        memberIds: lessonRecordLessonSelection.selectedStudents
+        memberSks: lessonRecordLessonSelection.selectedStudents
             .map((member) => member.sk)
             .toList(),
         description: lessonRecordForm.description.trim(),

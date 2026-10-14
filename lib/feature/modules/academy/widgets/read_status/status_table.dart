@@ -88,7 +88,7 @@ class StatusTable<TMember extends AcademyMember, TStatus extends RosterStatus>
                       return DataRow(
                         cells: [
                           DataCell(Text('$number')),
-                          DataCell(Text(item.academyMember.name)),
+                          DataCell(Text(item.academyMember.displayName)),
                           DataCell(Text(item.academy.name)),
                           DataCell(
                             Text(

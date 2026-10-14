@@ -3,7 +3,7 @@ class PenaltyLog {
   final String channelId;
   final String? channelName;
   final String targetDiscordId;
-  final String targetUsername;
+  final String targetDisplayName;
   final String reason;
   final int score;
   final String issuerDiscordId;
@@ -20,7 +20,7 @@ class PenaltyLog {
     required this.channelId,
     required this.channelName,
     required this.targetDiscordId,
-    required this.targetUsername,
+    required this.targetDisplayName,
     required this.reason,
     required this.score,
     required this.issuerDiscordId,

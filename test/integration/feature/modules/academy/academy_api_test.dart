@@ -64,8 +64,8 @@ void main() {
       expect((await api.getAcademies()).single.name, '별빛 아카데미');
       expect((await api.getClasses(1)).single.classNumber, '3');
       expect((await api.getSubjects(1)).single.name, '덱 빌딩');
-      expect((await api.getTeachers(1, 3)).single.discordID, 'dt1');
-      expect((await api.getStudents(1, 3)).single.name, '김별');
+      expect((await api.getTeachers(1, 3)).single.discordId, 'dt1');
+      expect((await api.getStudents(1, 3)).single.displayName, '김별');
     });
   });
 
@@ -113,9 +113,9 @@ void main() {
         startTime: DateTime(2026, 9, 27, 19),
         endTime: DateTime(2026, 9, 27, 20, 30),
         educationDuration: const Duration(minutes: 90),
-        mainTeacherId: 't1',
-        coTeacherIds: const ['t2'],
-        memberIds: const ['s1', 's2'],
+        mainTeacherSk: 't1',
+        coTeacherSks: const ['t2'],
+        memberSks: const ['s1', 's2'],
         description: '실전 연습',
       );
 
@@ -126,7 +126,7 @@ void main() {
       expect(body['startTime'], '19:00:00');
       expect(body['endTime'], '20:30:00');
       expect(body['educationDuration'], 90);
-      expect(body['memberIds'], ['s1', 's2']);
+      expect(body['memberSks'], ['s1', 's2']);
     });
 
     test('수정과 삭제는 기록 ID 경로를 사용한다', () async {
@@ -281,7 +281,7 @@ void main() {
         ],
       );
       final user = container.read(currentUserStateProvider.notifier);
-      user.update(userId: 'dt1');
+      user.update(discordId: 'dt1');
     });
 
     tearDown(() => container.dispose());

@@ -19,7 +19,7 @@ class _PointLogDeleteDialogState extends State<PointLogDeleteDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${widget.member.username} · ${widget.member.discordId}'),
+            Text('${widget.member.displayName} · ${widget.member.discordId}'),
             const SizedBox(height: PointTokens.fieldGap),
             Text(
               widget.log.description.trim().isEmpty

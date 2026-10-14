@@ -141,7 +141,7 @@ class LessonRecordSelectionNotifier extends _$LessonRecordSelectionNotifier {
           permission.isOwnerWithAcademy(selectedAcademy.id)
           ? enrolledTeachers
           : enrolledTeachers
-                .where((teacher) => teacher.discordID == currentUser.userId)
+                .where((teacher) => teacher.discordId == currentUser.discordId)
                 .toList();
       // student
       final enrolledStudents = students

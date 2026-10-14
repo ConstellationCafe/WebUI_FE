@@ -56,7 +56,7 @@ class LessonRecordListNotifier extends _$LessonRecordListNotifier {
         date: lessonRecordSelection.educationDate,
         time: lessonRecordSelection.startTime,
         subject: lessonRecordSelection.selectedSubject?.name,
-        teacherId: lessonRecordSelection.mainTeacher?.sk,
+        teacherSk: lessonRecordSelection.mainTeacher?.sk,
       );
 
       state = state.copyWith(
@@ -72,7 +72,7 @@ class LessonRecordListNotifier extends _$LessonRecordListNotifier {
               startTime: record.startTime,
               endTime: record.endTime,
               educationDuration: record.educationDuration,
-              mainTeacherName: record.mainTeacherName,
+              mainTeacherDisplayName: record.mainTeacherDisplayName,
               description: record.description,
               memberCount: record.memberCount,
               canModify: record.canModify,

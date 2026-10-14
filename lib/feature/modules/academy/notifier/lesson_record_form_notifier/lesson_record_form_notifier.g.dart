@@ -42,7 +42,7 @@ final class LessonRecordFormNotifierProvider
 }
 
 String _$lessonRecordFormNotifierHash() =>
-    r'194a75bdd678fecd661d07461f0d541eb60813d7';
+    r'0cdd26910d839e64c532a9398a649a6a443e6e75';
 
 abstract class _$LessonRecordFormNotifier
     extends $Notifier<LessonRecordFormState> {

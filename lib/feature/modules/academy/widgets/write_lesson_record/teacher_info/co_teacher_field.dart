@@ -39,7 +39,7 @@ class CoTeacherField extends StatelessWidget {
               .map(
                 (teacher) => DropdownMenuItem<Teacher>(
                   value: teacher,
-                  child: Text(teacher.name),
+                  child: Text(teacher.displayName),
                 ),
               )
               .toList(),
@@ -56,7 +56,7 @@ class CoTeacherField extends StatelessWidget {
           children: selectedCoTeachers
               .map(
                 (teacher) => Chip(
-                  label: Text(teacher.name),
+                  label: Text(teacher.displayName),
                   onDeleted: () {
                     onChanged(teacher);
                   },

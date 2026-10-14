@@ -18,7 +18,7 @@ void main() {
               detail: PointMemberDetail(
                 member: const PointMember(
                   discordId: '123',
-                  username: '별자리',
+                  displayName: '별자리',
                   state: '재적',
                   coin: 1200,
                 ),
@@ -52,7 +52,7 @@ void main() {
     final detail = PointMemberDetail(
       member: const PointMember(
         discordId: '123456789',
-        username: '별자리',
+        displayName: '별자리',
         state: '재적',
         coin: 1200,
       ),

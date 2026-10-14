@@ -22,14 +22,14 @@ class MembershipAPI {
   }
 
   Future<String> updateUID(List<dynamic> args) async {
-    /** args : [membershipID, version, uid, username] */
+    /** args : [membershipID, version, uid, displayName] */
     String path = "/ConstellationAPI/MembershipAPI/update_uid";
     final res = await translator.request(path, args);
     return BotCommandResponse.fromJson(res).resultMessage;
   }
 
   Future<String> updateGuild(List<dynamic> args) async {
-    /** args : [membershipID, version, guild, username] */
+    /** args : [membershipID, version, guild, displayName] */
     String path = "/ConstellationAPI/MembershipAPI/update_guild";
     final res = await translator.request(path, args);
     return BotCommandResponse.fromJson(res).resultMessage;

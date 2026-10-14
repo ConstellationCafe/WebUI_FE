@@ -2,7 +2,7 @@ import 'admin_point_log_response.dart';
 
 class AdminPointDetailResponse {
   final String discordId;
-  final String? username;
+  final String? displayName;
   final String state;
   final int coin;
   final List<AdminPointLogResponse> logs;
@@ -14,7 +14,7 @@ class AdminPointDetailResponse {
 
   const AdminPointDetailResponse({
     required this.discordId,
-    required this.username,
+    required this.displayName,
     required this.state,
     required this.coin,
     required this.logs,
@@ -28,7 +28,7 @@ class AdminPointDetailResponse {
   factory AdminPointDetailResponse.fromJson(Map<String, dynamic> json) {
     return AdminPointDetailResponse(
       discordId: json['discordId'] as String,
-      username: json['username'] as String?,
+      displayName: json['displayName'] as String?,
       state: json['state'] as String,
       coin: (json['coin'] as num).toInt(),
       logs: (json['logs'] as List<dynamic>)

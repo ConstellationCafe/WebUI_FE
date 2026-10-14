@@ -24,14 +24,14 @@ class CompetitionWinner {
   final String winnerDiscordId;
 
   /// 현재 채팅방에서의 회원 이름. 알 수 없으면 null
-  final String? winnerName;
+  final String? winnerDisplayName;
   final DateTime acquisition;
 
   const CompetitionWinner({
     required this.competitionName,
     required this.version,
     required this.winnerDiscordId,
-    required this.winnerName,
+    required this.winnerDisplayName,
     required this.acquisition,
   });
 }

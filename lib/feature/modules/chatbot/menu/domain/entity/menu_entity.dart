@@ -30,7 +30,7 @@ class MenuEntity extends Entity {
     return MenuEntity(
       metadata: metadata,
       mnValue: (json['mnValue'] ?? '').toString(),
-      discordId: (json['recommender'] ?? '').toString(),
+      discordId: (json['recommenderDiscordId'] ?? '').toString(),
     );
   }
 }

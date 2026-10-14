@@ -46,16 +46,16 @@ class PenaltyDetailPanel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PenaltyIdentity(
-                      username: detail.username,
+                      displayName: detail.displayName,
                       discordId: detail.discordId,
                       child: Text(
-                        detail.username,
+                        detail.displayName,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
                     const SizedBox(height: PenaltyTokens.metadataTextSize / 2),
                     PenaltyIdentity(
-                      username: detail.username,
+                      displayName: detail.displayName,
                       discordId: detail.discordId,
                       child: Text(
                         PenaltyStrings.memberStatus(

@@ -57,13 +57,13 @@ class CurrentUserStateNotifier extends _$CurrentUserStateNotifier {
 
   /// 상태 업데이트
   void update({
-    String? userId,
+    String? discordId,
     String? globalName,
     List<String>? roles,
     String? avatarUrl,
   }) {
     state = state.copyWith(
-      userId: userId ?? state.userId,
+      discordId: discordId ?? state.discordId,
       globalName: globalName ?? state.globalName,
       roles: roles ?? state.roles,
       avatarUrl: avatarUrl ?? state.avatarUrl,

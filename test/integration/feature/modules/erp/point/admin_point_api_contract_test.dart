@@ -9,7 +9,7 @@ import 'package:constellation_cafe/feature/modules/erp/point/domain/model/point_
 
 Map<String, dynamic> memberJson({int coin = 1200}) => {
   'discordId': '123',
-  'username': '별자리',
+  'displayName': '별자리',
   'state': '재적',
   'coin': coin,
 };
@@ -80,7 +80,7 @@ void main() {
       'discordId': '123',
     });
     expect(result.items.single.discordId, '123');
-    expect(result.items.single.username, '별자리');
+    expect(result.items.single.displayName, '별자리');
     expect(result.items.single.coin, 1200);
     expect(result.page, 2);
     expect(result.size, 20);
@@ -93,12 +93,12 @@ void main() {
     response['response'] = {
       ...paginationJson(),
       'items': [
-        {...memberJson(), 'username': null},
+        {...memberJson(), 'displayName': null},
       ],
     };
     final result = await repository.getMembers(page: 2, discordId: '   ');
     expect(request.queryParameters, {'page': 2, 'size': 20});
-    expect(result.items.single.username, '');
+    expect(result.items.single.displayName, '');
     expect(result.items.single.state, '재적');
     expect(result.page, 2);
     expect(result.totalPages, 2);
@@ -112,7 +112,7 @@ void main() {
     expect(request.path, '${AdminPointApi.path}/members/123');
     expect(request.queryParameters, {'page': 2, 'size': 20});
     expect(result.discordId, '123');
-    expect(result.username, '별자리');
+    expect(result.displayName, '별자리');
     expect(result.coin, 1200);
     expect(result.logs.single.description, isNull);
     expect(result.logs.single.at, DateTime.utc(2026, 9, 24, 1, 2, 3));
